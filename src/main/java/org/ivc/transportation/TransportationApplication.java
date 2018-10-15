@@ -16,17 +16,18 @@ public class TransportationApplication {
         SpringApplication.run(TransportationApplication.class, args);
     }
 
-//    @Bean
-//    ApplicationRunner init(DepartmentRepository dpartmentRepository) {
-//        return (ApplicationArguments args) -> {
+    @Bean
+    ApplicationRunner init(DepartmentRepository dpartmentRepository) {
+        return (ApplicationArguments args) -> {
 //            Stream.of("ЦИ-1", "ЦИ-2", "ЦИ-4", "ЦИ-ТК", "ЦИ-7",
 //                    "КЭССТ", "КЭЗС", "КТМО", "СЛУЖБА БЕЗОПАСНОСТИ").forEach(name -> {
-//                        Department dep = new Department();
-//                        dep.setName(name);                     
-//                        dpartmentRepository.save(dep);
+                        Department dep = new Department();
+                        dep.setName("ЦИ-1");
+                        dep.setAddress("площадка №2");
+                        dpartmentRepository.save(dep);
 //                    });
-//            dpartmentRepository.findAll().forEach(System.out::println);
-//        };
-//    }
+            dpartmentRepository.findAll().forEach(System.out::println);
+        };
+    }
 
 }
