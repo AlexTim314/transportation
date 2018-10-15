@@ -6,6 +6,7 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,6 +19,16 @@ public class DepartmentController {
     @Autowired
     private DepartmentRepository repository;
 
+    
+    @GetMapping(value= "/departments/{name}")
+    public Collection<Department> getDepartmentByName(@PathVariable String name){
+        return repository.findAll().stream()
+                .filter((Department t) -> {
+                    return t.getName().equals(name);
+                })
+                .collect(Collectors.toList());
+    }
+    
     @GetMapping("/combat-departments")
     public Collection<Department> getCombatDepartments() {
         return repository.findAll().stream()
