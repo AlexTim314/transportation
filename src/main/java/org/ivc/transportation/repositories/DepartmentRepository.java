@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.ivc.transportation.repositories;
 
 import org.ivc.transportation.entities.Department;
@@ -9,5 +14,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * @author Sokolov Slava
  */
 @RepositoryRestResource
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
+public interface DepartmentRepository extends JpaRepository<Department ,Long> {
 }

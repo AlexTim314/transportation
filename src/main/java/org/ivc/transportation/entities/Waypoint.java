@@ -1,17 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +25,7 @@ import lombok.ToString;
 
 /**
  *
- * @author Sokolov Slava & Nesterov Yuriy
+ * @author Nesterov Yuriy
  */
 @Entity
 @Getter
@@ -29,40 +33,35 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Claim implements Serializable {
-
+public class Waypoint implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @NonNull
-    @Column(nullable = false,length = 1024)
-    private String purpose;
-
-    @NonNull
-    @Column(nullable = false)
-    private Date outDate;
-
-    @NonNull
-    private Date returnDate;
-
-    @NonNull
-    @Column(length = 1024)
-    private String description;
-
-    @NonNull
-    @Column(nullable = false)
-    private Date clDate;  // clame date
-
-    @ManyToOne
-    private Department department;
-
-    @OneToMany(mappedBy = "claim")
-    private Set<Record> records;
-
-    @OneToMany(mappedBy = "claim")
-    private Set<CriterionValue> criterionValues;
     
-    @OneToMany(mappedBy = "claim")
-    private Set<Waypoint> waypoints;
+    @NonNull
+    @Column(nullable = false, length = 1024)
+    private String name;
+    
+    @NonNull
+    @Column(nullable = false)
+    private Double latitude;
+    
+    @NonNull
+    @Column(nullable = false)
+    private Double longitude;
+    
+    @ManyToOne
+    private Claim claim;
+    
+    @OneToOne
+    private Work work;
+    
+    @ManyToMany(mappedBy = "waypoints")
+    private List<Distance> distances;
+    
+    
+    @OneToOne
+    private TimedWaypoint timedWaypoint;
+    
 }

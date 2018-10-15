@@ -5,14 +5,15 @@
  */
 package org.ivc.transportation.repositories;
 
-import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Fueling;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  *
- * @author Sokolov Slava
+ * @author Nesterov Yuriy
  */
 @RepositoryRestResource
-public interface ClaimRepository extends JpaRepository<Claim, Long>{
+public interface FuelingRepository extends JpaRepository<Fueling, Long>{
+    
 }

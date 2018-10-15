@@ -1,7 +1,11 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
@@ -21,7 +24,7 @@ import lombok.ToString;
 
 /**
  *
- * @author Sokolov Slava & Nesterov Yuriy
+ * @author Nesterov Yuriy
  */
 @Entity
 @Getter
@@ -29,40 +32,35 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Claim implements Serializable {
+public class Vechicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NonNull
-    @Column(nullable = false,length = 1024)
-    private String purpose;
+    @Column(nullable = false)
+    private String number;
 
     @NonNull
     @Column(nullable = false)
-    private Date outDate;
-
-    @NonNull
-    private Date returnDate;
-
-    @NonNull
-    @Column(length = 1024)
-    private String description;
+    private Float fuelRemnant;
 
     @NonNull
     @Column(nullable = false)
-    private Date clDate;  // clame date
+    private Float odometr;
+
+    @NonNull
+    @Column(nullable = false)
+    private String vacant;
 
     @ManyToOne
-    private Department department;
-
-    @OneToMany(mappedBy = "claim")
-    private Set<Record> records;
-
-    @OneToMany(mappedBy = "claim")
-    private Set<CriterionValue> criterionValues;
+    private TransportDep transportDep;
     
-    @OneToMany(mappedBy = "claim")
-    private Set<Waypoint> waypoints;
+    @OneToMany(mappedBy = "vechicle")
+    private Set<Appointment> appointments;
+    
+    @OneToMany(mappedBy = "vechicle")
+    private Set<CriterionValue> criterionValues;
+
 }
