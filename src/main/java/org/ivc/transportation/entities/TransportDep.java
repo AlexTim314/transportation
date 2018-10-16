@@ -51,7 +51,7 @@ public class TransportDep implements Serializable {
     @NonNull
     private String phone;
 
-   // @JsonIgnore
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "transportDep")
     private Set<Driver> drivers;
 
