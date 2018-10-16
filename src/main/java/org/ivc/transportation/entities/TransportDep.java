@@ -5,10 +5,12 @@
  */
 package org.ivc.transportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,11 +43,18 @@ public class TransportDep implements Serializable {
     @NonNull
     @Column(nullable = false)
     private Integer numDep;  //number of department
+    
+    @NonNull
+    private String addres;
+    
+    @NonNull
+    private String phone;
 
-    @OneToMany(mappedBy = "transportDep")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transportDep")
     private Set<Driver> drivers;
 
-    @OneToMany(mappedBy = "transportDep")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transportDep")
     private Set<Vechicle> vechicles;
     
 }
