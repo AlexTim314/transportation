@@ -23,7 +23,7 @@ public class DriverController {
     private DriverRepository repository;
 
     @GetMapping("/drivers")
-    public Collection<Driver> getDriver() {
+    public Collection<Driver> getDrivers() {
         return repository.findAll();
 
     }

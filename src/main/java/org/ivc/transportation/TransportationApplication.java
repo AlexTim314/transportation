@@ -37,7 +37,7 @@ long[] trdepId;
                 dpartmentRepository.save(dep);
             }
 
-            dpartmentRepository.findAll().forEach(System.out::println);
+           // dpartmentRepository.findAll().forEach(System.out::println);
         };
     }
 
@@ -60,7 +60,7 @@ long[] trdepId;
                 trdepId[i] = td.getId();
             }
 
-            transpDepRepository.findAll().forEach(System.out::println);
+            //transpDepRepository.findAll().forEach(System.out::println);
         };
     }
     
@@ -94,9 +94,15 @@ long[] trdepId;
                 drvRepository.save(dr);
             }
 
-            //drvRepository.findAll().forEach(System.out::println);
-            drvRepository.findAll();
+       //    drvRepository.findAll().forEach((d) -> {
+        //       System.out.println(d.getTransportDep().getId() + " " +  d.getTransportDep().getAddres());
+              //System.out.println(d.getTransportDep().getDrivers().toString());
+        //   });
+           // System.out.println(drvRepository.findAll().get(0).getName());
+            //drvRepository.findAll();
+            
         };
+        
     }
 
 }
