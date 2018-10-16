@@ -16,11 +16,13 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TransportationApplication {
+    
+    long[] trdepId; 
 
     public static void main(String[] args) {
         SpringApplication.run(TransportationApplication.class, args);
     }
-long[] trdepId; 
+    
     @Bean
     ApplicationRunner init_dep(DepartmentRepository dpartmentRepository) {
         return (ApplicationArguments args) -> {
@@ -36,8 +38,6 @@ long[] trdepId;
                 dep.setAddres(addres[i]);
                 dpartmentRepository.save(dep);
             }
-
-            dpartmentRepository.findAll().forEach(System.out::println);
         };
     }
 
@@ -58,9 +58,8 @@ long[] trdepId;
                 td.setPhone(phone[i]);
                 transpDepRepository.save(td);
                 trdepId[i] = td.getId();
+                System.out.println("trdepId["+i+"]="+trdepId[i]);
             }
-
-            transpDepRepository.findAll().forEach(System.out::println);
         };
     }
     
@@ -79,8 +78,6 @@ long[] trdepId;
 
             for (int i = 0; i < name.length; i++) {
                 Driver dr = new Driver();
-                System.out.println("id trdepId: ");
-                System.out.println(trdepId[i]);
                 TransportDep asd = new TransportDep();
                 asd.setId(trdepId[i]);
                 dr.setTransportDep(asd);
@@ -95,7 +92,6 @@ long[] trdepId;
             }
 
             //drvRepository.findAll().forEach(System.out::println);
-            drvRepository.findAll();
         };
     }
 

@@ -67,7 +67,7 @@ public class Driver implements Serializable {
     private String vacant;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "driver")
