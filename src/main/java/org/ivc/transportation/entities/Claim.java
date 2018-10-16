@@ -1,10 +1,13 @@
 package org.ivc.transportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +37,7 @@ public class Claim implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(nullable = false,length = 1024)
+    @Column(nullable = false, length = 1024)
     private String purpose;
 
     @NonNull
@@ -52,15 +55,19 @@ public class Claim implements Serializable {
     @Column(nullable = false)
     private Date clDate;  // clame date
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    @OneToMany(mappedBy = "claim")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
     private Set<Record> records;
 
-    @OneToMany(mappedBy = "claim")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
     private Set<CriterionValue> criterionValues;
-    
-    @OneToMany(mappedBy = "claim")
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
     private Set<Waypoint> waypoints;
 }

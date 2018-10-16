@@ -55,7 +55,8 @@ public class TransportDep implements Serializable {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "transportDep")
     private Set<Driver> drivers;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transportDep")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "transportDep")
     private Set<Vechicle> vechicles;
     
 }

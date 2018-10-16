@@ -1,7 +1,9 @@
 package org.ivc.transportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,10 +41,10 @@ public class Department implements Serializable {
     @Column(length = 1024)
     private String addres;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "department")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "department")
     private Set<Claim> claims;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "department")
-    private Set<Employee> employees;
+    
 
 }

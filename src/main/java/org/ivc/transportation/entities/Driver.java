@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -70,7 +71,8 @@ public class Driver implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "driver")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "driver")
     private Set<Appointment> appointments;
 
 }
