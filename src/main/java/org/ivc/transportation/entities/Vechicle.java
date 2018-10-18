@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
@@ -30,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"transportDep", "appointments", "criterionValues"})
+@EqualsAndHashCode(exclude = {"transportDep", "appointments", "criterionValues"})
 public class Vechicle implements Serializable {
 
     @Id
@@ -56,10 +55,10 @@ public class Vechicle implements Serializable {
 
     @ManyToOne
     private TransportDep transportDep;
-    
+
     @OneToMany(mappedBy = "vechicle")
     private Set<Appointment> appointments;
-    
+
     @OneToMany(mappedBy = "vechicle")
     private Set<CriterionValue> criterionValues;
 

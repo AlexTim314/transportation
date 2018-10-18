@@ -31,8 +31,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"drivers", "vehicles"})
+@EqualsAndHashCode(exclude = {"drivers", "vehicles"})
 public class TransportDep implements Serializable {
 
     @Id
@@ -49,11 +49,17 @@ public class TransportDep implements Serializable {
     @NonNull
     private String phone;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "transportDep")
-    private Set<Driver> drivers;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "transportDep")
+//    private Set<Driver> drivers;
 
-    @OneToMany(mappedBy = "transportDep")
-    private Set<Vechicle> vechicles;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "transportDep")
+//    private Set<Vechicle> vechicles;
+
+    public TransportDep(Integer numDep, String addres, String phone/*, Set<Driver> drivers*/) {
+        this.numDep = numDep;
+        this.addres = addres;
+        this.phone = phone;
+        //this.drivers = drivers;
+    }
     
 }

@@ -15,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
@@ -33,8 +32,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"transportDep", "appointments"})
+@EqualsAndHashCode(exclude = {"transportDep", "appointments"})
 public class Driver implements Serializable {
 
     @Id
@@ -70,7 +69,27 @@ public class Driver implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "driver")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Appointment> appointments;
+
+    /*public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String vacant) {
+        this.firstname = firstname;
+        this.name = name;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.addres = addres;
+        this.phone = phone;
+        this.vacant = vacant;
+    }*/
+    public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String vacant, TransportDep trDep) {
+        this.firstname = firstname;
+        this.name = name;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.addres = addres;
+        this.phone = phone;
+        this.vacant = vacant;
+        this.transportDep = trDep;
+    }
 
 }
