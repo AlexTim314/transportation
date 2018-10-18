@@ -20,7 +20,9 @@ public class TransportationApplication {
     public static void main(String[] args) {
         SpringApplication.run(TransportationApplication.class, args);
     }
-long[] trdepId; 
+    
+    long[] trdepId;
+
     @Bean
     ApplicationRunner init_dep(DepartmentRepository dpartmentRepository) {
         return (ApplicationArguments args) -> {
@@ -48,8 +50,9 @@ long[] trdepId;
             int[] nom = {1, 2, 3, 4, 5, 6, 7, 8};
             String[] phone = {"13-256", "14-586", "11-111", "83362245689", "10-014",
                 "18-523", "12-001", "12-345"};
-            String[] addres = {"Абая 3", "Площадка №2", "Советской армии 3", "Нет адреса", "Королева 36",
-                "Советской армии 7", "Неизвестно", "7 мкр"};
+            String[] addres = {"Абая 3", "Площадка №2", "Советской армии 3"
+                    , "Нет адреса", "Королева 36", "Советской армии 7"
+                    , "Неизвестно", "7 мкр"};
             trdepId = new long[nom.length];
             for (int i = 0; i < nom.length; i++) {
                 TransportDep td = new TransportDep();
@@ -63,27 +66,26 @@ long[] trdepId;
             transpDepRepository.findAll().forEach(System.out::println);
         };
     }
-    
+
     @Bean
     ApplicationRunner init_dr(DriverRepository drvRepository) {
         return (ApplicationArguments args) -> {
 
             String[] firstName = {"Иванов", "Сидоров", "Петров"};
             String[] name = {"Александр", "Илья", "Иван"};
-            String[] sureName ={"Владимирович", "Петрович", "Юрьевич"};
-            Date[] dateBirth = {Date.valueOf("1985-01-15"),Date.valueOf("1990-08-13"),Date.valueOf("1972-10-11")};
+            String[] sureName = {"Владимирович", "Петрович", "Юрьевич"};
+            Date[] dateBirth = {Date.valueOf("1985-01-15"), Date.valueOf("1990-08-13"), Date.valueOf("1972-10-11")};
             String[] phone = {"87771234569", "87712564785", "87051234568"};
             String[] addres = {"Абая 12-25", "Максимова 20-10", "6 мкр 15-48"};
             String[] vac = {"Не занят", "Занят", "Не занят"};
-            
 
             for (int i = 0; i < name.length; i++) {
                 Driver dr = new Driver();
                 System.out.println("id trdepId: ");
                 System.out.println(trdepId[i]);
-                TransportDep asd = new TransportDep();
-                asd.setId(trdepId[i]);
-                dr.setTransportDep(asd);
+                TransportDep tempDep = new TransportDep();
+                tempDep.setId(trdepId[i]);
+                dr.setTransportDep(tempDep);
                 dr.setFirstname(firstName[i]);
                 dr.setName(name[i]);
                 dr.setSurname(sureName[i]);

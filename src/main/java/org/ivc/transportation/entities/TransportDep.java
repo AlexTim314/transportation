@@ -14,8 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,10 +49,10 @@ public class TransportDep implements Serializable {
     private String phone;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transportDep")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportDep")
     private Set<Driver> drivers;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transportDep")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportDep")
     private Set<Vechicle> vechicles;
     
 }
