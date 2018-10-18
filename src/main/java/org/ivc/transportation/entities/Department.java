@@ -1,14 +1,11 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,11 +35,10 @@ public class Department implements Serializable {
 
     @Column(length = 1024)
     private String addres;
-
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "department")
-    private Set<Claim> claims;
-
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "department")
-    private Set<Employee> employees;
+    
+    public Department(String name, String address) {
+        this.name = name;
+        this.addres = address;
+    }
 
 }

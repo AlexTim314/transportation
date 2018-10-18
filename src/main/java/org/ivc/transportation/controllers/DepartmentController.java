@@ -1,13 +1,20 @@
 package org.ivc.transportation.controllers;
 
+import java.net.URI;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  *
@@ -17,35 +24,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class DepartmentController {
 
     @Autowired
-    private DepartmentRepository repository;
-
-    
-    @GetMapping(value= "/departments/{name}")
-    public Collection<Department> getDepartmentByName(@PathVariable String name){
-        return repository.findAll().stream()
-                .filter((Department t) -> {
-                    return t.getName().equals(name);
-                })
-                .collect(Collectors.toList());
-    }
-    
-    @GetMapping("/combat-departments")
-    public Collection<Department> getCombatDepartments() {
-        return repository.findAll().stream()
-                .filter(this::isCombat)
-                .collect(Collectors.toList());
-    }
+    private DepartmentService depServ;
 
     @GetMapping("/departments")
     public Collection<Department> getDepartments() {
-        return repository.findAll();
+        return depServ.listDepartments();
     }
 
-    private boolean isCombat(Department dep) {
-        return dep.getName().equals("ЦИ-1")
-                || dep.getName().equals("ЦИ-2")
-                || dep.getName().equals("ЦИ-4")
-                || dep.getName().equals("ЦИ-7");
+    @GetMapping("/departments/{id}")
+    public Department getDepartment(@PathVariable long id) {
+        Optional<Department> dep = depServ.getDepartmentById(id);
+        return dep.get();
     }
 
+    @DeleteMapping("/departments/{id}")
+    public void delDepartment(@PathVariable long id) {
+        depServ.removeDepartment(id);
+    }
+
+    @PostMapping("/departments")
+    public void addDepartment(@RequestBody Department department) {
+        depServ.addDepartment(department);
+    }
+
+    @PutMapping("/departments/{id}")
+    public void updateStudent(@RequestBody Department dep, @PathVariable long id) {
+        depServ.updateDepartment(dep, id);
+    }
 }

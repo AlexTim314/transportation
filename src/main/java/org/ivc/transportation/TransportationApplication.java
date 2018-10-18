@@ -1,98 +1,56 @@
 package org.ivc.transportation;
 
 import java.sql.Date;
-import java.util.stream.Stream;
-import org.ivc.transportation.entities.Department;
+import java.util.Arrays;
+import javax.annotation.PostConstruct;
+
 import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class TransportationApplication {
-    
-    long[] trdepId; 
+
+    @Autowired
+    private TransportDepRepository transportDepRepository;
+    @Autowired
+    private DriverRepository driverRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(TransportationApplication.class, args);
     }
-    
-    @Bean
-    ApplicationRunner init_dep(DepartmentRepository dpartmentRepository) {
-        return (ApplicationArguments args) -> {
 
-            String[] name = {"ЦИ-1", "ЦИ-2", "ЦИ-4", "ЦИ-ТК", "ЦИ-7",
-                "КЭССТ", "КЭЗС", "КАТО", "СЛУЖБА БЕЗОПАСНОСТИ"};
-            String[] addres = {"Площадка №1", "Площадка №2", "Титова 7", "Нет адреса", "Площадка №254",
-                "Советской армии 5", "В степи по дороге", "Советской армии 7", "Везде"};
-
-            for (int i = 0; i < name.length; i++) {
-                Department dep = new Department();
-                dep.setName(name[i]);
-                dep.setAddres(addres[i]);
-                dpartmentRepository.save(dep);
-            }
-        };
-    }
-
-    @Bean
-    ApplicationRunner init_td(TransportDepRepository transpDepRepository) {
-        return (ApplicationArguments args) -> {
-
-            int[] nom = {1, 2, 3, 4, 5, 6, 7, 8};
-            String[] phone = {"13-256", "14-586", "11-111", "83362245689", "10-014",
-                "18-523", "12-001", "12-345"};
-            String[] addres = {"Абая 3", "Площадка №2", "Советской армии 3", "Нет адреса", "Королева 36",
-                "Советской армии 7", "Неизвестно", "7 мкр"};
-            trdepId = new long[nom.length];
-            for (int i = 0; i < nom.length; i++) {
-                TransportDep td = new TransportDep();
-                td.setNumDep(nom[i]);
-                td.setAddres(addres[i]);
-                td.setPhone(phone[i]);
-                transpDepRepository.save(td);
-                trdepId[i] = td.getId();
-                System.out.println("trdepId["+i+"]="+trdepId[i]);
-            }
-        };
-    }
-    
-    @Bean
-    ApplicationRunner init_dr(DriverRepository drvRepository) {
-        return (ApplicationArguments args) -> {
-
-            String[] firstName = {"Иванов", "Сидоров", "Петров"};
-            String[] name = {"Александр", "Илья", "Иван"};
-            String[] sureName ={"Владимирович", "Петрович", "Юрьевич"};
-            Date[] dateBirth = {Date.valueOf("1985-01-15"),Date.valueOf("1990-08-13"),Date.valueOf("1972-10-11")};
-            String[] phone = {"87771234569", "87712564785", "87051234568"};
-            String[] addres = {"Абая 12-25", "Максимова 20-10", "6 мкр 15-48"};
-            String[] vac = {"Не занят", "Занят", "Не занят"};
-            
-
-            for (int i = 0; i < name.length; i++) {
-                Driver dr = new Driver();
-                TransportDep asd = new TransportDep();
-                asd.setId(trdepId[i]);
-                dr.setTransportDep(asd);
-                dr.setFirstname(firstName[i]);
-                dr.setName(name[i]);
-                dr.setSurname(sureName[i]);
-                dr.setBirthday(dateBirth[i]);
-                dr.setAddres(addres[i]);
-                dr.setPhone(phone[i]);
-                dr.setVacant(vac[i]);
-                drvRepository.save(dr);
-            }
-
-            //drvRepository.findAll().forEach(System.out::println);
-        };
+    @PostConstruct
+    @Transactional
+    public void init() {
+        TransportDep transportDep1 = new TransportDep(1, "dAdr1", "dphone1");
+        TransportDep transportDep2 = new TransportDep(2, "dAdr2", "dphone2");
+        transportDepRepository.saveAll(Arrays.asList(transportDep1, transportDep2));
+        Driver driver1 = new Driver("fname1", "name1", "sname1", new Date(0), "address1", "phone1", "vacant1", transportDep1);
+        Driver driver2 = new Driver("fname2", "name2", "sname2", new Date(0), "address2", "phone2", "vacant2", transportDep2);
+        Driver driver3 = new Driver("fname3", "name3", "sname3", new Date(0), "address3", "phone3", "vacant3", transportDep1);
+        Driver driver4 = new Driver("fname4", "name4", "sname4", new Date(0), "address4", "phone4", "vacant4", transportDep2);
+        Driver driver5 = new Driver("fname5", "name5", "sname5", new Date(0), "address5", "phone5", "vacant5", transportDep1);
+        driverRepository.saveAll(Arrays.asList(driver1, driver2, driver3, driver4, driver5));
+        
+        int k = 20;
+        Department dep;
+        for (int i = 0; i < k; i++) {
+            dep = new Department("NAME-"+i,"ADDRESS-"+i);
+            departmentRepository.save(dep);
+        }
     }
 
 }
