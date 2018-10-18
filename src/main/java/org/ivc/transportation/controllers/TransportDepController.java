@@ -23,7 +23,7 @@ public class TransportDepController {
     private TransportDepRepository repository;
 
     @GetMapping("/transport-dep")
-    public Collection<TransportDep> getDriver() {
+    public Collection<TransportDep> getTransportDeps() {
         return repository.findAll();
 
     }

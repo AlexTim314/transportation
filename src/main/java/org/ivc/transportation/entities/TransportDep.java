@@ -8,6 +8,7 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,10 +50,11 @@ public class TransportDep implements Serializable {
     private String phone;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportDep")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "transportDep")
     private Set<Driver> drivers;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transportDep")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "transportDep")
     private Set<Vechicle> vechicles;
     
 }
