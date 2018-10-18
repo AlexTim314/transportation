@@ -5,11 +5,14 @@
  */
 package org.ivc.transportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -81,12 +84,15 @@ public class Waybill implements Serializable {
     @Column(length = 1024)
     private String note;
 
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     private Appointment appointment;
     
-    @OneToOne
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
     
-    @OneToMany(mappedBy = "waybill")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "waybill")
     private Set<Fueling> fuelings;
 }
