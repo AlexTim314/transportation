@@ -23,7 +23,7 @@ public class VechicleController {
     private VechicleRepository repository;
 
     @GetMapping("/vechicle")
-    public Collection<Vechicle> getVechicles() {
+    public Collection<Vechicle> getVehicles() {
         return repository.findAll();
 
     }

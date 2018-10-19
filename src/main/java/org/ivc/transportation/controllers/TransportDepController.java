@@ -6,6 +6,7 @@
 package org.ivc.transportation.controllers;
 
 import java.util.Collection;
+import java.util.List;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,8 @@ public class TransportDepController {
     @Autowired
     private TransportDepRepository repository;
 
-    @GetMapping("/transport-dep")
+    @GetMapping("/transportdeps")
     public Collection<TransportDep> getTransportDeps() {
         return repository.findAll();
-
     }
 }
