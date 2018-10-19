@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -29,8 +28,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"criterion", "record", "vechicle"})
+@EqualsAndHashCode(exclude = {"criterion", "record", "vechicle"})
 public class CriterionValue implements Serializable {
 
     @Id
@@ -40,19 +39,24 @@ public class CriterionValue implements Serializable {
     @Column(nullable = false)
     private String value;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Claim claim;
-
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Vechicle vechicle;
 
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Criterion criterion;
+
+    public CriterionValue(String value, Claim claim, Vechicle vechicle, Criterion criterion) {
+        this.value = value;
+        this.claim = claim;
+        this.vechicle = vechicle;
+        this.criterion = criterion;
+
+    }
 
 }

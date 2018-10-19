@@ -8,17 +8,13 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,13 +30,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"claim", "plan"})
+@EqualsAndHashCode(exclude = {"claim", "plan"})
 public class Record implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(length = 32)
+    private String weekHash;
 
     @NonNull
     @Column(nullable = false)
@@ -48,10 +47,25 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private String state;
+    private String usageTime;
+
+    @NonNull
+    @Column(nullable = false)
+    private Date arrivalTime;
+
+    @NonNull
+    @Column(nullable = false, length = 1024)
+    private String purpose;
+
+    @NonNull
+    @Column(nullable = false)
+    private String status;
 
     @Column(length = 1024)
-    private String note;
+    private String serviceField;
+
+    @Column(length = 512)
+    private String templateName;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -61,8 +75,19 @@ public class Record implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plan;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "record")
-    private Set<Appointment> appointments;
+    public Record(String weekHash, Date datetime, String usageTime, Date arrivalTime,
+            String purpose, String status, String serviceField, String templateName, Claim claim, Plan plan) {
+        this.arrivalTime = arrivalTime;
+        this.claim = claim;
+        this.datetime = datetime;
+        this.plan = plan;
+        this.purpose = purpose;
+        this.serviceField = serviceField;
+        this.status = status;
+        this.templateName = templateName;
+        this.usageTime = usageTime;
+        this.weekHash = weekHash;
+
+    }
 
 }

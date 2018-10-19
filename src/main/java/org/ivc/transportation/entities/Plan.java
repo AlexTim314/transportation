@@ -5,19 +5,13 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,8 +41,10 @@ public class Plan implements Serializable {
 
     private Long idRespons; // field where id person responsible for the plan
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "plan")
-    private Set<Record> records;
+    public Plan(Date date, Long idRespons) {
+        this.date = date;
+        this.idRespons = idRespons;
+
+    }
 
 }

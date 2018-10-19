@@ -30,27 +30,34 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class Fueling implements Serializable{
-    
+@ToString(exclude = {"waybill"})
+@EqualsAndHashCode(exclude = {"waybill"})
+public class Fueling implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(nullable = false)
     private Date fuelingTime;
-    
+
     @NonNull
     @Column(nullable = false)
     private String fuelType;
-    
+
     @NonNull
     @Column(nullable = false)
     private Float famountFuel;
-    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Waybill waybill;
+
+    public Fueling(Date fuelingTime, String fuelType, Float famountFuel, Waybill waybill) {
+        this.fuelType = fuelType;
+        this.fuelingTime = fuelingTime;
+        this.famountFuel = famountFuel;
+        this.waybill = waybill;
+    }
 }

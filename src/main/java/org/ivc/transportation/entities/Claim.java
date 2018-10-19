@@ -3,8 +3,6 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +25,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"department"})
+@EqualsAndHashCode(exclude = {"department"})
 public class Claim implements Serializable {
 
     @Id
@@ -37,37 +34,20 @@ public class Claim implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(nullable = false, length = 1024)
-    private String purpose;
-
-    @NonNull
-    @Column(nullable = false)
-    private Date outDate;
-
-    @NonNull
-    private Date returnDate;
-
-    @NonNull
-    @Column(length = 1024)
-    private String description;
-
-    @NonNull
     @Column(nullable = false)
     private Date clDate;  // clame date
+
+    @Column(length = 512)
+    private String affrimation;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
-    private Set<Record> records;
+    public Claim(Date clDate, String affrimation, Department department) {
+        this.clDate = clDate;
+        this.affrimation = affrimation;
+        this.department = department;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
-    private Set<CriterionValue> criterionValues;
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "claim")
-    private Set<Waypoint> waypoints;
+    }
 }

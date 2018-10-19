@@ -29,20 +29,25 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"waypoints"})
+@EqualsAndHashCode(exclude = {"waypoints"})
 public class Distance implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(nullable = false)
     private Double value;
-    
+
     @ManyToMany
-    @Size(min=1,max=2)
+    @Size(min = 1, max = 2)
     private List<Waypoint> waypoints;
-   
+
+    public Distance(Double value, List<Waypoint> waypoints) {
+        this.value = value;
+        this.waypoints = waypoints;
+    }
+
 }

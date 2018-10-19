@@ -6,10 +6,12 @@
 package org.ivc.transportation.controllers;
 
 import java.util.Collection;
+import java.util.List;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,6 +27,13 @@ public class DriverController {
     @GetMapping("/drivers")
     public Collection<Driver> getDrivers() {
         return repository.findAll();
+
+    }
+    
+    @GetMapping("/drivers/{id}")
+    public Collection<Driver> getDepDrivers(@PathVariable("id") Long id) {
+        List<Driver> drivers = repository.findByTransportDepId(id);
+        return drivers;
 
     }
 }

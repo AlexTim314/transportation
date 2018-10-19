@@ -7,17 +7,13 @@ package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"transportDep"})
+@EqualsAndHashCode(exclude = {"transportDep"})
 public class Vechicle implements Serializable {
 
     @Id
@@ -60,13 +56,13 @@ public class Vechicle implements Serializable {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
-    
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "vechicle")
-    private Set<Appointment> appointments;
-    
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "vechicle")
-    private Set<CriterionValue> criterionValues;
 
+    public Vechicle(String number, Float fuelRemnant, Float odometr, String vacant, TransportDep transportDep) {
+        this.number = number;
+        this.fuelRemnant = fuelRemnant;
+        this.odometr = odometr;
+        this.vacant = vacant;
+        this.transportDep = transportDep;
+
+    }
 }

@@ -15,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +30,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"record", "vechicle", "driver"})
+@ToString(exclude = {"record", "vechicle", "driver"})
 public class Appointment implements Serializable {
 
     @Id
@@ -55,7 +54,11 @@ public class Appointment implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Vechicle vechicle;
     
-    @OneToOne(mappedBy = "appointment")
-    private Waybill waybill;
 
+    public Appointment (Date dateTimeOrder,Record record,Driver driver, Vechicle vechicle){
+        this.dateTimeOrder = dateTimeOrder;
+        this.driver = driver;
+        this.record = record;
+        this.vechicle = vechicle;
+    }
 }
