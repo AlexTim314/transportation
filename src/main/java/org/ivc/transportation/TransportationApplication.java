@@ -1,8 +1,10 @@
 package org.ivc.transportation;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
+import org.ivc.transportation.entities.Claim;
 
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
@@ -49,12 +51,15 @@ public class TransportationApplication {
         Driver driver5 = new Driver("fname5", "name5", "sname5", new Date(0), "address5", "phone5", "vacant5", transportDep1);
         driverRepository.saveAll(Arrays.asList(driver1, driver2, driver3, driver4, driver5));
         driverRepository.flush();
+        Byte q=0;
         int k = 20;
         Department dep;
         for (int i = 0; i < k; i++) {
             dep = new Department("NAME-"+i,"ADDRESS-"+i);
             departmentRepository.save(dep);
         }
+        departmentRepository.flush();
+        
     }
 
     public static void main(String[] args) {
