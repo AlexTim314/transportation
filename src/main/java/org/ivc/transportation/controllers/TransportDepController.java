@@ -11,6 +11,7 @@ package org.ivc.transportation.controllers;
  */
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TransportDepController {
-    
+
     private static final String url = "/transportdeps";
 
     @Autowired
@@ -55,4 +56,10 @@ public class TransportDepController {
     public void updateTransportDep(@RequestBody TransportDep dep, @PathVariable long id) {
         localServ.updateTransportDep(dep, id);
     }
+
+    @GetMapping(url + "/{id}/drivers")
+    public Collection<Driver> getDrivers(@PathVariable long id) {
+        return localServ.listDrivers(id);
+    }
+
 }
