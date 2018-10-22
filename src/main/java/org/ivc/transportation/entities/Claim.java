@@ -48,11 +48,11 @@ public class Claim implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    public Claim(Date clDate, byte tip, Department department) {
+    public Claim(Date clDate, Byte tip, Department dep) {
         this.clDate = clDate;
         this.affrimation = false;
         this.tip = tip;
-        this.department = department;
+        this.department = dep;
 
     }
 }
