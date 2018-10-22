@@ -7,6 +7,7 @@ package org.ivc.transportation.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static java.util.Collections.list;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,7 +34,7 @@ public class DepartmentServiceImplIT {
 
     int depListSize;
     List<Department> returnList;
-    
+
     @Before
     public void setUp() {
         Department dep1 = new Department("Отделение1", "адрес 1");
@@ -43,30 +44,29 @@ public class DepartmentServiceImplIT {
         returnList.add(dep2);
         depListSize = 2;
 
-        Mockito.when(employeeRepository.findAll())
+        Mockito.when(departmentRepository.findAll())
                 .thenReturn(returnList);
-        
-        
+
     }
 
     @TestConfiguration
     static class DepartmentServiceImplTestContextConfiguration {
 
         @Bean
-        public DepartmentService employeeService() {
+        public DepartmentService departmentService() {
             return new DepartmentServiceImpl();
         }
     }
 
     @Autowired
-    private DepartmentService employeeService;
+    private DepartmentService departmentService;
 
     @MockBean
-    private DepartmentRepository employeeRepository;
+    private DepartmentRepository departmentRepository;
 
     @Test
     public void whenCallListDepartments_thenCorrectCollectionShouldBeFound() {
-        Collection<Department> resultCollection = employeeService.listDepartments();
+        Collection<Department> resultCollection = departmentService.listDepartments();
         assertThat(resultCollection.size()).isEqualTo(depListSize);
         assertTrue(resultCollection.containsAll(returnList));
     }
@@ -75,18 +75,18 @@ public class DepartmentServiceImplIT {
      * Test of addDepartment method, of class DepartmentServiceImpl.
      */
     @Test
-    public void testAddDepartment() {
+    public void testAdd100Department() {
+        int addDepNumber = 100;
         String name = "Новое подразделение";
         String address = "Новый адрес";
-        Department d = new Department(name, address);
-        employeeService.addDepartment(d);
-        returnList.add(d);
-        
-        Collection<Department> resultCollection = employeeService.listDepartments();
-        assertThat(resultCollection.size()).isEqualTo(depListSize + 1);
+        for (int i = 0; i > addDepNumber; i++) {
+            Department d = new Department(name + " " + i, address + " " + i);
+            departmentService.addDepartment(d);
+            returnList.add(d);
+        }        
+        Collection<Department > resultCollection = departmentService.listDepartments();
+        assertThat(resultCollection.size()).isEqualTo(returnList.size());
         assertTrue(resultCollection.containsAll(returnList));
     }
-
-   
 
 }

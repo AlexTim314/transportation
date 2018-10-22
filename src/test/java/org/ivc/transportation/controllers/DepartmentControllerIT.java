@@ -5,34 +5,57 @@
  */
 package org.ivc.transportation.controllers;
 
-import java.util.Collection;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import java.util.ArrayList;
+import java.util.List;
+import static org.hamcrest.Matchers.hasSize;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.repositories.DepartmentRepository;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.ivc.transportation.services.DepartmentService;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
  * @author alextim
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@WebMvcTest(DepartmentController.class)
+//@ComponentScan({"org.ivc.transportation.repositories"})
 public class DepartmentControllerIT {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private MockMvc mvc;
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    @MockBean
+    private DepartmentService service;
+
+    @Test
+    public void whenDepartments_thenReturnJsonArray() throws Exception {
+        Department dep = new Department();
+        List<Department> allDep = new ArrayList<Department>(){{
+            add(dep);
+        }};
+        
+        given(service.listDepartments()).willReturn(allDep);
+        
+        mvc.perform(get("/departments")
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$", hasSize(1)));
+      //.andExpect(jsonPath("$[0].name", is(dep.getName())));
+
+    }
 
     /*public DepartmentControllerIT() {
     }
@@ -53,88 +76,4 @@ public class DepartmentControllerIT {
     public void tearDown() {
     }
      */
-    /**
-     * Test of getDepartments method, of class DepartmentController.
-     */
-    @Test
-    public void testGetDepartments() {
-        System.out.println("getDepartments");
-        DepartmentController instance = new DepartmentController();
-        Collection<Department> expResult = null;
-        Collection<Department> result = instance.getDepartments();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-   /* @Test
-    public void whenGetDepartments_thenReturnDepartmentsList() {
-        // given
-        Department dep = new Department("Отделение1", "адрес 1");
-        entityManager.persist(dep);
-        entityManager.flush();
-
-        // when
-        Department found = departmentRepository.findByName(alex.getName());
-
-        // then
-        assertThat(found.getName())
-                .isEqualTo(alex.getName());
-    }*/
-
-    /**
-     * Test of getDepartment method, of class DepartmentController.
-     */
-    @Test
-    public void testGetDepartment() {
-        System.out.println("getDepartment");
-        long id = 0L;
-        DepartmentController instance = new DepartmentController();
-        Department expResult = null;
-        Department result = instance.getDepartment(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of delDepartment method, of class DepartmentController.
-     */
-    @Test
-    public void testDelDepartment() {
-        System.out.println("delDepartment");
-        long id = 0L;
-        DepartmentController instance = new DepartmentController();
-        instance.delDepartment(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of addDepartment method, of class DepartmentController.
-     */
-    @Test
-    public void testAddDepartment() {
-        System.out.println("addDepartment");
-        Department department = null;
-        DepartmentController instance = new DepartmentController();
-        instance.addDepartment(department);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of updateStudent method, of class DepartmentController.
-     */
-    @Test
-    public void testUpdateStudent() {
-        System.out.println("updateStudent");
-        Department dep = null;
-        long id = 0L;
-        DepartmentController instance = new DepartmentController();
-        instance.updateStudent(dep, id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
 }
