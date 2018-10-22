@@ -43,11 +43,11 @@ public class Vechicle implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Float fuelRemnant;
+    private Double fuelRemnant;
 
     @NonNull
     @Column(nullable = false)
-    private Float odometr;
+    private Double odometr;
 
     @NonNull
     @Column(nullable = false)
@@ -57,7 +57,7 @@ public class Vechicle implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    public Vechicle(String number, Float fuelRemnant, Float odometr, String vacant, TransportDep transportDep) {
+    public Vechicle(String number, Double fuelRemnant, Double odometr, String vacant, TransportDep transportDep) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
