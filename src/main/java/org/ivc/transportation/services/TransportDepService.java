@@ -5,10 +5,6 @@
  */
 package org.ivc.transportation.services;
 
-/**
- *
- * @author user
- */
 import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.TransportDep;

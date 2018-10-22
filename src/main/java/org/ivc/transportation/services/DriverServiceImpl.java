@@ -7,51 +7,52 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author user
+ * @author first
  */
 @Service
 @Transactional
-public class TransportDepServiceImpl implements TransportDepService {
-    
+public class DriverServiceImpl implements DriverService {
+
     @Autowired
-    private TransportDepRepository localRep;
-    
+    private DriverRepository localRep;
+
     @Override
     @Transactional
-    public void addTransportDep(TransportDep d) {
+    public void addDriver(Driver d) {
         this.localRep.save(d);
     }
-    
+
     @Override
     @Transactional
-    public void updateTransportDep(TransportDep d, Long id) {
+    public void updateDriver(Driver d, Long id) {
         d.setId(id);
         localRep.save(d);
-    }       
-    
+    }
+
     @Override
     @Transactional
-    public Collection<TransportDep> listTransportDeps() {
+    public Collection<Driver> listDrivers() {
         return localRep.findAll();
     }
-    
+
     @Override
     @Transactional
-    public Optional<TransportDep> getTransportDepById(long id) {
+    public Optional<Driver> getDriverById(long id) {
         return localRep.findById(id);
     }
-    
+
     @Override
     @Transactional
-    public void removeTransportDep(long id) {
+    public void removeDriver(long id) {
         localRep.deleteById(id);
     }
+
 }
