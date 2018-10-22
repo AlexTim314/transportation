@@ -5,26 +5,27 @@
  */
 package org.ivc.transportation.services;
 
-import java.util.List;
-import javax.persistence.EntityManager;
+/**
+ *
+ * @author user
+ */
+import java.util.Collection;
+import java.util.Optional;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.repositories.TransportDepRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author user
  */
-@Service
-public class TransportDepService {
-    
-//    @Autowired
-//    private EntityManager em;
-//    
-//    @Transactional
-//    public List<TransportDep> findAll(){
-//        return em.createNamedQuery("TransportDep.findAll", TransportDep.class).getResultList();
-//    }
+public interface TransportDepService {
+
+    public void addTransportDep(TransportDep d);
+
+    public void updateTransportDep(TransportDep d, Long id);
+
+    public Collection<TransportDep> listTransportDeps();
+
+    public Optional getTransportDepById(long id);
+
+    public void removeTransportDep(long id);
 }

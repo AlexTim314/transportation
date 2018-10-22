@@ -5,10 +5,14 @@
  */
 package org.ivc.transportation.services;
 
+/**
+ *
+ * @author user
+ */
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.repositories.TransportDepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,39 +23,39 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class DepartmentServiceImpl implements DepartmentService {
+public class TransportDepServiceImpl implements TransportDepService {
     
     @Autowired
-    private DepartmentRepository localRep;
+    private TransportDepRepository localRep;
     
     @Override
     @Transactional
-    public void addDepartment(Department d) {
+    public void addTransportDep(TransportDep d) {
         this.localRep.save(d);
     }
     
     @Override
     @Transactional
-    public void updateDepartment(Department d, Long id) {
+    public void updateTransportDep(TransportDep d, Long id) {
         d.setId(id);
         localRep.save(d);
     }       
     
     @Override
     @Transactional
-    public Collection<Department> listDepartments() {
+    public Collection<TransportDep> listTransportDeps() {
         return localRep.findAll();
     }
     
     @Override
     @Transactional
-    public Optional<Department> getDepartmentById(long id) {
+    public Optional<TransportDep> getTransportDepById(long id) {
         return localRep.findById(id);
     }
     
     @Override
     @Transactional
-    public void removeDepartment(long id) {
+    public void removeTransportDep(long id) {
         localRep.deleteById(id);
     }
 }

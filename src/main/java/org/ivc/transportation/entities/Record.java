@@ -8,6 +8,7 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -76,11 +77,10 @@ public class Record implements Serializable {
     private Plan plan;
 
     public Record(String weekHash, Date datetime, String usageTime, Date arrivalTime,
-            String purpose, String status, String serviceField, String templateName, Claim claim, Plan plan) {
+            String purpose, String status, String serviceField, String templateName, Claim claim) {
         this.arrivalTime = arrivalTime;
         this.claim = claim;
         this.datetime = datetime;
-        this.plan = plan;
         this.purpose = purpose;
         this.serviceField = serviceField;
         this.status = status;

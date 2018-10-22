@@ -10,16 +10,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.services.DepartmentService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author alextim
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(DepartmentController.class)
-//@ComponentScan({"org.ivc.transportation.repositories"})
+@SpringBootTest
+@AutoConfigureMockMvc
 public class DepartmentControllerIT {
 
     @Autowired
@@ -40,21 +44,45 @@ public class DepartmentControllerIT {
     @MockBean
     private DepartmentService service;
 
+    private List<Department> allDep;
+
+    private static final int DEP_NUMBER = 100;
+    private final Random rand = new Random();
+
+    @Before
+    public void setUp() {
+        allDep = new ArrayList<>();
+        for (int i = 0; i < DEP_NUMBER; i++) {
+            Department d = new Department("Название " + i, "Адрес " + i);
+            allDep.add(d);
+        }
+    }
+
     @Test
     public void whenDepartments_thenReturnJsonArray() throws Exception {
-        Department dep = new Department();
-        List<Department> allDep = new ArrayList<Department>(){{
-            add(dep);
-        }};
-        
-        given(service.listDepartments()).willReturn(allDep);
-        
-        mvc.perform(get("/departments")
-      .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$", hasSize(1)));
-      //.andExpect(jsonPath("$[0].name", is(dep.getName())));
 
+        given(service.listDepartments()).willReturn(allDep);
+
+        int index = rand.nextInt(100);
+
+        mvc.perform(get("/departments")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(DEP_NUMBER)))
+                .andExpect(jsonPath("$[" + index + "].name"
+                        , is(allDep.get(index).getName())))
+                .andExpect(jsonPath("$[" + index + "].addres"
+                        , is(allDep.get(index).getAddres())));
+
+    }
+    /*
+    @Test
+    public void whenDepartmentsID_thenReturnJsonDepartment(){
+        Department dep = allDep.get(rand.nextInt(100));
+        given(service.getDepartmentById(Optional.of(dep.getId())))
+                .willReturn(dep);
+        
+        
     }
 
     /*public DepartmentControllerIT() {
@@ -68,9 +96,7 @@ public class DepartmentControllerIT {
     public static void tearDownClass() {
     }
     
-    @Before
-    public void setUp() {
-    }
+    
     
     @After
     public void tearDown() {

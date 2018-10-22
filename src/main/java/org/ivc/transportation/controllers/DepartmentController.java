@@ -11,41 +11,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author Sokolov Slava
- */
 @RestController
+@RequestMapping("/departments")
 public class DepartmentController {
+    
+
 
     @Autowired
-    private DepartmentService depServ;
+    private DepartmentService localServ;
 
-    @GetMapping("/departments")
+    @GetMapping()
     public Collection<Department> getDepartments() {
-        return depServ.listDepartments();
+        return localServ.listDepartments();
     }
 
-    @GetMapping("/departments/{id}")
+    @GetMapping("/{id}")
     public Department getDepartment(@PathVariable long id) {
-        Optional<Department> dep = depServ.getDepartmentById(id);
+        Optional<Department> dep = localServ.getDepartmentById(id);
         return dep.get();
     }
 
-    @DeleteMapping("/departments/{id}")
+    @DeleteMapping("/{id}")
     public void delDepartment(@PathVariable long id) {
-        depServ.removeDepartment(id);
+        localServ.removeDepartment(id);
     }
 
-    @PostMapping("/departments")
+    @PostMapping()
     public void addDepartment(@RequestBody Department department) {
-        depServ.addDepartment(department);
+        localServ.addDepartment(department);
     }
 
-    @PutMapping("/departments/{id}")
-    public void updateStudent(@RequestBody Department dep, @PathVariable long id) {
-        depServ.updateDepartment(dep, id);
+    @PutMapping("/{id}")
+    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+        localServ.updateDepartment(dep, id);
     }
 }

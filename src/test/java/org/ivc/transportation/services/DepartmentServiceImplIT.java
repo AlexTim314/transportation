@@ -32,8 +32,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 public class DepartmentServiceImplIT {
 
-    int depListSize;
-    List<Department> returnList;
+    private int depListSize;
+    private List<Department> returnList;
 
     @Before
     public void setUp() {
@@ -79,13 +79,13 @@ public class DepartmentServiceImplIT {
         int addDepNumber = 100;
         String name = "Новое подразделение";
         String address = "Новый адрес";
-        for (int i = 0; i > addDepNumber; i++) {
+        for (int i = 0; i < addDepNumber; i++) {
             Department d = new Department(name + " " + i, address + " " + i);
             departmentService.addDepartment(d);
             returnList.add(d);
         }        
         Collection<Department > resultCollection = departmentService.listDepartments();
-        assertThat(resultCollection.size()).isEqualTo(returnList.size());
+        assertThat(resultCollection.size()).isEqualTo(depListSize + addDepNumber);
         assertTrue(resultCollection.containsAll(returnList));
     }
 
