@@ -7,7 +7,9 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class TransportDepServiceImpl implements TransportDepService {
     
     @Autowired
     private TransportDepRepository localRep;
+    @Autowired
+    private DriverRepository driverRep;
     
     @Override
     @Transactional
@@ -32,7 +36,7 @@ public class TransportDepServiceImpl implements TransportDepService {
     
     @Override
     @Transactional
-    public void updateTransportDep(TransportDep d, Long id) {
+    public void updateTransportDep(TransportDep d, long id) {
         d.setId(id);
         localRep.save(d);
     }       
@@ -54,4 +58,11 @@ public class TransportDepServiceImpl implements TransportDepService {
     public void removeTransportDep(long id) {
         localRep.deleteById(id);
     }
+    
+    @Override
+    @Transactional
+    public Collection<Driver> listDrivers(long Id) {
+        return driverRep.findByTransportDepId(Id);
+    }
+
 }

@@ -7,6 +7,7 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 
 /**
@@ -17,9 +18,11 @@ public interface TransportDepService {
 
     public void addTransportDep(TransportDep d);
 
-    public void updateTransportDep(TransportDep d, Long id);
+    public void updateTransportDep(TransportDep d, long id);
 
     public Collection<TransportDep> listTransportDeps();
+    
+    public Collection<Driver> listDrivers(long id);
 
     public Optional getTransportDepById(long id);
 
