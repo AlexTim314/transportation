@@ -29,6 +29,7 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {"department"})
 public class Claim implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -40,6 +41,9 @@ public class Claim implements Serializable {
     @Column(length = 512)
     private String affrimation;
 
+    @Column(length = 512)
+    private String type;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
@@ -47,6 +51,7 @@ public class Claim implements Serializable {
     public Claim(Date clDate, String affrimation, Department department) {
         this.clDate = clDate;
         this.affrimation = affrimation;
+        this.type = type;
         this.department = department;
 
     }

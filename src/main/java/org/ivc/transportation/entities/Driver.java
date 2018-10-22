@@ -78,13 +78,4 @@ public class Driver implements Serializable {
         this.transportDep = transportDep;
     }
 
-    /*public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String vacant) {
-        this.firstname = firstname;
-        this.name = name;
-        this.surname = surname;
-        this.birthday = birthday;
-        this.addres = addres;
-        this.phone = phone;
-        this.vacant = vacant;
-    }*/
 }
