@@ -19,33 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class DepartmentController {
+    
+    private static final String url = "/departments";
 
     @Autowired
-    private DepartmentService depServ;
+    private DepartmentService localServ;
 
-    @GetMapping("/departments")
+    @GetMapping(url)
     public Collection<Department> getDepartments() {
-        return depServ.listDepartments();
+        return localServ.listDepartments();
     }
 
-    @GetMapping("/departments/{id}")
+    @GetMapping(url + "/{id}")
     public Department getDepartment(@PathVariable long id) {
-        Optional<Department> dep = depServ.getDepartmentById(id);
+        Optional<Department> dep = localServ.getDepartmentById(id);
         return dep.get();
     }
 
-    @DeleteMapping("/departments/{id}")
+    @DeleteMapping(url + "/{id}")
     public void delDepartment(@PathVariable long id) {
-        depServ.removeDepartment(id);
+        localServ.removeDepartment(id);
     }
 
-    @PostMapping("/departments")
+    @PostMapping(url)
     public void addDepartment(@RequestBody Department department) {
-        depServ.addDepartment(department);
+        localServ.addDepartment(department);
     }
 
-    @PutMapping("/departments/{id}")
-    public void updateStudent(@RequestBody Department dep, @PathVariable long id) {
-        depServ.updateDepartment(dep, id);
+    @PutMapping(url + "/{id}")
+    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+        localServ.updateDepartment(dep, id);
     }
 }
