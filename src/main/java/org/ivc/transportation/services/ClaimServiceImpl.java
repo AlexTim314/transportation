@@ -8,6 +8,7 @@ package org.ivc.transportation.services;
 import java.util.Collection;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.repositories.ClaimRepository;
+import org.ivc.transportation.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,9 @@ public class ClaimServiceImpl implements ClaimService {
     
     @Override
     @Transactional
-    public Collection<Claim> listClaimsByDepartment(long DepartmentId) {
-        return localRep.findAll();
+    public Collection<Claim> listClaimsByDepartment(Long id) {
+        return localRep.findByDepartmentId(id);
+        
     }
     
     @Override

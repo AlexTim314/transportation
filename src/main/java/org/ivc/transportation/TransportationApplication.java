@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
@@ -34,6 +36,9 @@ public class TransportationApplication {
     private DriverRepository drvRepository;
     @Autowired
     private TransportDepRepository transpDepRepository;
+    @Autowired
+    private ClaimRepository claimRepository;
+
 
     @PostConstruct
     @Transactional
@@ -49,12 +54,21 @@ public class TransportationApplication {
         Driver driver5 = new Driver("fname5", "name5", "sname5", new Date(0), "address5", "phone5", "vacant5", transportDep1);
         driverRepository.saveAll(Arrays.asList(driver1, driver2, driver3, driver4, driver5));
         driverRepository.flush();
-        int k = 20;
-        Department dep;
-        for (int i = 0; i < k; i++) {
-            dep = new Department("NAME-"+i,"ADDRESS-"+i);
-            departmentRepository.save(dep);
-        }
+        Department dep1 = new Department("NAME-1", "ADDRES-1");
+        Department dep2 = new Department("NAME-2", "ADDRES-2");
+        Department dep3 = new Department("NAME-3", "ADDRES-3");
+        Department dep4 = new Department("NAME-4", "ADDRES-4");
+        Department dep5 = new Department("NAME-5", "ADDRES-5");
+        departmentRepository.saveAll(Arrays.asList(dep1, dep2, dep3, dep4, dep5));
+        departmentRepository.flush();
+        Byte[] q = {0};
+        Claim cl1 = new Claim(new Date(0), q[0], dep1);
+        Claim cl2 = new Claim(new Date(0), q[0], dep2);
+        Claim cl3 = new Claim(new Date(0), q[0], dep1);
+        Claim cl4 = new Claim(new Date(0), q[0], dep2);
+        Claim cl5 = new Claim(new Date(0), q[0], dep1);
+        claimRepository.saveAll(Arrays.asList(cl1, cl2, cl3, cl4, cl5));
+        claimRepository.flush();
     }
 
     public static void main(String[] args) {
