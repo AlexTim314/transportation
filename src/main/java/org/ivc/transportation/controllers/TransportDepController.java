@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,6 +61,11 @@ public class TransportDepController {
     @GetMapping(url + "/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable long id) {
         return localServ.listDrivers(id);
+    }
+    
+    @GetMapping(url + "/{id}/vechicles")
+    public Collection<Vechicle> getVechicles(@PathVariable long id) {
+        return localServ.listVechicles(id);
     }
 
 }

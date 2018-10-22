@@ -5,16 +5,14 @@
  */
 package org.ivc.transportation.services;
 
-/**
- *
- * @author user
- */
 import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.repositories.VechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +29,8 @@ public class TransportDepServiceImpl implements TransportDepService {
     private TransportDepRepository localRep;
     @Autowired
     private DriverRepository driverRep;
+    @Autowired
+    private VechicleRepository vechicleRep;
     
     @Override
     @Transactional
@@ -67,6 +67,12 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Transactional
     public Collection<Driver> listDrivers(long id) {
         return driverRep.findByTransportDepId(id);
+    }
+    
+    @Override
+    @Transactional
+    public Collection<Vechicle> listVechicles(long Id) {
+        return vechicleRep.findByTransportDepId(Id);
     }
 
 }
