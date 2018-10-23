@@ -22,44 +22,51 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClaimServiceImpl implements ClaimService {
     
     @Autowired
-    private ClaimRepository localRep;
+    private ClaimRepository claimRepository;
     
     @Override
     @Transactional
     public void addClaim(Claim d) {
-        this.localRep.save(d);
+        this.claimRepository.save(d);
     }
     
     @Override
     @Transactional
     public Collection<Claim> getClaimsByDepartment(Long id) {
-        return localRep.findByDepartmentId(id);
+        return claimRepository.findByDepartmentId(id);
         
     }
     
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByclDate(Date d) {
-        return localRep.findByclDate(d);
+    public Collection<Claim> getClaimsByDepartmentAndAffirmation(Long id, Boolean a) {
+        return claimRepository.findByDepartmentIdAndAffirmation(id ,a);
+        
+    }
+    
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByClDate(Date d) {
+        return claimRepository.findByClDate(d);
         
     }
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByaffirmation(Boolean b) {
-        return localRep.findByaffrimation(b);
+    public Collection<Claim> getClaimsByAffirmation(Boolean b) {
+        return claimRepository.findByAffirmation(b);
     }
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsBytip(byte t) {
-        return localRep.findBytip(t);
+    public Collection<Claim> getClaimsByTip(byte t) {
+        return claimRepository.findByTip(t);
     }
         
     @Override
     @Transactional
     public void removeClaim(Long id) {
-        localRep.deleteById(id);
+        claimRepository.deleteById(id);
     }
 
 }

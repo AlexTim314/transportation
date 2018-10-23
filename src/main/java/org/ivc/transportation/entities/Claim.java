@@ -39,7 +39,7 @@ public class Claim implements Serializable {
     private Date clDate;  // clame date
 
     @Column(nullable = false)
-    private Boolean affrimation;
+    private Boolean affirmation;
 
     @Column(nullable = false)
     private byte tip;
@@ -50,7 +50,7 @@ public class Claim implements Serializable {
 
     public Claim(Date clDate, Byte tip, Department dep) {
         this.clDate = clDate;
-        this.affrimation = false;
+        this.affirmation = false;
         this.tip = tip;
         this.department = dep;
 

@@ -19,8 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface ClaimRepository extends JpaRepository<Claim, Long>{
     
     List<Claim> findByDepartmentId(Long id);
-    List<Claim> findByclDate(Date d);
-    List<Claim> findByaffrimation(Boolean a);
-    List<Claim> findBytip(byte t);
-    
+    List<Claim> findByClDate(Date d);
+    List<Claim> findByAffirmation(Boolean a);
+    List<Claim> findByTip(byte t);
+    List<Claim> findByDepartmentIdAndAffirmation(Long id, Boolean a);
 }

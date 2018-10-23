@@ -19,11 +19,13 @@ public interface ClaimService {
 
     public Collection<Claim> getClaimsByDepartment(Long id);
     
-    public Collection<Claim> getClaimsByclDate(Date d);
+    public Collection<Claim> getClaimsByDepartmentAndAffirmation(Long id, Boolean a);
     
-    public Collection<Claim> getClaimsByaffirmation(Boolean b);
+    public Collection<Claim> getClaimsByClDate(Date d);
+    
+    public Collection<Claim> getClaimsByAffirmation(Boolean b);
 
-    public Collection<Claim> getClaimsBytip(byte t);
+    public Collection<Claim> getClaimsByTip(byte t);
 
     public void removeClaim(Long id);
 }
