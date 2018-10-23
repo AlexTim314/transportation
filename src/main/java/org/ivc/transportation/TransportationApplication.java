@@ -8,10 +8,13 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.Vechicle;
+
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.repositories.VechicleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -35,10 +38,11 @@ public class TransportationApplication {
     @Autowired
     private DriverRepository drvRepository;
     @Autowired
+    private VechicleRepository vclRepository;
+    @Autowired
     private TransportDepRepository transpDepRepository;
     @Autowired
     private ClaimRepository claimRepository;
-
 
     @PostConstruct
     @Transactional
@@ -54,6 +58,13 @@ public class TransportationApplication {
         Driver driver5 = new Driver("fname5", "name5", "sname5", new Date(0), "address5", "phone5", "vacant5", transportDep1);
         driverRepository.saveAll(Arrays.asList(driver1, driver2, driver3, driver4, driver5));
         driverRepository.flush();
+        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "vacant1", transportDep2);
+        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "vacant2", transportDep1);
+        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "vacant3", transportDep2);
+        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "vacant4", transportDep1);
+        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "vacant5", transportDep2);
+        vclRepository.saveAll(Arrays.asList(vechicle1, vechicle2, vechicle3, vechicle4, vechicle5));
+        vclRepository.flush();
         Department dep1 = new Department("NAME-1", "ADDRES-1");
         Department dep2 = new Department("NAME-2", "ADDRES-2");
         Department dep3 = new Department("NAME-3", "ADDRES-3");
