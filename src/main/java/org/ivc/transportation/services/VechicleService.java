@@ -19,10 +19,12 @@ public interface VechicleService {
 
     public void updateVechicle(Vechicle d, Long id);
 
-    public Collection<Vechicle> listVechicles();
+    public void removeVechicle(Long id);
 
-    public Optional getVechicleById(long id);
+    public Collection<Vechicle> getVechicles();
+    
+    public Collection<Vechicle> getVechiclesByTransportDepId(Long id);
 
-    public void removeVechicle(long id);
+    public Optional getVechicleById(Long id);
 
 }

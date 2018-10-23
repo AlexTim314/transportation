@@ -7,9 +7,7 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.Vechicle;
 
 /**
  *
@@ -19,15 +17,11 @@ public interface TransportDepService {
 
     public void addTransportDep(TransportDep d);
 
-    public void updateTransportDep(TransportDep d, long id);
+    public void updateTransportDep(TransportDep d, Long id);
 
-    public Collection<TransportDep> listTransportDeps();
-    
-    public Collection<Driver> listDrivers(long id);
-    
-    public Collection<Vechicle> listVechicles(long id);
+    public void removeTransportDep(Long id);
 
-    public Optional getTransportDepById(long id);
+    public Collection<TransportDep> getTransportDeps();
 
-    public void removeTransportDep(long id);
+    public Optional getTransportDepById(Long id);
 }

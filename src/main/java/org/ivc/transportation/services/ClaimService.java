@@ -16,7 +16,7 @@ public interface ClaimService {
 
     public void addClaim(Claim d);
 
-    public Collection<Claim> listClaimsByDepartment(Long id);
+    public Collection<Claim> getClaimsByDepartment(Long id);
 
-    public void removeClaim(long id);
+    public void removeClaim(Long id);
 }

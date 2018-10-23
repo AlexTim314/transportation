@@ -27,17 +27,17 @@ public class DepartmentController {
 
     @GetMapping(url)
     public Collection<Department> getDepartments() {
-        return localServ.listDepartments();
+        return localServ.getDepartments();
     }
 
     @GetMapping(url + "/{id}")
-    public Department getDepartment(@PathVariable long id) {
+    public Department getDepartment(@PathVariable Long id) {
         Optional<Department> dep = localServ.getDepartmentById(id);
         return dep.get();
     }
 
     @DeleteMapping(url + "/{id}")
-    public void delDepartment(@PathVariable long id) {
+    public void delDepartment(@PathVariable Long id) {
         localServ.removeDepartment(id);
     }
 
@@ -47,13 +47,13 @@ public class DepartmentController {
     }
 
     @PutMapping(url + "/{id}")
-    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+    public void updateDepartment(@RequestBody Department dep, @PathVariable Long id) {
         localServ.updateDepartment(dep, id);
     }
 
     @GetMapping(url + "/{id}/claims")
-    public Collection<Claim> getClaims(@PathVariable long id) {
-        return claimServ.listClaimsByDepartment(id);
+    public Collection<Claim> getClaims(@PathVariable Long id) {
+        return claimServ.getClaimsByDepartment(id);
     }
 
 }

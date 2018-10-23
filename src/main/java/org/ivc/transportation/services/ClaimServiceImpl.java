@@ -32,14 +32,14 @@ public class ClaimServiceImpl implements ClaimService {
     
     @Override
     @Transactional
-    public Collection<Claim> listClaimsByDepartment(Long id) {
+    public Collection<Claim> getClaimsByDepartment(Long id) {
         return localRep.findByDepartmentId(id);
         
     }
     
     @Override
     @Transactional
-    public void removeClaim(long id) {
+    public void removeClaim(Long id) {
         localRep.deleteById(id);
     }
 

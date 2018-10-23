@@ -39,19 +39,25 @@ public class VechicleServiceImpl implements VechicleService{
 
     @Override
     @Transactional
-    public Collection<Vechicle> listVechicles() {
+    public void removeVechicle(Long id) {
+        localRep.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Vechicle> getVechicles() {
         return localRep.findAll();
     }
 
     @Override
     @Transactional
-    public Optional<Vechicle> getVechicleById(long id) {
-        return localRep.findById(id);
+    public Collection<Vechicle> getVechiclesByTransportDepId(Long id) {
+        return localRep.findByTransportDepId(id);
     }
 
     @Override
     @Transactional
-    public void removeVechicle(long id) {
-        localRep.deleteById(id);
+    public Optional<Vechicle> getVechicleById(Long id) {
+        return localRep.findById(id);
     }
 }

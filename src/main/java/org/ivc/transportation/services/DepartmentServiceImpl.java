@@ -39,19 +39,19 @@ public class DepartmentServiceImpl implements DepartmentService {
     
     @Override
     @Transactional
-    public Collection<Department> listDepartments() {
+    public Collection<Department> getDepartments() {
         return localRep.findAll();
     }
     
     @Override
     @Transactional
-    public Optional<Department> getDepartmentById(long id) {
+    public Optional<Department> getDepartmentById(Long id) {
         return localRep.findById(id);
     }
     
     @Override
     @Transactional
-    public void removeDepartment(long id) {
+    public void removeDepartment(Long id) {
         localRep.deleteById(id);
     }
 }

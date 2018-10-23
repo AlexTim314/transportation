@@ -31,17 +31,17 @@ public class VechicleController {
 
     @GetMapping(url)
     public Collection<Vechicle> getVechicles() {
-        return localServ.listVechicles();
+        return localServ.getVechicles();
     }
 
     @GetMapping(url + "/{id}")
-    public Vechicle getVechicle(@PathVariable long id) {
+    public Vechicle getVechicle(@PathVariable Long id) {
         Optional<Vechicle> dep = localServ.getVechicleById(id);
         return dep.get();
     }
 
     @DeleteMapping(url + "/{id}")
-    public void delVechicle(@PathVariable long id) {
+    public void delVechicle(@PathVariable Long id) {
         localServ.removeVechicle(id);
     }
 
@@ -51,7 +51,7 @@ public class VechicleController {
     }
 
     @PutMapping(url + "/{id}")
-    public void updateVechicle(@RequestBody Vechicle dep, @PathVariable long id) {
+    public void updateVechicle(@RequestBody Vechicle dep, @PathVariable Long id) {
         localServ.updateVechicle(dep, id);
     }
     

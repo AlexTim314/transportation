@@ -36,23 +36,29 @@ public class DriverServiceImpl implements DriverService {
         d.setId(id);
         localRep.save(d);
     }
+    
+    @Override
+    @Transactional
+    public void removeDriver(Long id) {
+        localRep.deleteById(id);
+    }
 
     @Override
     @Transactional
-    public Collection<Driver> listDrivers() {
+    public Collection<Driver> getDrivers() {
         return localRep.findAll();
     }
 
     @Override
     @Transactional
-    public Optional<Driver> getDriverById(long id) {
+    public Optional<Driver> getDriverById(Long id) {
         return localRep.findById(id);
     }
 
     @Override
     @Transactional
-    public void removeDriver(long id) {
-        localRep.deleteById(id);
+    public Collection<Driver> getDriversByTransportDepId(Long id) {
+        return localRep.findByTransportDepId(id);
     }
 
 }

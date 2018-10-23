@@ -32,17 +32,17 @@ public class DriverController {
 
     @GetMapping(url)
     public Collection<Driver> getDrivers() {
-        return localServ.listDrivers();
+        return localServ.getDrivers();
     }
 
     @GetMapping(url + "/{id}")
-    public Driver getDriver(@PathVariable long id) {
+    public Driver getDriver(@PathVariable Long id) {
         Optional<Driver> dep = localServ.getDriverById(id);
         return dep.get();
     }
 
     @DeleteMapping(url + "/{id}")
-    public void delDriver(@PathVariable long id) {
+    public void delDriver(@PathVariable Long id) {
         localServ.removeDriver(id);
     }
 
@@ -52,8 +52,7 @@ public class DriverController {
     }
 
     @PutMapping(url + "/{id}")
-    public void updateDriver(@RequestBody Driver dep, @PathVariable long id) {
+    public void updateDriver(@RequestBody Driver dep, @PathVariable Long id) {
         localServ.updateDriver(dep, id);
     }
-    
 }

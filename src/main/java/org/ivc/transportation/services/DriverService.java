@@ -14,15 +14,16 @@ import org.ivc.transportation.entities.Driver;
  * @author Nesterov Yuriy
  */
 public interface DriverService {
-    
+
     public void addDriver(Driver d);
 
     public void updateDriver(Driver d, Long id);
 
-    public Collection<Driver> listDrivers();
+    public void removeDriver(Long id);
 
-    public Optional getDriverById(long id);
+    public Optional getDriverById(Long id);
 
-    public void removeDriver(long id);
-    
+    public Collection<Driver> getDrivers();
+
+    public Collection<Driver> getDriversByTransportDepId(Long id);
 }
