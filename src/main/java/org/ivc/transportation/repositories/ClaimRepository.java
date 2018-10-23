@@ -6,6 +6,7 @@
 package org.ivc.transportation.repositories;
 
 import java.util.List;
+import java.sql.Date;
 import org.ivc.transportation.entities.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface ClaimRepository extends JpaRepository<Claim, Long>{
     
     List<Claim> findByDepartmentId(Long id);
+    List<Claim> findByclDate(Date d);
+    List<Claim> findByaffrimation(Boolean a);
+    List<Claim> findBytip(byte t);
     
 }

@@ -6,6 +6,7 @@
 package org.ivc.transportation.services;
 
 import java.util.Collection;
+import java.sql.Date;
 import org.ivc.transportation.entities.Claim;
 
 /**
@@ -17,6 +18,12 @@ public interface ClaimService {
     public void addClaim(Claim d);
 
     public Collection<Claim> getClaimsByDepartment(Long id);
+    
+    public Collection<Claim> getClaimsByclDate(Date d);
+    
+    public Collection<Claim> getClaimsByaffirmation(Boolean b);
+
+    public Collection<Claim> getClaimsBytip(byte t);
 
     public void removeClaim(Long id);
 }
