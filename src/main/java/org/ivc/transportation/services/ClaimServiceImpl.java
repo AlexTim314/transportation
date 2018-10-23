@@ -10,56 +10,90 @@ import java.sql.Date;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author user
+ * @author Degtyarev Fedor & Nesterov Yuriy
  */
 @Service
 @Transactional
 public class ClaimServiceImpl implements ClaimService {
-    
+
     @Autowired
-    private ClaimRepository localRep;
-    
+    private ClaimRepository claimRep;
+
     @Override
     @Transactional
     public void addClaim(Claim d) {
-        this.localRep.save(d);
+        this.claimRep.save(d);
     }
-    
+
     @Override
     @Transactional
     public Collection<Claim> getClaimsByDepartment(Long id) {
-        return localRep.findByDepartmentId(id);
-        
+        return claimRep.findByDepartmentId(id);
+
     }
-    
+
     @Override
     @Transactional
     public Collection<Claim> getClaimsByclDate(Date d) {
-        return localRep.findByclDate(d);
-        
+        return claimRep.findByClDate(d);
     }
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByaffirmation(Boolean b) {
-        return localRep.findByaffrimation(b);
+    public Collection<Claim> getClaimsByAffirmation(Boolean b) {
+        return claimRep.findByAffirmationOrderByClDateDesc(b);
     }
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsBytip(byte t) {
-        return localRep.findBytip(t);
+    public Collection<Claim> getClaimsByTip(byte t) {
+        return claimRep.findByTipOrderByClDateDesc(t);
     }
-        
+
     @Override
     @Transactional
     public void removeClaim(Long id) {
-        localRep.deleteById(id);
+        claimRep.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByDepAndAffirmation(Long id, Boolean a) {
+        return claimRep.findByDepartmentIdAndAffirmationOrderByClDateDesc(id, a);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByAffirmationAsc(Boolean b) {
+        return claimRep.findByAffirmationOrderByClDateAsc(b);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByTipAsc(byte t) {
+        return claimRep.findByTipOrderByClDateAsc(t);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByDepAndAffirmationAsc(Long id, Boolean a) {
+        return claimRep.findByDepartmentIdAndAffirmationOrderByClDateAsc(id, a);
+    }
+
+    @Override
+    public Collection<Claim> getAllClaimsSortByDate() {
+        return claimRep.findAll(Sort.by(Sort.Direction.DESC, "clDate"));
+    }
+
+    @Override
+    public Collection<Claim> getAllClaimsSortByDateAsk() {
+        return claimRep.findAll(Sort.by(Sort.Direction.ASC, "clDate"));
     }
 
 }

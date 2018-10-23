@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.repositories.VechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
