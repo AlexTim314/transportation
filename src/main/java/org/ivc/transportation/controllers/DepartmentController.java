@@ -13,45 +13,52 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/departments")
 public class DepartmentController {
 
-    private static final String url = "/departments";
-
     @Autowired
-    private DepartmentService localServ;
+    private DepartmentService service;
+    
     @Autowired
     private ClaimService claimServ;
 
-    @GetMapping(url)
+    @GetMapping()
     public Collection<Department> getDepartments() {
-        return localServ.getDepartments();
+        return service.getDepartments();
     }
 
-    @GetMapping(url + "/{id}")
-    public Department getDepartment(@PathVariable Long id) {
-        Optional<Department> dep = localServ.getDepartmentById(id);
-        return dep.get();
+    @GetMapping("/{id}")
+    public Department getDepartment(@PathVariable long id) {
+        Optional<Department> optDep = service.getDepartmentById(id);
+        return optDep.orElseThrow(() -> {
+            String engMessage = "Error in " + DepartmentController.class
+                    + " when try get Department by id = " + id + ".";
+            String ruMessage = "Ошибка в " + DepartmentController.class
+                    + " при попытке получить Department c ID = " + id + ".";
+            return new NullPointerException(engMessage + " " + ruMessage);
+        });
     }
 
-    @DeleteMapping(url + "/{id}")
-    public void delDepartment(@PathVariable Long id) {
-        localServ.removeDepartment(id);
+    @DeleteMapping("/{id}")
+    public void delDepartment(@PathVariable long id) {
+        service.removeDepartment(id);
     }
 
-    @PostMapping(url)
+    @PostMapping()
     public void addDepartment(@RequestBody Department department) {
-        localServ.addDepartment(department);
+        service.addDepartment(department);
     }
 
-    @PutMapping(url + "/{id}")
-    public void updateDepartment(@RequestBody Department dep, @PathVariable Long id) {
-        localServ.updateDepartment(dep, id);
+    @PutMapping("/{id}")
+    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+        service.updateDepartment(dep, id);
     }
 
-    @GetMapping(url + "/{id}/claims")
+    @GetMapping("/{id}/claims")
     public Collection<Claim> getClaims(@PathVariable Long id) {
         return claimServ.getClaimsByDepartment(id);
     }
