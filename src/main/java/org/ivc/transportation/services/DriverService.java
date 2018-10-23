@@ -24,6 +24,8 @@ public interface DriverService {
     public Optional getDriverById(Long id);
 
     public Collection<Driver> getDrivers();
+    
+    public Collection<Driver> findByVacant(Boolean d);
 
     public Collection<Driver> getDriversByTransportDepId(Long id);
 }

@@ -56,25 +56,27 @@ public class Driver implements Serializable {
     @Column(length = 1024)
     private String addres;
 
-    @NonNull
     private String phone;
 
     @NonNull
     @Column(nullable = false)
-    private String vacant;
+    private Boolean vacant;
+    
+    private String note;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String vacant,TransportDep transportDep) {
+    public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String note,TransportDep transportDep) {
         this.firstname = firstname;
         this.surname = surname;
         this.birthday = birthday;
         this.addres = addres;
         this.phone = phone;
-        this.vacant = vacant;
+        this.vacant = Boolean.TRUE;
         this.name = name;
+        this.note = note;
         this.transportDep = transportDep;
     }
 

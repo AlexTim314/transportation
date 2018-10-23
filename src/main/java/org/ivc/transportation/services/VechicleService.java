@@ -23,7 +23,11 @@ public interface VechicleService {
 
     public Collection<Vechicle> getVechicles();
     
+    public Collection<Vechicle> findByVacant(Boolean d);
+    
     public Collection<Vechicle> getVechiclesByTransportDepId(Long id);
+    
+    
 
     public Optional getVechicleById(Long id);
 

@@ -18,5 +18,6 @@ import org.springframework.stereotype.Repository;
 public interface DriverRepository extends JpaRepository<Driver, Long> {
   
     List<Driver> findByTransportDepId(Long id);
+    List<Driver> findByVacant(Boolean d);
     
 }

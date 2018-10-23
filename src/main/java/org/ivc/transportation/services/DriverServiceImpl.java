@@ -61,4 +61,9 @@ public class DriverServiceImpl implements DriverService {
         return localRep.findByTransportDepId(id);
     }
 
+    @Override
+    public Collection<Driver> findByVacant(Boolean d) {
+        return localRep.findByVacant(d);
+    }
+
 }

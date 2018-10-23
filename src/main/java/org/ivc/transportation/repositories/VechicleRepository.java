@@ -18,5 +18,6 @@ import org.springframework.stereotype.Repository;
 public interface VechicleRepository extends JpaRepository<Vechicle, Long>{
     
     List<Vechicle> findByTransportDepId(Long id);
+    List<Vechicle> findByVacant(Boolean d);
     
 }

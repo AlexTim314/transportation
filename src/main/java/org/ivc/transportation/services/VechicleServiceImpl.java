@@ -60,4 +60,9 @@ public class VechicleServiceImpl implements VechicleService{
     public Optional<Vechicle> getVechicleById(Long id) {
         return localRep.findById(id);
     }
+
+    @Override
+    public Collection<Vechicle> findByVacant(Boolean d) {
+        return localRep.findByVacant(d);
+    }
 }
