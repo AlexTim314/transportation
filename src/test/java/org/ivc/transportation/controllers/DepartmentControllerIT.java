@@ -46,7 +46,8 @@ public class DepartmentControllerIT {
 
     private List<Department> allDep;
 
-    private static final int DEP_NUMBER = 100;
+    private static final int DEP_NUMBER = 10;
+    private static final String DEP_URL = "/departments";
     private final Random rand = new Random();
 
     @Before
@@ -63,9 +64,9 @@ public class DepartmentControllerIT {
 
         given(service.listDepartments()).willReturn(allDep);
 
-        int index = rand.nextInt(100);
+        int index = rand.nextInt(DEP_NUMBER);
 
-        mvc.perform(get("/departments")
+        mvc.perform(get(DEP_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(DEP_NUMBER)))
@@ -75,14 +76,28 @@ public class DepartmentControllerIT {
                         , is(allDep.get(index).getAddres())));
 
     }
-    /*
+    
+    @Test(expected= Exception.class)
+    public void whenFindById_thatDoNotExist_shouldThrowExeption() throws Exception{
+        long id = 0;
+        given(service.getDepartmentById(id)).willReturn(Optional.empty());        
+        mvc.perform(get(DEP_URL + "/" + id));
+    }
+        
+    
     @Test
-    public void whenDepartmentsID_thenReturnJsonDepartment(){
-        Department dep = allDep.get(rand.nextInt(100));
-        given(service.getDepartmentById(Optional.of(dep.getId())))
-                .willReturn(dep);
+    public void whenFindById_thatExist_thenReturnJsonDepartment() throws Exception{
+        Department dep = allDep.get(rand.nextInt(DEP_NUMBER));
+        long id = rand.nextLong();
+        dep.setId(id);
+        given(service.getDepartmentById(id)).willReturn(Optional.of(dep));
         
-        
+        mvc.perform(get(DEP_URL + "/" + id)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(dep.getId())))
+                .andExpect(jsonPath("name", is(dep.getName())))
+                .andExpect(jsonPath("addres", is(dep.getAddres())));
     }
 
     /*public DepartmentControllerIT() {

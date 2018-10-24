@@ -17,35 +17,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/departments")
 public class DepartmentController {
-    
-
 
     @Autowired
-    private DepartmentService localServ;
+    private DepartmentService service;
 
     @GetMapping()
     public Collection<Department> getDepartments() {
-        return localServ.listDepartments();
+        return service.listDepartments();
     }
 
     @GetMapping("/{id}")
     public Department getDepartment(@PathVariable long id) {
-        Optional<Department> dep = localServ.getDepartmentById(id);
-        return dep.get();
+        Optional<Department> optDep = service.getDepartmentById(id);
+        return optDep.orElseThrow(() -> {
+            String engMessage = "Error in " + DepartmentController.class
+                    + " when try get Department by id = " + id + ".";
+            String ruMessage = "Ошибка в " + DepartmentController.class
+                    + " при попытке получить Department c ID = " + id + ".";
+            return new NullPointerException(engMessage + " " + ruMessage);
+        });
     }
 
     @DeleteMapping("/{id}")
     public void delDepartment(@PathVariable long id) {
-        localServ.removeDepartment(id);
+        service.removeDepartment(id);
     }
 
     @PostMapping()
     public void addDepartment(@RequestBody Department department) {
-        localServ.addDepartment(department);
+        service.addDepartment(department);
     }
 
     @PutMapping("/{id}")
     public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
-        localServ.updateDepartment(dep, id);
+        service.updateDepartment(dep, id);
     }
 }
