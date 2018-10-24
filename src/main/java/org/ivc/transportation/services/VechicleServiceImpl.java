@@ -23,47 +23,47 @@ import org.springframework.transaction.annotation.Transactional;
 public class VechicleServiceImpl implements VechicleService{
     
     @Autowired
-    private VechicleRepository localRep;
+    private VechicleRepository vechicleRep;
 
     @Override
     @Transactional
     public void addVechicle(Vechicle d) {
-        this.localRep.save(d);
+        this.vechicleRep.save(d);
     }
 
     @Override
     @Transactional
     public void updateVechicle(Vechicle d, Long id) {
         d.setId(id);
-        localRep.save(d);
+        vechicleRep.save(d);
     }
 
     @Override
     @Transactional
     public void removeVechicle(Long id) {
-        localRep.deleteById(id);
+        vechicleRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Collection<Vechicle> getVechicles() {
-        return localRep.findAll();
+        return vechicleRep.findAll();
     }
 
     @Override
     @Transactional
     public Collection<Vechicle> getVechiclesByTransportDepId(Long id) {
-        return localRep.findByTransportDepId(id);
+        return vechicleRep.findByTransportDepId(id);
     }
 
     @Override
     @Transactional
     public Optional<Vechicle> getVechicleById(Long id) {
-        return localRep.findById(id);
+        return vechicleRep.findById(id);
     }
 
     @Override
     public Collection<Vechicle> findByVacant(Boolean d) {
-        return localRep.findByVacant(d);
+        return vechicleRep.findByVacant(d);
     }
 }

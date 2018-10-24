@@ -16,41 +16,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 /**
  *
  * @author first
  */
 @RestController
+@RequestMapping("/vechicles")
 public class VechicleController {
     
-    private static final String url = "/vechicles";
-
     @Autowired
     private VechicleService localServ;
 
-    @GetMapping(url)
+    @GetMapping()
     public Collection<Vechicle> getVechicles() {
         return localServ.getVechicles();
     }
 
-    @GetMapping(url + "/{id}")
+    @GetMapping("/{id}")
     public Vechicle getVechicle(@PathVariable Long id) {
         Optional<Vechicle> dep = localServ.getVechicleById(id);
         return dep.get();
     }
 
-    @DeleteMapping(url + "/{id}")
+    @DeleteMapping("/{id}")
     public void delVechicle(@PathVariable Long id) {
         localServ.removeVechicle(id);
     }
 
-    @PostMapping(url)
+    @PostMapping()
     public void addVechicle(@RequestBody Vechicle department) {
         localServ.addVechicle(department);
     }
 
-    @PutMapping(url + "/{id}")
+    @PutMapping("/{id}")
     public void updateVechicle(@RequestBody Vechicle dep, @PathVariable Long id) {
         localServ.updateVechicle(dep, id);
     }

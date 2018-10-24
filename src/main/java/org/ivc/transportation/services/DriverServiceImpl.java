@@ -22,48 +22,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class DriverServiceImpl implements DriverService {
 
     @Autowired
-    private DriverRepository localRep;
+    private DriverRepository driverRep;
 
     @Override
     @Transactional
     public void addDriver(Driver d) {
-        this.localRep.save(d);
+        this.driverRep.save(d);
     }
 
     @Override
     @Transactional
     public void updateDriver(Driver d, Long id) {
         d.setId(id);
-        localRep.save(d);
+        driverRep.save(d);
     }
     
     @Override
     @Transactional
     public void removeDriver(Long id) {
-        localRep.deleteById(id);
+        driverRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Collection<Driver> getDrivers() {
-        return localRep.findAll();
+        return driverRep.findAll();
     }
 
     @Override
     @Transactional
     public Optional<Driver> getDriverById(Long id) {
-        return localRep.findById(id);
+        return driverRep.findById(id);
     }
 
     @Override
     @Transactional
     public Collection<Driver> getDriversByTransportDepId(Long id) {
-        return localRep.findByTransportDepId(id);
+        return driverRep.findByTransportDepId(id);
     }
 
     @Override
     public Collection<Driver> findByVacant(Boolean d) {
-        return localRep.findByVacant(d);
+        return driverRep.findByVacant(d);
     }
 
 }

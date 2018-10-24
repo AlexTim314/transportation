@@ -22,36 +22,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransportDepServiceImpl implements TransportDepService {
     
     @Autowired
-    private TransportDepRepository localRep;
+    private TransportDepRepository transportDepRep;
     
     @Override
     @Transactional
     public void addTransportDep(TransportDep d) {
-        this.localRep.save(d);
+        this.transportDepRep.save(d);
     }
     
     @Override
     @Transactional
     public void updateTransportDep(TransportDep d, Long id) {
         d.setId(id);
-        localRep.save(d);
+        transportDepRep.save(d);
     }       
     
     @Override
     @Transactional
     public void removeTransportDep(Long id) {
-        localRep.deleteById(id);
+        transportDepRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Collection<TransportDep> getTransportDeps() {
-        return localRep.findAll();
+        return transportDepRep.findAll();
     }
     
     @Override
     @Transactional
     public Optional<TransportDep> getTransportDepById(Long id) {
-        return localRep.findById(id);
+        return transportDepRep.findById(id);
     }
 }

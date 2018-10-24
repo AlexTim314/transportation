@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/transportdeps")
 public class TransportDepController {
-
-    private static final String url = "/transportdeps";
 
     @Autowired
     private TransportDepService localServ;
@@ -40,38 +40,38 @@ public class TransportDepController {
     @Autowired
     private VechicleService vechServ;
 
-    @GetMapping(url)
+    @GetMapping()
     public Collection<TransportDep> getTransportDeps() {
         return localServ.getTransportDeps();
     }
 
-    @GetMapping(url + "/{id}")
+    @GetMapping("/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
         Optional<TransportDep> dep = localServ.getTransportDepById(id);
         return dep.get();
     }
 
-    @DeleteMapping(url + "/{id}")
+    @DeleteMapping("/{id}")
     public void delTransportDep(@PathVariable Long id) {
         localServ.removeTransportDep(id);
     }
 
-    @PostMapping(url)
+    @PostMapping()
     public void addTransportDep(@RequestBody TransportDep department) {
         localServ.addTransportDep(department);
     }
 
-    @PutMapping(url + "/{id}")
+    @PutMapping("/{id}")
     public void updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
         localServ.updateTransportDep(dep, id);
     }
 
-    @GetMapping(url + "/{id}/drivers")
+    @GetMapping("/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable Long id) {
         return drvServ.getDriversByTransportDepId(id);
     }
 
-    @GetMapping(url + "/{id}/vechicles")
+    @GetMapping("/{id}/vechicles")
     public Collection<Vechicle> getVechicles(@PathVariable Long id) {
         return vechServ.getVechiclesByTransportDepId(id);
     }
