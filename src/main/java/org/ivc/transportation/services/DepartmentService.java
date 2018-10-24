@@ -19,9 +19,9 @@ public interface DepartmentService {
 
     public void updateDepartment(Department d, Long id);
 
-    public Collection<Department> listDepartments();
+    public void removeDepartment(Long id);
 
-    public Optional getDepartmentById(long id);
+    public Collection<Department> getDepartments();
 
-    public void removeDepartment(long id);
+    public Optional getDepartmentById(Long id);
 }

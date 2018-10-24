@@ -7,51 +7,63 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.repositories.VechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author user
+ * @author Nesterov Yuriy
  */
 @Service
 @Transactional
-public class TransportDepServiceImpl implements TransportDepService {
+public class VechicleServiceImpl implements VechicleService{
     
     @Autowired
-    private TransportDepRepository localRep;
-    
+    private VechicleRepository localRep;
+
     @Override
     @Transactional
-    public void addTransportDep(TransportDep d) {
+    public void addVechicle(Vechicle d) {
         this.localRep.save(d);
     }
-    
+
     @Override
     @Transactional
-    public void updateTransportDep(TransportDep d, Long id) {
+    public void updateVechicle(Vechicle d, Long id) {
         d.setId(id);
         localRep.save(d);
-    }       
-    
+    }
+
     @Override
     @Transactional
-    public void removeTransportDep(Long id) {
+    public void removeVechicle(Long id) {
         localRep.deleteById(id);
     }
 
     @Override
     @Transactional
-    public Collection<TransportDep> getTransportDeps() {
+    public Collection<Vechicle> getVechicles() {
         return localRep.findAll();
     }
-    
+
     @Override
     @Transactional
-    public Optional<TransportDep> getTransportDepById(Long id) {
+    public Collection<Vechicle> getVechiclesByTransportDepId(Long id) {
+        return localRep.findByTransportDepId(id);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Vechicle> getVechicleById(Long id) {
         return localRep.findById(id);
+    }
+
+    @Override
+    public Collection<Vechicle> findByVacant(Boolean d) {
+        return localRep.findByVacant(d);
     }
 }

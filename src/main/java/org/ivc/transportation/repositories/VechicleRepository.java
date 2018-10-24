@@ -5,6 +5,7 @@
  */
 package org.ivc.transportation.repositories;
 
+import java.util.List;
 import org.ivc.transportation.entities.Vechicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface VechicleRepository extends JpaRepository<Vechicle, Long>{
+    
+    List<Vechicle> findByTransportDepId(Long id);
+    List<Vechicle> findByVacant(Boolean d);
     
 }

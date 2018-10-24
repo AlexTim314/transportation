@@ -5,10 +5,6 @@
  */
 package org.ivc.transportation.services;
 
-/**
- *
- * @author user
- */
 import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.TransportDep;
@@ -23,9 +19,9 @@ public interface TransportDepService {
 
     public void updateTransportDep(TransportDep d, Long id);
 
-    public Collection<TransportDep> listTransportDeps();
+    public void removeTransportDep(Long id);
 
-    public Optional getTransportDepById(long id);
+    public Collection<TransportDep> getTransportDeps();
 
-    public void removeTransportDep(long id);
+    public Optional getTransportDepById(Long id);
 }

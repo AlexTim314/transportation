@@ -43,25 +43,28 @@ public class Vechicle implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Float fuelRemnant;
+    private Double fuelRemnant;
 
     @NonNull
     @Column(nullable = false)
-    private Float odometr;
+    private Double odometr;
 
     @NonNull
     @Column(nullable = false)
-    private String vacant;
+    private Boolean vacant;
+    
+    private String note;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    public Vechicle(String number, Float fuelRemnant, Float odometr, String vacant, TransportDep transportDep) {
+    public Vechicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
-        this.vacant = vacant;
+        this.vacant = Boolean.TRUE;
+        this.note = note;
         this.transportDep = transportDep;
 
     }

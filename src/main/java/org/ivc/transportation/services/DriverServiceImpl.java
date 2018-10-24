@@ -7,51 +7,63 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.repositories.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author user
+ * @author first
  */
 @Service
 @Transactional
-public class DepartmentServiceImpl implements DepartmentService {
-    
+public class DriverServiceImpl implements DriverService {
+
     @Autowired
-    private DepartmentRepository localRep;
-    
+    private DriverRepository localRep;
+
     @Override
     @Transactional
-    public void addDepartment(Department d) {
+    public void addDriver(Driver d) {
         this.localRep.save(d);
     }
-    
+
     @Override
     @Transactional
-    public void updateDepartment(Department d, Long id) {
+    public void updateDriver(Driver d, Long id) {
         d.setId(id);
         localRep.save(d);
-    }       
-    
-    @Override
-    @Transactional
-    public Collection<Department> getDepartments() {
-        return localRep.findAll();
     }
     
     @Override
     @Transactional
-    public Optional<Department> getDepartmentById(Long id) {
-        return localRep.findById(id);
-    }
-    
-    @Override
-    @Transactional
-    public void removeDepartment(Long id) {
+    public void removeDriver(Long id) {
         localRep.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public Collection<Driver> getDrivers() {
+        return localRep.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Optional<Driver> getDriverById(Long id) {
+        return localRep.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Driver> getDriversByTransportDepId(Long id) {
+        return localRep.findByTransportDepId(id);
+    }
+
+    @Override
+    public Collection<Driver> findByVacant(Boolean d) {
+        return localRep.findByVacant(d);
+    }
+
 }

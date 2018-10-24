@@ -66,7 +66,7 @@ public class DepartmentServiceImplIT {
 
     @Test
     public void whenCallListDepartments_thenCorrectCollectionShouldBeFound() {
-        Collection<Department> resultCollection = departmentService.listDepartments();
+        Collection<Department> resultCollection = departmentService.getDepartments();
         assertThat(resultCollection.size()).isEqualTo(depListSize);
         assertTrue(resultCollection.containsAll(returnList));
     }
@@ -84,7 +84,7 @@ public class DepartmentServiceImplIT {
             departmentService.addDepartment(d);
             returnList.add(d);
         }        
-        Collection<Department > resultCollection = departmentService.listDepartments();
+        Collection<Department > resultCollection = departmentService.getDepartments();
         assertThat(resultCollection.size()).isEqualTo(depListSize + addDepNumber);
         assertTrue(resultCollection.containsAll(returnList));
     }

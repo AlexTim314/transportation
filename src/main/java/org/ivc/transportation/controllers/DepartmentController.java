@@ -2,7 +2,9 @@ package org.ivc.transportation.controllers;
 
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,10 +22,13 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService service;
+    
+    @Autowired
+    private ClaimService claimServ;
 
     @GetMapping()
     public Collection<Department> getDepartments() {
-        return service.listDepartments();
+        return service.getDepartments();
     }
 
     @GetMapping("/{id}")
@@ -52,4 +57,10 @@ public class DepartmentController {
     public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
         service.updateDepartment(dep, id);
     }
+
+    @GetMapping("/{id}/claims")
+    public Collection<Claim> getClaims(@PathVariable Long id) {
+        return claimServ.getClaimsByDepartment(id);
+    }
+
 }

@@ -38,21 +38,21 @@ public class Claim implements Serializable {
     @Column(nullable = false)
     private Date clDate;  // clame date
 
-    @Column(length = 512)
-    private String affrimation;
+    @Column(nullable = false)
+    private Boolean affirmation;
 
-    @Column(length = 512)
-    private String type;
+    @Column(nullable = false)
+    private byte tip;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    public Claim(Date clDate, String affrimation, Department department) {
+    public Claim(Date clDate, Byte tip, Department dep) {
         this.clDate = clDate;
-        this.affrimation = affrimation;
-        this.type = type;
-        this.department = department;
+        this.affirmation = false;
+        this.tip = tip;
+        this.department = dep;
 
     }
 }

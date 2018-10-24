@@ -62,7 +62,7 @@ public class DepartmentControllerIT {
     @Test
     public void whenDepartments_thenReturnJsonArray() throws Exception {
 
-        given(service.listDepartments()).willReturn(allDep);
+        given(service.getDepartments()).willReturn(allDep);
 
         int index = rand.nextInt(DEP_NUMBER);
 
