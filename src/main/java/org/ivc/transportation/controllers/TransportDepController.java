@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,103 +21,58 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/transportdeps")
 public class TransportDepController {
-
-    private static final String URL_T = "/transportdeps";
-    private static final String URL_D = "/drivers";
-    private static final String URL_V = "/vechicles";
 
     @Autowired
     private TransportDepService tdServ;
 
-    @GetMapping(URL_T)
+    @GetMapping()
     public Collection<TransportDep> getTransportDeps() {
         return tdServ.getTransportDeps();
     }
 
-    @GetMapping(URL_T + "/{id}")
+    @GetMapping("/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
         Optional<TransportDep> dep = tdServ.getTransportDepById(id);
         return dep.get();
     }
 
-    @DeleteMapping(URL_T + "/{id}")
-    public void delTransportDep(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public Collection<TransportDep> delTransportDep(@PathVariable Long id) {
         tdServ.removeTransportDep(id);
+        return tdServ.getTransportDeps();
     }
 
-    @PostMapping(URL_T)
-    public void addTransportDep(@RequestBody TransportDep department) {
+    @PostMapping()
+    public Collection<TransportDep> addTransportDep(@RequestBody TransportDep department) {
         tdServ.addTransportDep(department);
+        return tdServ.getTransportDeps();
     }
 
-    @PutMapping(URL_T + "/{id}")
-    public void updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
+    @PutMapping("/{id}")
+    public Collection<TransportDep> updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
         tdServ.updateTransportDep(dep, id);
+        return tdServ.getTransportDeps();
     }
 
-    @GetMapping(URL_T + "/{id}/drivers")
+    @GetMapping("/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable Long id) {
         return tdServ.getDriversByTransportDepId(id);
     }
 
-    @GetMapping(URL_T + "/{id}/vechicles")
-    public Collection<Vechicle> getVechicles(@PathVariable Long id) {
-        return tdServ.getVechiclesByTransportDepId(id);
+    @PostMapping("/{id}/drivers")
+    public Collection<Driver> addDriver(@PathVariable Long id, @RequestBody Driver d) throws Throwable {
+        Optional<TransportDep> otd = tdServ.getTransportDepById(id);
+        d.setTransportDep(otd.orElseThrow(() -> {
+            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + id); 
+        }));
+        tdServ.addDriver(d);
+        return tdServ.getDriversByTransportDepId(id);
     }
 
-    @GetMapping(URL_D)
-    public Collection<Driver> getDrivers() {
-        return tdServ.getDrivers();
     }
-
-    @GetMapping(URL_D + "/{id}")
-    public Driver getDriver(@PathVariable Long id) {
-        Optional<Driver> dep = tdServ.getDriverById(id);
-        return dep.get();
-    }
-
-    @DeleteMapping(URL_D + "/{id}")
-    public void delDriver(@PathVariable Long id) {
-        tdServ.removeDriver(id);
-    }
-
-    @PostMapping(URL_D)
-    public void addDriver(@RequestBody Driver department) {
-        tdServ.addDriver(department);
-    }
-
-    @PutMapping(URL_D + "/{id}")
-    public void updateDriver(@RequestBody Driver dep, @PathVariable Long id) {
-        tdServ.updateDriver(dep, id);
-    }
-
-    @GetMapping(URL_V)
-    public Collection<Vechicle> getVechicles() {
-        return tdServ.getVechicles();
-    }
-
-    @GetMapping(URL_V + "/{id}")
-    public Vechicle getVechicle(@PathVariable Long id) {
-        Optional<Vechicle> dep = tdServ.getVechicleById(id);
-        return dep.get();
-    }
-
-    @DeleteMapping(URL_V + "/{id}")
-    public void delVechicle(@PathVariable Long id) {
-        tdServ.removeVechicle(id);
-    }
-
-    @PostMapping(URL_V)
-    public void addVechicle(@RequestBody Vechicle department) {
-        tdServ.addVechicle(department);
-    }
-
-    @PutMapping(URL_V + "/{id}")
-    public void updateVechicle(@RequestBody Vechicle dep, @PathVariable Long id) {
-        tdServ.updateVechicle(dep, id);
-    }
-}
