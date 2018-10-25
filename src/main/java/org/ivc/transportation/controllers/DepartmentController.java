@@ -44,18 +44,21 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void delDepartment(@PathVariable long id) {
+    public Collection<Department> delDepartment(@PathVariable long id) {
         service.removeDepartment(id);
+        return service.getDepartments();
     }
 
     @PostMapping()
-    public void addDepartment(@RequestBody Department department) {
+    public Collection<Department> addDepartment(@RequestBody Department department) {
         service.addDepartment(department);
+        return service.getDepartments();
     }
 
     @PutMapping("/{id}")
-    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+    public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
         service.updateDepartment(dep, id);
+        return service.getDepartments();
     }
 
     @GetMapping("/{id}/claims")
