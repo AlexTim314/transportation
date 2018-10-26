@@ -1,13 +1,19 @@
 package org.ivc.transportation;
 
 import java.sql.Date;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.annotation.PostConstruct;
+import org.ivc.transportation.entities.AppRole;
+import org.ivc.transportation.entities.AppUser;
 
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.repositories.RoleRepository;
+import org.ivc.transportation.repositories.UserRepository;
 
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
@@ -23,16 +29,49 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableTransactionManagement
 public class TransportationApplication {
 
+    private static final String PASSWORD = "$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu";
+//    @Autowired
+//    private TransportDepRepository transportDepRepository;
+//    @Autowired
+//    private DriverRepository driverRepository;
+//    @Autowired
+//    private DepartmentRepository departmentRepository;
+//    @Autowired
+//    private VechicleRepository vclRepository;
+//    @Autowired
+//    private ClaimRepository claimRepository;
     @Autowired
     private TransportDepService tdS;
+
+    @Autowired
+    private DriverService drvS;
+
     @Autowired
     private DepartmentService depS;
+
+    @Autowired
+    private VechicleService veclS;
+
     @Autowired
     private ClaimService clS;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @PostConstruct
     @Transactional
     public void init() {
+        AppRole adminRole = new AppRole("ROLE_ADMIN");
+        AppRole userRole = new AppRole("ROLE_USER");
+
+        AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
+        AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
+        userRepository.saveAndFlush(admin);
+        userRepository.saveAndFlush(user);
+
         TransportDep transportDep1 = new TransportDep(1, "dAdr1", "dphone1");
         TransportDep transportDep2 = new TransportDep(2, "dAdr2", "dphone2");
         tdS.addTransportDep(transportDep1);
@@ -75,11 +114,11 @@ public class TransportationApplication {
         Department dep3 = new Department("NAME-3", "ADDRES-3");
         Department dep4 = new Department("NAME-4", "ADDRES-4");
         Department dep5 = new Department("NAME-5", "ADDRES-5");
-        depS.addDepartment(dep1);
-        depS.addDepartment(dep2);
-        depS.addDepartment(dep3);
-        depS.addDepartment(dep4);
-        depS.addDepartment(dep5);
+        depS.saveDepartment(dep1);
+        depS.saveDepartment(dep2);
+        depS.saveDepartment(dep3);
+        depS.saveDepartment(dep4);
+        depS.saveDepartment(dep5);
 
         Byte[] q = {0, 1};
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), q[0], dep1);
@@ -105,7 +144,7 @@ public class TransportationApplication {
         System.out.println("----------------------------");
         System.out.println(tdS.getDriversByTransportDepId(transportDep1.getId()));
         System.out.println("----------------------------");
-        System.out.println(tdS.getDriversByTransportDepId(transportDep2.getId()));
+        System.out.println(drvS.getDriversByTransportDepId(transportDep2.getId()));
 
         System.out.println("-----------Claims-----------------");
         System.out.println("-----------order by date asc-----------------");

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>User management</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/app/userManagement/UsersManagementService.js"></script>
+        <script src="js/app/userManagement/UsersManagementController.js"></script>
+
+        <link th:href="@{css/main.css}" rel="stylesheet" />
+    </head>
+
+    <body ng-app="Transportation" ng-controller="UsersManagementController as ctrl">
+        <h3>
+            USER MANAGEMENT
+        </h3>
+        <form ng-submit="ctrl.submit()">
+            <table border="0">
+                <tr ng-view="false">
+                    <td>Username:</td>
+                    <td><input type="text" ng-model="ctrl.user.userName" size="16"/></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type='password' name='password' ng-model="ctrl.user.password"/></td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>
+                        <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Roles</td>
+                    <td><span ng-repeat="role in ctrl.user.roles" class="role-span">{{role.roleName}} </span></td>
+                    <td>
+                        <select ng-model="ctrl.role" >
+                            <option ng-repeat="r in ctrl.roles" ng-value="r">{{r.roleName}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="delete-button" ng-click="ctrl.removeRole()"> - </button>
+                        <button type="button" class="submit-button" ng-click="ctrl.addRole()">+</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button type="button" ng-click="ctrl.reset()" class="delete-button">reset</button></td>
+                    <td colspan="2">                        
+                        <input type="submit" ng-value="ctrl.user.userId===null?'create':'edit'" class="edit-button"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <br/>
+        <table border="1">
+            <tr>
+                <th>Username</th>
+                <th>Department</th>
+                <th>Roles</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <!-- $scope.employees -->
+            <tr ng-repeat="user in ctrl.users">
+                <td> {{user.userName}}</td>
+                <td> {{user.department.name}}</td>
+                <td ><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
+                <td>
+                    <button ng-click="ctrl.editUser(user)" class="edit-button">edit</button>
+                </td>
+                <td>
+                    <button ng-click="ctrl.deleteUser(user)" class="delete-button">delete</button>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

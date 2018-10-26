@@ -22,36 +22,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class DepartmentServiceImpl implements DepartmentService {
     
     @Autowired
-    private DepartmentRepository departmentRep;
+    private DepartmentRepository departmentRepository;
     
     @Override
     @Transactional
-    public void addDepartment(Department d) {
-        this.departmentRep.save(d);
+    public void saveDepartment(Department d) {
+        this.departmentRepository.save(d);
     }
     
     @Override
     @Transactional
     public void updateDepartment(Department d, Long id) {
         d.setId(id);
-        departmentRep.save(d);
+        departmentRepository.save(d);
     }       
     
     @Override
     @Transactional
     public Collection<Department> getDepartments() {
-        return departmentRep.findAll();
+        return departmentRepository.findAll();
     }
     
     @Override
     @Transactional
     public Optional<Department> getDepartmentById(Long id) {
-        return departmentRep.findById(id);
+        return departmentRepository.findById(id);
     }
     
     @Override
     @Transactional
     public void removeDepartment(Long id) {
-        departmentRep.deleteById(id);
+        departmentRepository.deleteById(id);
     }
 }

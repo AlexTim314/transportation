@@ -55,7 +55,7 @@ public class DepartmentController {
 
     @PostMapping()
     public Collection<Department> addDepartment(@RequestBody Department department) {
-        service.addDepartment(department);
+        service.saveDepartment(department);
         return service.getDepartments();
     }
 

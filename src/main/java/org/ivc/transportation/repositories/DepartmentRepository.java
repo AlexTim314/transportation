@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
  * @author Sokolov Slava
  */
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department ,Long> {
-    
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
+
+    Department findByName(String name);
+
 }
