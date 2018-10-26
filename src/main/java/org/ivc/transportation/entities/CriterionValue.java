@@ -37,7 +37,7 @@ public class CriterionValue implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String value;
+    private String crValue;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,7 +52,7 @@ public class CriterionValue implements Serializable {
     private Criterion criterion;
 
     public CriterionValue(String value, Claim claim, Vechicle vechicle, Criterion criterion) {
-        this.value = value;
+        this.crValue = value;
         this.claim = claim;
         this.vechicle = vechicle;
         this.criterion = criterion;
