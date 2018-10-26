@@ -60,7 +60,7 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private String status;
+    private byte status;
 
     @Column(length = 1024)
     private String serviceField;
@@ -77,7 +77,7 @@ public class Record implements Serializable {
     private Plan plan;
 
     public Record(String weekHash, Date datetime, String usageTime, Date arrivalTime,
-            String purpose, String status, String serviceField, String templateName, Claim claim) {
+            String purpose, byte status, String serviceField, String templateName, Claim claim) {
         this.arrivalTime = arrivalTime;
         this.claim = claim;
         this.datetime = datetime;

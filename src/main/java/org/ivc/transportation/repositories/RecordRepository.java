@@ -5,6 +5,8 @@
  */
 package org.ivc.transportation.repositories;
 
+import java.sql.Date;
+import java.util.List;
 import org.ivc.transportation.entities.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +17,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long>{
+   
+   List<Record> findByDatetime(Date d);
+   
+   List<Record> findByPlanId(Long id);
+   
+   List<Record> findByClaimId(Long id);
+   
+   List<Record> findByStatus(byte t);
+   
+   List<Record> findByWeekHash(String d);
+   
+   List<Record> findByStatusAndDatetime(byte t,Date d);
     
 }

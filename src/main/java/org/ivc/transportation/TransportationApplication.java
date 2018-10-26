@@ -1,7 +1,6 @@
 package org.ivc.transportation;
 
 import java.sql.Date;
-import java.util.Arrays;
 import javax.annotation.PostConstruct;
 
 import org.ivc.transportation.entities.Claim;
@@ -10,16 +9,9 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vechicle;
 
-import org.ivc.transportation.repositories.ClaimRepository;
-import org.ivc.transportation.repositories.DepartmentRepository;
-import org.ivc.transportation.repositories.DriverRepository;
-import org.ivc.transportation.repositories.TransportDepRepository;
-import org.ivc.transportation.repositories.VechicleRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
-import org.ivc.transportation.services.DriverService;
 import org.ivc.transportation.services.TransportDepService;
-import org.ivc.transportation.services.VechicleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -31,24 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableTransactionManagement
 public class TransportationApplication {
 
-//    @Autowired
-//    private TransportDepRepository transportDepRepository;
-//    @Autowired
-//    private DriverRepository driverRepository;
-//    @Autowired
-//    private DepartmentRepository departmentRepository;
-//    @Autowired
-//    private VechicleRepository vclRepository;
-//    @Autowired
-//    private ClaimRepository claimRepository;
     @Autowired
     private TransportDepService tdS;
     @Autowired
-    private DriverService drvS;
-     @Autowired
     private DepartmentService depS;
-    @Autowired
-    private VechicleService veclS;
     @Autowired
     private ClaimService clS;
 
@@ -70,27 +48,27 @@ public class TransportationApplication {
         driver4.setVacant(Boolean.TRUE);
         Driver driver5 = new Driver("fname5", "name5", "sname5", new Date(0), "address5", "phone5", "", transportDep1);
         driver5.setVacant(Boolean.TRUE);
-        drvS.addDriver(driver1);
-        drvS.addDriver(driver2);
-        drvS.addDriver(driver3);
-        drvS.addDriver(driver4);
-        drvS.addDriver(driver5);
+        tdS.addDriver(driver1);
+        tdS.addDriver(driver2);
+        tdS.addDriver(driver3);
+        tdS.addDriver(driver4);
+        tdS.addDriver(driver5);
 
         Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2);
         vechicle1.setVacant(Boolean.TRUE);
-        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5,"", transportDep1);
+        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1);
         vechicle2.setVacant(Boolean.TRUE);
-        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2,"На ремонте", transportDep2);
+        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2);
         vechicle3.setVacant(Boolean.FALSE);
         Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1);
         vechicle4.setVacant(Boolean.TRUE);
         Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2);
         vechicle5.setVacant(Boolean.TRUE);
-        veclS.addVechicle(vechicle1);
-        veclS.addVechicle(vechicle2);
-        veclS.addVechicle(vechicle3);
-        veclS.addVechicle(vechicle4);
-        veclS.addVechicle(vechicle5);
+        tdS.addVechicle(vechicle1);
+        tdS.addVechicle(vechicle2);
+        tdS.addVechicle(vechicle3);
+        tdS.addVechicle(vechicle4);
+        tdS.addVechicle(vechicle5);
 
         Department dep1 = new Department("NAME-1", "ADDRES-1");
         Department dep2 = new Department("NAME-2", "ADDRES-2");
@@ -103,7 +81,7 @@ public class TransportationApplication {
         depS.addDepartment(dep4);
         depS.addDepartment(dep5);
 
-        Byte[] q = {0,1};
+        Byte[] q = {0, 1};
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), q[0], dep1);
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), q[1], dep2);
@@ -119,16 +97,16 @@ public class TransportationApplication {
         clS.addClaim(cl3);
         clS.addClaim(cl4);
         clS.addClaim(cl5);
-        
+
         System.out.println("----------------------------");
-        drvS.findByVacant(Boolean.TRUE).forEach(System.out::println);
+        tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
-        veclS.findByVacant(Boolean.TRUE).forEach(System.out::println);
+        tdS.findVechiclesByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
-        System.out.println(drvS.getDriversByTransportDepId(transportDep1.getId()));
+        System.out.println(tdS.getDriversByTransportDepId(transportDep1.getId()));
         System.out.println("----------------------------");
-        System.out.println(drvS.getDriversByTransportDepId(transportDep2.getId()));
-        
+        System.out.println(tdS.getDriversByTransportDepId(transportDep2.getId()));
+
         System.out.println("-----------Claims-----------------");
         System.out.println("-----------order by date asc-----------------");
         clS.getAllClaimsSortByDateAsk().forEach(System.out::println);
@@ -165,8 +143,8 @@ public class TransportationApplication {
         System.out.println("-----------by ByDep 2 Affirmation false order date asc-----------------");
         clS.getClaimsByDepAndAffirmationAsc(dep2.getId(), Boolean.FALSE).forEach(System.out::println);
         System.out.println("-----------by Date 2018-10-20-----------------");
-        clS.getClaimsByclDate(Date.valueOf("2018-10-20")).forEach(System.out::println);  
-        
+        clS.getClaimsByclDate(Date.valueOf("2018-10-20")).forEach(System.out::println);
+
     }
 
     public static void main(String[] args) {
