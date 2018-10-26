@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService service;
-    
+
     @Autowired
     private ClaimService claimServ;
 
@@ -35,11 +36,10 @@ public class DepartmentController {
     public Department getDepartment(@PathVariable long id) {
         Optional<Department> optDep = service.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
-            String engMessage = "Error in " + DepartmentController.class
-                    + " when try get Department by id = " + id + ".";
-            String ruMessage = "Ошибка в " + DepartmentController.class
-                    + " при попытке получить Department c ID = " + id + ".";
-            return new NullPointerException(engMessage + " " + ruMessage);
+            System.out.println("Error in " + DepartmentController.class
+                    + " when try get Department by id = " + id + ".");
+
+            return new NonExistingDepartmentException();
         });
     }
 
