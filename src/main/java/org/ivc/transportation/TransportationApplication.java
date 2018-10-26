@@ -43,15 +43,16 @@ public class TransportationApplication {
     @Autowired
     private TransportDepService tdS;
 
+    /*
     @Autowired
     private DriverService drvS;
-
+*/
     @Autowired
     private DepartmentService depS;
-
+/*
     @Autowired
     private VechicleService veclS;
-
+*/
     @Autowired
     private ClaimService clS;
 
@@ -144,7 +145,7 @@ public class TransportationApplication {
         System.out.println("----------------------------");
         System.out.println(tdS.getDriversByTransportDepId(transportDep1.getId()));
         System.out.println("----------------------------");
-        System.out.println(drvS.getDriversByTransportDepId(transportDep2.getId()));
+        System.out.println(tdS.getDriversByTransportDepId(transportDep2.getId()));
 
         System.out.println("-----------Claims-----------------");
         System.out.println("-----------order by date asc-----------------");
