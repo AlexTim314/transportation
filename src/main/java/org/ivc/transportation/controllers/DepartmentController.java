@@ -50,7 +50,7 @@ public class DepartmentController {
 
     @PostMapping()
     public void addDepartment(@RequestBody Department department) {
-        service.addDepartment(department);
+        service.saveDepartment(department);
     }
 
     @PutMapping("/{id}")

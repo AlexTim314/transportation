@@ -1,0 +1,32 @@
+table  {
+    border-collapse: collapse;
+}
+
+table td, th  {
+    padding: 5px;
+}
+
+.submit-button  {
+    padding: 2px 5px;
+    background: #32CD32;
+    cursor: pointer;
+}
+
+.edit-button  {
+    padding: 2px 5px;
+    background: #25A6E1;
+    cursor: pointer;
+}
+
+.delete-button  {
+    padding: 2px 5px;
+    background: #CD5C5C;
+    cursor: pointer;
+}
+
+.role-span  {
+    padding: 2px 5px;
+    margin: 3px;
+    background: #ADD8E6;
+    cursor: pointer;
+}

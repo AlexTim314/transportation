@@ -1,0 +1,23 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+
+    <a th:href="@{/}">Home</a>
+
+    | &nbsp;
+
+    <a th:href="@{/userInfo}">User Info</a>
+
+    | &nbsp;
+
+    <a th:href="@{/admin}">Admin</a>
+
+    | &nbsp;
+
+    <!--<a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>-->
+    <button onclick="javascript: document.logoutForm.submit()" role="menuitem"> Logout</button>
+
+    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+        <input hidden type="submit" value="Sign Out"/>
+    </form>
+
+</div>

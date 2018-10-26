@@ -15,7 +15,7 @@ import org.ivc.transportation.entities.Department;
  */
 public interface DepartmentService {
 
-    public void addDepartment(Department d);
+    public void saveDepartment(Department d);
 
     public void updateDepartment(Department d, Long id);
 

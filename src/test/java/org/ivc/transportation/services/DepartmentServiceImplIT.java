@@ -72,7 +72,7 @@ public class DepartmentServiceImplIT {
     }
 
     /**
-     * Test of addDepartment method, of class DepartmentServiceImpl.
+     * Test of saveDepartment method, of class DepartmentServiceImpl.
      */
     @Test
     public void testAdd100Department() {
@@ -81,7 +81,7 @@ public class DepartmentServiceImplIT {
         String address = "Новый адрес";
         for (int i = 0; i < addDepNumber; i++) {
             Department d = new Department(name + " " + i, address + " " + i);
-            departmentService.addDepartment(d);
+            departmentService.saveDepartment(d);
             returnList.add(d);
         }        
         Collection<Department > resultCollection = departmentService.getDepartments();
