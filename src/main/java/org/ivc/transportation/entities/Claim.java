@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.ClaimType;
 
 /**
  *
@@ -42,13 +44,13 @@ public class Claim implements Serializable {
     private Boolean affirmation;
 
     @Column(nullable = false)
-    private byte tip;
+    private ClaimType tip;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    public Claim(Date clDate, Byte tip, Department dep) {
+    public Claim(Date clDate, ClaimType tip, Department dep) {
         this.clDate = clDate;
         this.affirmation = false;
         this.tip = tip;

@@ -8,6 +8,7 @@ package org.ivc.transportation.repositories;
 import java.util.List;
 import java.sql.Date;
 import java.util.stream.Stream;
+import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.entities.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,9 +29,9 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByAffirmationOrderByClDateAsc(Boolean a);
 
-    List<Claim> findByTipOrderByClDateDesc(byte t);
+    List<Claim> findByTipOrderByClDateDesc(ClaimType t);
 
-    List<Claim> findByTipOrderByClDateAsc(byte t);
+    List<Claim> findByTipOrderByClDateAsc(ClaimType t);
 
     List<Claim> findByDepartmentIdAndAffirmationOrderByClDateDesc(Long id, Boolean a);
 

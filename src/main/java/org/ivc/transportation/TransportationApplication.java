@@ -3,13 +3,19 @@ package org.ivc.transportation;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.sql.Time;
+import java.time.LocalTime;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.ClaimType;
+import org.ivc.transportation.config.trUtils.RecordStatus;
 
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.repositories.RoleRepository;
@@ -17,6 +23,7 @@ import org.ivc.transportation.repositories.UserRepository;
 
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
+import org.ivc.transportation.services.PlanService;
 import org.ivc.transportation.services.TransportDepService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +68,8 @@ public class TransportationApplication {
 
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PlanService plS;
 
     @PostConstruct
     @Transactional
@@ -121,22 +130,40 @@ public class TransportationApplication {
         depS.saveDepartment(dep4);
         depS.saveDepartment(dep5);
 
-        Byte[] q = {0, 1};
-        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), q[0], dep1);
+        
+        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep1);
         cl1.setAffirmation(Boolean.FALSE);
-        Claim cl2 = new Claim(Date.valueOf("2018-10-20"), q[1], dep2);
+        Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
-        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), q[0], dep1);
+        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_spec, dep1);
         cl3.setAffirmation(Boolean.TRUE);
-        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), q[1], dep2);
+        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_car, dep2);
         cl4.setAffirmation(Boolean.FALSE);
-        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), q[0], dep1);
+        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_urgent, dep1);
         cl5.setAffirmation(Boolean.FALSE);
         clS.addClaim(cl1);
         clS.addClaim(cl2);
         clS.addClaim(cl3);
         clS.addClaim(cl4);
         clS.addClaim(cl5);
+
+        String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
+        
+        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        rec1.setStatus(RecordStatus.record_status_created);
+        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        rec2.setStatus(RecordStatus.record_status_inprogress);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        rec3.setStatus(RecordStatus.record_status_created);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), "12", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон2", cl2);
+        rec4.setStatus(RecordStatus.record_status_inprogress);
+        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), "12", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон2", cl2);
+        rec5.setStatus(RecordStatus.record_status_completed);
+        clS.addRecord(rec1);
+        clS.addRecord(rec2);
+        clS.addRecord(rec3);
+        clS.addRecord(rec4);
+        clS.addRecord(rec5);
 
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
@@ -152,10 +179,10 @@ public class TransportationApplication {
         clS.getAllClaimsSortByDateAsk().forEach(System.out::println);
         System.out.println("-----------order by date desc-----------------");
         clS.getAllClaimsSortByDate().forEach(System.out::println);
-        System.out.println("-----------by tip 1 order date desc-----------------");
-        clS.getClaimsByTip(q[1]).forEach(System.out::println);
-        System.out.println("-----------by tip 0 order date asc-----------------");
-        clS.getClaimsByTipAsc(q[0]).forEach(System.out::println);
+        System.out.println("-----------by tip car order date desc-----------------");
+        clS.getClaimsByTip(ClaimType.claim_type_car).forEach(System.out::println);
+        System.out.println("-----------by tip weekly order date asc-----------------");
+        clS.getClaimsByTipAsc(ClaimType.claim_type_weekly).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date desc-----------------");
         clS.getClaimsByAffirmation(Boolean.TRUE).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date asc-----------------");
@@ -184,7 +211,18 @@ public class TransportationApplication {
         clS.getClaimsByDepAndAffirmationAsc(dep2.getId(), Boolean.FALSE).forEach(System.out::println);
         System.out.println("-----------by Date 2018-10-20-----------------");
         clS.getClaimsByclDate(Date.valueOf("2018-10-20")).forEach(System.out::println);
-
+        System.out.println("-----#######################################-----------------------");
+        System.out.println("-----------Record table-----------------");
+        clS.getRecords().forEach(System.out::println);
+        System.out.println("-----------Record by Date-----------------");
+        clS.getRecordsByDate(Date.valueOf("2018-10-20")).forEach(System.out::println);
+        System.out.println("-----------Record by Hash s6d54g6s846h5-----------------");
+        clS.getRecordsByHash("s6d54g6s846h5").forEach(System.out::println);
+        System.out.println("-----------Record by record_status_inprogress-----------------");
+        clS.getRecordsByState(RecordStatus.record_status_inprogress).forEach(System.out::println);
+        System.out.println("-----------Record by Claim 2-----------------");
+        clS.getRecordsByClaim(cl2.getId()).forEach(System.out::println);
+        System.out.println("-----------###########################-----------------");
     }
 
     public static void main(String[] args) {

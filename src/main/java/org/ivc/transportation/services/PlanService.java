@@ -8,6 +8,7 @@ package org.ivc.transportation.services;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Plan;
 import org.ivc.transportation.entities.Record;
 
@@ -33,10 +34,10 @@ public interface PlanService {
     
     public Collection<Record> getRecordsByPlan(Long id);
     
-    public Collection<Record> getRecordsByState(byte t);
+    public Collection<Record> getRecordsByState(RecordStatus t);
     
     public Collection<Record> getRecordsByDate(Date d);
     
-    public Collection<Record> getRecordsByStateAndDate(byte t,Date d);
+    public Collection<Record> getRecordsByStateAndDate(RecordStatus t,Date d);
 
 }

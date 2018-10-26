@@ -8,6 +8,7 @@ package org.ivc.transportation.services;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Plan;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.PlanRepository;
@@ -80,7 +81,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public Collection<Record> getRecordsByState(byte t) {
+    public Collection<Record> getRecordsByState(RecordStatus t) {
         return recRep.findByStatus(t);
     }
 
@@ -92,7 +93,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public Collection<Record> getRecordsByStateAndDate(byte t, Date d) {
+    public Collection<Record> getRecordsByStateAndDate(RecordStatus t, Date d) {
         return recRep.findByStatusAndDatetime(t, d);
     }
 
