@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="newApp">
+<head>
+	<meta charset="utf-8">
+	<title>JSON в Angular.js</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<script>
+		var newApp = angular.module('newApp', []);
+		 newApp.controller('responseCtrl', function ($scope, $http){
+			$http.get('departments').success(function(data) {
+				$scope.departments = data;
+			});
+		});
+	</script>
+</head>
+<body ng-controller="responseCtrl">
+	<h2>JSON в Angular.js</h2 >
+	<table class="table table-striped">
+		<tr>
+			<th>Код</th>
+			<th>Название</th>
+			<th>адрес</th>
+		</tr>
+		<tr ng-repeat="department in departments | orderBy: 'name' ">
+			<td>{{department.id}}</td>
+			<td>{{department.name}}</td>
+			<td>{{department.addres}}</td>
+		</tr>
+	</table>
+</body>
+</html>
