@@ -11,4 +11,9 @@ package org.ivc.transportation.exceptions;
  */
 
 public class NonExistingDepartmentException  extends NullPointerException {
+
+    public NonExistingDepartmentException(String s) {
+        super(s);
+    }    
+    
 }

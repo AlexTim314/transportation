@@ -36,10 +36,14 @@ public class DepartmentController {
     public Department getDepartment(@PathVariable long id) {
         Optional<Department> optDep = service.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
-            System.out.println("Error in " + DepartmentController.class
-                    + " when try get Department by id = " + id + ".");
+                        
+            String ruMessage = "Транспортный отдел с запрошенным номером не"
+                    + " найден в базе. ID = " + id + ". ";
+            String engMessage = "Error in " + DepartmentController.class
+                    + " when try get Department by id = " + id + ".";
 
-            return new NonExistingDepartmentException();
+            return new NonExistingDepartmentException(ruMessage 
+                    + System.lineSeparator() + engMessage);
         });
     }
 

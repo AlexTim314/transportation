@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -21,7 +23,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllersExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ResponseBody
     @ExceptionHandler(NonExistingDepartmentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {
+        return ex.getMessage();
+    }
+    /* @ExceptionHandler(NonExistingDepartmentException.class)
     protected ResponseEntity<ControllersException> handleNonExistingDepartmentException() {
         return new ResponseEntity<>(new ControllersException("Не найдено подразделение с таким ID номером. There is no such Department."), HttpStatus.NOT_FOUND);
     }
@@ -31,5 +39,5 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     private static class ControllersException {
         private String message;
     }
-    
+    */
 }

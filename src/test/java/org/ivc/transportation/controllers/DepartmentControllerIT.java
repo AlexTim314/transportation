@@ -37,12 +37,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//@AutoConfigureMockMvc
 public class DepartmentControllerIT {
 
-    /* @Autowired
-    private MockMvc mvc;
-     */
     @MockBean
     private DepartmentService departmentService;
 
@@ -51,7 +47,7 @@ public class DepartmentControllerIT {
 
     @LocalServerPort
     private int port;
-    
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -88,7 +84,7 @@ public class DepartmentControllerIT {
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(departmentResponse.getBody().equals(allDep));
+        assertThat(departmentResponse.getBody()).isEqualTo(allDep);
     }
 
     @Test
@@ -104,7 +100,7 @@ public class DepartmentControllerIT {
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(departmentResponse.getBody().equals(emptyDepartment));
+        assertThat(departmentResponse.getBody()).isEqualTo(emptyDepartment);
     }
 
     @Test
@@ -121,9 +117,9 @@ public class DepartmentControllerIT {
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(departmentResponse.getBody().equals(dep));        
+        assertThat(departmentResponse.getBody()).isEqualTo(dep);
     }
-    
+
     @Test
     public void whenDelById_thatExist_thenDepartmentCountDecrease() throws Exception {
         // given
@@ -131,22 +127,46 @@ public class DepartmentControllerIT {
         Department dep = allDep.get(index);
         long id = rand.nextLong();
         dep.setId(id);
-        //given(departmentService).
+        //given(departmentService.removeDepartment(id)).
         //willAnswer(invocation -> this.)given(departmentService).
-                willAnswer((iom) -> {
-                    allDep.remove(index);
-                    return null; //To change body of generated lambdas, choose Tools | Templates.
-                })
+        willAnswer((iom) -> {
+            allDep.remove(index);
+            return null;
+        })
                 .given(departmentService).removeDepartment(id);
 
         // when
+        /*
         ResponseEntity<Department> departmentResponse
                 = restTemplate.getForEntity(url + "/" + id, Department.class);
+        restTemplate.delete(url + "/" + id);
+        */
+        //when
+        ResponseEntity<List<Department>> departmentResponse = restTemplate.exchange(
+                url + "/" + id,
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<List<Department>>() {
+        });
 
         // then
+        assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(departmentResponse.getBody()).isEqualTo(allDep);        
+        
+        
+        // then
+        // then
         //assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(allDep.size() == DEP_NUMBER - 1);        
+        //assertThat(departmentResponse.getBody()).isEqualTo(allDep);
+        assertThat(allDep.size()).isEqualTo(DEP_NUMBER - 1);
     }
-    
+    /*
+    пример тестирования void метода или метода с сайд эффектами
+    willAnswer((iom) -> {
+            allDep.remove(index);
+            return null; //To change body of generated lambdas, choose Tools | Templates.
+        })
+                .given(departmentService).removeDepartment(id);
+     */
 
 }
