@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -48,17 +49,23 @@ public class DepartmentControllerIT {
     @MockBean
     private ClaimService claimService;
 
+    @LocalServerPort
+    private int port;
+    
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private String url;
     private List<Department> allDep;
 
     private static final int DEP_NUMBER = 10;
-    private static final String DEP_URL = "/departments";
+    private static final String LOCALHOST = "http://localhost:";
+    private static final String DEP_URL = "transportation/departments";
     private final Random rand = new Random();
 
     @Before
     public void setUp() {
+        url = LOCALHOST + port + DEP_URL;
         allDep = new ArrayList<>();
         for (int i = 0; i < DEP_NUMBER; i++) {
             Department d = new Department("Название " + i, "Адрес " + i);
@@ -73,7 +80,7 @@ public class DepartmentControllerIT {
 
         //when
         ResponseEntity<List<Department>> departmentResponse = restTemplate.exchange(
-                DEP_URL,
+                url,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Department>>() {
@@ -93,7 +100,7 @@ public class DepartmentControllerIT {
 
         // when
         ResponseEntity<Department> departmentResponse
-                = restTemplate.getForEntity(DEP_URL + "/" + id, Department.class);
+                = restTemplate.getForEntity(url + "/" + id, Department.class);
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -110,7 +117,7 @@ public class DepartmentControllerIT {
 
         // when
         ResponseEntity<Department> departmentResponse
-                = restTemplate.getForEntity(DEP_URL + "/" + id, Department.class);
+                = restTemplate.getForEntity(url + "/" + id, Department.class);
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -134,7 +141,7 @@ public class DepartmentControllerIT {
 
         // when
         ResponseEntity<Department> departmentResponse
-                = restTemplate.getForEntity(DEP_URL + "/" + id, Department.class);
+                = restTemplate.getForEntity(url + "/" + id, Department.class);
 
         // then
         //assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
