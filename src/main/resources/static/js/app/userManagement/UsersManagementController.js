@@ -3,12 +3,13 @@
 App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
     function ($scope, UsersManagementService) {
         var self = this;
-        self.user = {userId: null, userName: '', department: {name: ""}, roles: []};
+        self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
         self.role = {roleName: null};
         self.department = {name: null};
         self.users = [];
         self.roles = [];
         self.departments = [];
+        self.transportDeps = [];
         self.curUserToDeleteName = '';
 
         self.fetchAllUsers = function () {
@@ -50,9 +51,23 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
                     );
         };
 
+        self.fetchAllTransportDeps = function () {
+            UsersManagementService.fetchAllTransportDeps()
+                    .then(
+                            function (d) {
+                                self.transportDeps = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching TransportDeps');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
         self.fetchAllUsers();
         self.fetchAllRoles();
         self.fetchAllDepartments();
+        self.fetchAllTransportDeps();
 
         self.createUser = function (user) {
             UsersManagementService.createUser(user)
@@ -66,14 +81,14 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.updateUser = function (user) {
-//            OrganizationService.updateOrganization(self.currentOrganization, organization)
-//                    .then(
-//                            self.fetchAllOrganizations,
-//                            function (errResponse) {
-//                                console.error('Error while updating Organization.');
-//                                showAlert(errResponse);
-//                            }
-//                    );
+            UsersManagementService.updateUser(user)
+                    .then(
+                            self.fetchAllUsers,
+                            function (errResponse) {
+                                console.error('Error while updating User.');
+                                showAlert(errResponse);
+                            }
+                    );
         };
 
         self.deleteUser = function (user) {
@@ -100,6 +115,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.userId = user.userId;
             self.user.userName = user.userName;
             self.user.department = user.department;
+            self.user.transportDep = user.transportDep;
             self.user.roles = user.roles.slice();
 //            console.log('Organization name to be edited', orgName);
 //            self.currentOrganization.name = orgName;
@@ -130,7 +146,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
 //        };
 
         self.reset = function () {
-            self.user = {userId: null, userName: '', department: {name: ""}, roles: []};
+            self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
             self.role = {roleName: null};
         };
 

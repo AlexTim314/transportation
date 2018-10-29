@@ -23,16 +23,26 @@
             <table border="0">
                 <tr ng-view="false">
                     <td>Username:</td>
-                    <td><input type="text" ng-model="ctrl.user.userName" size="16"/></td>
+                    <td><input type="text" ng-disabled="ctrl.user.userId !== null" ng-model="ctrl.user.userName" size="16"/></td>
                 </tr>
-                <tr>
+                <tr ng-show="ctrl.user.userId===null">
                     <td>Password:</td>
                     <td><input type='password' name='password' ng-model="ctrl.user.password"/></td>
                 </tr>
                 <tr>
                     <td>Department</td>
                     <td>
-                        <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department"></select>
+                        <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
+                            <option value="">NONE</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Transport Department</td>
+                    <td>
+                        <select ng-options="td as td.name for td in ctrl.transportDeps track by td.id" ng-model="ctrl.user.transportDep">
+                            <option value="">NONE</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -64,6 +74,7 @@
             <tr>
                 <th>Username</th>
                 <th>Department</th>
+                <th>Transport Department</th>
                 <th>Roles</th>
                 <th></th>
                 <th></th>
@@ -72,6 +83,7 @@
             <tr ng-repeat="user in ctrl.users">
                 <td> {{user.userName}}</td>
                 <td> {{user.department.name}}</td>
+                <td> {{user.transportDep.name}}</td>
                 <td ><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
                 <td>
                     <button ng-click="ctrl.editUser(user)" class="edit-button">edit</button>

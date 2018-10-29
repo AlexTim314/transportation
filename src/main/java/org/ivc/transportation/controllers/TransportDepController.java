@@ -32,7 +32,7 @@ public class TransportDepController {
     private static final String url = "/transportdeps";
 
     @Autowired
-    private TransportDepService localServ;
+    private TransportDepService transportDepService;
 
     @Autowired
     private DriverService drvServ;
@@ -40,30 +40,35 @@ public class TransportDepController {
     @Autowired
     private VechicleService vechServ;
 
+    @GetMapping("/transportDeps")
+    public Collection<TransportDep> getAllTransportDeps() {
+        return transportDepService.getTransportDeps();
+    }
+
     @GetMapping(url)
     public Collection<TransportDep> getTransportDeps() {
-        return localServ.getTransportDeps();
+        return transportDepService.getTransportDeps();
     }
 
     @GetMapping(url + "/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
-        Optional<TransportDep> dep = localServ.getTransportDepById(id);
+        Optional<TransportDep> dep = transportDepService.getTransportDepById(id);
         return dep.get();
     }
 
     @DeleteMapping(url + "/{id}")
     public void delTransportDep(@PathVariable Long id) {
-        localServ.removeTransportDep(id);
+        transportDepService.removeTransportDep(id);
     }
 
     @PostMapping(url)
     public void addTransportDep(@RequestBody TransportDep department) {
-        localServ.addTransportDep(department);
+        transportDepService.addTransportDep(department);
     }
 
     @PutMapping(url + "/{id}")
     public void updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
-        localServ.updateTransportDep(dep, id);
+        transportDepService.updateTransportDep(dep, id);
     }
 
     @GetMapping(url + "/{id}/drivers")

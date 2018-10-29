@@ -74,8 +74,8 @@ public class TransportationApplication {
         userRepository.saveAndFlush(admin);
         userRepository.saveAndFlush(user);
 
-        TransportDep transportDep1 = new TransportDep(1, "dAdr1", "dphone1");
-        TransportDep transportDep2 = new TransportDep(2, "dAdr2", "dphone2");
+        TransportDep transportDep1 = new TransportDep("TransportDep1", "dAdr1", "dphone1");
+        TransportDep transportDep2 = new TransportDep("TransportDep2", "dAdr2", "dphone2");
         tdS.addTransportDep(transportDep1);
         tdS.addTransportDep(transportDep2);
 

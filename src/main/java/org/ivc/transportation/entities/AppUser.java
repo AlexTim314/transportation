@@ -44,8 +44,6 @@ public class AppUser {
     @ManyToOne
     private TransportDep transportDep;
 
-//    @ManyToOne
-//    private Department department;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "User_Role", joinColumns = @JoinColumn(name = "User_Id"), inverseJoinColumns = @JoinColumn(name = "Role_Id"))
     private Set<AppRole> roles;
