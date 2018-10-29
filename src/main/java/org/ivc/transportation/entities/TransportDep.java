@@ -35,18 +35,18 @@ public class TransportDep implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(nullable = false)
-    private Integer numDep;  //number of department
-    
+    @Column(nullable = false, unique = true)
+    private String name;  //number of department
+
     @NonNull
     private String addres;
-    
+
     @NonNull
     private String phone;
-    
-    public TransportDep(Integer numDep, String addres, String phone) {
-        this.numDep=numDep;
-        this.addres=addres;
-        this.phone=phone;
+
+    public TransportDep(String name, String addres, String phone) {
+        this.name = name;
+        this.addres = addres;
+        this.phone = phone;
     }
 }

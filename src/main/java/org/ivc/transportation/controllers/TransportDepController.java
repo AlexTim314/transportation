@@ -25,54 +25,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/transportdeps")
+@RequestMapping("/transportDeps")
 public class TransportDepController {
 
     @Autowired
-    private TransportDepService tdServ;
+    private TransportDepService tdService;
 
     @GetMapping()
     public Collection<TransportDep> getTransportDeps() {
-        return tdServ.getTransportDeps();
+        return tdService.getTransportDeps();
     }
 
     @GetMapping("/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
-        Optional<TransportDep> dep = tdServ.getTransportDepById(id);
+        Optional<TransportDep> dep = tdService.getTransportDepById(id);
         return dep.get();
     }
 
     @DeleteMapping("/{id}")
     public Collection<TransportDep> delTransportDep(@PathVariable Long id) {
-        tdServ.removeTransportDep(id);
-        return tdServ.getTransportDeps();
+        tdService.removeTransportDep(id);
+        return tdService.getTransportDeps();
     }
 
     @PostMapping()
     public Collection<TransportDep> addTransportDep(@RequestBody TransportDep department) {
-        tdServ.addTransportDep(department);
-        return tdServ.getTransportDeps();
+        tdService.addTransportDep(department);
+        return tdService.getTransportDeps();
     }
 
     @PutMapping("/{id}")
     public Collection<TransportDep> updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
-        tdServ.updateTransportDep(dep, id);
-        return tdServ.getTransportDeps();
+        tdService.updateTransportDep(dep, id);
+        return tdService.getTransportDeps();
     }
 
     @GetMapping("/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable Long id) {
-        return tdServ.getDriversByTransportDepId(id);
+        return tdService.getDriversByTransportDepId(id);
     }
 
     @PostMapping("/{id}/drivers")
     public Collection<Driver> addDriver(@PathVariable Long id, @RequestBody Driver d) throws Throwable {
-        Optional<TransportDep> otd = tdServ.getTransportDepById(id);
+        Optional<TransportDep> otd = tdService.getTransportDepById(id);
         d.setTransportDep(otd.orElseThrow(() -> {
-            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + id); 
+            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + id);
         }));
-        tdServ.addDriver(d);
-        return tdServ.getDriversByTransportDepId(id);
+        tdService.addDriver(d);
+        return tdService.getDriversByTransportDepId(id);
     }
 
-    }
+}

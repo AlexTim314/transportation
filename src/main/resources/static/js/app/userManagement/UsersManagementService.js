@@ -45,6 +45,18 @@ App.factory('UsersManagementService', ['$http', '$q', '$document', function ($ht
                                 }
                         );
             },
+            fetchAllTransportDeps: function () {
+                return $http.get('/transportation/transportDeps')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching transportDeps');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             createUser: function (user) {
                 return $http.post('/transportation/users/create',
                         JSON.stringify(user), {headers: self.headers})
