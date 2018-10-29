@@ -8,6 +8,7 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.RecordStatus;
 
 /**
  *
@@ -52,7 +55,7 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Date arrivalTime;
+    private Time arrivalTime;
 
     @NonNull
     @Column(nullable = false, length = 1024)
@@ -60,7 +63,7 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private String status;
+    private RecordStatus status;
 
     @Column(length = 1024)
     private String serviceField;
@@ -76,14 +79,14 @@ public class Record implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plan;
 
-    public Record(String weekHash, Date datetime, String usageTime, Date arrivalTime,
-            String purpose, String status, String serviceField, String templateName, Claim claim) {
+    public Record(String weekHash, Date datetime, String usageTime, Time arrivalTime,
+            String purpose, String serviceField, String templateName, Claim claim) {
         this.arrivalTime = arrivalTime;
         this.claim = claim;
         this.datetime = datetime;
         this.purpose = purpose;
         this.serviceField = serviceField;
-        this.status = status;
+        this.status = RecordStatus.record_status_created;
         this.templateName = templateName;
         this.usageTime = usageTime;
         this.weekHash = weekHash;

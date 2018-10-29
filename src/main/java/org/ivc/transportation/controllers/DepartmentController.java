@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService service;
-    
+
     @Autowired
     private ClaimService claimServ;
 
@@ -35,27 +36,33 @@ public class DepartmentController {
     public Department getDepartment(@PathVariable long id) {
         Optional<Department> optDep = service.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
+                        
+            String ruMessage = "Транспортный отдел с запрошенным номером не"
+                    + " найден в базе. ID = " + id + ". ";
             String engMessage = "Error in " + DepartmentController.class
                     + " when try get Department by id = " + id + ".";
-            String ruMessage = "Ошибка в " + DepartmentController.class
-                    + " при попытке получить Department c ID = " + id + ".";
-            return new NullPointerException(engMessage + " " + ruMessage);
+
+            return new NonExistingDepartmentException(ruMessage 
+                    + System.lineSeparator() + engMessage);
         });
     }
 
     @DeleteMapping("/{id}")
-    public void delDepartment(@PathVariable long id) {
+    public Collection<Department> delDepartment(@PathVariable long id) {
         service.removeDepartment(id);
+        return service.getDepartments();
     }
 
     @PostMapping()
-    public void addDepartment(@RequestBody Department department) {
+    public Collection<Department> addDepartment(@RequestBody Department department) {
         service.saveDepartment(department);
+        return service.getDepartments();
     }
 
     @PutMapping("/{id}")
-    public void updateDepartment(@RequestBody Department dep, @PathVariable long id) {
+    public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
         service.updateDepartment(dep, id);
+        return service.getDepartments();
     }
 
     @GetMapping("/{id}/claims")

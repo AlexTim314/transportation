@@ -11,12 +11,8 @@ package org.ivc.transportation.controllers;
  */
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.Vechicle;
-import org.ivc.transportation.services.DriverService;
 import org.ivc.transportation.services.TransportDepService;
-import org.ivc.transportation.services.VechicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +29,6 @@ public class TransportDepController {
 
     @Autowired
     private TransportDepService transportDepService;
-
-    @Autowired
-    private DriverService drvServ;
-
-    @Autowired
-    private VechicleService vechServ;
 
     @GetMapping("/transportDeps")
     public Collection<TransportDep> getAllTransportDeps() {
@@ -69,16 +59,6 @@ public class TransportDepController {
     @PutMapping(url + "/{id}")
     public void updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
         transportDepService.updateTransportDep(dep, id);
-    }
-
-    @GetMapping(url + "/{id}/drivers")
-    public Collection<Driver> getDrivers(@PathVariable Long id) {
-        return drvServ.getDriversByTransportDepId(id);
-    }
-
-    @GetMapping(url + "/{id}/vechicles")
-    public Collection<Vechicle> getVechicles(@PathVariable Long id) {
-        return vechServ.getVechiclesByTransportDepId(id);
     }
 
 }
