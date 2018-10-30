@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +31,6 @@ public class MainController {
         System.out.println(loginedUser.getUsername());
         return "admin/usersManagementPage";
     }
-
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
@@ -97,18 +97,30 @@ public class MainController {
         return "403Page";
     }
 
-    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET)
-    public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
+//    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET)
+//    public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
+//        if (principal != null) {
+//            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+//            if (department.getId() != id) {
+//                return accessDenied(model, principal);
+//            }
+//            String userInfo = WebUtils.toString(loginedUser);
+//            model.addAttribute("userInfo", userInfo);
+//            model.addAttribute("department", department);
+//            return "someDepartment";
+//        }
+//        return accessDenied(model, principal);
+//    }
+    
+    @GetMapping("/departments")
+    public String getDepartments(Model model, Principal principal) {
+         System.out.println("getDepartments !!!!!!!!!!!!!!!!!!!");
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
-            if (department.getId() != id) {
-                return accessDenied(model, principal);
-            }
-            String userInfo = WebUtils.toString(loginedUser);
-            model.addAttribute("userInfo", userInfo);
-            model.addAttribute("department", department);
-            return "someDepartment";
+        String userInfo = WebUtils.toString(loginedUser);
+        
+            return "departmentPage";
         }
         return accessDenied(model, principal);
     }

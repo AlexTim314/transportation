@@ -8,6 +8,7 @@ import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/departments")
+//@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
@@ -27,8 +28,9 @@ public class DepartmentController {
     @Autowired
     private ClaimService claimServ;
 
-    @GetMapping()
-    public Collection<Department> getDepartments() {
+   @GetMapping()
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Collection<Department> getAllDepartments() {
         return service.getDepartments();
     }
 
@@ -53,7 +55,7 @@ public class DepartmentController {
         return service.getDepartments();
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     public Collection<Department> addDepartment(@RequestBody Department department) {
         service.saveDepartment(department);
         return service.getDepartments();

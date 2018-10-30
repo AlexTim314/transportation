@@ -10,7 +10,6 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         self.roles = [];
         self.departments = [];
         self.transportDeps = [];
-        self.curUserToDeleteName = '';
 
         self.fetchAllUsers = function () {
             UsersManagementService.fetchAllUsers()
