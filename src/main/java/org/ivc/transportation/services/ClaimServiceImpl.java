@@ -32,7 +32,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Autowired
     private ClaimRepository claimRep;
     @Autowired
-    private RecordRepository recRep;
+    private RecordRepository recordRep;
 
     @Override
     @Transactional
@@ -110,62 +110,62 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public void addRecord(Record d) {
-        this.recRep.save(d);
+        this.recordRep.save(d);
     }
 
     @Override
     @Transactional
     public void updateRecord(Record d, Long id) {
         d.setId(id);
-        recRep.save(d);
+        recordRep.save(d);
         updateClaim(d.getClaim().getId());
     }
 
     @Override
     @Transactional
     public void removeRecord(Long id) {
-        recRep.deleteById(id);
+        recordRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Optional getRecordsById(Long id) {
-        return recRep.findById(id);
+        return recordRep.findById(id);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecords() {
-       return recRep.findAll();
+       return recordRep.findAll();
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByClaim(Long id) {
-        return recRep.findByClaimId(id);
+        return recordRep.findByClaimId(id);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByState(RecordStatus t) {
-        return recRep.findByStatus(t);
+        return recordRep.findByStatus(t);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByDate(Date d) {
-       return recRep.findByDatetime(d);
+       return recordRep.findByDatetime(d);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByHash(String d) {
-        return recRep.findByWeekHash(d);
+        return recordRep.findByWeekHash(d);
     }
     
     public void updateClaim(Long id){
         List<Record> recList;
-        recList = recRep.findByClaimId(id);
+        recList = recordRep.findByClaimId(id);
         
     
     }

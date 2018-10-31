@@ -29,50 +29,50 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransportDepController {
 
     @Autowired
-    private TransportDepService tdService;
+    private TransportDepService transportDepService;
 
     @GetMapping()
     public Collection<TransportDep> getTransportDeps() {
-        return tdService.getTransportDeps();
+        return transportDepService.getTransportDeps();
     }
 
     @GetMapping("/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
-        Optional<TransportDep> dep = tdService.getTransportDepById(id);
+        Optional<TransportDep> dep = transportDepService.getTransportDepById(id);
         return dep.get();
     }
 
     @DeleteMapping("/{id}")
     public Collection<TransportDep> delTransportDep(@PathVariable Long id) {
-        tdService.removeTransportDep(id);
-        return tdService.getTransportDeps();
+        transportDepService.removeTransportDep(id);
+        return transportDepService.getTransportDeps();
     }
 
     @PostMapping()
     public Collection<TransportDep> addTransportDep(@RequestBody TransportDep department) {
-        tdService.addTransportDep(department);
-        return tdService.getTransportDeps();
+        transportDepService.addTransportDep(department);
+        return transportDepService.getTransportDeps();
     }
 
     @PutMapping("/{id}")
     public Collection<TransportDep> updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
-        tdService.updateTransportDep(dep, id);
-        return tdService.getTransportDeps();
+        transportDepService.updateTransportDep(dep, id);
+        return transportDepService.getTransportDeps();
     }
 
     @GetMapping("/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable Long id) {
-        return tdService.getDriversByTransportDepId(id);
+        return transportDepService.getDriversByTransportDepId(id);
     }
 
     @PostMapping("/{id}/drivers")
     public Collection<Driver> addDriver(@PathVariable Long id, @RequestBody Driver d) throws Throwable {
-        Optional<TransportDep> otd = tdService.getTransportDepById(id);
+        Optional<TransportDep> otd = transportDepService.getTransportDepById(id);
         d.setTransportDep(otd.orElseThrow(() -> {
             return new IllegalArgumentException("В базе нет транспортного отдела с id=" + id);
         }));
-        tdService.addDriver(d);
-        return tdService.getDriversByTransportDepId(id);
+        transportDepService.addDriver(d);
+        return transportDepService.getDriversByTransportDepId(id);
     }
 
 }

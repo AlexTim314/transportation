@@ -19,24 +19,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/departments")
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
-    private DepartmentService service;
+    private DepartmentService departmentService;
 
     @Autowired
-    private ClaimService claimServ;
+    private ClaimService claimService;
 
-   @GetMapping()
-    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping()
     public Collection<Department> getAllDepartments() {
-        return service.getDepartments();
+        return departmentService.getDepartments();
     }
 
     @GetMapping("/{id}")
     public Department getDepartment(@PathVariable long id) {
-        Optional<Department> optDep = service.getDepartmentById(id);
+        Optional<Department> optDep = departmentService.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
 
             String ruMessage = "Транспортный отдел с запрошенным номером не"
@@ -51,25 +50,25 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     public Collection<Department> delDepartment(@PathVariable long id) {
-        service.removeDepartment(id);
-        return service.getDepartments();
+        departmentService.removeDepartment(id);
+        return departmentService.getDepartments();
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public Collection<Department> addDepartment(@RequestBody Department department) {
-        service.saveDepartment(department);
-        return service.getDepartments();
+        departmentService.saveDepartment(department);
+        return departmentService.getDepartments();
     }
 
     @PutMapping("/{id}")
     public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
-        service.updateDepartment(dep, id);
-        return service.getDepartments();
+        departmentService.updateDepartment(dep, id);
+        return departmentService.getDepartments();
     }
 
     @GetMapping("/{id}/claims")
     public Collection<Claim> getClaims(@PathVariable Long id) {
-        return claimServ.getClaimsByDepartment(id);
+        return claimService.getClaimsByDepartment(id);
     }
 
 }

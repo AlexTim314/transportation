@@ -97,32 +97,21 @@ public class MainController {
         return "403Page";
     }
 
-//    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET)
-//    public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
-//        if (principal != null) {
-//            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-//            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
-//            if (department.getId() != id) {
-//                return accessDenied(model, principal);
-//            }
-//            String userInfo = WebUtils.toString(loginedUser);
-//            model.addAttribute("userInfo", userInfo);
-//            model.addAttribute("department", department);
-//            return "someDepartment";
-//        }
-//        return accessDenied(model, principal);
-//    }
-    
-    @GetMapping("/departments")
-    public String getDepartments(Model model, Principal principal) {
-         System.out.println("getDepartments !!!!!!!!!!!!!!!!!!!");
+    @RequestMapping(value = "/department/{id}", method = RequestMethod.GET)
+    public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
-        String userInfo = WebUtils.toString(loginedUser);
-        
-            return "departmentPage";
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department.getId() != id) {
+                return accessDenied(model, principal);
+            }
+            String userInfo = WebUtils.toString(loginedUser);
+            model.addAttribute("userInfo", userInfo);
+            model.addAttribute("department", department);
+            return "someDepartment";
         }
         return accessDenied(model, principal);
     }
+    
 
 }
