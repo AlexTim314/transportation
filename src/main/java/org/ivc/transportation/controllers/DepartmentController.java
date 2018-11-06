@@ -1,5 +1,6 @@
 package org.ivc.transportation.controllers;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Claim;
@@ -7,8 +8,12 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
+import org.ivc.transportation.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/departments")
+//@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
@@ -28,12 +34,12 @@ public class DepartmentController {
     @Autowired
     private ClaimService claimService;
 
-    @GetMapping()
-    public Collection<Department> getAllDepartments() {
+    @GetMapping("/departments")   
+    public Collection<Department>getAllDepartments() {    
         return departmentService.getDepartments();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/departments/{id}")
     public Department getDepartment(@PathVariable long id) {
         Optional<Department> optDep = departmentService.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
@@ -48,25 +54,25 @@ public class DepartmentController {
         });
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/departments/delete")
     public Collection<Department> delDepartment(@PathVariable long id) {
         departmentService.removeDepartment(id);
         return departmentService.getDepartments();
     }
 
-    @PostMapping()
+    @PostMapping("/departments/create")
     public Collection<Department> addDepartment(@RequestBody Department department) {
         departmentService.saveDepartment(department);
         return departmentService.getDepartments();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/departments/update")
     public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
         departmentService.updateDepartment(dep, id);
         return departmentService.getDepartments();
     }
 
-    @GetMapping("/{id}/claims")
+    @GetMapping("/departments/{id}/claims")
     public Collection<Claim> getClaims(@PathVariable Long id) {
         return claimService.getClaimsByDepartment(id);
     }

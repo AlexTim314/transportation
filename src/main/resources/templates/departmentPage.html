@@ -1,51 +1,23 @@
 <!DOCTYPE html>
-<html ng-app="Transportation">
+
+<html lang="ru">
     <head>
         <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-        <meta charset="utf-8">
-        <title>JSON в Angular.js</title>
-        <link rel="stylesheet" href="@{css/main.css}">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js" ></script>
-        <script>
-            var newApp = angular.module('Transportation', []);
-            newApp.controller('MyController', function ($scope, $http){
-            
-            self.csrfHeaderName = $document[0].querySelector("meta[name='_csrf_header']").getAttribute('content');
-            self.csrf = $document[0].querySelector("meta[name='_csrf']").getAttribute('content');
-            self.headers = {};
-            self.headers[self.csrfHeaderName] = self.csrf;
-            self.headers["Content-Type"] = 'application/json';
-            
-            $http.get("/departments").success(function(data) {
-                $scope.departments = data;
-            });
-            
-            $scope.add = function(){
-            var user1 = $scope.angName;
-            var user2 = $scope.angAddres;
-            var obj = {
-                    name:user1,
-                    addres:user2
-            };
 
-            $http.post("/departments/create",JSON.stringify(obj), {headers: self.headers}).then(function(response){
-                if (response.obj)
-                 $scope.msg="Добавление успешно!"; 
-                 
-            },function(response){
-                $scope.msg="Service not exists";
-                $scope.statusval=response.status;
-                $scope.statustext=response.statusText;
-                $scope.headers=response.headers();
-            });       
-            }
-            
-            });
-        </script>
+        <title>Departments</title>
+        
+        <script src="js/lib/angular.min.js" ></script>
+<!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/department/DepartmentService.js"></script>
+        <script src="js/app/department/DepartmentController.js"></script>
+        
+        <link th:href="@{css/main.css}" rel="stylesheet" />
     </head>
-    <body ng-controller="MyController as ctrl">
-        <h2>JSON в Angular.js</h2 >
+    
+   <body ng-app="Transportation" ng-controller="DepartmentController as ctrl">
+        <h2>Departments</h2 >
         <table class="table table-striped">
             <tr>
                 <th>Код</th>
@@ -54,7 +26,9 @@
                 <th></th>
                 <th></th>
             </tr>
-            <tr ng-repeat="department in departments| orderBy: 'name' ">
+            
+             
+            <tr ng-repeat="department in ctrl.departments">
                 <td>{{department.id}}</td>
                 <td>{{department.name}}</td>
                 <td>{{department.addres}}</td>

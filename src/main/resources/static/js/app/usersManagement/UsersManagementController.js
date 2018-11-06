@@ -6,9 +6,9 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
         self.role = {roleName: null};
         self.department = {name: null};
+        self.departments = [];
         self.users = [];
         self.roles = [];
-        self.departments = [];
         self.transportDeps = [];
 
         self.fetchAllUsers = function () {
@@ -16,6 +16,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
                     .then(
                             function (d) {
                                 self.users = d;
+                                console.log('Slava - ! '+self.users.name);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Users');

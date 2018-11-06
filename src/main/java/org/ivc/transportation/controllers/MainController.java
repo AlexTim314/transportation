@@ -101,6 +101,7 @@ public class MainController {
     public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department.getId() != id) {
                 return accessDenied(model, principal);
@@ -113,5 +114,9 @@ public class MainController {
         return accessDenied(model, principal);
     }
     
-
+    @RequestMapping(value = "/departmentsShow", method = RequestMethod.GET)
+    public String getAllDepartments(Model model,Principal principal) {
+         User loginedUser = (User) ((Authentication) principal).getPrincipal();   
+        return "departmentPage";
+    }
 }
