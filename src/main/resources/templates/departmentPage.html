@@ -32,8 +32,8 @@
                 <td>{{department.id}}</td>
                 <td>{{department.name}}</td>
                 <td>{{department.addres}}</td>
-                <td><button class="btn">Изменить</button></td>
-                <td><button class="btn">Удалить</button></td>
+                <td><button class="btn" ng-click="ctrl.editDepartment(department)">Изменить</button></td>
+                <td><button class="btn" ng-click="ctrl.deleteDepartment(department.id)">Удалить</button></td>
             </tr>
         </table>
 	<div class="column_right">	

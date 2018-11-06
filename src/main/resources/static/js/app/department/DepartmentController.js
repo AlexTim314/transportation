@@ -34,7 +34,7 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
         };
 
         self.updateDepartment = function (department) {
-            DepartmentService.updateUser(department)
+            DepartmentService.updateDepartment(department)
                     .then(
                             self.fetchAllDepartments,
                             function (errResponse) {
@@ -44,8 +44,8 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
                     );
         };
 
-        self.deleteDepartment = function (department) {
-            DepartmentService.deleteDepartment(department)
+        self.deleteDepartment = function (id) {
+            DepartmentService.deleteDepartment(id)
                     .then(
                             self.fetchAllDepartments,
                             function (errResponse) {
@@ -65,9 +65,9 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
         };
 
         self.editDepartment = function (department) {
-            self.department.departmentId = department.departmentId;
-            self.department.departmentName = department.departmentName;
-            self.department.departmentAddres = department.departmentAddres;
+            self.department.id = department.id;
+            self.department.name = department.name;
+            self.department.addres = department.addres;
         };
 
 

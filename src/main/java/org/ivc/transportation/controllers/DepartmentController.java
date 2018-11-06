@@ -54,7 +54,7 @@ public class DepartmentController {
         });
     }
 
-    @DeleteMapping("/departments/delete")
+    @DeleteMapping("/departments/delete/{id}")
     public Collection<Department> delDepartment(@PathVariable long id) {
         departmentService.removeDepartment(id);
         return departmentService.getDepartments();

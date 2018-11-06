@@ -37,7 +37,7 @@ App.factory('DepartmentService', ['$http', '$q', '$document', function ($http, $
                         );
             },
             updateDepartment: function (department) {
-                return $http.put('/transportation/departments/update',
+                return $http.put('/transportation/departments/update/',
                         JSON.stringify(department), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -49,11 +49,10 @@ App.factory('DepartmentService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            deleteDepartment: function (department) {
-                console.log(department);
+            deleteDepartment: function (id) {
+                console.log(id);
                 return $http({method: 'DELETE',
-                    url: '/transportation/departments/delete',
-                    data: JSON.stringify(department),
+                    url: '/transportation/departments/delete/' +id,
                     headers: self.headers
                 }).then(
                         function (response) {
