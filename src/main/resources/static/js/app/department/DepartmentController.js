@@ -3,7 +3,7 @@
 App.controller('DepartmentController', ['$scope', 'DepartmentService',
     function ($scope, DepartmentService) {
         var self = this;
-        self.department = {departmentId: null, departmentName: '', departmentAddres: ''};
+        self.department = {id: null, name: '', addres: ''};
         self.departments = [];
 
 
