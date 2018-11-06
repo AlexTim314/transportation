@@ -25,47 +25,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/transportDeps")
+//@RequestMapping("/transportDeps")
 public class TransportDepController {
 
     @Autowired
     private TransportDepService transportDepService;
 
-    @GetMapping()
+    @GetMapping("/transportDeps")
     public Collection<TransportDep> getTransportDeps() {
         return transportDepService.getTransportDeps();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/transportDeps/{id}")
     public TransportDep getTransportDep(@PathVariable Long id) {
         Optional<TransportDep> dep = transportDepService.getTransportDepById(id);
         return dep.get();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/transportDeps/delete/{id}")
     public Collection<TransportDep> delTransportDep(@PathVariable Long id) {
         transportDepService.removeTransportDep(id);
         return transportDepService.getTransportDeps();
     }
 
-    @PostMapping()
+    @PostMapping("/transportDeps/create")
     public Collection<TransportDep> addTransportDep(@RequestBody TransportDep department) {
         transportDepService.addTransportDep(department);
         return transportDepService.getTransportDeps();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/transportDeps/update")
     public Collection<TransportDep> updateTransportDep(@RequestBody TransportDep dep, @PathVariable Long id) {
         transportDepService.updateTransportDep(dep, id);
         return transportDepService.getTransportDeps();
     }
 
-    @GetMapping("/{id}/drivers")
+    @GetMapping("/transportDeps/{id}/drivers")
     public Collection<Driver> getDrivers(@PathVariable Long id) {
         return transportDepService.getDriversByTransportDepId(id);
     }
 
-    @PostMapping("/{id}/drivers")
+    @PostMapping("/transportDeps/{id}/drivers/create")
     public Collection<Driver> addDriver(@PathVariable Long id, @RequestBody Driver d) throws Throwable {
         Optional<TransportDep> otd = transportDepService.getTransportDepById(id);
         d.setTransportDep(otd.orElseThrow(() -> {
