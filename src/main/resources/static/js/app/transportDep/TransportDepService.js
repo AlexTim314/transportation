@@ -77,7 +77,21 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                             return $q.reject(errResponse);
                         }
                 );
-            }
+            },
+            createDriver: function (idTransportDep, driver) {
+                console.log(idTransportDep + ' ' + driver)
+                return $http.post('/transportation/transportDeps/' + idTransportDep + '/drivers/create',
+                        JSON.stringify(driver), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating TransportDep(createDriver)');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
         };
 
