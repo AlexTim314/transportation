@@ -30,7 +30,7 @@
                             <div class="formcontainer">
                                 <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
                                                                 <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
-                                <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                                <form ng-submit="ctrl.submitTransportDep()" name="myForm" class="form-horizontal">
                                     <input type="hidden" ng-model="ctrl.transportDep.id" />
                                     <div class="row">
                                         <div class="form-group col-md-12">
@@ -62,7 +62,7 @@
                                     <div class="row">
                                         <div class="form-actions floatRight">
                                             <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createTransportDep(ctrl.transportDep)">{{ctrl.transportDep.id===null?'Добавить':'Изменить'}}</button> 
-                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                            <button type="button" ng-click="ctrl.resetTransportDep()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
                                         </div>
                                     </div>
                                 </form>
@@ -109,7 +109,7 @@
                             <div class="formcontainer">
                                 <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
                                                                 <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
-                                <form ng-submit="ctrl.createDriver()" name="driverForm" class="form-horizontal">
+                                <form ng-submit="ctrl.sumbitDriver()" name="driverForm" class="form-horizontal">
                             <input type="hidden" ng-model="ctrl.driver.id" />
                             <div class="row">
                                 <div class="form-group col-md-12">
@@ -180,7 +180,7 @@
                             <div class="row">
                                 <div class="form-actions floatRight">
                                     <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDriver(ctrl.driver)">{{ctrl.driver.id===null?'Добавить':'Изменить'}}</button> 
-                                    <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="driverForm.$pristine">Сбросить форму</button>
+                                    <button type="button" ng-click="ctrl.resetDriver()" class="btn btn-warning btn-sm" ng-disabled="driverForm.$pristine">Сбросить форму</button>
                                 </div>
                             </div>
 

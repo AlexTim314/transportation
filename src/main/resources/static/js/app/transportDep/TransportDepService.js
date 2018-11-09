@@ -64,7 +64,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                         );
             },
             deleteTransportDep: function (id) {
-                console.log(id);
+               // console.log(id);
                 return $http({method: 'DELETE',
                     url: '/transportation/transportDeps/delete/' + id,
                     headers: self.headers
@@ -79,7 +79,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                 );
             },
             createDriver: function (idTransportDep, driver) {
-                console.log(idTransportDep + ' ' + driver)
+              //  console.log(idTransportDep + ' ' + driver)
                 return $http.post('/transportation/transportDeps/' + idTransportDep + '/drivers/create',
                         JSON.stringify(driver), {headers: self.headers})
                         .then(
@@ -91,6 +91,35 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                     return $q.reject(errResponse);
                                 }
                         );
+            },
+            
+             updateDriver: function (idTransportDep, driver) {
+                return $http.put('/transportation/transportDeps/' + idTransportDep + '/drivers/' + driver.id + '/update',
+                        JSON.stringify(driver), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating Driver (TransportDep)');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            deleteDriver: function (idDriver) {
+                console.log('id Driver = '+idDriver);
+                return $http({method: 'DELETE',
+                    url: '/transportation/drivers/delete/' + idDriver,
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting Driver (TransportDep)');
+                            return $q.reject(errResponse);
+                        }
+                );
             },
 
         };

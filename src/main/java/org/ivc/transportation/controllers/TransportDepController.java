@@ -88,5 +88,9 @@ public class TransportDepController {
         return transportDepService.getDriversByTransportDepId(idDriver);
     }
 
-    
+    @DeleteMapping("/drivers/delete/{id}")
+    public Collection<Driver> delDriver(@PathVariable Long id){    
+        transportDepService.removeDriver(id);
+        return transportDepService.getDrivers();
+    }
 }
