@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,8 +72,21 @@ public class TransportDepController {
         d.setTransportDep(otd.orElseThrow(() -> {
             return new IllegalArgumentException("В базе нет транспортного отдела с id=" + id);
         }));
+        d.setVacant(Boolean.TRUE);
         transportDepService.addDriver(d);
         return transportDepService.getDriversByTransportDepId(id);
     }
+    
+    @PutMapping("/transportDeps/{idTransportDep}/drivers/{idDriver}/update")
+    public Collection<Driver> updateDriver(@PathVariable Long idTransportDep, @PathVariable Long idDriver, @RequestBody Driver d) throws Throwable {
+        System.out.println(idTransportDep + " " + idDriver + " " + d.getFirstname());
+        Optional<TransportDep> otd = transportDepService.getTransportDepById(idTransportDep);
+        d.setTransportDep(otd.orElseThrow(() -> {
+            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + idTransportDep);
+        }));
+        transportDepService.updateDriver(d, idDriver);
+        return transportDepService.getDriversByTransportDepId(idDriver);
+    }
 
+    
 }

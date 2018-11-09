@@ -71,6 +71,18 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                     );
         };
 
+        self.createDriver = function (driver) {
+            var idTransportDep = 6;
+            TransportDepService.createDriver(idTransportDep, driver)
+                    .then(
+                            self.fetchAllDrivers(idTransportDep),
+                            function (errResponse) {
+                                console.error('Error while creating Driver in TransportDep.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
         self.updateTransportDep = function (transportDep) {
             TransportDepService.updateTransportDep(transportDep)
                     .then(
