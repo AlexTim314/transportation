@@ -106,6 +106,47 @@
                         <!-- Default panel contents -->
                         <div class="panel-heading"><span class="lead">Водители</span></div>
                         <div class="panel-body">
+                            <div class="formcontainer">
+                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                <form ng-submit="ctrl.submit()" name="driverForm" class="form-horizontal">
+                                    <input type="hidden" ng-model="ctrl.driver.id" />
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="name">Название подразделения</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.driver.name" id="name" class="form-control input-sm" placeholder="Введите название подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="addres">Адрес</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.addres" id="addres" class="form-control input-sm" placeholder="Введите адрес" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="addres">Телефон</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.phone" id="addres" class="form-control input-sm" placeholder="Введите телефон" required ng-pattern="ctrl.onlyIntegers"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-actions floatRight">
+                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createTransportDep(ctrl.transportDep)">{{ctrl.transportDep.id===null?'Добавить':'Изменить'}}</button> 
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
                             <div class="panel panel-default">
                                 <!-- Default panel contents -->
                                 <div class="panel-heading"><span class="lead">Список водителей</span></div>
