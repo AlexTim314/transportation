@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>Transport Departments</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/transportDep/TransportDepService.js"></script>
+        <script src="js/app/transportDep/TransportDepController.js"></script>
+
+        <!--        <link th:href="@{css/bootstrap.css}" rel="stylesheet" />-->
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        <link href="css/app.css" rel="stylesheet"/>
+    </head>
+
+    <body ng-app="Transportation" ng-controller="TransportDepController as ctrl">
+        <a href="http://localhost:8080/transportation/">Welcome Page<a>
+
+
+                <div class="generic-container">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Транспортный отдел</span></div>
+                        <div class="panel-body">
+                            <div class="formcontainer">
+                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                                    <input type="hidden" ng-model="ctrl.transportDep.id" />
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="name">Название подразделения</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.name" id="name" class="form-control input-sm" placeholder="Введите название подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="addres">Адрес</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.addres" id="addres" class="form-control input-sm" placeholder="Введите адрес" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="addres">Телефон</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.phone" id="addres" class="form-control input-sm" placeholder="Введите телефон" required ng-pattern="ctrl.onlyIntegers"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-actions floatRight">
+                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createTransportDep(ctrl.transportDep)">{{ctrl.transportDep.id===null?'Добавить':'Изменить'}}</button> 
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>	
+                    </div>
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Список транспортных отделов</span></div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="transportDep-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Название</th>
+                                            <th>Адрес</th>
+                                            <th>Телефон</th>
+                                            <th style="width: 200px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-click="ctrl.addRowHandlers()" style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat="transportDep in ctrl.transportDeps">
+                                            <td>{{transportDep.id}}</td>
+                                            <td>{{transportDep.name}}</td>
+                                            <td>{{transportDep.addres}}</td>
+                                            <td>{{transportDep.phone}}</td>
+                                            <td><button type="button" ng-click="ctrl.editTransportDep(transportDep)" class="btn btn-success">Изменить</button>
+                                                <button type="button" ng-click="ctrl.deleteTransportDep(transportDep.id)" class="btn btn-danger custom-width">Удалить</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="generic-container">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Водители</span></div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <!-- Default panel contents -->
+                                <div class="panel-heading"><span class="lead">Список водителей</span></div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="drivers-table">
+                                            <thead>
+                                                <tr>                     
+                                                    <th>Код</th>
+                                                    <th>Фамилия</th>
+                                                    <th>Имя</th>
+                                                    <th>Отчество</th>
+                                                    <th>Дата рождения</th>
+                                                    <th>Арес</th>
+                                                    <th>Телефон</th>
+                                                    <th>Примечания</th>
+                                                    <th style="width: 200px;"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "driver in ctrl.drivers">
+                                                    <td>{{driver.id}}</td>
+                                                    <td>{{driver.firstname}}</td>
+                                                    <td>{{driver.name}}</td>
+                                                    <td>{{driver.surname}}</td>
+                                                    <td>{{driver.birthday}}</td>
+                                                    <td>{{driver.addres}}</td>
+                                                    <td>{{driver.phone}}</td>
+                                                    <td>{{driver.note}}</td>
+<!--                                                    <td><button type="button" ng-click="ctrl.editTransportDep(transportDep)" class="btn btn-success">Изменить</button>
+                                                        <button type="button" ng-click="ctrl.deleteTransportDep(transportDep.id)" class="btn btn-danger custom-width">Удалить</button></td>-->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+    </body>
+</html>

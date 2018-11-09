@@ -31,6 +31,7 @@ public class MainController {
         System.out.println(loginedUser.getUsername());
         return "admin/usersManagementPage";
     }
+
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
@@ -101,7 +102,7 @@ public class MainController {
     public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            
+
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department.getId() != id) {
                 return accessDenied(model, principal);
@@ -113,10 +114,22 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
-    
+
     @RequestMapping(value = "/departmentsShow", method = RequestMethod.GET)
-    public String getAllDepartments(Model model,Principal principal) {
-         User loginedUser = (User) ((Authentication) principal).getPrincipal();   
-        return "departmentPage";
+    public String getAllDepartments(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "departmentPage";
+        }
+        return accessDenied(model, principal);
+    }
+
+    @RequestMapping(value = "/transportDepsShow", method = RequestMethod.GET)
+    public String getAllTransportDeps(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "transportDepPage";
+        }
+        return accessDenied(model, principal);
     }
 }

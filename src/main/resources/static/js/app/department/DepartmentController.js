@@ -73,7 +73,7 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
 
 
         self.reset = function () {
-            self.department = {departmentId: null, departmentName: '', departmentAddres: ''};
+            self.department = {id: null, name: '', addres: ''};
         };
 
     }]);
