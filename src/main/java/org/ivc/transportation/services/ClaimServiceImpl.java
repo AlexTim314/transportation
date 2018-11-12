@@ -68,6 +68,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public void removeClaim(Long id) {
+        recordRep.deleteByClaimId(id);
         claimRep.deleteById(id);
     }
 

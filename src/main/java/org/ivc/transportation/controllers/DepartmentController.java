@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
@@ -33,6 +34,7 @@ public class DepartmentController {
 
     @Autowired
     private ClaimService claimService;
+    
 
     @GetMapping("/departments")   
     public Collection<Department>getAllDepartments() {    
@@ -74,6 +76,17 @@ public class DepartmentController {
 
     @GetMapping("/departments/{id}/claims")
     public Collection<Claim> getClaims(@PathVariable Long id) {
+        return claimService.getClaimsByDepartment(id);
+    }
+    
+    @GetMapping("/departments/{idDepartment}/claims/{idClaim}")
+    public Collection<Record> getRecordsByClaim(@PathVariable Long idClaim, @PathVariable Long idDepartment) {
+        return claimService.getRecordsByClaim(idClaim);
+    }
+    
+     @PostMapping("/departments/{id}/claims/create")
+        public Collection<Claim> addClaim(@RequestBody Claim claim, @PathVariable Long id) {
+        claimService.addClaim(claim);
         return claimService.getClaimsByDepartment(id);
     }
 

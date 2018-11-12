@@ -30,5 +30,7 @@ public interface RecordRepository extends JpaRepository<Record, Long>{
    List<Record> findByWeekHash(String d);
    
    List<Record> findByStatusAndDatetime(RecordStatus t,Date d);
+   
+   List<Record> deleteByClaimId(Long id);
     
 }

@@ -165,6 +165,9 @@ public class TransportationApplication {
         clS.addRecord(rec4);
         clS.addRecord(rec5);
 
+        
+        
+        
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
@@ -223,6 +226,18 @@ public class TransportationApplication {
         System.out.println("-----------Record by Claim 2-----------------");
         clS.getRecordsByClaim(cl2.getId()).forEach(System.out::println);
         System.out.println("-----------###########################-----------------");
+         System.out.println("-----------all claims-----------------");
+        clS.getAllClaimsSortByDate().forEach(System.out::println);
+        System.out.println("-----------Record table-----------------");
+        clS.getRecords().forEach(System.out::println);
+        System.out.println("-----------Deleting claim 1-----------------");
+        clS.removeClaim(cl1.getId());
+        System.out.println("-----------Claims after deleting-----------------");
+        clS.getAllClaimsSortByDate().forEach(System.out::println);
+        System.out.println("-----------Record after-----------------");
+        clS.getRecords().forEach(System.out::println);
+        
+        
     }
 
     public static void main(String[] args) {
