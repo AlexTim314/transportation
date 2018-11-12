@@ -5,9 +5,12 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         var self = this;
         var idTransportDep;
         self.transportDep = {id: null, name: '', addres: '', phone: ''};
+        self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
+        self.vechicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
         self.transportDeps = [];
         self.drivers = [];
-        self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
+        self.vechicles = [];
+
 
 
         self.fetchAllTransportDeps = function () {
@@ -35,7 +38,8 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                                 var cell = row.getElementsByTagName("td")[0];
                                 var id = cell.innerHTML;
                                 idTransportDep = id;
-                                self.fetchAllDrivers(id);
+                                self.fetchAllDrivers(idTransportDep);
+                                self.fetchAllVechicles(idTransportDep);
                                 // alert("id:" + id);
                             };
                         };
@@ -56,11 +60,22 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                             }
                     );
         };
-
+        self.fetchAllVechicles = function (id) {
+            TransportDepService.fetchAllVechicles(id)
+                    .then(
+                            function (d) {
+                                self.vechicles = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vechicles');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
 
 
         self.fetchAllTransportDeps();
-       // self.fetchAllDrivers(idTransportDep);
+        // self.fetchAllDrivers(idTransportDep);
 
         self.createTransportDep = function (transportDep) {
             TransportDepService.createTransportDep(transportDep)
@@ -94,11 +109,11 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                             }
                     );
         };
-        
+
         self.deleteDriver = function (idDriver) {
-            TransportDepService.deleteDriver(idDriver)
+            TransportDepService.deleteDriver(idDriver, idTransportDep)
                     .then(
-                             self.fetchAllDrivers(idTransportDep),
+                            self.fetchAllDrivers(idTransportDep),
                             function (errResponse) {
                                 console.error('Error while deleting Driver in TransportDep with id = ' + idTransportDep);
                                 alert(errResponse);
@@ -127,6 +142,39 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                             }
                     );
         };
+        
+        self.createVechicle = function (vechicle) {
+            TransportDepService.createVechicle(idTransportDep, vechicle)
+                    .then(
+                            self.fetchAllVechicles(idTransportDep),
+                            function (errResponse) {
+                                console.error('Error while creating Vechicle in TransportDep with id = ' + idTransportDep);
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
+        self.updateVechicle = function (idTransportDep, vechicle) {
+            TransportDepService.updateVechicle(idTransportDep, vechicle)
+                    .then(
+                            self.fetchAllVechicles(idTransportDep),
+                            function (errResponse) {
+                                console.error('Error while updating Vechicle in TransportDep with id = ' + idTransportDep);
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
+        self.deleteVechicle = function (idVechicle) {
+            TransportDepService.deleteVechicle(idVechicle, idTransportDep)
+                    .then(
+                            self.fetchAllVechicles(idTransportDep),
+                            function (errResponse) {
+                                console.error('Error while deleting Vechicle in TransportDep with id = ' + idTransportDep);
+                                alert(errResponse);
+                            }
+                    );
+        };
 
         self.submitTransportDep = function () {
             if (self.transportDep.transportDepId === null) {
@@ -136,7 +184,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             }
             self.resetTransportDep();
         };
-        
+
         self.submitDriver = function () {
             if (self.Driver.driverId === null) {
                 self.createDriver(self.driver);
@@ -144,6 +192,15 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                 self.updateDriver(idTransportDep, self.driver);
             }
             self.resetDriver();
+        };
+        
+        self.submitVechicle = function () {
+            if (self.Vechicle.vechicleId === null) {
+                self.createVechicle(self.vechicle);
+            } else {
+                self.updateVechicle(idTransportDep, self.vechicle);
+            }
+            self.resetVechicle();
         };
 
         self.editTransportDep = function (transportDep) {
@@ -165,15 +222,25 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             self.driver.transportDep = driver.transportDep;
 
         };
-
+        self.editVechicle = function (vechicle) {
+            self.vechicle.id = vechicle.id;
+            self.vechicle.number = vechicle.number;
+            self.vechicle.fuelRemnant = vechicle.fuelRemnant;
+            self.vechicle.odometr = vechicle.odometr;
+            self.vechicle.note = vechicle.note;
+            self.vechicle.transportDep = vechicle.transportDep;
+        };
 
 
         self.resetTransportDep = function () {
             self.transportDep = {id: null, name: '', addres: '', phone: ''};
         };
-        
+
         self.resetDriver = function () {
             self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
         };
-
+        
+        self.resetVechicle = function () {
+            self.vechicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
+        };
     }]);

@@ -99,132 +99,225 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="generic-container">
-                    <div class="panel panel-default">
-                        <!-- Default panel contents -->
-                        <div class="panel-heading"><span class="lead">Водители</span></div>
-                        <div class="panel-body">
-                            <div class="formcontainer">
-                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
-                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
-                                <form ng-submit="ctrl.sumbitDriver()" name="driverForm" class="form-horizontal">
-                            <input type="hidden" ng-model="ctrl.driver.id" />
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="firstname">Фамилия</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.firstname" id="firstname" class="form-control input-sm" placeholder="Введите фамилию водителя" required ng-minlength="3"/>
+<!---------------------------------------------Drivers table--------------------------------------------------------->
+                    <div class="generic-container">
+                        <div class="panel panel-default">
+                             Default panel contents 
+                            <div class="panel-heading"><span class="lead">Водители</span></div>
+                            <div class="panel-body">
+                                <div class="formcontainer">
+                                                                    <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                    <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>
+                                    <form ng-submit="ctrl.sumbitDriver()" name="driverForm" class="form-horizontal">
+                                        <input type="hidden" ng-model="ctrl.driver.id" />
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="firstname">Фамилия</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.firstname" id="firstname" class="form-control input-sm" placeholder="Введите фамилию водителя" required ng-minlength="3"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="dname">Имя</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.name" id="dname" class="form-control input-sm" placeholder="Введите имя водителя" required ng-minlength="3"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="surname">Отчество</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.surname" id="surname" class="form-control input-sm" placeholder="Введите отчество водителя" required ng-pattern="ctrl.onlyIntegers"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="birthday">Дата рождения</label>
+                                                <div class="col-md-7">
+                                                    <input type="date" ng-model="ctrl.driver.birthday" id="birthday" class="form-control input-sm" placeholder="Введите дату рождения водителя"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="daddres">Адрес</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.addres" id="daddres" class="form-control input-sm" placeholder="Введите адрес водителя" required ng-pattern="ctrl.onlyIntegers"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="dphone">Телефон</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.phone" id="dphone" class="form-control input-sm" placeholder="Введите телефон водителя" required ng-pattern="ctrl.onlyIntegers"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="note">Примечание</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.driver.note" id="note" class="form-control input-sm" placeholder="Примечание" required ng-pattern="ctrl.onlyIntegers"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-actions floatRight">
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDriver(ctrl.driver)">{{ctrl.driver.id===null?'Добавить':'Изменить'}}</button> 
+                                        <button type="button" ng-click="ctrl.resetDriver()" class="btn btn-warning btn-sm" ng-disabled="driverForm.$pristine">Сбросить поля</button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="dname">Имя</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.name" id="dname" class="form-control input-sm" placeholder="Введите имя водителя" required ng-minlength="3"/>
-                                    </div>
-                                </div>
-                            </div>
+                                <div class="panel panel-default">
+                                     Default panel contents 
+                                    <div class="panel-heading"><span class="lead">Список водителей</span></div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="drivers-table">
+                                                <thead>
+                                                    <tr>                     
+                                                        <th>Код</th>
+                                                        <th>Фамилия</th>
+                                                        <th>Имя</th>
+                                                        <th>Отчество</th>
+                                                        <th>Дата рождения</th>
+                                                        <th>Арес</th>
+                                                        <th>Телефон</th>
+                                                        <th>Примечания</th>
+                                                        <th style="width: 200px;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "driver in ctrl.drivers">
+                                                        <td>{{driver.id}}</td>
+                                                        <td>{{driver.firstname}}</td>
+                                                        <td>{{driver.name}}</td>
+                                                        <td>{{driver.surname}}</td>
+                                                        <td>{{driver.birthday}}</td>
+                                                        <td>{{driver.addres}}</td>
+                                                        <td>{{driver.phone}}</td>
+                                                        <td>{{driver.note}}</td>
+                                                        <td><button type="button" ng-click="ctrl.editDriver(driver)" class="btn btn-success">Изменить</button>
+                                                            <button type="button" ng-click="ctrl.deleteDriver(driver.id)" class="btn btn-danger custom-width">Удалить</button></td>
 
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="surname">Отчество</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.surname" id="surname" class="form-control input-sm" placeholder="Введите отчество водителя" required ng-pattern="ctrl.onlyIntegers"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="birthday">Дата рождения</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.birthday" id="birthday" class="form-control input-sm" placeholder="Введите дату рождения водителя" required ng-pattern="ctrl.onlyIntegers"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="daddres">Адрес</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.addres" id="daddres" class="form-control input-sm" placeholder="Введите адрес водителя" required ng-pattern="ctrl.onlyIntegers"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="dphone">Телефон</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.phone" id="dphone" class="form-control input-sm" placeholder="Введите телефон водителя" required ng-pattern="ctrl.onlyIntegers"/>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-2 control-lable" for="note">Примечание</label>
-                                    <div class="col-md-7">
-                                        <input type="text" ng-model="ctrl.driver.note" id="note" class="form-control input-sm" placeholder="Примечание" required ng-pattern="ctrl.onlyIntegers"/>
-                                    </div>
-                                </div>
-                            </div>
-                                </form>
-                                </div>
-
-
-                            <div class="row">
-                                <div class="form-actions floatRight">
-                                    <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDriver(ctrl.driver)">{{ctrl.driver.id===null?'Добавить':'Изменить'}}</button> 
-                                    <button type="button" ng-click="ctrl.resetDriver()" class="btn btn-warning btn-sm" ng-disabled="driverForm.$pristine">Сбросить форму</button>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <!-- Default panel contents -->
-                                <div class="panel-heading"><span class="lead">Список водителей</span></div>
-                                <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover" id="drivers-table">
-                                            <thead>
-                                                <tr>                     
-                                                    <th>Код</th>
-                                                    <th>Фамилия</th>
-                                                    <th>Имя</th>
-                                                    <th>Отчество</th>
-                                                    <th>Дата рождения</th>
-                                                    <th>Арес</th>
-                                                    <th>Телефон</th>
-                                                    <th>Примечания</th>
-                                                    <th style="width: 200px;"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "driver in ctrl.drivers">
-                                                    <td>{{driver.id}}</td>
-                                                    <td>{{driver.firstname}}</td>
-                                                    <td>{{driver.name}}</td>
-                                                    <td>{{driver.surname}}</td>
-                                                    <td>{{driver.birthday}}</td>
-                                                    <td>{{driver.addres}}</td>
-                                                    <td>{{driver.phone}}</td>
-                                                    <td>{{driver.note}}</td>
-                                                    <td><button type="button" ng-click="ctrl.editDriver(driver)" class="btn btn-success">Изменить</button>
-                                                        <button type="button" ng-click="ctrl.deleteDriver(driver.id)" class="btn btn-danger custom-width">Удалить</button></td>
-
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+<!---------------------------------------------Vechicles table--------------------------------------------------------->
+                    <div class="generic-container">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading"><span class="lead">Транспортные средтва</span></div>
+                            <div class="panel-body">
+                                <div class="formcontainer">
+                                    <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                    <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                    <form ng-submit="ctrl.submitVechicle()" name="vechicleForm" class="form-horizontal">
+                                        <input type="hidden" ng-model="ctrl.vechicle.id" />
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="number">Номер</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.vechicle.number" id="number" class="form-control input-sm" placeholder="Введите гос. № транспортного средства" required ng-minlength="3"/>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                    </body>
-                    </html>
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="fuelRemnant">Остатки топлива в баке</label>
+                                                <div class="col-md-7">
+                                                    <input type=text ng-model="ctrl.vechicle.fuelRemnant" id="fuelRemnant" class="form-control input-sm" placeholder="Введите кол-во топлива оставшегося в баке"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="odometr">Показания одометра</label>
+                                                <div class="col-md-7">
+                                                    <input type=text ng-model="ctrl.vechicle.odometr" id="odometr" class="form-control input-sm" placeholder="Введите показания одометра по окончанию работ"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="note">Примечание</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="ctrl.vechicle.note" id="vnote" class="form-control input-sm" placeholder="Примечание"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-actions floatRight">
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVechicle(ctrl.vechicle)">{{ctrl.vechicle.id===null?'Добавить':'Изменить'}}</button> 
+                                        <button type="button" ng-click="ctrl.resetVechicle()" class="btn btn-warning btn-sm" ng-disabled="vechicleForm.$pristine">Сбросить поля</button>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                    <!-- Default panel contents -->
+                                    <div class="panel-heading"><span class="lead">Список транспортных средств</span></div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="vechicles-table">
+                                                <thead>
+                                                    <tr>                     
+                                                        <th>Код</th>
+                                                        <th>Гос. №</th>
+                                                        <th>Остаток топлива, л</th>
+                                                        <th>Показания одометра, км</th>
+                                                        <th>Примечания</th>
+                                                        <th style="width: 200px;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "vechicle in ctrl.vechicles">
+                                                        <td>{{vechicle.id}}</td>
+                                                        <td>{{vechicle.number}}</td>
+                                                        <td>{{vechicle.fuelRemnant}}</td>
+                                                        <td>{{vechicle.odometr}}</td>
+                                                        <td>{{vechicle.note}}</td>
+                                                        <td><button type="button" ng-click="ctrl.editVechicle(vechicle)" class="btn btn-success">Изменить</button>
+                                                            <button type="button" ng-click="ctrl.deleteVechicle(vechicle.id)" class="btn btn-danger custom-width">Удалить</button></td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>     
+                </body>
+                </html>
