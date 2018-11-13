@@ -5,11 +5,8 @@
  */
 package org.ivc.transportation.controllers;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
