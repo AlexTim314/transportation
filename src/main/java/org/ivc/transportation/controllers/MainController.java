@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,6 +102,7 @@ public class MainController {
     public String getDepartmentInfo(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department.getId() != id) {
                 return accessDenied(model, principal);
@@ -113,4 +115,21 @@ public class MainController {
         return accessDenied(model, principal);
     }
 
+    @RequestMapping(value = "/departmentsShow", method = RequestMethod.GET)
+    public String getAllDepartments(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "departmentPage";
+        }
+        return accessDenied(model, principal);
+    }
+
+    @RequestMapping(value = "/transportDepsShow", method = RequestMethod.GET)
+    public String getAllTransportDeps(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "transportDepPage";
+        }
+        return accessDenied(model, principal);
+    }
 }

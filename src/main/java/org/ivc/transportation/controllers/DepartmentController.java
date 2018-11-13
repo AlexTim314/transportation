@@ -1,5 +1,6 @@
 package org.ivc.transportation.controllers;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Claim;
@@ -7,7 +8,12 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
+import org.ivc.transportation.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,26 +21,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/departments")
+//@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
-    private DepartmentService service;
+    private DepartmentService departmentService;
 
     @Autowired
-    private ClaimService claimServ;
+    private ClaimService claimService;
 
-    @GetMapping()
-    public Collection<Department> getDepartments() {
-        return service.getDepartments();
+    @GetMapping("/departments")   
+    public Collection<Department>getAllDepartments() {    
+        return departmentService.getDepartments();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/departments/{id}")
     public Department getDepartment(@PathVariable long id) {
-        Optional<Department> optDep = service.getDepartmentById(id);
+        Optional<Department> optDep = departmentService.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
 
             String ruMessage = "Транспортный отдел с запрошенным номером не"
@@ -47,27 +54,27 @@ public class DepartmentController {
         });
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/departments/delete/{id}")
     public Collection<Department> delDepartment(@PathVariable long id) {
-        service.removeDepartment(id);
-        return service.getDepartments();
+        departmentService.removeDepartment(id);
+        return departmentService.getDepartments();
     }
 
-    @PostMapping()
+    @PostMapping("/departments/create")
     public Collection<Department> addDepartment(@RequestBody Department department) {
-        service.saveDepartment(department);
-        return service.getDepartments();
+        departmentService.saveDepartment(department);
+        return departmentService.getDepartments();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/departments/update")
     public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
-        service.updateDepartment(dep, id);
-        return service.getDepartments();
+        departmentService.updateDepartment(dep, id);
+        return departmentService.getDepartments();
     }
 
-    @GetMapping("/{id}/claims")
+    @GetMapping("/departments/{id}/claims")
     public Collection<Claim> getClaims(@PathVariable Long id) {
-        return claimServ.getClaimsByDepartment(id);
+        return claimService.getClaimsByDepartment(id);
     }
 
 }
