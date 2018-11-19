@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/department/**").access("hasAnyRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/departments/**").access("hasAnyRole('ROLE_ADMIN')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/admin", "/usersManagement/**").access("hasRole('ROLE_ADMIN')");

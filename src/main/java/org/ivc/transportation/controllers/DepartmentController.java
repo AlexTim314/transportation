@@ -8,20 +8,15 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
-import org.ivc.transportation.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,8 +29,9 @@ public class DepartmentController {
     @Autowired
     private ClaimService claimService;
 
+
     @GetMapping("/departments")   
-    public Collection<Department>getAllDepartments() {    
+    public Collection<Department>getAllDepartments() {
         return departmentService.getDepartments();
     }
 

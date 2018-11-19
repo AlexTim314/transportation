@@ -26,15 +26,4 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {
         return ex.getMessage();
     }
-    /* @ExceptionHandler(NonExistingDepartmentException.class)
-    protected ResponseEntity<ControllersException> handleNonExistingDepartmentException() {
-        return new ResponseEntity<>(new ControllersException("Не найдено подразделение с таким ID номером. There is no such Department."), HttpStatus.NOT_FOUND);
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class ControllersException {
-        private String message;
-    }
-    */
 }
