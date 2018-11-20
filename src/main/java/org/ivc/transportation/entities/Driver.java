@@ -64,7 +64,7 @@ public class Driver implements Serializable {
     
     private String note;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 

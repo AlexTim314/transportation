@@ -27,34 +27,37 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                     );
         };
 
-        self.addRowHandlers = function () {
-            var table = document.getElementById("transportDep-table");
-            var rows = table.getElementsByTagName("tr");
-            for (var i = 0; i < rows.length; i++) {
-                var currentRow = table.rows[i];
-                var createClickHandler =
-                        function (row)
-                        {
-                            return function () {
-                                var cell = row.getElementsByTagName("td")[0];
-                                var id = cell.innerHTML;
-                                cell = row.getElementsByTagName("td")[1];
-                                var name = cell.innerHTML;
-                                cell = row.getElementsByTagName("td")[2];
-                                var addres = cell.innerHTML;
-                                cell = row.getElementsByTagName("td")[3];
-                                var phone = cell.innerHTML;
-                                transpDep = '{"id": ' + id + ', "name": "'+name+'", "addres": "'+addres+'", "phone": "'+phone+'"}';
-                                transpDep = JSON.parse(transpDep);
-                                console.log(transpDep);
-                                idTransportDep = id;
-                                self.fetchAllDrivers(transpDep);
-                                self.fetchAllVechicles(transpDep);
-                            };
-                        };
-
-                currentRow.onclick = createClickHandler(currentRow);
-            }
+        self.addRowHandlers = function (tDep) {
+            self.transportDep = tDep;
+            self.fetchAllDrivers(tDep);
+            self.fetchAllVechicles(tDep);
+//            var table = document.getElementById("transportDep-table");
+//            var rows = table.getElementsByTagName("tr");
+//            for (var i = 0; i < rows.length; i++) {
+//                var currentRow = table.rows[i];
+//                var createClickHandler =
+//                        function (row)
+//                        {
+//                            return function () {
+//                                var cell = row.getElementsByTagName("td")[0];
+//                                var id = cell.innerHTML;
+//                                cell = row.getElementsByTagName("td")[1];
+//                                var name = cell.innerHTML;
+//                                cell = row.getElementsByTagName("td")[2];
+//                                var addres = cell.innerHTML;
+//                                cell = row.getElementsByTagName("td")[3];
+//                                var phone = cell.innerHTML;
+//                                transpDep = '{"id": ' + id + ', "name": "' + name + '", "addres": "' + addres + '", "phone": "' + phone + '"}';
+//                                transpDep = JSON.parse(transpDep);
+//                                console.log(transpDep);
+//                                idTransportDep = id;
+//                                self.fetchAllDrivers(transpDep);
+//                                self.fetchAllVechicles(transpDep);
+//                            };
+//                        };
+//
+//                currentRow.onclick = createClickHandler(currentRow);
+//            }
         };
 
         self.fetchAllDrivers = function (transportDep) {
@@ -97,11 +100,8 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         };
 
         self.createDriver = function (driver) {
-           driver.transportDep = transpDep; 
-//           console.log(driver.transportDep.id);
-//           console.log(driver.transportDep);
-           console.log(driver);
-            TransportDepService.createDriver(driver,transpDep)
+           driver.transportDep = {id: self.transportDep.id, name: self.transportDep.name};
+            TransportDepService.createDriver(driver)
                     .then(
                             self.fetchAllDrivers(transpDep),
                             function (errResponse) {

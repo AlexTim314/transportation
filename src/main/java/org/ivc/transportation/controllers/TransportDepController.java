@@ -11,6 +11,7 @@ package org.ivc.transportation.controllers;
  */
 import java.util.Collection;
 import java.util.Optional;
+
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vechicle;
@@ -22,8 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -68,16 +67,17 @@ public class TransportDepController {
     }
 
     @PostMapping("/transportDeps/drivers/create")
-    public Collection<Driver> addDriver(@RequestBody Driver d) throws Throwable {
-        System.out.println("#####"+d);
+    public Collection<Driver> addDriver(@RequestBody Driver driver) throws Throwable {
+        System.out.println(driver);
+  // System.out.println("#####"+json.get("transpDep").asText());
        // System.out.println("#####"+transportDepService.getTransportDepById(d.getTransportDep().getId()).get());
-        Optional<TransportDep> otd = transportDepService.getTransportDepById(d.getId());
-        d.setTransportDep(otd.orElseThrow(() -> {
-            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + d.getTransportDep().getId());
-        }));
-        d.setVacant(Boolean.TRUE);
-        transportDepService.addDriver(d);
-        return transportDepService.getDriversByTransportDepId(d.getTransportDep().getId());
+//        Optional<TransportDep> otd = transportDepService.getTransportDepById(driver.getTransportDep().getId());
+//        driver.setTransportDep(otd.orElseThrow(() -> {
+//            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + driver.getTransportDep().getId());
+//        }));
+        driver.setVacant(Boolean.TRUE);
+        transportDepService.addDriver(driver);
+        return transportDepService.getDriversByTransportDepId(driver.getTransportDep().getId());
     }
 
 

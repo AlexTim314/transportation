@@ -96,10 +96,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                         }
                 );
             },
-            createDriver: function (driver,transpDep) {
-             // console.log(idTransportDep + ' ' + driver)
-            //  var Indata = {dr: driver, tr: transpDep};
-            //   console.log(Indata);
+            createDriver: function (driver) {            
                 return $http.post('/transportation/transportDeps/drivers/create',
                         JSON.stringify(driver), {headers: self.headers})
                         .then(
@@ -111,6 +108,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                     return $q.reject(errResponse);
                                 }
                         );
+                  
             },
             
              updateDriver: function (idTransportDep, driver) {

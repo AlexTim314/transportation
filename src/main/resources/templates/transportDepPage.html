@@ -8,6 +8,7 @@
         <title>Transport Departments</title>
 
         <script src="js/lib/angular.min.js" ></script>
+<!--        <script src="jquery.min.js" ></script>-->
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
         <script src="js/app/app.js"></script>
         <script src="js/app/transportDep/TransportDepService.js"></script>
@@ -86,7 +87,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-click="ctrl.addRowHandlers()" style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat="transportDep in ctrl.transportDeps">
+                                        <tr ng-repeat="transportDep in ctrl.transportDeps" ng-click="ctrl.addRowHandlers(transportDep)" style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''">
                                             <td>{{transportDep.id}}</td>
                                             <td>{{transportDep.name}}</td>
                                             <td>{{transportDep.addres}}</td>
