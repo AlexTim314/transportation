@@ -60,8 +60,6 @@ public class Waypoint implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private Work work;
     
-    @ManyToMany(mappedBy = "waypoints")
-    private List<Distance> distances;
     
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
