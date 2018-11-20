@@ -14,7 +14,7 @@ App.factory('DepartmentService', ['$http', '$q', '$document', function ($http, $
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching departments');
@@ -49,10 +49,10 @@ App.factory('DepartmentService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            deleteDepartment: function (id) {
-                console.log(id);
+            deleteDepartment: function (department) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/departments/delete/' +id,
+                    url: '/transportation/departments/delete/',
+                    data: JSON.stringify(department),
                     headers: self.headers
                 }).then(
                         function (response) {

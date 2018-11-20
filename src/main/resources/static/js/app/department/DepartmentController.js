@@ -44,8 +44,8 @@ App.controller('DepartmentController', ['$scope', 'DepartmentService',
                     );
         };
 
-        self.deleteDepartment = function (id) {
-            DepartmentService.deleteDepartment(id)
+        self.deleteDepartment = function (department) {
+            DepartmentService.deleteDepartment(department)
                     .then(
                             self.fetchAllDepartments,
                             function (errResponse) {
