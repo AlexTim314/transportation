@@ -6,6 +6,7 @@
 package org.ivc.transportation.controllers;
 
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
+import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,13 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(NonExistingDepartmentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {
+        return ex.getMessage();
+    }
+    
+    @ResponseBody
+    @ExceptionHandler(NotSpecifiedDepartmentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String handleNotSpecifiedDepartmentException(NotSpecifiedDepartmentException ex) {
         return ex.getMessage();
     }
 }

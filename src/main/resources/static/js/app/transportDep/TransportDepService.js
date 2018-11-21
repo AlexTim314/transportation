@@ -78,7 +78,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                         );
             },
             deleteTransportDep: function (transportDep) {
-               // console.log(id);
+                console.log(transportDep);
                 return $http({method: 'DELETE',
                     url: '/transportation/transportDeps/delete/',
                     data: JSON.stringify(transportDep),
