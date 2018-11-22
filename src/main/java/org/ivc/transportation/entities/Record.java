@@ -6,6 +6,7 @@
 package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
@@ -51,19 +52,30 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private String usageTime;
+    private Date dapartureDate;
 
     @NonNull
     @Column(nullable = false)
-    private Time arrivalTime;
+    private Date returnDate;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time departureTime;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time returnTime;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time timeDelivery;
+
+    @Column(length = 1024)
+    private String carBoss;
 
     @NonNull
     @Column(nullable = false, length = 1024)
     private String purpose;
-
-    @NonNull
-    @Column(nullable = false)
-    private RecordStatus status;
 
     @Column(length = 1024)
     private String serviceField;
@@ -71,25 +83,38 @@ public class Record implements Serializable {
     @Column(length = 512)
     private String templateName;
 
-    @JsonIgnore
+    @NonNull
+    @Column(nullable = false)
+    private RecordStatus status;
+
+    @Column(length = 1024)
+    private String description;
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Claim claim;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plan;
 
-    public Record(String weekHash, Date datetime, String usageTime, Time arrivalTime,
-            String purpose, String serviceField, String templateName, Claim claim) {
-        this.arrivalTime = arrivalTime;
-        this.claim = claim;
+    public Record(String weekHash, Date datetime, Date dapartureDate, Date returnDate, Time departureTime, String description,
+            Time returnTime, Time timeDelivery, String purpose, String serviceField, String templateName, String carBoss, Claim claim) {
+
+        this.weekHash = weekHash;
         this.datetime = datetime;
         this.purpose = purpose;
         this.serviceField = serviceField;
-        this.status = RecordStatus.record_status_created;
+        this.dapartureDate = dapartureDate;
         this.templateName = templateName;
-        this.usageTime = usageTime;
-        this.weekHash = weekHash;
+        this.carBoss = carBoss;
+        this.returnDate = returnDate;
+        this.returnTime = returnTime;
+        this.departureTime = departureTime;
+        this.timeDelivery = timeDelivery;
+        this.status = RecordStatus.record_status_created;
+        this.description = description;
+        this.claim = claim;
 
     }
 

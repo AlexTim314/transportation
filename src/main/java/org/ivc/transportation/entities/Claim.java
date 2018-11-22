@@ -1,6 +1,7 @@
 package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Column;
@@ -46,7 +47,7 @@ public class Claim implements Serializable {
     @Column(nullable = false)
     private ClaimType tip;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 

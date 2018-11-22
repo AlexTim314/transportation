@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Collection;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,6 +35,11 @@ public class ClaimController {
         return claimService.getAllClaimsSortByDate();
     }
     
+    @GetMapping("/claim/records")
+    public Collection<Record> getClaims() {
+        return claimService.getRecords();
+    }
+    
     @DeleteMapping("/claims/delete/{id}")
     public Collection<Claim> delClaim(@PathVariable Long id) {
         claimService.removeClaim(id);
@@ -43,6 +51,7 @@ public class ClaimController {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            claimService.getClaimsByDepartment(department.getId()).forEach(System.out::println);
             return claimService.getClaimsByDepartment(department.getId());
         }
         return null;
