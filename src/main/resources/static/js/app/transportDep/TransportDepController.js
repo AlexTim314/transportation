@@ -3,8 +3,6 @@
 App.controller('TransportDepController', ['$scope', 'TransportDepService',
     function ($scope, TransportDepService) {
         var self = this;
-        var idTransportDep;
-        var transpDep;
         self.transportDep = {id: null, name: '', addres: '', phone: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
         self.vechicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
@@ -27,37 +25,11 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                     );
         };
 
+        //Функция передачи объекта по клику на строку таблицы
         self.addRowHandlers = function (tDep) {
             self.transportDep = tDep;
             self.fetchAllDrivers(tDep);
             self.fetchAllVechicles(tDep);
-//            var table = document.getElementById("transportDep-table");
-//            var rows = table.getElementsByTagName("tr");
-//            for (var i = 0; i < rows.length; i++) {
-//                var currentRow = table.rows[i];
-//                var createClickHandler =
-//                        function (row)
-//                        {
-//                            return function () {
-//                                var cell = row.getElementsByTagName("td")[0];
-//                                var id = cell.innerHTML;
-//                                cell = row.getElementsByTagName("td")[1];
-//                                var name = cell.innerHTML;
-//                                cell = row.getElementsByTagName("td")[2];
-//                                var addres = cell.innerHTML;
-//                                cell = row.getElementsByTagName("td")[3];
-//                                var phone = cell.innerHTML;
-//                                transpDep = '{"id": ' + id + ', "name": "' + name + '", "addres": "' + addres + '", "phone": "' + phone + '"}';
-//                                transpDep = JSON.parse(transpDep);
-//                                console.log(transpDep);
-//                                idTransportDep = id;
-//                                self.fetchAllDrivers(transpDep);
-//                                self.fetchAllVechicles(transpDep);
-//                            };
-//                        };
-//
-//                currentRow.onclick = createClickHandler(currentRow);
-//            }
         };
 
         self.fetchAllDrivers = function (transportDep) {
@@ -68,7 +40,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Drivers');
-                                showAlert(errResponse);
+                                alert(errResponse);
                             }
                     );
         };
@@ -100,34 +72,34 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         };
 
         self.createDriver = function (driver) {
-           driver.transportDep = {id: self.transportDep.id, name: self.transportDep.name};
+            driver.transportDep = self.transportDep;
             TransportDepService.createDriver(driver)
                     .then(
-                            self.fetchAllDrivers(transpDep),
+                            self.fetchAllDrivers(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while creating Driver in TransportDep with id = ' + idTransportDep);
-                                showAlert(errResponse);
+                                console.error('Error while creating Driver in TransportDep with id = ' + self.transportDep.id);
+                                alert(errResponse);
                             }
                     );
         };
 
-        self.updateDriver = function (idTransportDep, driver) {
-            TransportDepService.updateDriver(idTransportDep, driver)
+        self.updateDriver = function (driver) {
+            TransportDepService.updateDriver(driver)
                     .then(
-                            self.fetchAllDrivers(idTransportDep),
+                            self.fetchAllDrivers(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while updating Driver in TransportDep with id = ' + idTransportDep);
-                                showAlert(errResponse);
+                                console.error('Error while updating Driver in TransportDep with id = ' + self.transportDep.id);
+                                alert(errResponse);
                             }
                     );
         };
 
-        self.deleteDriver = function (idDriver) {
-            TransportDepService.deleteDriver(idDriver, idTransportDep)
+        self.deleteDriver = function (driver) {
+            TransportDepService.deleteDriver(driver)
                     .then(
-                            self.fetchAllDrivers(idTransportDep),
+                            self.fetchAllDrivers(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while deleting Driver in TransportDep with id = ' + idTransportDep);
+                                console.error('Error while deleting Driver in TransportDep with id = ' + self.transportDep.id);
                                 alert(errResponse);
                             }
                     );
@@ -156,33 +128,34 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         };
 
         self.createVechicle = function (vechicle) {
-            TransportDepService.createVechicle(idTransportDep, vechicle)
+            vechicle.transportDep = self.transportDep;
+            TransportDepService.createVechicle(vechicle)
                     .then(
-                            self.fetchAllVechicles(idTransportDep),
+                            self.fetchAllVechicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while creating Vechicle in TransportDep with id = ' + idTransportDep);
-                                showAlert(errResponse);
+                                console.error('Error while creating Vechicle in TransportDep with id = ' + self.transportDep.id);
+                                alert(errResponse);
                             }
                     );
         };
 
-        self.updateVechicle = function (idTransportDep, vechicle) {
-            TransportDepService.updateVechicle(idTransportDep, vechicle)
+        self.updateVechicle = function (vechicle) {
+            TransportDepService.updateVechicle(vechicle)
                     .then(
-                            self.fetchAllVechicles(idTransportDep),
+                            self.fetchAllVechicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while updating Vechicle in TransportDep with id = ' + idTransportDep);
-                                showAlert(errResponse);
+                                console.error('Error while updating Vechicle in TransportDep with id = ' + self.transportDep.id);
+                                alert(errResponse);
                             }
                     );
         };
 
-        self.deleteVechicle = function (idVechicle) {
-            TransportDepService.deleteVechicle(idVechicle, idTransportDep)
+        self.deleteVechicle = function (vechicle) {
+            TransportDepService.deleteVechicle(vechicle)
                     .then(
-                            self.fetchAllVechicles(idTransportDep),
+                            self.fetchAllVechicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while deleting Vechicle in TransportDep with id = ' + idTransportDep);
+                                console.error('Error while deleting Vechicle in TransportDep with id = ' + self.transportDep.id);
                                 alert(errResponse);
                             }
                     );
@@ -201,7 +174,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             if (self.Driver.driverId === null) {
                 self.createDriver(self.driver);
             } else {
-                self.updateDriver(idTransportDep, self.driver);
+                self.updateDriver(self.driver);
             }
             self.resetDriver();
         };
@@ -210,7 +183,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             if (self.Vechicle.vechicleId === null) {
                 self.createVechicle(self.vechicle);
             } else {
-                self.updateVechicle(idTransportDep, self.vechicle);
+                self.updateVechicle(self.vechicle);
             }
             self.resetVechicle();
         };

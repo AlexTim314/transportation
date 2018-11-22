@@ -67,45 +67,22 @@ public class TransportDepController {
     }
 
     @PostMapping("/transportDeps/drivers/create")
-    public Collection<Driver> addDriver(@RequestBody Driver driver) throws Throwable {
-        System.out.println(driver);
-  // System.out.println("#####"+json.get("transpDep").asText());
-       // System.out.println("#####"+transportDepService.getTransportDepById(d.getTransportDep().getId()).get());
-//        Optional<TransportDep> otd = transportDepService.getTransportDepById(driver.getTransportDep().getId());
-//        driver.setTransportDep(otd.orElseThrow(() -> {
-//            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + driver.getTransportDep().getId());
-//        }));
+    public Collection<Driver> addDriver(@RequestBody Driver driver) {
         driver.setVacant(Boolean.TRUE);
         transportDepService.addDriver(driver);
         return transportDepService.getDriversByTransportDepId(driver.getTransportDep().getId());
     }
 
-
-//    @PostMapping("/transportDeps/drivers/create")
-//      public Collection<Driver> createUser(@RequestBody Driver d) {
-//        transportDepService.addDriver(d);
-//       return transportDepService.getDrivers();
-//    }
-    
     @PutMapping("/transportDeps/drivers/update")
-    public Collection<Driver> updateDriver(@RequestBody Driver d, @PathVariable Long idDriver) throws Throwable {
-      final Long idTransportDep = d.getTransportDep().getId();
-       idDriver = d.getId();
-        System.out.println(idTransportDep+ " " + idDriver + " " + d.getFirstname());
-        Optional<TransportDep> otd = transportDepService.getTransportDepById(idTransportDep);
-        d.setTransportDep(otd.orElseThrow(() -> {
-            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + idTransportDep);
-        }));
-        transportDepService.updateDriver(d, idDriver);
-        return transportDepService.getDriversByTransportDepId(idTransportDep);
+    public Collection<Driver> updateDriver(@RequestBody Driver d) {
+        transportDepService.updateDriver(d, d.getTransportDep().getId());
+        return transportDepService.getDriversByTransportDepId(d.getTransportDep().getId());
     }
 
     @DeleteMapping("/transportDeps/drivers/delete")
-    public Collection<Driver> delDriver(@RequestBody Driver d, @PathVariable Long idDrivers, @PathVariable Long idTransportDep) {
-        idDrivers = d.getId();
-        idTransportDep = d.getTransportDep().getId();
-        transportDepService.removeDriver(idDrivers);
-        return transportDepService.getDriversByTransportDepId(idTransportDep);
+    public Collection<Driver> delDriver(@RequestBody Driver d) {
+        transportDepService.removeDriver(d.getId());
+        return transportDepService.getDriversByTransportDepId(d.getTransportDep().getId());
     }
 
     @PostMapping("/transportDeps/vechicles")
@@ -113,35 +90,22 @@ public class TransportDepController {
         return transportDepService.getVechiclesByTransportDepId(department.getId());
     }
 
-    
     @PostMapping("/transportDeps/vechicles/create")
-    public Collection<Vechicle> addVechicle(@RequestBody Vechicle d) throws Throwable {   
-        Optional<TransportDep> otd = transportDepService.getTransportDepById(d.getTransportDep().getId());
-        d.setTransportDep(otd.orElseThrow(() -> {
-            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + d.getTransportDep().getId());
-        }));
+    public Collection<Vechicle> addVechicle(@RequestBody Vechicle d) {
         d.setVacant(Boolean.TRUE);
         transportDepService.addVechicle(d);
         return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
     }
 
     @PutMapping("/transportDeps/vechicles/update")
-    public Collection<Vechicle> updateVechicle(@PathVariable Long idVechicle, @RequestBody Vechicle d) throws Throwable {
-       final Long idTransportDep =d.getTransportDep().getId();
-       idVechicle = d.getId();
-        Optional<TransportDep> otd = transportDepService.getTransportDepById(idTransportDep);
-        d.setTransportDep(otd.orElseThrow(() -> {
-            return new IllegalArgumentException("В базе нет транспортного отдела с id=" + idTransportDep);
-        }));
-        transportDepService.updateVechicle(d, idVechicle);
-        return transportDepService.getVechiclesByTransportDepId(idTransportDep);
+    public Collection<Vechicle> updateVechicle(@RequestBody Vechicle d) {
+        transportDepService.updateVechicle(d, d.getId());
+        return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
     }
 
     @DeleteMapping("/transportDeps/vechicles/delete")
-    public Collection<Vechicle> delVechicle(@PathVariable Long idVechicle, @PathVariable Long idTransportDep, @RequestBody Vechicle d) {
-        idVechicle = d.getId();
-        idTransportDep = d.getTransportDep().getId();
-        transportDepService.removeVechicle(idVechicle);
-        return transportDepService.getVechiclesByTransportDepId(idTransportDep);
+    public Collection<Vechicle> delVechicle(@RequestBody Vechicle d) {
+        transportDepService.removeVechicle(d.getId());
+        return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
     }
 }

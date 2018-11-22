@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Комплекс автотраспортного обеспечения</title>
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+	<link href="fontawesome/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/script/script.js"></script>
+	<script  src="js/lib/angular.min.js"></script>
+	<script src="js/app/app.js"></script>
+	<script src="js/app/routeTagController.js"></script>
+
+</head>
+<body ng-app="Transportation" >
+	<div class="wrapper">
+		<!-- Login Form-->
+		<form action="#" class="formLogin" id="formLogin">
+				<i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+				<div class="container">
+			    <label for="uname"><b>Логин</b></label>
+			    <input type="text" placeholder="Введите Логин" name="uname" required>
+
+			    <label for="psw"><b>Пароль</b></label>
+			    <input type="password" placeholder="Введите Пароль" name="psw" required>
+
+			    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+			    <label class="custom-checkbox">Запомнить меня
+  						<input type="checkbox" checked="checked">
+ 						<span class="checkmark"></span>
+				</label>
+			  </div>
+
+			  <div class="container container-underline" style="">
+			    <button type="button" class="btn delete">Отмена</button>
+			    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+			  </div>
+		</form>
+		<div class="main clearfix">
+			<div class="header clearfix">
+				<!--Logo -->
+				<div class="logo">
+				</div>
+				<!--Text header -->
+
+					<h1>Структурное подразделение</h1>
+					<h3>ЦИ-4</h3>
+				<!--Navigation -->	
+				<nav class="nav-horizontal">
+					<button class="btn active" id="tab-btn1" onclick="open_tab1()">Подача заявок</button>
+					<button class="btn" id="tab-btn2" onclick="open_tab2()">Статус заявок</button>			
+				</nav>
+			
+				<button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+			</div>
+				<!--Sidebar-->
+			<div class="sidebar clearfix">
+				<div class="thin-strip">
+					<i class="fas fa-bars"></i>
+				</div>
+				<!--Menu -->
+					<div class="menu">
+					 		<li class="menu-item" >
+					 			<div class="menu-btn" id="claims" ><i class="fab fa-wpforms"></i>Заявки</div>
+					 			<div class="smenu">
+					 				<div  onclick="menu_open()">Создать новую</div>
+					 				
+					 			</div>
+					 		</li>
+					 		<li class="menu-item" id="new">
+					 			<div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
+					 			<div class="filter">
+					 				<div class="filter-container" >
+
+					 					<p>Фильтрация</p>
+					 					<div class="filter-type"><i class="fas fa-car"></i></div>
+					 				 	<div class="filter-type"><i class="fas fa-bus-alt"></i></div>
+					 				 	<div class="filter-type"><i class="fas fa-truck"></i></div>
+					 				 	<div class="filter-type"><i class="fas fa-tractor"></i></div>
+					 				</div>
+					 				<div class="filter-container">
+						 				<label for="route-filter">Маршрут</label>
+		 						 			<select name="route-filter">
+		 						 			<option value="1">Пл.10-Пл.23</option>
+		 						 		</select>
+		 						 	 </div>
+					 				<div class="filter-container" id="f-empls" >
+						 				<label for="declarer-filter">Заявитель</label>
+		 						 			<select name="declarer-filter">
+		 						 			<option value="1"></option>
+		 						 		</select>
+					 				</div>
+					 				<div class="filter-container">
+						 				<label for="date-filter">Дата выезда</label>
+		 						 		 	<input type="date" name="date-filter">
+		 						 		</select>
+					 				</div>
+					 				<div class="filter-container" id="f-trnsp" style="display:none;">
+						 				<label for="transport-filter">Название транспорта</label>
+		 						 			<select name="transport-filter">
+		 						 			<option value="1">ПАЗ</option>
+		 						 			<option value="2">ГАЗ 66</option>
+		 						 		</select>
+					 				</div>
+					 				<div class="filter-container" id="f-sts" style="display:none;">
+						 				<label for="status-filter">Статус заявки</label>
+		 						 			<select name="status-filter">
+		 						 			<option value="1"><i class="fas fa-ban"></i>Отмена</option>
+		 						 			<option value="2"><i class="fas fa-ban"></i>Ожидается</option>
+		 						 			<option value="2"><i class="fas fa-ban"></i>Готово</option>
+		 						 		</select>
+					 				</div>
+
+					 	<!--			<div class="filter-container">
+					 					<label>Период</label>
+					 					<div class="range-filter">
+					 						<div class="range-circle"></div>
+					 					</div>
+					 				</div>-->
+					 				<div class="filter-container">
+					 					<button class="btn apply ">Применить</button>	
+					 				</div>
+
+					 			</div>
+					 		</li>		
+	 				</div>
+	 				<div class="menu-new-claim" id="form-add">
+	 					<i class="fas fa-times" onclick="menu_close()"></i>
+	 					<form action="#" method="POST">
+	 						<div class="custom-select form-item">
+	 						 	<label for="type">Тип транспорта</label>
+	 						 	<select name="type">
+	 						 		<option value="1">Пассажирский</option>
+	 						 		<option value="2">Легковой</option>
+	 						 		<option value="3">Грузовой</option>
+	 						 		<option value="4">Спецтехника</option>
+	 						 	</select>
+	 						 </div>
+	 						 <div class="custom-select form-item">
+	 						 	<label for="num_day">Количество дней</label>
+	 						 	<select name="num_day">
+	 						 		<option value="1">1</option>
+	 						 		<option value="2">2</option>
+	 						 		<option value="3">3</option>
+	 						 		<option value="4">4</option>
+	 						 		<option value="5">5</option>
+	 						 	</select>
+	 						 </div>	
+	 						 <div class="form-item" >
+		 					 	<label for="date-begin">Дата выезда</label>
+    						 	<input type="date"  name="date-begin" required>
+    						 </div>	
+    						 <div class="form-item">
+    						 	<label for="time-begin">Время выезда</label>
+    						 	<input type="time"  name="time-begin" required>
+    						 </div>	
+    						 <div class="form-item">
+    						 	<label for="purpose">Цель</label>
+    						 	<input type="textarea"  name="purpose">
+    						 </div>
+    						  <div class="custom-select form-item" ng-controller="routeTagController as routeTag">
+	 						 	<label for="route">Маршрут</label>
+	 						 	<select name="route" ng-model="routeTag.routeText">
+	 						 		<option >Пл.10</option>
+	 						 		<option >Пл.18</option>
+	 						 		<option >Пл.23</option>
+	 						 	</select> 
+	 					<!--	 	<input type="text"  name="time-begin" ng-model="routeTag.routeText" required>-->
+	 						 	<div class="edit fas fa-plus" ng-click="routeTag.addTag()"></div>
+	 						 	<div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>
+	 						 </div>	
+	 						 <div class="form-item" >
+		 					 	<label for="criterion">Критерий,ед.изм.</label>
+    						 	<input type="text"  name="criterion" required>
+    						 </div>	
+	 						    <div class="form-item">
+	 						 	<button class="btn submit">Добавить</button>
+	 						    </div>
+
+	 					</form>
+	 				</div>
+
+			</div>
+			<div id="claim-create" class="tabcontent">
+
+
+		<div   >
+		  	<div class="fast-filter clearfix">
+		  		<span class="filter-elem">Все</span>
+		  		<span class="filter-elem">Сегодня</span>
+		  		<span class="filter-elem">За неделю</span>
+		  	</div>
+		  	<div class="table-header clearfix">
+		<!-- 		<div class="table-page tbl-item"></div> 
+		  		
+		  		<div class="table-setting tbl-item">
+		  			<span></span>
+		  			<span></span>
+		  			<span></span>
+		  		</div>-->
+
+		  			<input type="search">
+		  			<button class="btn edit"><i class="fas fa-search"></i></button>
+		  		
+		  		
+		  	</div>
+		  	<div style="overflow-x:auto;" id="tab-list1">
+		  		<table class="table-claim" >
+		  			<tr>
+		  				<th>
+		  					<label class="custom-checkbox">1
+  									<input type="checkbox" checked="checked">
+ 									<span class="checkmark"></span>
+							</label>		
+						</th>		
+			  			<th>Номер</th>
+			  			<th>Тип траспорта</th>
+			  			<th>Дата выезда</th>
+			  			<th>Время выезда</th>
+			  			<th>Цель поездки</th>
+			  			<th>Маршрут</th>
+			  			<th>Заявитель</th>
+			  			<th>Дата подачи</th>
+			  			<th></th>
+		  			</tr>
+		  			<tr>
+		  				<td>
+		  					<label class="custom-checkbox">1
+  									<input type="checkbox" >
+ 									<span class="checkmark"></span>
+							</label>		
+						</td>
+		  				<td  contenteditable='true' >1</td>
+		  				<td>Грузовой</td>
+		  				<td>12.08.2018</td>
+		  				<td>08:00</td>
+		  				<td>Перевоз груза</td>
+		  				<td>Пл.10-Пл.23</td>
+		  				<td>Иванов И.И.</td>
+		  				<td>11.08.2018</td>
+		  				<td>
+		  					<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
+		  					<button class="btn edit" id="edit1"><i class="fas fa-edit" ></i>Изменить</button>
+		  					<button class="btn delete" id="delete1"><i class="fas fa-trash-alt" ></i>Удалить</button>
+		  				</td>
+		  			</tr>
+		  		</table>
+		  		<button class="btn edit assert"><i class="fas fa-clipboard-check"></i>Утвердить</button>
+		  		<button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
+		  	</div>
+		  	<!--Подробнее-->
+		  	<div class="more-info" id="more-id">
+		  		<div>Дополнительная информация
+		  			<i class="fas fa-times" onclick="more_close()"></i>
+		  		</div>
+		  		<ul>
+		  			<li><label>Тип транспорта:<span>Грузовой</span></label></li>
+		  			<li><label>Дата выезда:<span>12.08.2018</span></label></li>
+		  			<li><label>Время выезда:<span>08:00</span></label></li>
+		  			<li><label>Маршрут:<span>Пл.10-Пл.23</span></label></li>
+		  			<li><label>Ответственный:<span>Сидоров С.С.</span></label></li>
+		  			<li><label>Масса груза:<span>1000 кг.</span></label></li>
+		  			<li><label>Количество мест:<span>4 чел.</span></label></li>
+		  		</ul>
+		  	</div>	
+
+			</div>
+			<div class="tab-list2" id="tab-list2">
+		  	<div style="overflow-x:auto;">
+		  		<table class=" table-status">
+
+		  				
+		  		   <tr>
+		  		   		<th><label class="custom-checkbox">1
+  									<input type="checkbox" checked="checked">
+ 									<span class="checkmark"></span>
+									</label>		
+						</th>
+			  			<th>Номер</th>
+			  			<th>Тип траспорта</th>
+			  			<th>Дата выезда</th>
+			  			<th>Время выезда</th>
+			  			<th>Цель поездки</th>
+			  			<th>Маршрут</th>
+			  			<th>Транспорт</th>
+			  			<th>Водитель</th>
+			  			<th>Статус</th>
+		  			</tr>
+		  			<tr>
+		  				<td><label class="custom-checkbox">1
+  									<input type="checkbox" >
+ 									<span class="checkmark"></span>
+									</label>		
+						</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>
+		  				 	<span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
+		  				</td>
+		  			</tr>
+		  			<tr>
+		  				<td><label class="custom-checkbox">1
+  									<input type="checkbox" >
+ 									<span class="checkmark"></span>
+									</label>		
+						</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>
+		  				
+		  				 	<span class="claim-status wait-status"><i class="far fa-clock"></i>Ожидается</span>
+		  				
+		  				</td>
+		  			</tr>
+		  			<tr>
+		  				<td><label class="custom-checkbox">1
+  									<input type="checkbox" >
+ 									<span class="checkmark"></span>
+									</label>		
+						</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>
+		  				 	
+		  				 	<span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отмена</span>	
+		  				</td>
+		  			</tr>
+		  		</table>
+		<!--  		<div class="table-header subtitel">
+		  			<label>Номер заявки №234556</label>
+		  			<label>от 15.10.2018</label>
+		  			<label>на период с 17.10.2018 по 20.10.2018</label>
+
+		  		</div>
+		  		<table class="table-claim subtable">
+		  			<tr> 
+		  				<th>Дата выезда</th>
+			  			<th>Время выезда</th>
+			  			<th>Цель поездки</th>
+			  			<th>Маршрут</th>
+			  			<th>Транспорт</th>
+			  			<th>Водитель</th>
+			  			<th>Статус</th>
+		  			<tr>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td><i class="fas fa-check"></i>Готово</td>
+		  			</tr>
+		  			<tr>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td><i class="fas fa-check"></i>Готово</td>
+		  			</tr>
+		  			<tr>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td>Lorem</td>
+		  				<td><i class="fas fa-check"></i>Готово</td>
+		  			</tr>	
+		  		</table>-->	
+		  	</div>	
+			</div>
+			</div>
+		</div>
+		</div>
+
+		
+	</div>
+	
+</body>
+</html>

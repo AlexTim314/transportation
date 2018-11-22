@@ -131,4 +131,13 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
+    
+       @RequestMapping(value = "/addDepClaimShow", method = RequestMethod.GET)
+    public String getDepClaims(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "addingClaimsPage";
+        }
+        return accessDenied(model, principal);
+    }
 }

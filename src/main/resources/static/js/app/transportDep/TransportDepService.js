@@ -35,10 +35,10 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                 }
                         );
             },
-            
+
             fetchAllDrivers: function (transportDep) {
                 return $http.post('/transportation/transportDeps/drivers',
-                 JSON.stringify(transportDep), {headers: self.headers})
+                        JSON.stringify(transportDep), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
@@ -48,7 +48,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                     console.error('Error while fetching Drivers in transportDep');
                                     return $q.reject(errResponse);
                                 }
-                        ); 
+                        );
             },
 
             createTransportDep: function (transportDep) {
@@ -84,9 +84,6 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                     data: JSON.stringify(transportDep),
                     headers: self.headers
                 }).then(
-//                  return $http.delete('/transportation/transportDeps/delete/',
-//                  JSON.stringify(transportDep), {headers: self.headers})
-//                        .then(
                         function (response) {
                             return response.data;
                         },
@@ -96,7 +93,7 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                         }
                 );
             },
-            createDriver: function (driver) {            
+            createDriver: function (driver) {
                 return $http.post('/transportation/transportDeps/drivers/create',
                         JSON.stringify(driver), {headers: self.headers})
                         .then(
@@ -108,12 +105,11 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                     return $q.reject(errResponse);
                                 }
                         );
-                  
+
             },
-            
-             updateDriver: function (idTransportDep, driver) {
-                // driver.transportDep.id = idTransportDep;
-                return $http.put('/transportation/transportDeps/' + idTransportDep + '/drivers/' + driver.id + '/update',
+
+            updateDriver: function (driver) {
+                return $http.put('/transportation/transportDeps/drivers/update',
                         JSON.stringify(driver), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -125,12 +121,12 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                 }
                         );
             },
-            deleteDriver: function (idDriver,idTransportDep) {
-                console.log('id Driver = '+idDriver);
+            deleteDriver: function (driver) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/transportDeps/'+idTransportDep+'/drivers/delete/' + idDriver,
+                    url: '/transportation/transportDeps/drivers/delete/',
+                    data: JSON.stringify(driver),
                     headers: self.headers,
-                    
+
                 }).then(
                         function (response) {
                             return response.data;
@@ -141,10 +137,10 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                         }
                 );
             },
-            
+
             fetchAllVechicles: function (transportDep) {
                 return $http.post('/transportation/transportDeps/vechicles',
-                JSON.stringify(transportDep), {headers: self.headers})
+                        JSON.stringify(transportDep), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
@@ -156,8 +152,8 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                 }
                         );
             },
-            createVechicle: function (idTransportDep, vechicle) {
-                return $http.post('/transportation/transportDeps/' + idTransportDep + '/vechicles/create',
+            createVechicle: function (vechicle) {
+                return $http.post('/transportation/transportDeps/vechicles/create',
                         JSON.stringify(vechicle), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -169,9 +165,9 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                 }
                         );
             },
-            
-             updateVechicle: function (idTransportDep, vechicle) {
-                return $http.put('/transportation/transportDeps/' + idTransportDep + '/vechicles/' + vechicle.id + '/update',
+
+            updateVechicle: function (vechicle) {
+                return $http.put('/transportation/transportDeps/vechicles/update',
                         JSON.stringify(vechicle), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -183,10 +179,10 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                                 }
                         );
             },
-            deleteVechicle: function (idVechicle, idTransportDep) {
-                console.log('id Vechicle = '+idVechicle);
+            deleteVechicle: function (vechicle) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/transportDeps/'+idTransportDep+'/vechicles/delete/' + idVechicle,
+                    url: '/transportation/transportDeps/vechicles/delete/',
+                    data: JSON.stringify(vechicle),
                     headers: self.headers
                 }).then(
                         function (response) {
