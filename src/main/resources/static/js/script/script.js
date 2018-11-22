@@ -1,6 +1,8 @@
 menu_open=function() {
  var str = document.getElementById("form-add");
  str.style.display="block";
+ var str1 = document.getElementById("btn-add-edit");
+ str1.innerHTML="Добавить";
 }
 menu_close=function() {
  var str = document.getElementById("form-add");
@@ -14,14 +16,30 @@ more_close=function() {
  var str = document.getElementById("more-id");
  str.style.display="none";
 }
-formLogin_open=function(){
-  var str = document.getElementById("formLogin");
+
+edit_open=function() {
+ var str = document.getElementById("form-add");
+ str.style.display="block";
+ var str1 = document.getElementById("btn-add-edit");
+ str1.innerHTML="Изменить";
+}
+
+formRecord_close=function(){
+  var str = document.getElementById("formRecord-id");
+  str.style.display="none"; 
+}
+formRecord_open=function(){
+  var str = document.getElementById("formRecord-id");
   str.style.display="block";
 
 }
 formLogin_close=function(){
   var str = document.getElementById("formLogin");
   str.style.display="none";
+}
+formLogin_open=function(){
+  var str = document.getElementById("formLogin");
+  str.style.display="block";
 }
 open_tab1=function(){
   var str = document.getElementById("tab-list1");
@@ -66,3 +84,22 @@ open_tab2=function(){
   fltr3.style.display = 'block';
 }
 
+open_sidenav=function(){
+    var str=document.getElementById("sidenav-id");
+    var str1=document.getElementById("claim-create");
+    var str2=document.getElementById("sb-v-id");
+    str.style.width = '17%';
+    str1.style.width = '82%';
+    
+    setTimeout('str2.style.display="none"', 300);
+
+}
+close_sidenav=function(){
+    var str=document.getElementById("sidenav-id");
+    var str1=document.getElementById("claim-create");
+    var str2=document.getElementById("sb-v-id");
+    str.style.width = '0';
+    str1.style.width = '98%';
+    setTimeout('str2.style.display="block"', 300);
+
+}

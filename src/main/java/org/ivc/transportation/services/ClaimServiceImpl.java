@@ -43,6 +43,13 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
+    public void updateClaim(Claim d, Long id) {
+        d.setId(id);
+        claimRep.save(d);
+    }
+
+    @Override
+    @Transactional
     public Collection<Claim> getClaimsByDepartment(Long id) {
         return claimRep.findByDepartmentId(id);
     }
@@ -107,7 +114,7 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Claim> getAllClaimsSortByDateAsk() {
         return claimRep.findAll(Sort.by(Sort.Direction.ASC, "clDate"));
     }
-    
+
     @Override
     @Transactional
     public Collection<Claim> getAllClaimsByDate(DateRange dr) {
@@ -122,6 +129,12 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
+    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t) {
+        return claimRep.findByTipAndDepartmentIdOrderByClDateDesc(id, t);
+    }
+
+    @Override
+    @Transactional
     public void addRecord(Record d) {
         this.recordRep.save(d);
     }
@@ -131,7 +144,7 @@ public class ClaimServiceImpl implements ClaimService {
     public void updateRecord(Record d, Long id) {
         d.setId(id);
         recordRep.save(d);
-        updateClaim(d.getClaim().getId());
+        updClaim(d.getClaim().getId());
     }
 
     @Override
@@ -149,7 +162,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public Collection<Record> getRecords() {
-       return recordRep.findAll();
+        return recordRep.findAll();
     }
 
     @Override
@@ -167,7 +180,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public Collection<Record> getRecordsByDate(Date d) {
-       return recordRep.findByDatetime(d);
+        return recordRep.findByDatetime(d);
     }
 
     @Override
@@ -175,12 +188,11 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Record> getRecordsByHash(String d) {
         return recordRep.findByWeekHash(d);
     }
-    
-    public void updateClaim(Long id){
+
+    public void updClaim(Long id) {
         List<Record> recList;
         recList = recordRep.findByClaimId(id);
-        
-    
+
     }
 
 }

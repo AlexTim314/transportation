@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-        <meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,16 +16,14 @@
 <!--	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">-->
 	<link href="fontawesome/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	
-	
-	
-	
-        
 
 </head>
-<body ng-app="Transportation" ng-controller="ClaimController as ctrl">
+<body ng-app="Transportation" >
 	<div class="wrapper">
 		<!-- Login Form-->
+		<div class="sidebar-vertical" id="sb-v-id">
+			<i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+		</div>
 		<form action="#" class="formLogin" id="formLogin">
 				<i class="fas fa-times i-close" onclick="formLogin_close()"></i>
 				<div class="container">
@@ -47,6 +45,80 @@
 			    <span class="psw">Забыли <a href="#">Пароль?</a></span>
 			  </div>
 		</form>
+		<!--Record Form --> 
+		<div class="formRecord" id="formRecord-id">
+			<i class="fas fa-times i-close" onclick="formRecord_close()"></i>
+			<label for="type-claim">Тип заявки</label>
+		 			<select name="type-claim">
+		 				<option value="1">Еженедельная</option>
+		 				<option value="2">Дополнительная</option>
+		 			</select>
+			<button class="btn delete">Создать</button>
+		</div>
+		<!----------------------------------------------ADD-FORM------------------->
+		<div class="menu-new-claim" id="form-add">
+	 					<i class="fas fa-times" onclick="menu_close()"></i>
+	 					<form action="#" method="POST">
+	 						<div class="custom-select form-item">
+	 						 	<label for="type">Тип транспорта</label>
+	 						 	<select name="type">
+	 						 		<option value="1">Пассажирский</option>
+	 						 		<option value="2">Легковой</option>
+	 						 		<option value="3">Грузовой</option>
+	 						 		<option value="4">Спецтехника</option>
+	 						 	</select>
+	 						 </div>	
+	 						 <div class="form-item clearfix" >
+	 						 	<div class="left-block">
+		 					 	<label for="date-begin">Дата начала</label>
+    						 	<input type="date"  name="date-begin" required>
+    							 </div>
+    							 <div class="right-block">
+    							<label for="date-end">Дата конца</label>
+    						 	<input type="date"  name="date-end" required>
+    						 	</div>
+    						 </div>	
+    						 <div class="form-item clearfix">
+    						 	<div class="left-block">
+    						 	<label for="time-begin">Время начала</label>
+    						    <input type="time"  name="time-begin" required>
+    						     </div>
+    						     <div class="right-block">
+    						 	<label for="time-end">Время конца</label>
+    						 	<input type="time"  name="time-end" required>
+    						 	</div>
+    						 </div>	
+    						 <div class="form-item">
+    						 	<label for="purpose">Цель</label>
+    						 	<input type="textarea"  name="purpose">
+    						 </div>
+    						  <div class="custom-select form-item clearfix" ng-controller="routeTagController as routeTag">
+    						  	<div class="left-block-route">
+	 						 	<label for="route">Маршрут</label>
+	 						 	<select name="route" ng-model="routeTag.routeText">
+	 						 		<option >Пл.10</option>
+	 						 		<option >Пл.18</option>
+	 						 		<option >Пл.23</option>
+	 						 	</select> 
+	 						 </div>
+	 						 	<div class="right-block-route">
+	 					<!--	 	<input type="text"  name="time-begin" ng-model="routeTag.routeText" required>-->
+	 						 	<div class="edit fa fa-plus" ng-click="routeTag.addTag()"></div>
+	 						 	</div>
+	 						 	<div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>
+	 						 </div>	
+	 						 <div class="form-item" >
+		 					 	<label for="criterion">Критерий</label>
+    						 	<input type="text"  name="criterion" required>
+    						 </div>	
+	 						    <div class="form-item">
+	 						 	<button class="btn submit" id="btn-add-edit"></button>
+	 						    </div>
+
+	 					</form>
+	 				</div>
+
+
 		<div class="main clearfix">
 			<div class="header clearfix">
 				<!--Logo -->
@@ -57,6 +129,7 @@
 					<h1>Структурное подразделение</h1>
 					<h3>ЦИ-4</h3>
 				<!--Navigation -->	
+				
 				<nav class="nav-horizontal">
 					<button class="btn active" id="tab-btn1" onclick="open_tab1()">Подача заявок</button>
 					<button class="btn" id="tab-btn2" onclick="open_tab2()">Статус заявок</button>			
@@ -65,16 +138,17 @@
 				<button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
 			</div>
 				<!--Sidebar-->
-			<div class="sidebar clearfix">
+			<div class="sidebar clearfix" id="sidenav-id">
+				
 				<div class="thin-strip">
-					<i class="fas fa-bars"></i>
+					<i class="fas fa-times i-close" onclick="close_sidenav()"></i>
 				</div>
 				<!--Menu -->
 					<div class="menu">
 					 		<li class="menu-item" >
 					 			<div class="menu-btn" id="claims" ><i class="fab fa-wpforms"></i>Заявки</div>
 					 			<div class="smenu">
-					 				<div  onclick="menu_open()">Создать новую</div>
+					 				<div  onclick="formRecord_open()">Создать новую</div>
 					 				
 					 			</div>
 					 		</li>
@@ -121,13 +195,6 @@
 		 						 			<option value="2"><i class="fas fa-ban"></i>Готово</option>
 		 						 		</select>
 					 				</div>
-
-					 	<!--			<div class="filter-container">
-					 					<label>Период</label>
-					 					<div class="range-filter">
-					 						<div class="range-circle"></div>
-					 					</div>
-					 				</div>-->
 					 				<div class="filter-container">
 					 					<button class="btn apply ">Применить</button>	
 					 				</div>
@@ -135,130 +202,86 @@
 					 			</div>
 					 		</li>		
 	 				</div>
-	 				<div class="menu-new-claim" id="form-add">
-	 					<i class="fas fa-times" onclick="menu_close()"></i>
-	 					<form action="#" method="POST">
-	 						<div class="custom-select form-item">
-	 						 	<label for="type">Тип транспорта</label>
-	 						 	<select name="type">
-	 						 		<option value="1">Пассажирский</option>
-	 						 		<option value="2">Легковой</option>
-	 						 		<option value="3">Грузовой</option>
-	 						 		<option value="4">Спецтехника</option>
-	 						 	</select>
-	 						 </div>
-	 						 <div class="custom-select form-item">
-	 						 	<label for="num_day">Количество дней</label>
-	 						 	<select name="num_day">
-	 						 		<option value="1">1</option>
-	 						 		<option value="2">2</option>
-	 						 		<option value="3">3</option>
-	 						 		<option value="4">4</option>
-	 						 		<option value="5">5</option>
-	 						 	</select>
-	 						 </div>	
-	 						 <div class="form-item" >
-		 					 	<label for="date-begin">Дата выезда</label>
-    						 	<input type="date"  name="date-begin" required>
-    						 </div>	
-    						 <div class="form-item">
-    						 	<label for="time-begin">Время выезда</label>
-    						 	<input type="time"  name="time-begin" required>
-    						 </div>	
-    						 <div class="form-item">
-    						 	<label for="purpose">Цель</label>
-    						 	<input type="textarea"  name="purpose">
-    						 </div>
-    						  <div class="custom-select form-item" ng-controller="routeTagController as routeTag">
-	 						 	<label for="route">Маршрут</label>
-	 						 	<select name="route" ng-model="routeTag.routeText">
-	 						 		<option >Пл.10</option>
-	 						 		<option >Пл.18</option>
-	 						 		<option >Пл.23</option>
-	 						 	</select> 
-	 					<!--	 	<input type="text"  name="time-begin" ng-model="routeTag.routeText" required>-->
-	 						 	<div class="edit fas fa-plus" ng-click="routeTag.addTag()"></div>
-	 						 	<div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>
-	 						 </div>	
-	 						 <div class="form-item" >
-		 					 	<label for="criterion">Критерий,ед.изм.</label>
-    						 	<input type="text"  name="criterion" required>
-    						 </div>	
-	 						    <div class="form-item">
-	 						 	<button class="btn submit">Добавить</button>
-	 						    </div>
-
-	 					</form>
-	 				</div>
+	 				
 
 			</div>
 			<div id="claim-create" class="tabcontent">
 
 
-		<div   >
-		  	<div class="fast-filter clearfix">
-		  		<span class="filter-elem">Все</span>
-		  		<span class="filter-elem">Сегодня</span>
-		  		<span class="filter-elem">За неделю</span>
-		  	</div>
-		  	<div class="table-header clearfix">
-		<!-- 		<div class="table-page tbl-item"></div> 
-		  		
-		  		<div class="table-setting tbl-item">
-		  			<span></span>
-		  			<span></span>
-		  			<span></span>
-		  		</div>-->
 
-		  			<input type="search">
-		  			<button class="btn edit"><i class="fas fa-search"></i></button>
-		  		
-		  		
-		  	</div>
-		  	<div style="overflow-x:auto;" id="tab-list1">
+			
+		 
+		  	<div class="clearfix" style="overflow-x:auto;" id="tab-list1">
+		  		 	<div class="fast-filter clearfix">
+				  		<span class="filter-elem edit">Все</span>
+				  		<span class="filter-elem edit">Сегодня</span>
+				  		<span class="filter-elem edit">За неделю</span>
+		  			</div>
+		  			<table class="table-record">
+			  			<tr>
+			  				<th>Заявки</th>
+			  			</tr>
+			  			<tr>
+			  				<td>№33/22-55 от 22.10.2018 
+			  					<div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
+			  				</td>
+			  			</tr>
+			  			<tr>
+			  				<td>№33/22-55 от 22.10.2018</td>
+			  			</tr>
+			  			<tr>
+			  				<td>№33/22-55 от 22.10.2018</td>
+			  			</tr>
+
+		  			
+		  			</table>
+		  			<div class="table-header clearfix">
+			  			<input type="search">
+			  			<button class="btn edit"><i class="fas fa-search"></i></button>	
+		  			</div>
+		  			
 		  		<table class="table-claim" >
 		  			<tr>
 		  				<th>
-		  					<label class="custom-checkbox">1
+		  					<label class="custom-checkbox">
   									<input type="checkbox" checked="checked">
  									<span class="checkmark"></span>
 							</label>		
 						</th>		
-			  			<th>Номер</th>
 			  			<th>Тип траспорта</th>
-			  			<th>Дата выезда</th>
-			  			<th>Время выезда</th>
+			  			<th>Дата</th>
+			  			<th>Время</th>
+			  			<th>Старший</th>
 			  			<th>Цель поездки</th>
 			  			<th>Маршрут</th>
-			  			<th>Старший машины</th>
-			  			<th>Дата подачи</th>
 			  			<th></th>
 		  			</tr>
-                                        <tr ng-repeat="record in ctrl.records">
+		  			<tr >
 		  				<td>
-		  					<label class="custom-checkbox">1
+		  					<label class="custom-checkbox">
   									<input type="checkbox" >
  									<span class="checkmark"></span>
 							</label>		
 						</td>
-		  				<td  contenteditable='true' >{{record.id}}</td>
-		  				<td>{{record.claim.tip}}</td>
-		  				<td>{{record.dapartureDate}}</td>
-		  				<td>{{record.departureTime}}</td>
-		  				<td>{{record.purpose}}</td>
-		  				<td>{{record.description}}.</td>
-                                                <td>{{record.carBoss}}.</td>
-		  				<td>{{record.timeDelivery}}</td>
+		  				<td>Грузовой</td>
+		  				<td>12.08.2018</td>
+		  				<td>08:00</td>
+		  				<td>Иванов И.И.</td>
+		  				<td>Перевоз груза</td>
+		  				<td>Пл.10-Пл.23</td>
 		  				<td>
-		  					<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
-		  					<button class="btn edit" id="edit1"><i class="fas fa-edit" ></i>Изменить</button>
-		  					<button class="btn delete" id="delete1"><i class="fas fa-trash-alt" ></i>Удалить</button>
+		  				<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
+		  				<button class="btn-hidden btn edit" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить</button>
+		  				<button class="btn-hidden btn delete"><i class="fas fa-trash-alt" ></i>Удалить</button>
 		  				</td>
+		  				
+		  				
 		  			</tr>
 		  		</table>
 		  		<button class="btn edit assert"><i class="fas fa-clipboard-check"></i>Утвердить</button>
 		  		<button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
 		  	</div>
+		  	
 		  	<!--Подробнее-->
 		  	<div class="more-info" id="more-id">
 		  		<div>Дополнительная информация
@@ -275,7 +298,7 @@
 		  		</ul>
 		  	</div>	
 
-			</div>
+			
 			<div class="tab-list2" id="tab-list2">
 		  	<div style="overflow-x:auto;">
 		  		<table class=" table-status">

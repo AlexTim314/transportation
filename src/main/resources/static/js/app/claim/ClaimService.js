@@ -9,8 +9,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchAllClaims: function () {
-                return $http.get('/transportation/claims')
+            fetchClaims: function (startDate,endDate) {
+                return $http.get('/transportation/claims/byUser/'+startDate+'/'+endDate)
                         .then(
                                 function (response) {
                                     return response.data;
@@ -22,6 +22,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 }
                         );
             },
+            
+           
             
             fetchAllRecords: function () {
                 return $http.get('/transportation/claim/records')

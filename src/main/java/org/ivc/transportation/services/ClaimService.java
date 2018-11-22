@@ -22,6 +22,8 @@ import org.ivc.transportation.entities.Record;
 public interface ClaimService {
 
     public void addClaim(Claim d);
+    
+    public void updateClaim(Claim d, Long id);
 
     public void removeClaim(Long id);
 
@@ -38,6 +40,8 @@ public interface ClaimService {
     public Collection<Claim> getClaimsByAffirmationAsc(Boolean b);
 
     public Collection<Claim> getClaimsByTip(ClaimType t);
+    
+    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t);
 
     public Collection<Claim> getClaimsByTipAsc(ClaimType t);
 
