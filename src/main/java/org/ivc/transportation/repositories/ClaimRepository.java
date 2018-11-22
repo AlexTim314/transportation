@@ -7,6 +7,7 @@ package org.ivc.transportation.repositories;
 
 import java.util.List;
 import java.sql.Date;
+import java.time.OffsetDateTime;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.entities.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +23,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     List<Claim> findByDepartmentId(Long id);
 
     List<Claim> findByClDate(Date d);
+    
+    List<Claim> findAllByClDateBetweenOrderByClDateDesc(Date clDateStart, Date clDateEnd);
 
+    List<Claim> findAllByDepartmentIdAndClDateBetweenOrderByClDateDesc(Long id, Date clDateStart, Date clDateEnd);
+    
     List<Claim> findByAffirmationOrderByClDateDesc(Boolean a);
 
     List<Claim> findByAffirmationOrderByClDateAsc(Boolean a);

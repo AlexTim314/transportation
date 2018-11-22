@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.util.Optional;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
+import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
@@ -43,6 +44,10 @@ public interface ClaimService {
     public Collection<Claim> getClaimsByDepAndAffirmation(Long id, Boolean a);
 
     public Collection<Claim> getClaimsByDepAndAffirmationAsc(Long id, Boolean a);
+    
+    public Collection<Claim> getAllClaimsByDate(DateRange dr);
+
+    public Collection<Claim> getAllClaimsByDepartmentAndDate(Long id, DateRange dr);
 
     public void addRecord(Record d);
 
