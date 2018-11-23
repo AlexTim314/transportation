@@ -149,15 +149,15 @@ public class TransportationApplication {
 
         String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
         
-        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1);
         rec1.setStatus(RecordStatus.record_status_created);
-        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), "8", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон1", cl1);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl1);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), "12", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон2", cl2);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl2);
         rec4.setStatus(RecordStatus.record_status_inprogress);
-        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), "12", Time.valueOf(LocalTime.now()), "Какойто текст", "Сервисное поле", "шаблон2", cl2);
+        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2);
         rec5.setStatus(RecordStatus.record_status_completed);
         clS.addRecord(rec1);
         clS.addRecord(rec2);

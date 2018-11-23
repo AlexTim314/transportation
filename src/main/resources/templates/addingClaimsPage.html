@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Комплекс автотраспортного обеспечения</title>
-	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+        <script  src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/app/claim/ClaimService.js"></script>
+        <script src="js/app/claim/ClaimController.js"></script>
+        <script type="text/javascript" src="js/script/script.js"></script>
+        <script src="js/app/routeTagController.js"></script>
+
+<!--	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">-->
 	<link href="fontawesome/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
-	<script type="text/javascript" src="js/script/script.js"></script>
-	<script  src="js/lib/angular.min.js"></script>
-	<script src="js/app/app.js"></script>
-	<script src="js/app/routeTagController.js"></script>
+	
+	
+	
+	
+        
 
 </head>
-<body ng-app="Transportation" >
+<body ng-app="Transportation" ng-controller="ClaimController as ctrl">
 	<div class="wrapper">
 		<!-- Login Form-->
 		<form action="#" class="formLogin" id="formLogin">
@@ -220,25 +230,25 @@
 			  			<th>Время выезда</th>
 			  			<th>Цель поездки</th>
 			  			<th>Маршрут</th>
-			  			<th>Заявитель</th>
+			  			<th>Старший машины</th>
 			  			<th>Дата подачи</th>
 			  			<th></th>
 		  			</tr>
-		  			<tr>
+                                        <tr ng-repeat="record in ctrl.records">
 		  				<td>
 		  					<label class="custom-checkbox">1
   									<input type="checkbox" >
  									<span class="checkmark"></span>
 							</label>		
 						</td>
-		  				<td  contenteditable='true' >1</td>
-		  				<td>Грузовой</td>
-		  				<td>12.08.2018</td>
-		  				<td>08:00</td>
-		  				<td>Перевоз груза</td>
-		  				<td>Пл.10-Пл.23</td>
-		  				<td>Иванов И.И.</td>
-		  				<td>11.08.2018</td>
+		  				<td  contenteditable='true' >{{record.id}}</td>
+		  				<td>{{record.claim.tip}}</td>
+		  				<td>{{record.dapartureDate}}</td>
+		  				<td>{{record.departureTime}}</td>
+		  				<td>{{record.purpose}}</td>
+		  				<td>{{record.description}}.</td>
+                                                <td>{{record.carBoss}}.</td>
+		  				<td>{{record.timeDelivery}}</td>
 		  				<td>
 		  					<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
 		  					<button class="btn edit" id="edit1"><i class="fas fa-edit" ></i>Изменить</button>

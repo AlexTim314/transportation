@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
+import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
@@ -44,7 +45,6 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     public Collection<Claim> getClaimsByDepartment(Long id) {
         return claimRep.findByDepartmentId(id);
-
     }
 
     @Override
@@ -106,6 +106,18 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     public Collection<Claim> getAllClaimsSortByDateAsk() {
         return claimRep.findAll(Sort.by(Sort.Direction.ASC, "clDate"));
+    }
+    
+    @Override
+    @Transactional
+    public Collection<Claim> getAllClaimsByDate(DateRange dr) {
+        return claimRep.findAllByClDateBetweenOrderByClDateDesc(dr.StartDate, dr.EndDate);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getAllClaimsByDepartmentAndDate(Long id, DateRange dr) {
+        return claimRep.findAllByDepartmentIdAndClDateBetweenOrderByClDateDesc(id, dr.StartDate, dr.EndDate);
     }
 
     @Override

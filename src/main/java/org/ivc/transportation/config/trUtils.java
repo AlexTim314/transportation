@@ -5,6 +5,8 @@
  */
 package org.ivc.transportation.config;
 
+import java.sql.Date;
+
 /**
  *
  * @author first
@@ -24,5 +26,20 @@ public class trUtils {
         record_status_completed,
         record_status_canceled
     }
+    
+    public static class DateRange {
+        public Date StartDate;
+        public Date EndDate;
+        
+        public DateRange() {
+            
+        }
+    }
+
+    public static String errNotSpecifiedDepartmentException = "В Вашем пользовательском профиле не указано"
+            + " подразделение. Поэтому неясно какие заявки должны"
+            + " быть отображены. Обратитесь к администатору."
+            + "<br> Department does not specified in your profile."
+            + " Can't decide what claims must be shown. Contact your administrator.";
 
 }
