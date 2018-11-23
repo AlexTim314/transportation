@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 
 /**
