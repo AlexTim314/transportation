@@ -6,6 +6,7 @@
 package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Column;
@@ -40,23 +41,33 @@ public class Appointment implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Date dateTimeOrder;
+    private Date dateTime;
+    
+    @NonNull
+    @Column(nullable = false)
+    private String status;
+    
+    @NonNull
+    @Column(nullable = false)
+    private String note;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Record record;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Driver driver;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Vechicle vechicle;
     
 
-    public Appointment (Date dateTimeOrder,Record record,Driver driver, Vechicle vechicle){
-        this.dateTimeOrder = dateTimeOrder;
+    public Appointment (Date dateTime, String status, String note, Record record, Driver driver, Vechicle vechicle){
+        this.dateTime = dateTime;
+        this.status = status;
+        this.note = note;
         this.driver = driver;
         this.record = record;
         this.vechicle = vechicle;

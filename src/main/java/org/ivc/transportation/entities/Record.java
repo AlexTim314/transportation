@@ -52,7 +52,7 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Date dapartureDate;
+    private Date departureDate;
 
     @NonNull
     @Column(nullable = false)
@@ -76,6 +76,10 @@ public class Record implements Serializable {
     @NonNull
     @Column(nullable = false, length = 1024)
     private String purpose;
+    
+    @NonNull
+    @Column(nullable = false, length = 512)
+    private String type;
 
     @Column(length = 1024)
     private String serviceField;
@@ -98,14 +102,15 @@ public class Record implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plan;
 
-    public Record(String weekHash, Date datetime, Date dapartureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String purpose, String serviceField, String templateName, String carBoss, Claim claim) {
+    public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim) {
 
         this.weekHash = weekHash;
+        this.type = type;
         this.datetime = datetime;
         this.purpose = purpose;
         this.serviceField = serviceField;
-        this.dapartureDate = dapartureDate;
+        this.departureDate = departureDate;
         this.templateName = templateName;
         this.carBoss = carBoss;
         this.returnDate = returnDate;

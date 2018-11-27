@@ -8,6 +8,7 @@ import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
@@ -152,6 +153,32 @@ public class ClaimController {
     }
 
     /**
+     * Метод добавляет новую заявку подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param claim удаляемая заявка
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
+    @PostMapping("/claims/byUser/create")
+    public Collection<Claim> addClaim(Principal principal, @RequestBody Claim claim) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            claim.setDepartment(department);
+            claimService.addClaim(claim);
+            return claimService.getClaimsByDepartment(department.getId());
+        }
+        return null;
+    }
+
+    /**
      * Метод удаляет заявку подразделения. Номер подразделения извлекается из
      * данных авторизовавшегося пользователя. Если подразделение не указано, то
      * будет вызвано исключение NotSpecifiedDepartmentException с
@@ -176,6 +203,17 @@ public class ClaimController {
         return null;
     }
 
+    /**
+     * Метод изменяет заявку подразделения. Номер подразделения извлекается из
+     * данных авторизовавшегося пользователя. Если подразделение не указано, то
+     * будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param claim изменяемая заявка
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
     @PutMapping("/claims/byUser/update")
     public Collection<Claim> updateClaimByUser(Principal principal, @RequestBody Claim claim) {
         if (principal != null) {
@@ -188,6 +226,95 @@ public class ClaimController {
             return claimService.getClaimsByDepartment(department.getId());
         }
         return null;
+    }
+
+    /**
+     * Метод возвращает записи для каждой заявки.
+     *
+     * @param claim заявка
+     * @return список записей
+     */
+    @PostMapping("/claims/byUser/records")
+    public Collection<Record> findRecrodsByClaim(@RequestBody Claim claim) {
+        System.out.println(claim);
+        claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
+        return claimService.getRecordsByClaim(claim.getId());
+    }
+
+    /**
+     * Метод добавляет новую запись в заявку подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
+    @PostMapping("/claims/byUser/records/create")
+    public Collection<Record> addRecord(Principal principal, @RequestBody Record record) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            claimService.addRecord(record);
+            return claimService.getRecordsByClaim(record.getClaim().getId());
+        }
+        return null;
+    }
+
+    /**
+     * Метод обновляет запись в заявке подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
+    @PutMapping("/claims/byUser/records/update")
+    public Collection<Record> updateRecord(Principal principal, @RequestBody Record record) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            claimService.updateRecord(record, record.getId());
+            return claimService.getRecordsByClaim(record.getClaim().getId());
+        }
+        return null;
+    }
+
+    /**
+     * Метод удаляет запись в заявке подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
+    @DeleteMapping("/claims/byUser/records/delete")
+    public Collection<Record> delRecord(Principal principal, @RequestBody Record record) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            claimService.removeRecord(record.getId());
+            return claimService.getRecordsByClaim(record.getClaim().getId());
+        }
+        return null;
+
     }
 
 }

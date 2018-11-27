@@ -5,19 +5,19 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         var self = this;
         self.department = {id: null, name: '', addres: ''};
         self.claim = {id: null, clDate: '', affirmation: '', tip: '', department: {name: ''}};
-        self.record = {id: null, weekHash: '', datetime: '', dapartureDate: '', returnDate: '',  timeDelivery: '', departureTime: '', returnTime: '',
+        self.record = {id: null, weekHash: '', type: '', datetime: '', dapartureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clDate: ''}};
         self.departments = [];
         self.claims = [];
         self.records = [];
-        
-        
-         self.fetchClaims = function () {
+
+
+        self.fetchClaims = function () {
 //           var dateRange = '{ "StartDate": "2018-10-20", "EndDate": "2018-10-24" }';  
 //           dateRange = JSON.parse(dateRange);
             var sD = '2018-10-20';
             var eD = '2018-10-24';
-            ClaimService.fetchClaims(sD,eD)
+            ClaimService.fetchClaims(sD, eD)
                     .then(
                             function (d) {
                                 self.claims = d;
@@ -28,11 +28,16 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                             }
                     );
         };
+
+        self.addRowHandlers = function (clm) {
+            self.claim = clm;
+            self.fetchAllRecords(clm);
+            
+        };
         
-        
-        
-        self.fetchAllRecords = function () {
-            ClaimService.fetchAllRecords()
+        self.fetchAllRecords = function (claim) {
+
+            ClaimService.fetchAllRecords(claim)
                     .then(
                             function (d) {
                                 self.records = d;
@@ -43,9 +48,9 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                             }
                     );
         };
-        
+
         self.fetchClaims();
-      //  self.fetchAllRecords();
+       // self.fetchAllRecords();
 
 
     }]);

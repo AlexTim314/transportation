@@ -119,7 +119,7 @@
 	 				</div>
 
 
-		<div class="main clearfix">
+                <div class="main clearfix" ng-controller="ClaimController as ctrl" >
 			<div class="header clearfix">
 				<!--Logo -->
 				<div class="logo">
@@ -217,30 +217,22 @@
 				  		<span class="filter-elem edit">Сегодня</span>
 				  		<span class="filter-elem edit">За неделю</span>
 		  			</div>
-		  			<table class="table-record">
+                            <table class="table-record">
 			  			<tr>
 			  				<th>Заявки</th>
 			  			</tr>
-			  			<tr>
-			  				<td>№33/22-55 от 22.10.2018 
+                                                <tr ng-repeat="claim in ctrl.claims" ng-click="ctrl.addRowHandlers(claim)" style = "cursor: pointer">
+			  				<td>№ {{claim.id}} от {{claim.clDate}} 
 			  					<div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
 			  				</td>
-			  			</tr>
-			  			<tr>
-			  				<td>№33/22-55 от 22.10.2018</td>
-			  			</tr>
-			  			<tr>
-			  				<td>№33/22-55 от 22.10.2018</td>
-			  			</tr>
-
-		  			
+			  			</tr>		  			
 		  			</table>
 		  			<div class="table-header clearfix">
 			  			<input type="search">
 			  			<button class="btn edit"><i class="fas fa-search"></i></button>	
 		  			</div>
 		  			
-		  		<table class="table-claim" >
+                            <table class="table-claim">
 		  			<tr>
 		  				<th>
 		  					<label class="custom-checkbox">
@@ -256,18 +248,18 @@
 			  			<th>Маршрут</th>
 			  			<th></th>
 		  			</tr>
-		  			<tr >
+                                        <tr  ng-repeat="record in ctrl.records">
 		  				<td>
 		  					<label class="custom-checkbox">
   									<input type="checkbox" >
  									<span class="checkmark"></span>
 							</label>		
 						</td>
-		  				<td>Грузовой</td>
-		  				<td>12.08.2018</td>
-		  				<td>08:00</td>
-		  				<td>Иванов И.И.</td>
-		  				<td>Перевоз груза</td>
+		  				<td>{{record.type}}</td>
+		  				<td>{{record.datetime}}</td>
+		  				<td>{{record.timeDelivery}}</td>
+		  				<td>{{record.carBoss}}</td>
+		  				<td>{{record.purpose}}</td>
 		  				<td>Пл.10-Пл.23</td>
 		  				<td>
 		  				<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
