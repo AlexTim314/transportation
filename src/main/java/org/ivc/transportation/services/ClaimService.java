@@ -7,6 +7,8 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.config.trUtils.ClaimType;
@@ -75,4 +77,8 @@ public interface ClaimService {
     public void addAppointment(Appointment ap);
     
     public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps);
+    
+    public Collection<Appointment> getAppointmentByRecordsAndStatus(List <Record> r, AppointmentStatus aps);
+    
+    public Collection<Appointment> getAppointmentByRecordAndStatusAndDate(Record r, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 }

@@ -5,6 +5,7 @@
  */
 package org.ivc.transportation.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.entities.Appointment;
@@ -25,6 +26,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 //    List<Appointment> findByRecordIdOrderByDateTimeAsc(Long id);
 //
     List<Appointment> findByRecordIdAndStatusOrderByDateTimeDesc(Long id, AppointmentStatus status);
+    
+    List<Appointment> findByRecordIdInAndStatusOrderByDateTimeDesc(List <Long> id, AppointmentStatus status);
+    
+    List<Appointment> findByRecordIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(Long id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 //    
 //    List<Appointment> findByStatusOrderByDateTimeAsc(String s);
 //    

@@ -7,8 +7,10 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.config.trUtils.ClaimType;
@@ -39,7 +41,6 @@ public class ClaimServiceImpl implements ClaimService {
     private RecordRepository recordRep;
     @Autowired
     private AppointmentRepository appointmentRep;
-
 
     @Override
     @Transactional
@@ -193,7 +194,7 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Record> getRecordsByHash(String d) {
         return recordRep.findByWeekHash(d);
     }
-   
+
     @Override
     @Transactional
     public void addAppointment(Appointment ap) {
@@ -204,6 +205,19 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps) {
         return appointmentRep.findByRecordIdAndStatusOrderByDateTimeDesc(r.getId(), aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordsAndStatus(List <Record> r, AppointmentStatus aps) {
+        List <Long> ids = r.stream().map(u -> u.getId()).collect(Collectors.toList());
+        return appointmentRep.findByRecordIdInAndStatusOrderByDateTimeDesc(ids, aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatusAndDate(Record r, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        return appointmentRep.findByRecordIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(r.getId(), aps, dateTimeStart, dateTimeEnd);
     }
 
 }
