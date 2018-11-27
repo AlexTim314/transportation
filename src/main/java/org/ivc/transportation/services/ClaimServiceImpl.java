@@ -7,14 +7,19 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +39,8 @@ public class ClaimServiceImpl implements ClaimService {
     private ClaimRepository claimRep;
     @Autowired
     private RecordRepository recordRep;
+    @Autowired
+    private AppointmentRepository appointmentRep;
 
     @Override
     @Transactional
@@ -144,7 +151,6 @@ public class ClaimServiceImpl implements ClaimService {
     public void updateRecord(Record d, Long id) {
         d.setId(id);
         recordRep.save(d);
-        updClaim(d.getClaim().getId());
     }
 
     @Override
@@ -189,10 +195,29 @@ public class ClaimServiceImpl implements ClaimService {
         return recordRep.findByWeekHash(d);
     }
 
-    public void updClaim(Long id) {
-        List<Record> recList;
-        recList = recordRep.findByClaimId(id);
+    @Override
+    @Transactional
+    public void addAppointment(Appointment ap) {
+        appointmentRep.save(ap);
+    }
 
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps) {
+        return appointmentRep.findByRecordIdAndStatusOrderByDateTimeDesc(r.getId(), aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordsAndStatus(List <Record> r, AppointmentStatus aps) {
+        List <Long> ids = r.stream().map(u -> u.getId()).collect(Collectors.toList());
+        return appointmentRep.findByRecordIdInAndStatusOrderByDateTimeDesc(ids, aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatusAndDate(Record r, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        return appointmentRep.findByRecordIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(r.getId(), aps, dateTimeStart, dateTimeEnd);
     }
 
 }

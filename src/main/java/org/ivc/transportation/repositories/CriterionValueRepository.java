@@ -25,6 +25,8 @@ public interface CriterionValueRepository extends JpaRepository<CriterionValue, 
 
     List<CriterionValue> findByRecordId(Long id);
     
+    List<CriterionValue> deleteByCriterionIdIn(List <Long> id);
+    
     List<CriterionValue> deleteByCriterionId(Long id);
 
 }

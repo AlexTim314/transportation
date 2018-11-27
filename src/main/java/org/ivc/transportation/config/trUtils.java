@@ -26,6 +26,13 @@ public class trUtils {
         record_status_completed,
         record_status_canceled
     }
+
+    public static enum AppointmentStatus {
+        appointment_status_created,
+        appointment_status_inprogress,
+        appointment_status_completed,
+        appointment_status_canceled
+    }
     
     public static class DateRange {
         public Date StartDate;
