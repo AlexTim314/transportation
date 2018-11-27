@@ -10,11 +10,14 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class ClaimServiceImpl implements ClaimService {
     private ClaimRepository claimRep;
     @Autowired
     private RecordRepository recordRep;
+    @Autowired
+    private AppointmentRepository appointmentRep;
+
 
     @Override
     @Transactional
@@ -144,7 +150,6 @@ public class ClaimServiceImpl implements ClaimService {
     public void updateRecord(Record d, Long id) {
         d.setId(id);
         recordRep.save(d);
-        updClaim(d.getClaim().getId());
     }
 
     @Override
@@ -188,11 +193,17 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Record> getRecordsByHash(String d) {
         return recordRep.findByWeekHash(d);
     }
+   
+    @Override
+    @Transactional
+    public void addAppointment(Appointment ap) {
+        appointmentRep.save(ap);
+    }
 
-    public void updClaim(Long id) {
-        List<Record> recList;
-        recList = recordRep.findByClaimId(id);
-
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps) {
+        return appointmentRep.findByRecordIdAndStatusOrderByDateTimeDesc(r.getId(), aps);
     }
 
 }

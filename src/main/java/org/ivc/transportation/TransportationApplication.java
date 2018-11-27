@@ -4,13 +4,17 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.RecordStatus;
+import org.ivc.transportation.entities.Appointment;
 
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
@@ -236,6 +240,15 @@ public class TransportationApplication {
         clS.getAllClaimsSortByDate().forEach(System.out::println);
         System.out.println("-----------Record after-----------------");
         clS.getRecords().forEach(System.out::println);
+        
+        Appointment ap = new Appointment(LocalDateTime.parse("2018-11-27T11:22:33", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "note-1-1-1", rec5, null, null);
+        System.out.println("-----------###########################-----------------");
+        System.out.println(ap);
+        clS.addAppointment(ap);
+        clS.getAppointmentByRecordAndStatus(rec5, AppointmentStatus.appointment_status_created).forEach(System.out::println);
+        
+        
+        
         
         
     }

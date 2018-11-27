@@ -6,6 +6,7 @@
 package org.ivc.transportation.repositories;
 
 import java.util.List;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.entities.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,24 +18,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    List<Appointment> findAllOrderByDateTimeDesc();
-
-    List<Appointment> findAllOrderByDateTimeAsk();
-
-    List<Appointment> findByRecordIdOrderByDateTimeAsk(Long id);
-
-    List<Appointment> findByRecordIdOrderByDateTimeDesk(Long id);
-    
-    List<Appointment> findByStatusOrderByDateTimeAsk(String s);
-    
-    List<Appointment> findByStatusOrderByDateTimeDesk(String s);
-    
-    List<Appointment> findByDriverIdOrderByDateTimeDesk(Long id);
-    
-    List<Appointment> findByDriverIdOrderByDateTimeAsk(Long id);
-   
-    List<Appointment> findByVechicleIdOrderByDateTimeDesk(Long id);
-    
-    List<Appointment> findByVechicleIdOrderByDateTimeAsk(Long id);
+//    List<Appointment> findAllOrderByDateTimeDesc();
+//
+//    List<Appointment> findAllOrderByDateTimeAsc();
+//
+//    List<Appointment> findByRecordIdOrderByDateTimeAsc(Long id);
+//
+    List<Appointment> findByRecordIdAndStatusOrderByDateTimeDesc(Long id, AppointmentStatus status);
+//    
+//    List<Appointment> findByStatusOrderByDateTimeAsc(String s);
+//    
+//    List<Appointment> findByStatusOrderByDateTimeDesc(String s);
+//    
+//    List<Appointment> findByDriverIdOrderByDateTimeDesc(Long id);
+//    
+//    List<Appointment> findByDriverIdOrderByDateTimeAsc(Long id);
+//   
+//    List<Appointment> findByVechicleIdOrderByDateTimeDesc(Long id);
+//    
+//    List<Appointment> findByVechicleIdOrderByDateTimeAsc(Long id);
 
 }

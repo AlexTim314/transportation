@@ -5,10 +5,9 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
 
 /**
  *
@@ -41,11 +41,11 @@ public class Appointment implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Date dateTime;
+    private LocalDateTime dateTime;
     
     @NonNull
     @Column(nullable = false)
-    private String status;
+    private AppointmentStatus status;
     
     @NonNull
     @Column(nullable = false)
@@ -64,7 +64,7 @@ public class Appointment implements Serializable {
     private Vechicle vechicle;
     
 
-    public Appointment (Date dateTime, String status, String note, Record record, Driver driver, Vechicle vechicle){
+    public Appointment (LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vechicle vechicle){
         this.dateTime = dateTime;
         this.status = status;
         this.note = note;
