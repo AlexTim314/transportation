@@ -76,25 +76,5 @@ public interface ClaimService {
 
     public Collection<Record> getRecordsByHash(String d);
 
-    public void addAppointment(Appointment ap);
-
-    public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps);
-
-    public Collection<Appointment> getAppointmentByRecordsAndStatus(List<Record> r, AppointmentStatus aps);
-
-    public Collection<Appointment> getAppointmentByRecordAndStatusAndDate(Record r, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByStatusAndDate(AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByDriverAndDate(Driver d, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByVechicleAndDate(Vechicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByDriverAndStatusAndDate(Driver d, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vechicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
-    public void removeAppointment(Long id);
+    
 }

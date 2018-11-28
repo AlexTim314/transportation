@@ -84,19 +84,14 @@ public class Waybill implements Serializable {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
-    private Appointment appointment;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
 
     public Waybill(String number, Float departureOdometer, Float returnOdometer, Date factDepartureTime,
             Date factReturnTime, Float departureFuelRemnant, Float returnFuelRemnant, Date startLunch,
-            Date EndLunch, String mechConclusion, String medConclusion, String note, Appointment appointment,
+            Date EndLunch, String mechConclusion, String medConclusion, String note,
             TaskList taskList) {
         this.number = number;
         this.EndLunch = EndLunch;
-        this.appointment = appointment;
         this.departureFuelRemnant = departureFuelRemnant;
         this.departureOdometer = departureOdometer;
         this.factDepartureTime = factDepartureTime;
