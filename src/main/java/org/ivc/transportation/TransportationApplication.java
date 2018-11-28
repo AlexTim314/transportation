@@ -18,6 +18,9 @@ import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Appointment;
 
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Criterion;
+import org.ivc.transportation.entities.CriterionType;
+import org.ivc.transportation.entities.CriterionValue;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
@@ -28,6 +31,7 @@ import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
 
 import org.ivc.transportation.services.ClaimService;
+import org.ivc.transportation.services.CriterionService;
 import org.ivc.transportation.services.DepartmentService;
 import org.ivc.transportation.services.PlanService;
 import org.ivc.transportation.services.TransportDepService;
@@ -59,13 +63,13 @@ public class TransportationApplication {
     /*
     @Autowired
     private DriverService drvS;
-*/
+     */
     @Autowired
     private DepartmentService depS;
-/*
+    /*
     @Autowired
     private VechicleService veclS;
-*/
+     */
     @Autowired
     private ClaimService clS;
 
@@ -74,11 +78,15 @@ public class TransportationApplication {
 
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private PlanService plS;
-    
+
     @Autowired
     private AppointmentRepository aprep;
+
+    @Autowired
+    private CriterionService critServ;
 
     @PostConstruct
     @Transactional
@@ -139,7 +147,6 @@ public class TransportationApplication {
         depS.saveDepartment(dep4);
         depS.saveDepartment(dep5);
 
-        
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep1);
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
@@ -157,7 +164,7 @@ public class TransportationApplication {
         clS.addClaim(cl5);
 
         String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
-        
+
         Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1);
         rec1.setStatus(RecordStatus.record_status_created);
         Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1);
@@ -174,9 +181,6 @@ public class TransportationApplication {
         clS.addRecord(rec4);
         clS.addRecord(rec5);
 
-        
-        
-        
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
@@ -235,17 +239,17 @@ public class TransportationApplication {
         System.out.println("-----------Record by Claim 2-----------------");
         clS.getRecordsByClaim(cl2.getId()).forEach(System.out::println);
         System.out.println("-----------###########################-----------------");
-         System.out.println("-----------all claims-----------------");
+        System.out.println("-----------all claims-----------------");
         clS.getAllClaimsSortByDate().forEach(System.out::println);
         System.out.println("-----------Record table-----------------");
         clS.getRecords().forEach(System.out::println);
-        System.out.println("-----------Deleting claim 1-----------------");
-        clS.removeClaim(cl1.getId());
-        System.out.println("-----------Claims after deleting-----------------");
-        clS.getAllClaimsSortByDate().forEach(System.out::println);
-        System.out.println("-----------Record after-----------------");
-        clS.getRecords().forEach(System.out::println);
-        
+//        System.out.println("-----------Deleting claim 1-----------------");
+//        clS.removeClaim(cl1.getId());
+//        System.out.println("-----------Claims after deleting-----------------");
+//        clS.getAllClaimsSortByDate().forEach(System.out::println);
+//        System.out.println("-----------Record after-----------------");
+//        clS.getRecords().forEach(System.out::println);
+
         Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-1", rec4, null, null);
         Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-2", rec4, null, null);
         Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-3", rec4, null, null);
@@ -263,14 +267,58 @@ public class TransportationApplication {
         LocalDateTime dateTimeEnd = LocalDateTime.parse("2018-11-22T19:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         clS.getAppointmentByRecordAndStatusAndDate(rec4, AppointmentStatus.appointment_status_created, dateTimeStart, dateTimeEnd).forEach(System.out::println);
         System.out.println("-----------###########################-----------------");
-        List <Record> rls = (List <Record>) clS.getRecordsByClaim(cl2.getId());
+        List<Record> rls = (List<Record>) clS.getRecordsByClaim(cl2.getId());
         clS.getAppointmentByRecordsAndStatus(rls, AppointmentStatus.appointment_status_created).forEach(System.out::println);
+
+        CriterionType crT1 = new CriterionType("л/с");
+        CriterionType crT2 = new CriterionType("чел");
+        CriterionType crT3 = new CriterionType("м");
+        CriterionType crT4 = new CriterionType("мм");
+        CriterionType crT5 = new CriterionType("кг");
+        critServ.addCriterionType(crT1);
+        critServ.addCriterionType(crT2);
+        critServ.addCriterionType(crT3);
+        critServ.addCriterionType(crT4);
+        critServ.addCriterionType(crT5);
+
+        Criterion cr1 = new Criterion("Мощность двигателя", crT1);
+        Criterion cr2 = new Criterion("Вместимость пассажиров", crT2);
+        Criterion cr3 = new Criterion("Длина стропы крана", crT3);
+        Criterion cr4 = new Criterion("Максимальная длина перевозимого груза", crT3);
+        Criterion cr5 = new Criterion("Длина кузова", crT3);
+        Criterion cr6 = new Criterion("Высота", crT4);
+        Criterion cr7 = new Criterion("Грузоподъёмность", crT5);
+        Criterion cr8 = new Criterion("Масса", crT5);
+        critServ.addCriterion(cr1);
+        critServ.addCriterion(cr2);
+        critServ.addCriterion(cr3);
+        critServ.addCriterion(cr4);
+        critServ.addCriterion(cr5);
+        critServ.addCriterion(cr6);
+        critServ.addCriterion(cr7);
+        critServ.addCriterion(cr8);
+
+        CriterionValue crV1 = new CriterionValue("115", rec5, vechicle1, cr1);
+        CriterionValue crV2 = new CriterionValue("14", rec1, vechicle1, cr2);
+        CriterionValue crV3 = new CriterionValue("15", rec2, vechicle3, cr3);
+        CriterionValue crV4 = new CriterionValue("25", rec3, vechicle2, cr4);
+        CriterionValue crV5 = new CriterionValue("20", rec3, vechicle2, cr5);
+        CriterionValue crV6 = new CriterionValue("2500", rec4, vechicle4, cr6);
+        CriterionValue crV7 = new CriterionValue("3560", rec5, vechicle2, cr7);
+        CriterionValue crV8 = new CriterionValue("2100", rec1, vechicle4, cr8);
+        critServ.addCriterionValue(crV1);
+        critServ.addCriterionValue(crV2);
+        critServ.addCriterionValue(crV3);
+        critServ.addCriterionValue(crV4);
+        critServ.addCriterionValue(crV5);
+        critServ.addCriterionValue(crV6);
+        critServ.addCriterionValue(crV7);
+        critServ.addCriterionValue(crV8);
+        System.out.println("*************************************************************");
         
+        critServ.removeCriterionType(crT3.getId());
         
-        
-        
-        
-        
+
     }
 
     public static void main(String[] args) {

@@ -96,4 +96,5 @@ public interface ClaimService {
 
     public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vechicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
+    public void removeAppointment(Long id);
 }
