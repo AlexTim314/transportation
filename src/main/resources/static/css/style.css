@@ -105,14 +105,25 @@ button {
 	margin-right: 10px;
 }
 .sidebar{
-
 	margin-top:10px;
     position: relative;
 	display: block;
 	float: left;
-	width:17%;
+	width:0;
 	height: 90vh;
 	background: #ffffff ;
+	transition: width 0.3s;
+}
+.sidebar-vertical{
+	width: 2%;
+	height: 90%;
+	position: absolute;
+	background: -webkit-linear-gradient(left, var(--main-gradient-color1), var(--main-gradient-color2));
+	background: -o-linear-gradient(left, var(--main-gradient-color1), var(--main-gradient-color2));
+	background: linear-gradient(to right, var(--main-gradient-color1), var(--main-gradient-color2));
+	top:120px;
+	left:0;
+	z-index: 50%;
 }
 
 .menu{
@@ -294,16 +305,16 @@ button {
 .menu-new-claim{
 	display: none;
 	position: absolute;
-	top:14%;
-	left:100%;
-	width: 120%;
+	top:20%;
+	left:35%;
+	width: 20%;
 	height: auto;
-	background: #333;
+	background: rgba(51,51,51,0.9);
 	color:white;
 	border-radius: 3px;
 	box-shadow: 15px 10px 18px #888888;
 	transition: 1s;
-	z-index: 1;
+	z-index: 100;
 }
 .menu-new-claim i{
 	position: absolute;
@@ -320,6 +331,18 @@ button {
 	font-size: 0.9em;
 
 }
+.form-item .left-block{
+	width: 47%;
+	float: left;
+
+}
+.form-item .right-block{
+	width: 47%;
+	float: right;
+	
+}
+
+
 .menu-new-claim input,select{
 	width: 100%;
 	height: auto;
@@ -340,6 +363,14 @@ button {
 	margin: 3px;
 	border-radius: 3px;
 	font-size:0.7em;
+}
+.fom-item .left-block-route{
+	width:85%;
+	float:left;
+}
+.fom-item .left-block-route{
+	width:5%;
+	float:right;
 }
 
 .fast-filter{
@@ -371,10 +402,11 @@ button {
 	margin-top:10px;
 	display:block;
 	float: right;
-	width:82%;
+	width:98%;
 	height: 90vh;
 	background:#ffffff; 
 	overflow: hidden;
+	transition: width .3s;
 }
 .tab-title{
 	color:rgba(0,0,0,0.7);
@@ -397,18 +429,19 @@ button {
 	font-weight: bold;
 }
 .thin-strip i{
+	cursor: pointer;
+	float: right;
 	color:#ffffff;
-	margin-left:10px;
+	margin-right:10px;
 	margin-top:15px;
 
 }
 /*---------------------------------------TABLE-------------------------------------*/
 .table-header{
-
+	float: right;
 	overflow-x: auto;
-	width: 95%;
-	margin-left: 2%;
-	margin-right: auto;
+	width: 78%;
+	margin-right:1%;
 	height: 50px;
 	border-top-right-radius: 3px;
 	border-top-left-radius: 3px;
@@ -446,24 +479,71 @@ button {
 	margin: 0;
 	padding:5px;
 }
-
+.sidenav-btn{
+	cursor: pointer;
+	display: block;
+	color:rgba(255,255,255,0.8);	
+	margin:15px 30%;
+	
+}
+.sidenav-btn:hover{
+	color: rgba(255,255,255,1);	
+}
 .tbl-item{
 	display: block;
 	float: left;
 }
 
-.table-claim{
-	width: 95%;
-	margin-left:auto;
+.table-record{
+	width: 18%;
+	float: left;
 	margin-left: 2%;
-	margin-right: auto;
+	border-collapse: collapse;
+	border-radius: 3px;	
+}
+.table-record td{
+	position: relative;
+	padding: 10px 10px;
+	height: 20px;
+}
+.table-record th{
+	
+	background: linear-gradient(to top, var(--maing-radient-color1), var(--main-gradient-color2)); 
+	background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
+	background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
+	color:rgba(255,255,255,0.9);
+	font-size:0.9em;
+	padding-top: 1%;
+	padding-bottom:1%;
+	height: 50px;
+	overflow: hidden;	
+}
+
+.add-hover {
+	display: none;
+	position: absolute;
+	width: 45%;
+	top:2px;
+	right:2px;
+}
+.table-record td:hover{
+	background: grey;
+}
+.table-record td:hover .add-hover{
+	display: block;
+	cursor: pointer;
+}
+
+/***************************************************************************/
+.table-claim{
+	float: right;
+	width: 78%;
+	margin-right:1%;
 	border-collapse: collapse;
 	border-radius: 3px;
 }
 .table-claim th,td{
 	padding: 1% 1%;
-
-
 }
 .table-claim  th{
 	background: linear-gradient(to top, var(--maing-radient-color1), var(--main-gradient-color2)); 
@@ -483,7 +563,7 @@ button {
 
 }
 .table-claim th:nth-child(1){
-	width: 3.5%;
+	width: 1%;
 }
 .table-claim th:nth-child(2){
 	width: 5%;
@@ -504,16 +584,33 @@ button {
 	width: 10%;
 }
 .table-claim th:nth-child(8){
-	width: 10%;
-}
-.table-claim th:nth-child(9){
-	width: 6%;
-}
-.table-claim th:nth-child(10){
 	width: 25%;
 }
+
+
 .table-claim select{
 	border:none;
+}
+.table-claim tr{
+	position: relative;
+}
+.table-claim tr:hover td{
+	background: grey;
+}
+.table-claim td{
+	
+}
+.last-relative{
+	position:absolute;
+	width:100%;
+	top:0;
+	left: -30px;
+}
+.btn-hidden{
+ 	
+	left: 0;
+	bottom: 0;
+	z-index: 3;
 }
 /*-------------------------------STYLE WIDTH TABLE STATUS---------------*/
 .table-status{
@@ -609,7 +706,7 @@ button {
     font-weight: bold;
     font-size: 0.9em;
     background:white;
-      border: 1px solid #40c0a9;
+    border: 1px solid #40c0a9;
 
 } 
 /*.transport-info div{
@@ -943,8 +1040,42 @@ span.psw {
 .subtable th:nth-child(1){
 	width: 10%;
 }
+.formRecord{
+	display: none;
+	position: absolute;
+	color: white;
+	top:30%;
+	left: 40%;
+	width: 20%;
+	z-index: 2;
+	background:#333;
+	opacity: 0.9;
+	border-radius: 3px;
+	box-shadow: 15px 10px 18px #888888;
+}
+.formRecord label{
+	margin-left: 10%;
+	display: block;
+	margin-top:20px;
+}
+.formRecord select{
+	
+	width: 80%;
+	margin-left: 10%;
 
-
+}
+.formRecord button{
+	margin-top:20px;
+	margin-bottom: 20px;
+	width: 80%;
+	margin-left: 10%;
+}
+.formRecord i{
+	cursor: pointer;
+	float: right;
+    margin-right: 5%;
+    margin-top:10px;
+}
 /*--------------------------PLAN.html {begin}------------------------------ */
 
 .table-plan th:nth-child(1){

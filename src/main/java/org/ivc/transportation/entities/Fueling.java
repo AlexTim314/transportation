@@ -6,6 +6,7 @@
 package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Column;
@@ -50,7 +51,7 @@ public class Fueling implements Serializable {
     @Column(nullable = false)
     private Float famountFuel;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Waybill waybill;
 

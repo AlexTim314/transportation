@@ -7,14 +7,17 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.ivc.transportation.config.trUtils;
-import org.ivc.transportation.config.trUtils.ClaimType;
-import org.ivc.transportation.config.trUtils.DateRange;
-import org.ivc.transportation.config.trUtils.RecordStatus;
+import java.util.stream.Collectors;
+import org.ivc.transportation.config.trUtils.*;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +37,20 @@ public class ClaimServiceImpl implements ClaimService {
     private ClaimRepository claimRep;
     @Autowired
     private RecordRepository recordRep;
+    @Autowired
+    private AppointmentRepository appointmentRep;
 
     @Override
     @Transactional
     public void addClaim(Claim d) {
         this.claimRep.save(d);
+    }
+
+    @Override
+    @Transactional
+    public void updateClaim(Claim d, Long id) {
+        d.setId(id);
+        claimRep.save(d);
     }
 
     @Override
@@ -107,7 +119,7 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Claim> getAllClaimsSortByDateAsk() {
         return claimRep.findAll(Sort.by(Sort.Direction.ASC, "clDate"));
     }
-    
+
     @Override
     @Transactional
     public Collection<Claim> getAllClaimsByDate(DateRange dr) {
@@ -122,6 +134,12 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
+    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t) {
+        return claimRep.findByTipAndDepartmentIdOrderByClDateDesc(id, t);
+    }
+
+    @Override
+    @Transactional
     public void addRecord(Record d) {
         this.recordRep.save(d);
     }
@@ -131,7 +149,6 @@ public class ClaimServiceImpl implements ClaimService {
     public void updateRecord(Record d, Long id) {
         d.setId(id);
         recordRep.save(d);
-        updateClaim(d.getClaim().getId());
     }
 
     @Override
@@ -149,7 +166,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public Collection<Record> getRecords() {
-       return recordRep.findAll();
+        return recordRep.findAll();
     }
 
     @Override
@@ -167,7 +184,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public Collection<Record> getRecordsByDate(Date d) {
-       return recordRep.findByDatetime(d);
+        return recordRep.findByDatetime(d);
     }
 
     @Override
@@ -175,12 +192,60 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Record> getRecordsByHash(String d) {
         return recordRep.findByWeekHash(d);
     }
-    
-    public void updateClaim(Long id){
-        List<Record> recList;
-        recList = recordRep.findByClaimId(id);
-        
-    
+
+    @Override
+    @Transactional
+    public void addAppointment(Appointment ap) {
+        appointmentRep.save(ap);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatus(Record r, AppointmentStatus aps) {
+        return appointmentRep.findByRecordIdAndStatusOrderByDateTimeDesc(r.getId(), aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordsAndStatus(List <Record> r, AppointmentStatus aps) {
+        List <Long> ids = r.stream().map(u -> u.getId()).collect(Collectors.toList());
+        return appointmentRep.findByRecordIdInAndStatusOrderByDateTimeDesc(ids, aps);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Appointment> getAppointmentByRecordAndStatusAndDate(Record r, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        return appointmentRep.findByRecordIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(r.getId(), aps, dateTimeStart, dateTimeEnd);
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByStatusAndDate(AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByDriverAndDate(Driver d, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByVechicleAndDate(Vechicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByDriverAndStatusAndDate(Driver d, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vechicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
