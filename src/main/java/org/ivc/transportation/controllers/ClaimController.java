@@ -6,16 +6,13 @@ import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,11 +43,11 @@ public class ClaimController {
      * соответствующим сообщением.
      *
      * @param principal данные пользователя
-     * @param dr
+     * @param dateRange
      * @return При вызове без авторизации, возвращает null.
      */
     @GetMapping("/claims")
-    public Collection<Claim> findClaimsByUser(Principal principal, @RequestBody DateRange dr) {
+    public Collection<Claim> findClaimsByUser(Principal principal, @RequestBody DateRange dateRange) {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
@@ -58,7 +55,7 @@ public class ClaimController {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
             //return claimService.getClaimsByDepartment(department.getId());
-            return claimService.getAllClaimsByDepartmentAndDate(department.getId(), dr);
+            return claimService.getAllClaimsByDepartmentAndDate(department.getId(), dateRange);
         }
         return null;
     }

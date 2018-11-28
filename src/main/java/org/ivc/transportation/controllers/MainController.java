@@ -1,6 +1,21 @@
 package org.ivc.transportation.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.SpreadsheetVersion;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellReference;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.WebUtils;
@@ -53,9 +68,62 @@ public class MainController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
-
+        
+        testApachPoi();
+        
         return "loginPage";
     }
+    
+     private void testApachPoi() {
+        String excelFilePath = "Waybill.xls";
+
+        try {
+            FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            List<? extends Name> allNames = workbook.getAllNames();
+
+            for (Name name : allNames) {
+                System.out.println(" NAME: " + name.getNameName() + " index "
+                        + name.getSheetIndex() + " ref " + name.getRefersToFormula());
+                
+                AreaReference aref = new AreaReference(name.getRefersToFormula(), SpreadsheetVersion.EXCEL2007);
+                CellReference[] crefs = aref.getAllReferencedCells();
+                //пока предполагается, что все именованные ячейки будут одиночными, а не диапазонами
+                CellReference cellRef = crefs[0];
+                Sheet s = workbook.getSheet(cellRef.getSheetName());
+                Row r = s.getRow(cellRef.getRow());
+                Cell c = r.getCell(cellRef.getCol());
+
+                System.out.println(c);
+
+            }
+            Name name = allNames.get(2);
+            System.out.println(" NAME: " + name.getNameName() + " index "
+                    + name.getSheetIndex() + " ref " + name.getRefersToFormula());
+            CellReference cellRef = new CellReference(name.getRefersToFormula());
+            Sheet s = workbook.getSheet(cellRef.getSheetName());
+            Row r = s.getRow(cellRef.getRow());
+            Cell c = r.getCell(cellRef.getCol());
+            c.setCellValue("ddjl");
+
+            System.out.println(c);
+            
+            inputStream.close();
+ 
+            FileOutputStream outputStream = new FileOutputStream("Waybill.xls");
+            workbook.write(outputStream);
+            workbook.close();
+            outputStream.close();
+
+        } catch (IOException | EncryptedDocumentException ex) {
+            ex.printStackTrace();
+        }
+     }
+        // создание листа с названием "Просто лист"
+        /* HSSFSheet sheet = workbook.createSheet("Просто лист");
+        sheet.createRow(0).createCell(0, CellType._NONE).
+         */
+    
 
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {

@@ -12,23 +12,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/departments")
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
 
-    @GetMapping("/departments")
+    @GetMapping("")
     public Collection<Department> getAllDepartments() {
         return departmentService.getDepartments();
     }
 
 //TODO: сомнительная потребность в этом запросе, оценить
-    @GetMapping("/departments/{id}")
-    public Department getDepartment(@PathVariable long id) {
+    @GetMapping("/{id}")
+    public Department getDepartment(@PathVariable long id) {        
         Optional<Department> optDep = departmentService.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
 
@@ -42,22 +43,21 @@ public class DepartmentController {
         });
     }
 
-    @DeleteMapping("/departments/delete")
+    @DeleteMapping("/delete")
     public Collection<Department> deleteDepartment(@RequestBody Department department) {
         departmentService.removeDepartment(department.getId());
         return departmentService.getDepartments();
     }
 
-    @PostMapping("/departments/create")
+    @PostMapping("/create")
     public Collection<Department> addDepartment(@RequestBody Department department) {
         departmentService.saveDepartment(department);
         return departmentService.getDepartments();
     }
 
-    @PutMapping("/departments/update")
+    @PutMapping("/update")
     public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
         departmentService.updateDepartment(dep, id);
         return departmentService.getDepartments();
     }
-
 }

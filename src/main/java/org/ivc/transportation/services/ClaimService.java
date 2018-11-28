@@ -8,10 +8,7 @@ package org.ivc.transportation.services;
 import java.util.Collection;
 import java.sql.Date;
 import java.util.Optional;
-import org.ivc.transportation.config.trUtils;
-import org.ivc.transportation.config.trUtils.ClaimType;
-import org.ivc.transportation.config.trUtils.DateRange;
-import org.ivc.transportation.config.trUtils.RecordStatus;
+import org.ivc.transportation.config.trUtils.*;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 
