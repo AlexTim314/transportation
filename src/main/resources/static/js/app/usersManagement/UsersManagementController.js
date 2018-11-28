@@ -149,5 +149,10 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
             self.role = {roleName: null};
         };
+        
+        self.test = function(){
+            self.user.department = {id:"1", name: "dep"};
+            self.createUser(self.user);
+        };
 
     }]);

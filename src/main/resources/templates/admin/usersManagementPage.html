@@ -9,8 +9,8 @@
 
         <script src="js/lib/angular.min.js" ></script>
         <script src="js/app/app.js"></script>
-        <script src="js/app/userManagement/UsersManagementService.js"></script>
-        <script src="js/app/userManagement/UsersManagementController.js"></script>
+        <script src="js/app/usersManagement/UsersManagementService.js"></script>
+        <script src="js/app/usersManagement/UsersManagementController.js"></script>
 
         <link th:href="@{css/main.css}" rel="stylesheet" />
     </head>
@@ -25,7 +25,7 @@
                     <td>Username:</td>
                     <td><input type="text" ng-disabled="ctrl.user.userId !== null" ng-model="ctrl.user.userName" size="16"/></td>
                 </tr>
-                <tr ng-show="ctrl.user.userId===null">
+                <tr ng-show="ctrl.user.userId === null">
                     <td>Password:</td>
                     <td><input type='password' name='password' ng-model="ctrl.user.password"/></td>
                 </tr>
@@ -59,7 +59,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td><button ng-click="ctrl.test()">test</button></td>
                     <td></td>
                     <td></td>
                     <td><button type="button" ng-click="ctrl.reset()" class="delete-button">reset</button></td>
@@ -69,7 +69,7 @@
                 </tr>
             </table>
         </form>
-        <br/>
+        <br/>        
         <table border="1">
             <tr>
                 <th>Username</th>
