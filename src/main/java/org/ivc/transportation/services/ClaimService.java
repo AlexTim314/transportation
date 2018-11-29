@@ -13,6 +13,8 @@ import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.Vechicle;
 
 /**
  *
@@ -70,5 +72,7 @@ public interface ClaimService {
 
     public Collection<Record> getRecordsByHash(String d);
 
-    
+    public Collection<TypeVechicle> getTypeVechicles();
+
+    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s);
 }

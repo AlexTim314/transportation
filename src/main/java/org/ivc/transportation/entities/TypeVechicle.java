@@ -26,8 +26,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"criterionType"})
-@EqualsAndHashCode(exclude = {"criterionType"})
+//@ToString
+//@EqualsAndHashCode
 public class TypeVechicle implements Serializable {
 
     @Id

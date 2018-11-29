@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,15 @@ public class TransportDepController {
     @Autowired
     private TransportDepService transportDepService;
 
+    /**
+     * Метод возвращает список транспортных отделов. Предполагается , что доступ
+     * к этому методу будет только у администратора. Пользователям
+     * предоставляется метод getTransportDep(Principal principal).
+     *
+     * @return список транспортных отделов.
+     */
     @GetMapping("/transportDeps")
-    public Collection<TransportDep> getTransportDeps() {
+    public Collection<TransportDep> getAllTransportDeps() {
         return transportDepService.getTransportDeps();
     }
 
@@ -107,5 +115,28 @@ public class TransportDepController {
     public Collection<Vechicle> delVechicle(@RequestBody Vechicle d) {
         transportDepService.removeVechicle(d.getId());
         return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
+    }
+
+    @GetMapping("/transportDeps/vechicles/typeVechicle")
+    public Collection<TypeVechicle> getTypeVechicle() {
+        return transportDepService.getTypeVechicles();
+    }
+
+    @PostMapping("/transportDeps/vechicles/typeVechicle/create")
+    public Collection<TypeVechicle> addTypeVechicle(@RequestBody TypeVechicle t) {
+        transportDepService.addTypeVechicle(t);
+        return transportDepService.getTypeVechicles();
+    }
+
+    @PutMapping("/transportDeps/vechicles/typeVechicle/update")
+    public Collection<TypeVechicle> updateTypeVechicle(@RequestBody TypeVechicle t) {
+        transportDepService.updateTypeVechicle(t, t.getId());
+        return transportDepService.getTypeVechicles();
+    }
+
+    @DeleteMapping("/transportDeps/vechicles/typeVechicle/delete")
+    public Collection<TypeVechicle> delTypeVechicle(@RequestBody TypeVechicle t) {
+        transportDepService.removeTypeVechicle(t.getId());
+        return transportDepService.getTypeVechicles();
     }
 }

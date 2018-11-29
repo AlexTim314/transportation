@@ -30,8 +30,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"transportDep"})
-@EqualsAndHashCode(exclude = {"transportDep"})
+@ToString(exclude = {"transportDep","typeVechicle"})
+@EqualsAndHashCode(exclude = {"transportDep","typeVechicle"})
 public class Vechicle implements Serializable {
 
     @Id
