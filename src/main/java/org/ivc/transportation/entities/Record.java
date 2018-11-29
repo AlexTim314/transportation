@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -101,9 +102,13 @@ public class Record implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Plan plan;
+    
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    private TypeVechicle typeVechicle;
 
     public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim) {
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, TypeVechicle typeVechicle) {
 
         this.weekHash = weekHash;
         this.type = type;
@@ -120,6 +125,7 @@ public class Record implements Serializable {
         this.status = RecordStatus.record_status_created;
         this.description = description;
         this.claim = claim;
+        this.typeVechicle = typeVechicle;
 
     }
 
