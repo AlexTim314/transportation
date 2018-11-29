@@ -49,7 +49,7 @@ public interface TransportDepService {
     public void removeVechicle(Long id);
 
     public Collection<Vechicle> getVechicles();
-    
+
     public Collection<Vechicle> getVechiclesByTypeVechicleId(Long id);
 
     public Collection<Vechicle> findVechiclesByVacant(Boolean d);
@@ -57,7 +57,7 @@ public interface TransportDepService {
     public Collection<Vechicle> getVechiclesByTransportDepId(Long id);
 
     public Optional getVechicleById(Long id);
-    
+
     public void addTypeVechicle(TypeVechicle d);
 
     public void updateTypeVechicle(TypeVechicle d, Long id);
@@ -65,5 +65,7 @@ public interface TransportDepService {
     public void removeTypeVechicle(Long id);
 
     public Collection<TypeVechicle> getTypeVechicles();
+
+    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s);
 
 }

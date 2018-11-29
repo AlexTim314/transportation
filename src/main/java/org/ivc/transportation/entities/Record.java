@@ -36,8 +36,8 @@ import org.ivc.transportation.config.trUtils.RecordStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"claim", "plan"})
-@EqualsAndHashCode(exclude = {"claim", "plan"})
+@ToString(exclude = {"claim", "plan","typeVechicle"})
+@EqualsAndHashCode(exclude = {"claim", "plan","typeVechicle"})
 public class Record implements Serializable {
 
     @Id

@@ -18,6 +18,7 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.entities.Vechicle;
 
 /**
@@ -76,5 +77,7 @@ public interface ClaimService {
 
     public Collection<Record> getRecordsByHash(String d);
 
-    
+    public Collection<TypeVechicle> getTypeVechicles();
+
+    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s);
 }

@@ -155,7 +155,7 @@ public class TransportDepServiceImpl implements TransportDepService {
 
     @Override
     public void addTypeVechicle(TypeVechicle d) {
-        this.addTypeVechicle(d);
+        this.typeVechicleRep.save(d);
     }
     
     @Override
@@ -177,6 +177,11 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Override
     public Collection<Vechicle> getVechiclesByTypeVechicleId(Long id) {
         return vechicleRep.findByTypeVechicleId(id);
+    }
+
+    @Override
+    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s) {
+       return typeVechicleRep.findBySpecialization(s);
     }
 
 }

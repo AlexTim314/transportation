@@ -9,6 +9,7 @@ import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentExc
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
@@ -316,8 +317,29 @@ public class ClaimController {
         return null;
 
     }
-   
+
+    /**
+     * Метод возвращает список типов транпортных средств. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
+     *
+     * @param principal данные пользователя
+     * @param spec специализация транспортных средств
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
+     */
+    @GetMapping("/claims/byUser/records/{spec}")
+    public Collection<TypeVechicle> getTypeVechicleBySpecialization(Principal principal, @PathVariable("spec") String spec) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            return claimService.getTypeVechiclesBySpicialization(spec);
+        }
+        return null;
+    }
+
 }
-
-
-
