@@ -30,8 +30,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"appointment", "taskList"})
-@EqualsAndHashCode(exclude = {"appointment", "taskList"})
+@ToString(exclude = {"taskList"})
+@EqualsAndHashCode(exclude = {"taskList"})
 public class Waybill implements Serializable {
 
     @Id
@@ -41,32 +41,36 @@ public class Waybill implements Serializable {
     @NonNull
     @Column(nullable = false)
     private String number;
+    
+    @NonNull
+    @Column(nullable = false)
+    private String series;
 
     @NonNull
     @Column(nullable = false)
     private Float departureOdometer;
 
-    @NonNull
+    //@NonNull
     private Float returnOdometer;
 
-    @NonNull
-    @Column(nullable = false)
+   // @NonNull
+   // @Column(nullable = false)
     private Date factDepartureTime;
 
-    @NonNull
+    //@NonNull
     private Date factReturnTime;
 
     @NonNull
     @Column(nullable = false)
     private Float departureFuelRemnant;
 
-    @NonNull
+    //@NonNull
     private Float returnFuelRemnant;
 
-    @NonNull
+    //@NonNull
     private Date startLunch;
 
-    @NonNull
+  //  @NonNull
     private Date EndLunch;
 
     @NonNull
@@ -83,28 +87,31 @@ public class Waybill implements Serializable {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
-    private Appointment appointment;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
 
-    public Waybill(String number, Float departureOdometer, Float returnOdometer, Date factDepartureTime,
-            Date factReturnTime, Float departureFuelRemnant, Float returnFuelRemnant, Date startLunch,
-            Date EndLunch, String mechConclusion, String medConclusion, String note, Appointment appointment,
+    public Waybill(String series, String number, Float departureOdometer
+            //, Float returnOdometer
+            //, Date factDepartureTime
+            //,Date factReturnTime
+            , Float departureFuelRemnant
+            //, Float returnFuelRemnant
+            //, Date startLunch
+            //, Date EndLunch
+            , String mechConclusion, String medConclusion, String note,
             TaskList taskList) {
         this.number = number;
-        this.EndLunch = EndLunch;
-        this.appointment = appointment;
+        this.series = series;
+        
         this.departureFuelRemnant = departureFuelRemnant;
         this.departureOdometer = departureOdometer;
-        this.factDepartureTime = factDepartureTime;
+        //this.factDepartureTime = factDepartureTime;
         this.mechConclusion = mechConclusion;
         this.medConclusion = medConclusion;
         this.note = note;
-        this.returnFuelRemnant = returnFuelRemnant;
-        this.returnOdometer = returnOdometer;
-        this.startLunch = startLunch;
+        //this.returnFuelRemnant = returnFuelRemnant;
+        //this.returnOdometer = returnOdometer;
+        //this.startLunch = startLunch;
+        //this.EndLunch = EndLunch;
         this.taskList = taskList;
 
     }
