@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.entities.Vechicle;
 
 /**
@@ -48,11 +49,21 @@ public interface TransportDepService {
     public void removeVechicle(Long id);
 
     public Collection<Vechicle> getVechicles();
+    
+    public Collection<Vechicle> getVechiclesByTypeVechicleId(Long id);
 
     public Collection<Vechicle> findVechiclesByVacant(Boolean d);
 
     public Collection<Vechicle> getVechiclesByTransportDepId(Long id);
 
     public Optional getVechicleById(Long id);
+    
+    public void addTypeVechicle(TypeVechicle d);
+
+    public void updateTypeVechicle(TypeVechicle d, Long id);
+
+    public void removeTypeVechicle(Long id);
+
+    public Collection<TypeVechicle> getTypeVechicles();
 
 }
