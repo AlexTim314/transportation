@@ -9,9 +9,11 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.repositories.TypeVechicleRepository;
 import org.ivc.transportation.repositories.VechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class TransportDepServiceImpl implements TransportDepService {
     private DriverRepository driverRep;
     @Autowired
     private VechicleRepository vechicleRep;
+    @Autowired
+    private TypeVechicleRepository typeVechicleRep;
 
     @Override
     @Transactional
@@ -148,4 +152,31 @@ public class TransportDepServiceImpl implements TransportDepService {
     public Optional getVechicleById(Long id) {
         return vechicleRep.findById(id);
     }
+
+    @Override
+    public void addTypeVechicle(TypeVechicle d) {
+        this.addTypeVechicle(d);
+    }
+    
+    @Override
+    public void updateTypeVechicle(TypeVechicle d, Long id) {
+         d.setId(id);
+        typeVechicleRep.save(d);
+    }
+
+    @Override
+    public void removeTypeVechicle(Long id) {
+        typeVechicleRep.deleteById(id);
+    }
+
+    @Override
+    public Collection<TypeVechicle> getTypeVechicles() {
+        return typeVechicleRep.findAll();
+    }
+
+    @Override
+    public Collection<Vechicle> getVechiclesByTypeVechicleId(Long id) {
+        return vechicleRep.findByTypeVechicleId(id);
+    }
+
 }

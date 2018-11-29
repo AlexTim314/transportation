@@ -124,15 +124,15 @@ public class TransportationApplication {
         tdS.addDriver(driver4);
         tdS.addDriver(driver5);
 
-        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2);
+        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2,null);
         vechicle1.setVacant(Boolean.TRUE);
-        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1);
+        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1,null);
         vechicle2.setVacant(Boolean.TRUE);
-        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2);
+        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2,null);
         vechicle3.setVacant(Boolean.FALSE);
-        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1);
+        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1,null);
         vechicle4.setVacant(Boolean.TRUE);
-        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2);
+        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2,null);
         vechicle5.setVacant(Boolean.TRUE);
         tdS.addVechicle(vechicle1);
         tdS.addVechicle(vechicle2);
