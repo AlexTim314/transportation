@@ -7,7 +7,6 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
@@ -24,12 +23,15 @@ import org.ivc.transportation.entities.CriterionValue;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TaskList;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.WaybillRepository;
 import org.ivc.transportation.services.AppointmentService;
 
 import org.ivc.transportation.services.ClaimService;
@@ -37,6 +39,7 @@ import org.ivc.transportation.services.CriterionService;
 import org.ivc.transportation.services.DepartmentService;
 import org.ivc.transportation.services.PlanService;
 import org.ivc.transportation.services.TransportDepService;
+import org.ivc.transportation.services.WaybillService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -92,7 +95,11 @@ public class TransportationApplication {
     
     @Autowired
     private AppointmentService appointmentServ;
-
+    
+    @Autowired
+    private WaybillService waybillService;
+    
+  
     @PostConstruct
     @Transactional
     public void init() {
@@ -336,10 +343,17 @@ public class TransportationApplication {
         critServ.addCriterionValue(crV6);
         critServ.addCriterionValue(crV7);
         critServ.addCriterionValue(crV8);
-        System.out.println("*************************************************************");
+        System.out.println("critServ*************************************************************");
         
         critServ.removeCriterionType(crT3.getId());
         
+        TaskList taskList = null;//new TaskList();
+        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
+        waybillService.addWaybill(waybill1);
+        waybillService.addWaybill(waybill2);
+        waybillService.addWaybill(waybill3);
 
     }
 

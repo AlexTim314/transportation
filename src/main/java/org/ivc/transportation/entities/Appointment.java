@@ -64,7 +64,7 @@ public class Appointment implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Vechicle vechicle;
     
-     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     private Waybill waybill;
     
