@@ -85,4 +85,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRep.deleteById(id);
     }
 
+    @Override
+    public void updateAppointment(Appointment ap, Long id) {
+        ap.setId(id);
+        appointmentRep.save(ap);
+    }
+
+    @Override
+    public Collection<Appointment> getAppointmentByRecordsAndStatusAndDate(List<Record> r, trUtils.AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        List<Long> ids = r.stream().map(u -> u.getId()).collect(Collectors.toList());
+        return appointmentRep.findByRecordIdInAndStatusAndDateTimeBetweenOrderByDateTimeDesc(ids, aps, dateTimeStart, dateTimeEnd);
+    }
+
 }
