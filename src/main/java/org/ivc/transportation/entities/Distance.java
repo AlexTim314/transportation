@@ -39,7 +39,7 @@ public class Distance implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Double value;
+    private Double dist;
 
     @OneToOne
     private Waypoint startPoint;
@@ -47,8 +47,8 @@ public class Distance implements Serializable {
     @OneToOne
     private Waypoint endPoint;
     
-    public Distance(Double value, List<Waypoint> waypoints) {
-        this.value = value;
+    public Distance(Double dist, List<Waypoint> waypoints) {
+        this.dist = dist;
     }
 
 }
