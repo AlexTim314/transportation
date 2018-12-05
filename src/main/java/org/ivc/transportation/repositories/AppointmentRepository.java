@@ -19,7 +19,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByRecordIdInAndStatusOrderByDateTimeDesc(List<Long> id, AppointmentStatus status);
 
     List<Appointment> findByRecordIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(Long id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
-
+    
+    List<Appointment> findByRecordIdInAndStatusAndDateTimeBetweenOrderByDateTimeDesc(List<Long> id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    
     List<Appointment> findByStatusAndDateTimeBetweenOrderByDateTimeDesc(AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     List<Appointment> findByDateTimeBetweenOrderByDateTimeDesc(LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
