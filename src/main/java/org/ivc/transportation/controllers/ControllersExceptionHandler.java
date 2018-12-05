@@ -34,4 +34,5 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     String handleNotSpecifiedDepartmentException(NotSpecifiedDepartmentException ex) {
         return ex.getMessage();
     }
+ 
 }

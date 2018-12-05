@@ -359,6 +359,8 @@ public class TransportationApplication {
         ap2.setWaybill(waybill2);
         ap3.setWaybill(waybill3);
         
+        ap1.createWaybill();
+        
         System.out.println("ap1:" + ap1.toString());
 
     }
