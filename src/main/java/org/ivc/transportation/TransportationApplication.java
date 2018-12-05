@@ -31,7 +31,6 @@ import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
-import org.ivc.transportation.repositories.WaybillRepository;
 import org.ivc.transportation.services.AppointmentService;
 
 import org.ivc.transportation.services.ClaimService;
@@ -44,8 +43,11 @@ import org.ivc.transportation.services.WaybillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -92,14 +94,13 @@ public class TransportationApplication {
 
     @Autowired
     private CriterionService critServ;
-    
+
     @Autowired
     private AppointmentService appointmentServ;
-    
+
     @Autowired
     private WaybillService waybillService;
-    
-  
+
     @PostConstruct
     @Transactional
     public void init() {
@@ -131,7 +132,7 @@ public class TransportationApplication {
         tdS.addDriver(driver3);
         tdS.addDriver(driver4);
         tdS.addDriver(driver5);
-        
+
         TypeVechicle typeVech1 = new TypeVechicle("Автобус", "Пассажирский");
         TypeVechicle typeVech2 = new TypeVechicle("Самосвал", "Грузовой");
         TypeVechicle typeVech3 = new TypeVechicle("Легковой", "Легковой");
@@ -149,15 +150,15 @@ public class TransportationApplication {
         tdS.addTypeVechicle(typeVech7);
         tdS.addTypeVechicle(typeVech8);
 
-        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2,typeVech1);
+        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2, typeVech1);
         vechicle1.setVacant(Boolean.TRUE);
-        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1,typeVech2);
+        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1, typeVech2);
         vechicle2.setVacant(Boolean.TRUE);
-        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2,typeVech8);
+        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2, typeVech8);
         vechicle3.setVacant(Boolean.FALSE);
-        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1,typeVech7);
+        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1, typeVech7);
         vechicle4.setVacant(Boolean.TRUE);
-        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2,typeVech3);
+        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2, typeVech3);
         vechicle5.setVacant(Boolean.TRUE);
         tdS.addVechicle(vechicle1);
         tdS.addVechicle(vechicle2);
@@ -344,9 +345,9 @@ public class TransportationApplication {
         critServ.addCriterionValue(crV7);
         critServ.addCriterionValue(crV8);
         System.out.println("critServ*************************************************************");
-        
+
         critServ.removeCriterionType(crT3.getId());
-        
+
         TaskList taskList = null;//new TaskList();
         Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
         Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
@@ -354,13 +355,13 @@ public class TransportationApplication {
         waybillService.addWaybill(waybill1);
         waybillService.addWaybill(waybill2);
         waybillService.addWaybill(waybill3);
-        
+
         ap1.setWaybill(waybill1);
         ap2.setWaybill(waybill2);
         ap3.setWaybill(waybill3);
-        
+
         ap1.createWaybill();
-        
+
         System.out.println("ap1:" + ap1.toString());
 
     }

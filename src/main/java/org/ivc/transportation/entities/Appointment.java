@@ -43,7 +43,6 @@ import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
-import org.ivc.transportation.config.trUtils.NamedCell;
 import static org.ivc.transportation.config.trUtils.NamedCell.серия;
 
 /**
@@ -98,21 +97,24 @@ public class Appointment implements Serializable {
         this.record = record;
         this.vechicle = vechicle;
     }
-
+    
+    
     public void createWaybill() {
         String excelFilePath = "Waybill.xls";
+        
+        
 
         try {
             Workbook workbook;
             try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
                 workbook = WorkbookFactory.create(inputStream);
                 List<? extends Name> allNames = workbook.getAllNames();
-                List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
+                List<trUtils.NamedCell> expectedNamedCells = Arrays.stream(trUtils.NamedCell.values()).collect(Collectors.toList());
 
                 for (Name name : allNames) {
                     String cellName = name.getNameName().trim().toLowerCase().replace(" ", "_");
                     try {
-                        NamedCell namedCell = NamedCell.valueOf(cellName);
+                        trUtils.NamedCell namedCell = trUtils.NamedCell.valueOf(cellName);
                         Cell c = getCell(workbook, name);
                         switch (namedCell) {
                             case серия:
@@ -154,7 +156,7 @@ public class Appointment implements Serializable {
                                 c.setCellValue("класс Пока не поддерживается.");
                                 break;
                             case диспетчер:
-                                c.setCellValue("диспетчер Пока не поддерживается. Сохранять в Record? Или из принципал?");
+                                c.setCellValue("диспетчер Пока не поддерживается. из принципал?");
                                 break;
                             case механик:
                                 c.setCellValue(" механик Пока не поддерживается. Брать с формы?");
@@ -221,4 +223,5 @@ public class Appointment implements Serializable {
         Row r = s.getRow(cellRef.getRow());
         return r.getCell(cellRef.getCol());
     }
+    
 }
