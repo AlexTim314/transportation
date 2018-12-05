@@ -92,16 +92,16 @@ public class Record implements Serializable {
     @Column(length = 1024)
     private String description;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Claim claim;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   
+    @ManyToOne(fetch = FetchType.EAGER)
     private Plan plan;
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+   
+    @OneToOne(fetch = FetchType.EAGER)
     private TypeVechicle typeVechicle;
 
     public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,

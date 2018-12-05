@@ -33,37 +33,41 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"record", "work", "timedWaypoint"})
+@ToString(exclude = {"record", "work", "timedWaypoint"})
 public class Waypoint implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(nullable = false, length = 1024)
     private String name;
-    
+
     @NonNull
     @Column(nullable = false)
     private Double latitude;
-    
+
     @NonNull
     @Column(nullable = false)
     private Double longitude;
-    
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    private Claim claim;
-    
+    private Record record;
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     private Work work;
-    
-    
+
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     private TimedWaypoint timedWaypoint;
-    
+
+    public Waypoint(String name, Double latitude, Double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
