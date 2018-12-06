@@ -24,7 +24,7 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     @ResponseBody
     @ExceptionHandler(NonExistingDepartmentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {
+    String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {        
         return ex.getMessage();
     }
     
