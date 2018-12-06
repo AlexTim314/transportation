@@ -37,7 +37,7 @@ App.controller('WaypointController', ['$scope', 'WaypointService',
 
         self.fetchAllWaypoints();
         self.fetchAllDistances();
-        
+  
         self.createWaypoint = function (waypoint) {
             WaypointService.createWaypoint(waypoint)
                     .then(

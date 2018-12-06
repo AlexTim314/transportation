@@ -38,6 +38,8 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
             },
             
             createWaypoint: function (waypoint) {
+                waypoint.latitude =  document.getElementById("latitude").value;
+                waypoint.longitude =  document.getElementById("longitude").value;
                 return $http.post('/transportation/waypoints/create',
                         JSON.stringify(waypoint), {headers: self.headers})
                         .then(
