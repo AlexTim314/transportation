@@ -5,12 +5,10 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 
 /**
