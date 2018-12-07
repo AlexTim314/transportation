@@ -13,6 +13,9 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                 return $http.get('/transportation/waypoints')
                         .then(
                                 function (response) {
+                                    
+                                    
+                                    
                                     return response.data;
 
                                 },
@@ -22,11 +25,12 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             fetchAllDistances: function () {
                 return $http.get('/transportation/distances')
                         .then(
                                 function (response) {
+
                                     return response.data;
 
                                 },
@@ -36,10 +40,10 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             createWaypoint: function (waypoint) {
-                waypoint.latitude =  document.getElementById("latitude").value;
-                waypoint.longitude =  document.getElementById("longitude").value;
+                waypoint.latitude = document.getElementById("latitude").value;
+                waypoint.longitude = document.getElementById("longitude").value;
                 return $http.post('/transportation/waypoints/create',
                         JSON.stringify(waypoint), {headers: self.headers})
                         .then(
@@ -52,7 +56,7 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             createDistance: function (distance) {
                 return $http.post('/transportation/distances/create',
                         JSON.stringify(distance), {headers: self.headers})
@@ -66,7 +70,7 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             updateWaypoint: function (waypoint) {
                 return $http.put('/transportation/waypoints/update/',
                         JSON.stringify(waypoint), {headers: self.headers})
@@ -80,7 +84,7 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             updateDistance: function (distance) {
                 return $http.put('/transportation/distances/update/',
                         JSON.stringify(distance), {headers: self.headers})
@@ -94,7 +98,7 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             deleteWaypoint: function (waypoint) {
                 console.log(waypoint);
                 return $http({method: 'DELETE',
@@ -111,7 +115,7 @@ App.factory('WaypointService', ['$http', '$q', '$document', function ($http, $q,
                         }
                 );
             },
-            
+
             deleteDistance: function (distance) {
                 console.log(distance);
                 return $http({method: 'DELETE',
