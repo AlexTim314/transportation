@@ -3,20 +3,20 @@
 App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
     function ($scope, UsersManagementService) {
         var self = this;
-        self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
+        self.user = {userId: null, userName: '', department: {name: ""}, transportDep: {name: ""}, roles: []};
         self.role = {roleName: null};
         self.department = {name: null};
+        self.departments = [];
         self.users = [];
         self.roles = [];
-        self.departments = [];
         self.transportDeps = [];
-        self.curUserToDeleteName = '';
 
         self.fetchAllUsers = function () {
             UsersManagementService.fetchAllUsers()
                     .then(
                             function (d) {
                                 self.users = d;
+                                console.log('Slava - ! '+self.users.name);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Users');
@@ -146,13 +146,8 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
 //        };
 
         self.reset = function () {
-            self.user = {userId: null, userName: '', department: {name: ""}, tramsportDep: {name: ""}, roles: []};
+            self.user = {userId: null, userName: '', department: {name: ""}, transportDep: {name: ""}, roles: []};
             self.role = {roleName: null};
-        };
-        
-        self.test = function(){
-            self.user.department = {id:"1", name: "dep"};
-            self.createUser(self.user);
         };
 
     }]);

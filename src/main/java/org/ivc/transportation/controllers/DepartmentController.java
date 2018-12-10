@@ -2,10 +2,8 @@ package org.ivc.transportation.controllers;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
-import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,19 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class DepartmentController {
 
     @Autowired
-    private DepartmentService service;
+    private DepartmentService departmentService;
 
-    @Autowired
-    private ClaimService claimServ;
-
-    @GetMapping()
-    public Collection<Department> getDepartments() {
-        return service.getDepartments();
+    @GetMapping("")
+    public Collection<Department> getAllDepartments() {
+        return departmentService.getDepartments();
     }
 
+//TODO: сомнительная потребность в этом запросе, оценить
     @GetMapping("/{id}")
-    public Department getDepartment(@PathVariable long id) {
-        Optional<Department> optDep = service.getDepartmentById(id);
+    public Department getDepartment(@PathVariable long id) {        
+        Optional<Department> optDep = departmentService.getDepartmentById(id);
         return optDep.orElseThrow(() -> {
 
             String ruMessage = "Транспортный отдел с запрошенным номером не"
@@ -43,31 +39,25 @@ public class DepartmentController {
                     + " when try get Department by id = " + id + ".";
 
             return new NonExistingDepartmentException(ruMessage
-                    + System.lineSeparator() + engMessage);
+                    + "<br>" + engMessage);
         });
     }
 
-    @DeleteMapping("/{id}")
-    public Collection<Department> delDepartment(@PathVariable long id) {
-        service.removeDepartment(id);
-        return service.getDepartments();
+    @DeleteMapping("/delete")
+    public Collection<Department> deleteDepartment(@RequestBody Department department) {
+        departmentService.removeDepartment(department.getId());
+        return departmentService.getDepartments();
     }
 
-    @PostMapping()
+    @PostMapping("/create")
     public Collection<Department> addDepartment(@RequestBody Department department) {
-        service.saveDepartment(department);
-        return service.getDepartments();
+        departmentService.saveDepartment(department);
+        return departmentService.getDepartments();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update")
     public Collection<Department> updateDepartment(@RequestBody Department dep, @PathVariable long id) {
-        service.updateDepartment(dep, id);
-        return service.getDepartments();
+        departmentService.updateDepartment(dep, id);
+        return departmentService.getDepartments();
     }
-
-    @GetMapping("/{id}/claims")
-    public Collection<Claim> getClaims(@PathVariable Long id) {
-        return claimServ.getClaimsByDepartment(id);
-    }
-
 }

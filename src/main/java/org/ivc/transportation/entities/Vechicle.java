@@ -5,7 +5,7 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"transportDep"})
-@EqualsAndHashCode(exclude = {"transportDep"})
+@ToString(exclude = {"transportDep","typeVechicle"})
+@EqualsAndHashCode(exclude = {"transportDep","typeVechicle"})
 public class Vechicle implements Serializable {
 
     @Id
@@ -55,17 +55,22 @@ public class Vechicle implements Serializable {
     
     private String note;
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
+    
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TypeVechicle typeVechicle;
 
-    public Vechicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep) {
+    public Vechicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, TypeVechicle typeVechicle) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
         this.vacant = Boolean.TRUE;
         this.note = note;
         this.transportDep = transportDep;
+        this.typeVechicle = typeVechicle;
 
     }
 }

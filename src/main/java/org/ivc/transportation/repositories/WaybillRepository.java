@@ -15,5 +15,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface WaybillRepository extends JpaRepository<Waybill, Long>{
+
+    public Waybill findBySeriesAndNumber(String series, String number);
     
 }

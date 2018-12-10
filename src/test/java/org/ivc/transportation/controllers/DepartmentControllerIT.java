@@ -9,11 +9,14 @@ import static org.mockito.BDDMockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.exceptions.NonExistingDepartmentException;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.DepartmentService;
 import org.junit.Before;
@@ -56,11 +59,12 @@ public class DepartmentControllerIT {
 
     private static final int DEP_NUMBER = 10;
     private static final String LOCALHOST = "http://localhost:";
-    private static final String DEP_URL = "transportation/departments";
+    private static final String DEP_URL = "/transportation/departments";
     private final Random rand = new Random();
 
     @Before
     public void setUp() {
+        
         url = LOCALHOST + port + DEP_URL;
         allDep = new ArrayList<>();
         for (int i = 0; i < DEP_NUMBER; i++) {
@@ -125,9 +129,9 @@ public class DepartmentControllerIT {
         // given
         int index = rand.nextInt(DEP_NUMBER);
         Department dep = allDep.get(index);
-        long id = rand.nextLong();
+        Long id = new Long(1);
         dep.setId(id);
-        //given(departmentService.removeDepartment(id)).
+//        given(departmentService.removeDepartment(id))
         //willAnswer(invocation -> this.)given(departmentService).
         willAnswer((iom) -> {
             allDep.remove(index);
@@ -136,24 +140,25 @@ public class DepartmentControllerIT {
                 .given(departmentService).removeDepartment(id);
 
         // when
-        /*
-        ResponseEntity<Department> departmentResponse
+        
+      /*  ResponseEntity<Department> departmentResponse
                 = restTemplate.getForEntity(url + "/" + id, Department.class);
-        restTemplate.delete(url + "/" + id);
-        */
+        restTemplate.delete(url + "/" + id);*/
+         
+        Map<String, Long> urlVariables = new HashMap<>();
+        urlVariables.put("id", id);
         //when
         ResponseEntity<List<Department>> departmentResponse = restTemplate.exchange(
-                url + "/" + id,
+                url+"/{id}",
                 HttpMethod.DELETE,
                 null,
-                new ParameterizedTypeReference<List<Department>>() {
-        });
+                new ParameterizedTypeReference<List<Department>>() {        },
+                id);
 
         // then
         assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(departmentResponse.getBody()).isEqualTo(allDep);        
-        
-        
+        assertThat(departmentResponse.getBody()).isEqualTo(allDep);
+
         // then
         // then
         //assertThat(departmentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);

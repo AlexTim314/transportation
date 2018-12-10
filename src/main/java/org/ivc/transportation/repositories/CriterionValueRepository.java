@@ -5,6 +5,7 @@
  */
 package org.ivc.transportation.repositories;
 
+import java.util.List;
 import org.ivc.transportation.entities.CriterionValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,18 @@ import org.springframework.stereotype.Repository;
  * @author Nesterov Yuriy
  */
 @Repository
-public interface CriterionValueRepository extends JpaRepository<CriterionValue ,Long> {
-   
+public interface CriterionValueRepository extends JpaRepository<CriterionValue, Long> {
+
+    List<CriterionValue> deleteByVechicleId(Long id);
+
+    List<CriterionValue> findByCriterionId(Long id);
+
+    List<CriterionValue> findByVechicleId(Long id);
+
+    List<CriterionValue> findByRecordId(Long id);
+    
+    List<CriterionValue> deleteByCriterionIdIn(List <Long> id);
+    
+    List<CriterionValue> deleteByCriterionId(Long id);
+
 }

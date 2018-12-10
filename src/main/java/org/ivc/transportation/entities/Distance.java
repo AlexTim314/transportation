@@ -12,8 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.Size;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,15 +39,16 @@ public class Distance implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private Double value;
+    private Double dist;
 
-    @ManyToMany
-    @Size(min = 1, max = 2)
-    private List<Waypoint> waypoints;
-
-    public Distance(Double value, List<Waypoint> waypoints) {
-        this.value = value;
-        this.waypoints = waypoints;
+    @OneToOne
+    private Waypoint startPoint;
+    
+    @OneToOne
+    private Waypoint endPoint;
+    
+    public Distance(Double dist, List<Waypoint> waypoints) {
+        this.dist = dist;
     }
 
 }

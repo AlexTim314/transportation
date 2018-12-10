@@ -5,11 +5,10 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,13 +16,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 
 /**
@@ -34,8 +33,8 @@ import org.ivc.transportation.config.trUtils.RecordStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"claim", "plan"})
-@EqualsAndHashCode(exclude = {"claim", "plan"})
+@ToString(exclude = {"claim", "plan","typeVechicle"})
+@EqualsAndHashCode(exclude = {"claim", "plan","typeVechicle"})
 public class Record implements Serializable {
 
     @Id
@@ -51,19 +50,34 @@ public class Record implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private String usageTime;
+    private Date departureDate;
 
     @NonNull
     @Column(nullable = false)
-    private Time arrivalTime;
+    private Date returnDate;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time departureTime;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time returnTime;
+
+    @NonNull
+    @Column(nullable = false)
+    private Time timeDelivery;
+
+    @Column(length = 1024)
+    private String carBoss;
 
     @NonNull
     @Column(nullable = false, length = 1024)
     private String purpose;
-
+    
     @NonNull
-    @Column(nullable = false)
-    private RecordStatus status;
+    @Column(nullable = false, length = 512)
+    private String type;
 
     @Column(length = 1024)
     private String serviceField;
@@ -71,25 +85,44 @@ public class Record implements Serializable {
     @Column(length = 512)
     private String templateName;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @NonNull
+    @Column(nullable = false)
+    private RecordStatus status;
+
+    @Column(length = 1024)
+    private String description;
+
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Claim claim;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+   
+    @ManyToOne(fetch = FetchType.EAGER)
     private Plan plan;
+    
+   
+    @OneToOne(fetch = FetchType.EAGER)
+    private TypeVechicle typeVechicle;
 
-    public Record(String weekHash, Date datetime, String usageTime, Time arrivalTime,
-            String purpose, String serviceField, String templateName, Claim claim) {
-        this.arrivalTime = arrivalTime;
-        this.claim = claim;
+    public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, TypeVechicle typeVechicle) {
+
+        this.weekHash = weekHash;
+        this.type = type;
         this.datetime = datetime;
         this.purpose = purpose;
         this.serviceField = serviceField;
-        this.status = RecordStatus.record_status_created;
+        this.departureDate = departureDate;
         this.templateName = templateName;
-        this.usageTime = usageTime;
-        this.weekHash = weekHash;
+        this.carBoss = carBoss;
+        this.returnDate = returnDate;
+        this.returnTime = returnTime;
+        this.departureTime = departureTime;
+        this.timeDelivery = timeDelivery;
+        this.status = RecordStatus.record_status_created;
+        this.description = description;
+        this.claim = claim;
+        this.typeVechicle = typeVechicle;
 
     }
 

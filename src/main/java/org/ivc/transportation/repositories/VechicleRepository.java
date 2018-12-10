@@ -15,9 +15,11 @@ import org.springframework.stereotype.Repository;
  * @author Nesterov Yuriy
  */
 @Repository
-public interface VechicleRepository extends JpaRepository<Vechicle, Long>{
-    
+public interface VechicleRepository extends JpaRepository<Vechicle, Long> {
+
     List<Vechicle> findByTransportDepId(Long id);
+
     List<Vechicle> findByVacant(Boolean d);
-    
+
+    List<Vechicle> findByTypeVechicleId(Long id);
 }

@@ -6,6 +6,7 @@
 package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import javax.persistence.Column;
@@ -64,7 +65,8 @@ public class Driver implements Serializable {
     
     private String note;
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 

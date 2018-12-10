@@ -30,3 +30,12 @@ table td, th  {
     background: #ADD8E6;
     cursor: pointer;
 }
+.column_left{
+   display:block;
+   float:left;
+
+}
+.column_right{
+   display:block;
+   float:right;
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>Маршруты</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/waypoint/WaypointService.js"></script>
+        <script src="js/app/waypoint/WaypointController.js"></script>
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        <link href="css/app.css" rel="stylesheet"/>
+        <script src="js/script/OpenLayers.js"></script>
+        <script type="text/javascript">
+            function GetMap() {
+                //координаты ЦИП ИК
+                var lat = 45.617189;
+                var lon = 63.319406;
+                map = new OpenLayers.Map("OSMap");//инициализация карты
+                var mapnik = new OpenLayers.Layer.OSM();//создание слоя карты
+                map.addLayer(mapnik);//добавление слоя
+                map.zoomToMaxExtent();
+                // Широта/долгота
+                var lonlat = new OpenLayers.LonLat(lon, lat);
+                map.setCenter(lonlat.transform(
+                        new OpenLayers.Projection("EPSG:4326"), // переобразование в WGS 1984
+                        new OpenLayers.Projection("EPSG:900913") // переобразование проекции
+                        ), 17 // масштаб
+                        );
+
+                //создаем новый слой оборудования
+                var layerMarkers = new OpenLayers.Layer.Markers("Equipments");
+                map.addLayer(layerMarkers);//добавляем этот слой к карте
+
+                // Маркер текущего еквипмента
+                var size = new OpenLayers.Size(21, 25);//размер картинки для маркера
+                //смещение картинки для маркера
+                var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+                //картинка для маркера
+                var icon = new OpenLayers.Icon('/img/common/switch_svg.gif', size, offset);
+                layerMarkers.addMarker(//добавляем маркер к слою маркеров
+                        new OpenLayers.Marker(lonlat, //координаты вставки маркера
+                                icon));//иконка маркера
+
+                // шкала для выбора заранее настроенного масштаба
+                map.addControl(new OpenLayers.Control.PanZoomBar());
+
+                // панель инструментов (сдвиг и масштабирование)
+                // map.addControl(new OpenLayers.Control.MouseToolbar());
+
+                // переключатель видимости слоев
+                //  map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false}));
+
+                // ссылка внизу карты на текущее положение/масштаб
+                // map.addControl(new OpenLayers.Control.Permalink());
+                //map.addControl(new OpenLayers.Control.Permalink('permalink'));
+
+                // координаты текущего положения мыши
+                // преобразование из метров в градусы с помощью proj4js
+                map.addControl(
+                        new OpenLayers.Control.MousePosition({
+                            displayProjection: new OpenLayers.Projection('EPSG:4326')
+                        })
+                        );
+                // обзорная карта
+                // map.addControl(new OpenLayers.Control.OverviewMap());
+
+                // горячие клавиши
+                // map.addControl(new OpenLayers.Control.KeyboardDefaults());
+
+                map.events.register('click', map, handleMapClick);
+            }
+
+            function handleMapClick(evt)
+            {
+                var lonlat = map.getLonLatFromViewPortPx(evt.xy);
+                var cords = lonlat.transform(new OpenLayers.Projection("EPSG:3857"), new OpenLayers.Projection("EPSG:4326"), 5);
+                var latStr = document.getElementById("latitude");
+                latStr.value = cords.lat.toString();
+                var lonStr = document.getElementById("longitude");
+                lonStr.value = cords.lon.toString();
+            }
+        </script>
+
+    </head>
+
+    <body onload="GetMap();" ng-app="Transportation" ng-controller="WaypointController as ctrlWayp">
+        <a href="http://localhost:8080/transportation/">Welcome Page<a>
+                <div class="generic-container">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><span class="lead">Карта</span></div> 
+                        <div class="panel-body">
+<!--                            Сама карта-->
+                            <div id ="OSMap" style="height:600px"></div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="name">Название путевой точки</label>
+                                <div class="col-md-7">
+                                    <input type="text" ng-model="ctrlWayp.waypoint.name" id="name" class="form-control input-sm" required ng-minlength="3"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="latitude">Широта</label>
+                                <div class="col-md-7">
+                                    <input type="text" ng-model="ctrlWayp.waypoint.latitude" id="latitude" class="form-control input-sm" required ng-minlength="3"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="longitude">Долгота</label>
+                                <div class="col-md-7">
+                                    <input type="text" ng-model="cctrlWayp.waypoint.longitude" id="longitude" class="form-control input-sm" required ng-minlength="3"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-actions floatRight">
+                                <button type="button" class="btn btn-sm btn-info" ng-click="ctrlWayp.createWaypoint(ctrlWayp.waypoint)">Сохранить путевую точку</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+
+                </html>

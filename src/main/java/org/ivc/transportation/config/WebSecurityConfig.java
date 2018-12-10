@@ -45,14 +45,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
 //        http.csrf().disable();
-        // The pages does not require login
-        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
+        // The pages does not require login        
+        http.authorizeRequests().antMatchers("/", "/login", "/logout", "/claims/byDepartment").permitAll();
 
         // /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
         // If no login, it will redirect to /login page.
         http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
-        http.authorizeRequests().antMatchers("/department/**").access("hasAnyRole('ROLE_ADMIN')");
+        //следующие две строки кода обеспечивают лишь авторизованный доступ по
+        //адресам начинающимся с departments. При этом роль Администратора имеет
+        //доступ ко всем возможным адресам, а роль Пользователя лишь к прописанным "/departments", "/departments/claims".
+        //Если переставить строчки местами, то роль Пользователь потеряет доступ.
+        //Возможно таким образом можно перекрыть неавторизованный доступ ко всему transportation/**
+        //предварительно отметив куда таки можно
+        http.authorizeRequests().antMatchers("/departments", "/departments/claims").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/departments/**").access("hasAnyRole('ROLE_ADMIN')");
+
+        http.authorizeRequests().antMatchers("/transportDeps").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/transportDeps/**").access("hasAnyRole('ROLE_ADMIN')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/admin", "/usersManagement/**").access("hasRole('ROLE_ADMIN')");

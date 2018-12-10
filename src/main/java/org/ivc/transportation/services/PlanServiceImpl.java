@@ -28,7 +28,7 @@ public class PlanServiceImpl implements PlanService {
     @Autowired
     private PlanRepository planRep;
     @Autowired
-    private RecordRepository recRep;
+    private RecordRepository recordRep;
 
     @Override
     @Transactional
@@ -70,31 +70,31 @@ public class PlanServiceImpl implements PlanService {
     @Override
     @Transactional
     public Collection<Record> getRecords() {
-        return recRep.findAll();
+        return recordRep.findAll();
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByPlan(Long id) {
-        return recRep.findByPlanId(id);
+        return recordRep.findByPlanId(id);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByState(RecordStatus t) {
-        return recRep.findByStatus(t);
+        return recordRep.findByStatus(t);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByDate(Date d) {
-        return recRep.findByDatetime(d);
+        return recordRep.findByDatetime(d);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByStateAndDate(RecordStatus t, Date d) {
-        return recRep.findByStatusAndDatetime(t, d);
+        return recordRep.findByStatusAndDatetime(t, d);
     }
 
 }

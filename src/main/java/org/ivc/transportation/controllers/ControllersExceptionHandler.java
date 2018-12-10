@@ -5,11 +5,9 @@
  */
 package org.ivc.transportation.controllers;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
+import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,15 +27,12 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     String handleNonExistingDepartmentException(NonExistingDepartmentException ex) {
         return ex.getMessage();
     }
-    /* @ExceptionHandler(NonExistingDepartmentException.class)
-    protected ResponseEntity<ControllersException> handleNonExistingDepartmentException() {
-        return new ResponseEntity<>(new ControllersException("Не найдено подразделение с таким ID номером. There is no such Department."), HttpStatus.NOT_FOUND);
+    
+    @ResponseBody
+    @ExceptionHandler(NotSpecifiedDepartmentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String handleNotSpecifiedDepartmentException(NotSpecifiedDepartmentException ex) {
+        return ex.getMessage();
     }
-
-    @Data
-    @AllArgsConstructor
-    private static class ControllersException {
-        private String message;
-    }
-    */
+ 
 }

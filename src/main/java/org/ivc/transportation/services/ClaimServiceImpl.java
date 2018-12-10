@@ -1,21 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.sql.Date;
-import java.util.List;
 import java.util.Optional;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
+import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
+import org.ivc.transportation.config.trUtils.*;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TypeVechicle;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.TypeVechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,9 @@ public class ClaimServiceImpl implements ClaimService {
     @Autowired
     private ClaimRepository claimRep;
     @Autowired
-    private RecordRepository recRep;
+    private RecordRepository recordRep;
+    @Autowired
+    private TypeVechicleRepository typeVechicleRep;
 
     @Override
     @Transactional
@@ -42,9 +43,15 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
+    public void updateClaim(Claim d, Long id) {
+        d.setId(id);
+        claimRep.save(d);
+    }
+
+    @Override
+    @Transactional
     public Collection<Claim> getClaimsByDepartment(Long id) {
         return claimRep.findByDepartmentId(id);
-
     }
 
     @Override
@@ -68,6 +75,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public void removeClaim(Long id) {
+        recordRep.deleteByClaimId(id);
         claimRep.deleteById(id);
     }
 
@@ -109,65 +117,85 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
+    public Collection<Claim> getAllClaimsByDate(DateRange dr) {
+        return claimRep.findAllByClDateBetweenOrderByClDateDesc(dr.StartDate, dr.EndDate);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getAllClaimsByDepartmentAndDate(Long id, DateRange dr) {
+        return claimRep.findAllByDepartmentIdAndClDateBetweenOrderByClDateDesc(id, dr.StartDate, dr.EndDate);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t) {
+        return claimRep.findByTipAndDepartmentIdOrderByClDateDesc(id, t);
+    }
+
+    @Override
+    @Transactional
     public void addRecord(Record d) {
-        this.recRep.save(d);
+        this.recordRep.save(d);
     }
 
     @Override
     @Transactional
     public void updateRecord(Record d, Long id) {
         d.setId(id);
-        recRep.save(d);
-        updateClaim(d.getClaim().getId());
+        recordRep.save(d);
     }
 
     @Override
     @Transactional
     public void removeRecord(Long id) {
-        recRep.deleteById(id);
+        recordRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Optional getRecordsById(Long id) {
-        return recRep.findById(id);
+        return recordRep.findById(id);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecords() {
-       return recRep.findAll();
+        return recordRep.findAll();
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByClaim(Long id) {
-        return recRep.findByClaimId(id);
+        return recordRep.findByClaimId(id);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByState(RecordStatus t) {
-        return recRep.findByStatus(t);
+        return recordRep.findByStatus(t);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByDate(Date d) {
-       return recRep.findByDatetime(d);
+        return recordRep.findByDatetime(d);
     }
 
     @Override
     @Transactional
     public Collection<Record> getRecordsByHash(String d) {
-        return recRep.findByWeekHash(d);
+        return recordRep.findByWeekHash(d);
     }
-    
-    public void updateClaim(Long id){
-        List<Record> recList;
-        recList = recRep.findByClaimId(id);
-        
-    
+
+    @Override
+    public Collection<TypeVechicle> getTypeVechicles() {
+        return typeVechicleRep.findAll();
+    }
+
+    @Override
+    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s) {
+        return typeVechicleRep.findBySpecialization(s);
     }
 
 }
