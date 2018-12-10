@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta name="_csrf" th:content="${_csrf.token}"/>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Комплекс автотраспортного обеспечения</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Комплекс автотраспортного обеспечения</title>
         <script  src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
         <script src="js/app/claim/ClaimService.js"></script>
         <script src="js/app/claim/ClaimController.js"></script>
-        <script type="text/javascript" src="js/script/script.js"></script>
+
         <script src="js/app/routeTagController.js"></script>
 
-<!--	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">-->
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
 	<link href="fontawesome/css/all.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
+<!--	<meta charset="UTF-8">
+	
+	<title>Комплекс автотраспортного обеспечения</title>
+	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link href="assets/fontawesome/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/style/style.css">
+		
+	<script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="assets/app/app.js"></script>-->
+<!--	<script src="assets/app/directives/firstDirective.js"></script>-->
+<!--	<script src="assets/app/controllers/routeTagController.js"></script>-->
 
 </head>
 <body ng-app="Transportation" >
@@ -53,6 +65,7 @@
 		 				<option value="1">Еженедельная</option>
 		 				<option value="2">Дополнительная</option>
 		 			</select>
+		 	<input type="file" name="post-file" multiple accept="image/*">		
 			<button class="btn delete">Создать</button>
 		</div>
 		<!----------------------------------------------ADD-FORM------------------->
@@ -68,6 +81,13 @@
 	 						 		<option value="4">Спецтехника</option>
 	 						 	</select>
 	 						 </div>	
+	 						 <div class="form-item" >
+		 					 	<label for="criterion">Вид техники</label>
+    						 	<select name="criterion" required>
+    						 		<option value="1">Самосвал</option>
+	 						 		<option value="2">Бульдозер</option>
+    						 	</select>	
+    						 </div>	
 	 						 <div class="form-item clearfix" >
 	 						 	<div class="left-block">
 		 					 	<label for="date-begin">Дата начала</label>
@@ -90,33 +110,35 @@
     						 </div>	
     						 <div class="form-item">
     						 	<label for="purpose">Цель</label>
-    						 	<input type="textarea"  name="purpose">
+    						 	<textarea name="purpose"   rows="10"></textarea>
     						 </div>
     						  <div class="custom-select form-item clearfix" ng-controller="routeTagController as routeTag">
     						  	<div class="left-block-route">
-	 						 	<label for="route">Маршрут</label>
-	 						 	<select name="route" ng-model="routeTag.routeText">
-	 						 		<option >Пл.10</option>
-	 						 		<option >Пл.18</option>
-	 						 		<option >Пл.23</option>
-	 						 	</select> 
-	 						 </div>
-	 						 	<div class="right-block-route">
-	 					<!--	 	<input type="text"  name="time-begin" ng-model="routeTag.routeText" required>-->
-	 						 	<div class="edit fa fa-plus" ng-click="routeTag.addTag()"></div>
+		 						 	<label for="route">Маршрут</label>
+		 						 	<select name="route" ng-model="routeTag.routeText">
+		 						 		<option >Пл.10</option>
+		 						 		<option >Пл.18</option>
+		 						 		<option >Пл.23</option>
+		 						 	</select> 
 	 						 	</div>
-	 						 	<div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>
+	 						 <!--	
+	 						 <div class="right-block-route">
+	 						 	<div class="edit fa fa-plus" ng-click="routeTag.addTag()"></div>
+	 						 </div>
+	 						 <div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>-->
 	 						 </div>	
-	 						 <div class="form-item" >
-		 					 	<label for="criterion">Критерий</label>
-    						 	<input type="text"  name="criterion" required>
-    						 </div>	
-	 						    <div class="form-item">
+	 							<div class="form-item">
 	 						 	<button class="btn submit" id="btn-add-edit"></button>
-	 						    </div>
+	 						  </div>
 
 	 					</form>
 	 				</div>
+	 			<!--	
+	 				<ul class="add-temp">
+	 					<li>Пассажирский,25 человек, время выезда:08:00</li>
+	 					<li>Грузовой,2 пассажира,1тонна,время выезда:08:00</li>
+	 					<li>Грузовой,2 пассажира,1тонна,время выезда:08:00</li>
+	 				</ul>-->
 
 
                 <div class="main clearfix" ng-controller="ClaimController as ctrl" >
@@ -131,8 +153,8 @@
 				<!--Navigation -->	
 				
 				<nav class="nav-horizontal">
-					<button class="btn active" id="tab-btn1" onclick="open_tab1()">Подача заявок</button>
-					<button class="btn" id="tab-btn2" onclick="open_tab2()">Статус заявок</button>			
+					<div class="btn active" id="tab-btn1" onclick="open_tab1()">Подача заявок</div>
+					<div class="btn" id="tab-btn2" onclick="open_tab2()">Статус заявок</div>			
 				</nav>
 			
 				<button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
@@ -149,7 +171,6 @@
 					 			<div class="menu-btn" id="claims" ><i class="fab fa-wpforms"></i>Заявки</div>
 					 			<div class="smenu">
 					 				<div  onclick="formRecord_open()">Создать новую</div>
-					 				
 					 			</div>
 					 		</li>
 					 		<li class="menu-item" id="new">
@@ -170,7 +191,7 @@
 		 						 		</select>
 		 						 	 </div>
 					 				<div class="filter-container" id="f-empls" >
-						 				<label for="declarer-filter">Заявитель</label>
+						 				<label for="declarer-filter">Вид техники</label>
 		 						 			<select name="declarer-filter">
 		 						 			<option value="1"></option>
 		 						 		</select>
@@ -189,7 +210,7 @@
 					 				</div>
 					 				<div class="filter-container" id="f-sts" style="display:none;">
 						 				<label for="status-filter">Статус заявки</label>
-		 						 			<select name="status-filter">
+		 						 		<select name="status-filter">
 		 						 			<option value="1"><i class="fas fa-ban"></i>Отмена</option>
 		 						 			<option value="2"><i class="fas fa-ban"></i>Ожидается</option>
 		 						 			<option value="2"><i class="fas fa-ban"></i>Готово</option>
@@ -206,72 +227,76 @@
 
 			</div>
 			<div id="claim-create" class="tabcontent">
-
-
-
-			
-		 
 		  	<div class="clearfix" style="overflow-x:auto;" id="tab-list1">
 		  		 	<div class="fast-filter clearfix">
 				  		<span class="filter-elem edit">Все</span>
 				  		<span class="filter-elem edit">Сегодня</span>
 				  		<span class="filter-elem edit">За неделю</span>
 		  			</div>
-                            <table class="table-record">
-			  			<tr>
-			  				<th>Заявки</th>
-			  			</tr>
-                                                <tr ng-repeat="claim in ctrl.claims" ng-click="ctrl.addRowHandlers(claim)" style = "cursor: pointer">
-			  				<td>№ {{claim.id}} от {{claim.clDate}} 
-			  					<div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
-			  				</td>
-			  			</tr>		  			
-		  			</table>
 		  			<div class="table-header clearfix">
 			  			<input type="search">
 			  			<button class="btn edit"><i class="fas fa-search"></i></button>	
-		  			</div>
+		  			</div>		
+                    <table class="table-record" id="tbl1" >
+			  			<tr class="header-level">
+			  				<th></th>
+			  				<th>Заявки</th>
+			  			</tr>
+                                                <tr ng-repeat="claim in ctrl.claims" ng-cloak="ctrl.addRowHandlers(claim)" style = "cursor: pointer">
+                        	<td>
+		  						<label class="custom-checkbox">
+  									<input type="checkbox" >1
+ 									<span class="checkmark"></span>
+								</label>		
+							</td>
+			  				<td>№ {{claim.id}} от {{claim.clDate}} 
+			  					<div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
+			  				</td>
+			  			</tr>	
+			  			<tr class="hiddenRow collapseRow" >
+			  				<td colspan="2">
+			  				  <table class="table-claim">
+						  			<tr>		
+							  			<th>Тип траспорта</th>
+							  			<th>Вид техники</th>
+							  			<th>Дата</th>
+							  			<th>Время</th>
+							  			<th>Старший</th>
+							  			<th>Цель поездки</th>
+							  			<th>Маршрут</th>
+							  			<th></th>
+						  			</tr>
+				                    <tr  ng-repeat="record in ctrl.records">
+				                    	<td>{{record.type}}</td>
+						  				<td>{{record}}</td>
+						  				<td>{{record.datetime}}</td>
+						  				<td>{{record.timeDelivery}}</td>
+						  				<td>{{record.carBoss}}
+						  					<button class="btn-hidden btn edit" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
+						  					</button>
+						  				</td>
+						  				<td>{{record.purpose}}
+						  					<button class="btn-hidden btn delete"><i class="fas fa-trash-alt" ></i>Удалить</button>
+						  				</td>
+						  				<td>Пл.10-Пл.23</td>
+
+						  				<td>
+						  				<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>  			
+						  				</td>
+						  				
+			  				
+			  							</tr>
+		  						</table>
+			  				</td>
+
+			  			</tr>	  			
+		  			</table>
 		  			
-                            <table class="table-claim">
-		  			<tr>
-		  				<th>
-		  					<label class="custom-checkbox">
-  									<input type="checkbox" checked="checked">
- 									<span class="checkmark"></span>
-							</label>		
-						</th>		
-			  			<th>Тип траспорта</th>
-			  			<th>Дата</th>
-			  			<th>Время</th>
-			  			<th>Старший</th>
-			  			<th>Цель поездки</th>
-			  			<th>Маршрут</th>
-			  			<th></th>
-		  			</tr>
-                                        <tr  ng-repeat="record in ctrl.records">
-		  				<td>
-		  					<label class="custom-checkbox">
-  									<input type="checkbox" >
- 									<span class="checkmark"></span>
-							</label>		
-						</td>
-		  				<td>{{record.type}}</td>
-		  				<td>{{record.datetime}}</td>
-		  				<td>{{record.timeDelivery}}</td>
-		  				<td>{{record.carBoss}}</td>
-		  				<td>{{record.purpose}}</td>
-		  				<td>Пл.10-Пл.23</td>
-		  				<td>
-		  				<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>
-		  				<button class="btn-hidden btn edit" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить</button>
-		  				<button class="btn-hidden btn delete"><i class="fas fa-trash-alt" ></i>Удалить</button>
-		  				</td>
-		  				
-		  				
-		  			</tr>
-		  		</table>
-		  		<button class="btn edit assert"><i class="fas fa-clipboard-check"></i>Утвердить</button>
-		  		<button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
+		  			
+		  		<div class="assert-block clearfix">
+		  			<button class="btn edit assert"><i class="fas fa-clipboard-check"></i>Утвердить</button>
+		  			<button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
+		  		</div>
 		  	</div>
 		  	
 		  	<!--Подробнее-->
@@ -293,126 +318,85 @@
 			
 			<div class="tab-list2" id="tab-list2">
 		  	<div style="overflow-x:auto;">
-		  		<table class=" table-status">
+		  		<div class="fast-filter clearfix">
+				  	<span class="filter-elem edit">Все</span>
+				  	<span class="filter-elem edit">Сегодня</span>
+				  	<span class="filter-elem edit">За неделю</span>
+		  		</div>
 
-		  				
+		  		 <table class="table-record" id="tbl2">
+			  			<tr>
+			  				<th>Заявки</th>
+			  				<th>Статус</th>
+			  			</tr>
+                        <tr ng-repeat="claim in ctrl.claims" ng-click="ctrl.addRowHandlers(claim)" style = "cursor: pointer">                        
+			  				<td>№ {{claim.id}} от {{claim.clDate}}</td>
+			  				<td><span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span></td>
+			  			</tr>
+			  			<tr class="hiddenRow collapseRow">
+			  				<td colspan="2">
+			  					<table class=" table-status">
+		
 		  		   <tr>
-		  		   		<th><label class="custom-checkbox">1
-  									<input type="checkbox" checked="checked">
- 									<span class="checkmark"></span>
-									</label>		
-						</th>
-			  			<th>Номер</th>
-			  			<th>Тип траспорта</th>
+			  			<th>Тип транспорта</th>
 			  			<th>Дата выезда</th>
 			  			<th>Время выезда</th>
 			  			<th>Цель поездки</th>
 			  			<th>Маршрут</th>
 			  			<th>Транспорт</th>
 			  			<th>Водитель</th>
-			  			<th>Статус</th>
+			  			<th></th>
 		  			</tr>
 		  			<tr>
-		  				<td><label class="custom-checkbox">1
-  									<input type="checkbox" >
- 									<span class="checkmark"></span>
-									</label>		
-						</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
+		  				<td>Пассажирский</td>
+		  				<td>20.12.2018</td>
+		  				<td>08:00</td>
+		  				<td>Перевозка пассажиров</td>
+		  				<td>Пл.10-Пл.18</td>
+		  				<td>ПАЗ X234XX</td>
+		  				<td>Иванов И.И.</td>
 		  				<td>
-		  				 	<span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
+		  				 	<button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
 		  				</td>
 		  			</tr>
-		  			<tr>
-		  				<td><label class="custom-checkbox">1
-  									<input type="checkbox" >
- 									<span class="checkmark"></span>
-									</label>		
-						</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
+<!--		  			<tr>
 		  				<td>-</td>
 		  				<td>-</td>
-		  				<td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
 		  				
-		  				 	<span class="claim-status wait-status"><i class="far fa-clock"></i>Ожидается</span>
-		  				
-		  				</td>
-		  			</tr>
-		  			<tr>
-		  				<td><label class="custom-checkbox">1
-  									<input type="checkbox" >
- 									<span class="checkmark"></span>
-									</label>		
-						</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>-</td>
-		  				<td>-</td>
-		  				<td>
 		  				 	
-		  				 	<span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отмена</span>	
+		  				
 		  				</td>
 		  			</tr>
+		  			<tr>
+		  			
+		  				<td>-</td>
+		  				<td></td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td>-</td>
+		  				<td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></td>
+		  			</tr>-->
 		  		</table>
-		<!--  		<div class="table-header subtitel">
-		  			<label>Номер заявки №234556</label>
-		  			<label>от 15.10.2018</label>
-		  			<label>на период с 17.10.2018 по 20.10.2018</label>
-
-		  		</div>
-		  		<table class="table-claim subtable">
-		  			<tr> 
-		  				<th>Дата выезда</th>
-			  			<th>Время выезда</th>
-			  			<th>Цель поездки</th>
-			  			<th>Маршрут</th>
-			  			<th>Транспорт</th>
-			  			<th>Водитель</th>
-			  			<th>Статус</th>
-		  			<tr>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td><i class="fas fa-check"></i>Готово</td>
-		  			</tr>
-		  			<tr>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td><i class="fas fa-check"></i>Готово</td>
-		  			</tr>
-		  			<tr>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td>Lorem</td>
-		  				<td><i class="fas fa-check"></i>Готово</td>
-		  			</tr>	
-		  		</table>-->	
+			  				</td>	
+<!--			  			</tr>
+			  			<tr>                        
+			  				<td>№ {{claim.id}} от {{claim.clDate}}</td>
+			  				<td><span class="claim-status "><i class="fas fa-clock"></i>Ожидается</span></td>
+			  			</tr>
+			  			<tr>                        
+			  				<td>№ {{claim.id}} от {{claim.clDate}}</td>
+			  				<td><span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отмена</span></td>
+			  			</tr>		  			-->
+		  			</table>	
+	
 		  	</div>	
 			</div>
 			</div>
@@ -420,7 +404,8 @@
 		</div>
 
 		
-	</div>
 	
+ <script type="text/javascript" src="js/script/script.js"></script>
+<!--<script type="text/javascript" src="assets/script/script.js"></script>-->
 </body>
 </html>
