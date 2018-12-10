@@ -164,5 +164,4 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
-    
 }

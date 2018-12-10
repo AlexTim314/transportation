@@ -84,17 +84,6 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
-    @GetMapping("/claims")
-    public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
-            return claimService.getClaimsByDepartment(department.getId());
-        }
-        throw new AuthenticationCredentialsNotFoundException("Access denied!");
-    }
-
     /**
      * Метод для получения всех заявок выбранного промежутка времени.
      * Предполагается , что доступ к этому методу будет только у администратора.

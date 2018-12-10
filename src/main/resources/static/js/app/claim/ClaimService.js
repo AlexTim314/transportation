@@ -18,7 +18,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching claims');
-                                    return $q.reject(errResponse);
+                                    return $q.reject(decodeURI(errResponse));
                                 }
                         );
             },
@@ -34,7 +34,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Records in Claim');
-                                    return $q.reject(errResponse);
+                                    return $q.reject(decodeURI(errResponse));
                                 }
                         );
             },

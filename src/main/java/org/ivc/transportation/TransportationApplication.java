@@ -349,9 +349,9 @@ public class TransportationApplication {
         critServ.removeCriterionType(crT3.getId());
 
         TaskList taskList = null;//new TaskList();
-        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "�?справено", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
         waybillService.addWaybill(waybill1);
         waybillService.addWaybill(waybill2);
         waybillService.addWaybill(waybill3);
@@ -361,6 +361,7 @@ public class TransportationApplication {
         ap3.setWaybill(waybill3);
 
         ap1.createWaybill();
+        ap1.excel2pdf();
 
         System.out.println("ap1:" + ap1.toString());
 

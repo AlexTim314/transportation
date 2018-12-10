@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="ru">
     <head>
@@ -6,7 +6,14 @@
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
         <title>Маршруты</title>
-
+        <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+        <style>
+            .map {
+                height: 500px;
+                width: 100%;
+            }
+        </style>
+        <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
         <script src="js/lib/angular.min.js" ></script>
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
         <script src="js/app/app.js"></script>
@@ -16,38 +23,46 @@
         <link href="css/app.css" rel="stylesheet"/>
         <script src="js/script/OpenLayers.js"></script>
         <script type="text/javascript">
+                            var lat = 45.617189;
+                var lon = 63.319406;
+                                        var map = new ol.Map({
+                                            target: 'map',
+                                            layers: [
+                                                new ol.layer.Tile({
+                                                    source: new ol.source.OSM()
+                                                })
+                                            ],
+                                            view: new ol.View({
+                                                center: ol.proj.fromLonLat([lon, lat]),
+                                                zoom: 15
+                                            })
+                                        });
+                            </script>
+        <script type="text/javascript">
+            var layerChoose = new OpenLayers.Layer.Markers("Selected");
+            var layerSaved = new OpenLayers.Layer.Markers("Saved");
+            // map.addLayer(layerChoose);//добавляем этот слой к карте
             function GetMap() {
-                //координаты ЦИП ИК
+                //координаты Ц�?П �?К
                 var lat = 45.617189;
                 var lon = 63.319406;
-                map = new OpenLayers.Map("OSMap");//инициализация карты
-                var mapnik = new OpenLayers.Layer.OSM();//создание слоя карты
-                map.addLayer(mapnik);//добавление слоя
-                map.zoomToMaxExtent();
-                // Широта/долгота
-                var lonlat = new OpenLayers.LonLat(lon, lat);
-                map.setCenter(lonlat.transform(
-                        new OpenLayers.Projection("EPSG:4326"), // переобразование в WGS 1984
-                        new OpenLayers.Projection("EPSG:900913") // переобразование проекции
-                        ), 17 // масштаб
-                        );
+              
+
 
                 //создаем новый слой оборудования
-                var layerMarkers = new OpenLayers.Layer.Markers("Equipments");
+                var layerMarkers = new OpenLayers.Layer.Markers("Developers");
                 map.addLayer(layerMarkers);//добавляем этот слой к карте
-
                 // Маркер текущего еквипмента
-                var size = new OpenLayers.Size(21, 25);//размер картинки для маркера
+                var size = new OpenLayers.Size(58, 32);//размер картинки для маркера
                 //смещение картинки для маркера
                 var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
                 //картинка для маркера
-                var icon = new OpenLayers.Icon('/img/common/switch_svg.gif', size, offset);
+                var icon = new OpenLayers.Icon('js/script/img/developer-maker-32.png', size, offset);
                 layerMarkers.addMarker(//добавляем маркер к слою маркеров
                         new OpenLayers.Marker(lonlat, //координаты вставки маркера
                                 icon));//иконка маркера
-
                 // шкала для выбора заранее настроенного масштаба
-                map.addControl(new OpenLayers.Control.PanZoomBar());
+                //map.addControl(new OpenLayers.Control.PanZoomBar());
 
                 // панель инструментов (сдвиг и масштабирование)
                 // map.addControl(new OpenLayers.Control.MouseToolbar());
@@ -61,69 +76,149 @@
 
                 // координаты текущего положения мыши
                 // преобразование из метров в градусы с помощью proj4js
-                map.addControl(
-                        new OpenLayers.Control.MousePosition({
-                            displayProjection: new OpenLayers.Projection('EPSG:4326')
-                        })
-                        );
+                // map.addControl(
+                //         new OpenLayers.Control.MousePosition({
+                displayProjection: new OpenLayers.Projection('EPSG:4326')
+                //        })
+                //         );
                 // обзорная карта
                 // map.addControl(new OpenLayers.Control.OverviewMap());
 
                 // горячие клавиши
                 // map.addControl(new OpenLayers.Control.KeyboardDefaults());
 
-                map.events.register('click', map, handleMapClick);
+                //       map.events.register('click', map, handleMapClick);
+
             }
 
             function handleMapClick(evt)
             {
+
+                layerChoose.clearMarkers();
                 var lonlat = map.getLonLatFromViewPortPx(evt.xy);
+                map.addLayer(layerChoose);//добавляем этот слой к карте
+                var sizeChoose = new OpenLayers.Size(58, 32);//размер картинки для маркера
+                //смещение картинки для маркера
+                var offset = new OpenLayers.Pixel(-(sizeChoose.w / 2), -sizeChoose.h);
+                //картинка для маркера
+                var icon = new OpenLayers.Icon('js/script/img/selected-maker-32.png', sizeChoose, offset);
+                layerChoose.addMarker(//добавляем маркер к слою маркеров
+                        new OpenLayers.Marker(lonlat, //координаты вставки маркера
+                                icon));//иконка маркера
+
+
                 var cords = lonlat.transform(new OpenLayers.Projection("EPSG:3857"), new OpenLayers.Projection("EPSG:4326"), 5);
                 var latStr = document.getElementById("latitude");
                 latStr.value = cords.lat.toString();
                 var lonStr = document.getElementById("longitude");
                 lonStr.value = cords.lon.toString();
             }
+            function addRowHandlers() {
+                layerSaved.clearMarkers();
+                var lonlat;
+
+                var size = new OpenLayers.Size(58, 32);//размер картинки для маркера
+                var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+                var icon = new OpenLayers.Icon('js/script/img/saved-maker-32.png', size, offset);
+
+                var table = document.getElementById("markerTable");
+                var name;
+                var latitude;
+                var longitude;
+                for (i = 1; i < table.rows.length; i++) {
+                    name = table.rows[i].cells[1].innerHTML;
+                    latitude = table.rows[i].cells[2].innerHTML;
+                    longitude = table.rows[i].cells[3].innerHTML;
+
+                    console.log("name: " + name);
+                    console.log("latitude: " + latitude);
+                    console.log("longitude: " + longitude);
+
+
+                    lonlat = new OpenLayers.LonLat(longitude, latitude);
+                    lonlat.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+                    console.log(lonlat);
+
+                }
+                map.addLayer(layerSaved);
+                layerSaved.addMarkers(new OpenLayers.Marker(lonlat, icon));
+            }
+
         </script>
 
     </head>
 
-    <body onload="GetMap();" ng-app="Transportation" ng-controller="WaypointController as ctrlWayp">
+    <body ng-app="Transportation" ng-controller="WaypointController as ctrlWayp">
         <a href="http://localhost:8080/transportation/">Welcome Page<a>
                 <div class="generic-container">
                     <div class="panel panel-default">
                         <div class="panel-heading"><span class="lead">Карта</span></div> 
                         <div class="panel-body">
-<!--                            Сама карта-->
-                            <div id ="OSMap" style="height:600px"></div>
+                            <!--                            Сама карта-->
+                            <div id="map" class="map"></div>                           
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-2 control-lable" for="name">Название путевой точки</label>
-                                <div class="col-md-7">
-                                    <input type="text" ng-model="ctrlWayp.waypoint.name" id="name" class="form-control input-sm" required ng-minlength="3"/>
+                        <form ng-submit="ctrlWayp.submit()" name="myForm" class="form-horizontal">
+                            <input type="hidden" ng-model="ctrlWayp.waypoint.id" />
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-2 control-lable" for="name">Название путевой точки</label>
+                                    <div class="col-md-7">
+                                        <input type="text" ng-model="ctrlWayp.waypoint.name" id="name" class="form-control input-sm" required ng-minlength="3"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-2 control-lable" for="latitude">Широта</label>
-                                <div class="col-md-7">
-                                    <input type="text" ng-model="ctrlWayp.waypoint.latitude" id="latitude" class="form-control input-sm" required ng-minlength="3"/>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-2 control-lable" for="latitude">Широта</label>
+                                    <div class="col-md-7">                                   
+                                        <input type="text" ng-model="ctrlWayp.waypoint.latitude" id="latitude" class="form-control input-sm"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label class="col-md-2 control-lable" for="longitude">Долгота</label>
-                                <div class="col-md-7">
-                                    <input type="text" ng-model="cctrlWayp.waypoint.longitude" id="longitude" class="form-control input-sm" required ng-minlength="3"/>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-2 control-lable" for="longitude">Долгота</label>
+                                    <div class="col-md-7">
+                                        <input type="text" id="longitude" ng-model="ctrlWayp.waypoint.longitude" class="form-control input-sm"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-actions floatRight">
-                                <button type="button" class="btn btn-sm btn-info" ng-click="ctrlWayp.createWaypoint(ctrlWayp.waypoint)">Сохранить путевую точку</button> 
+                            <div class="row">
+                                <div class="form-actions floatRight">
+                                    <button type="button" class="btn btn-sm btn-info" ng-click="ctrlWayp.createWaypoint(ctrlWayp.waypoint)">Сохранить путевую точку</button> 
+                                    <button type="button" ng-click="ctrlWayp.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Список путевых точек </span></div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="markerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Название</th>
+                                            <th>Широта</th>
+                                            <th>Долгота</th>
+                                            <th style="width: 200px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="waypoint in ctrlWayp.waypoints" onclick="addRowHandlers()">
+                                            <td>{{waypoint.id}}</td>
+                                            <td>{{waypoint.name}}</td>
+                                            <td>{{waypoint.latitude}}</td>
+                                            <td>{{waypoint.longitude}}</td>
+                                            <td><button type="button" ng-click="ctrlWayp.editWaypoint(waypoint)" class="btn btn-success">�?зменить</button>
+                                                <button type="button" ng-click="ctrlWayp.deleteWaypoint(waypoint)" class="btn btn-danger custom-width">Удалить</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
