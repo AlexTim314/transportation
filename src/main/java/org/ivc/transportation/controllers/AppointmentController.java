@@ -61,7 +61,7 @@ public class AppointmentController {
      */
     @GetMapping("/appointments/byUser/{sD}/{eD}")
     public Collection<Appointment> getAppointmentsByUserAndDate(Principal principal, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
-        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+        if (principal != null) { 
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {

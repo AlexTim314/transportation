@@ -43,11 +43,8 @@ import org.ivc.transportation.services.WaybillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -360,8 +357,8 @@ public class TransportationApplication {
         ap2.setWaybill(waybill2);
         ap3.setWaybill(waybill3);
 
-        ap1.createWaybill();
-        ap1.excel2pdf();
+        //ap1.createWaybill();
+        //ap1.excel2pdf();
 
         System.out.println("ap1:" + ap1.toString());
 
