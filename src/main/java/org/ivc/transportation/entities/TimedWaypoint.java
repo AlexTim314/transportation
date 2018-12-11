@@ -43,12 +43,12 @@ public class TimedWaypoint implements Serializable {
     @Column(nullable = false)
     private Integer number;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+ //   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER)
     private Waypoint waypoint;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+ //   @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Trip trip;
 
     public TimedWaypoint(Integer number, Waypoint waypoint, Trip trip) {

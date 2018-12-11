@@ -46,8 +46,8 @@ public class Claim implements Serializable {
     @Column(nullable = false)
     private ClaimType tip;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Department department;
 
     public Claim(Date clDate, ClaimType tip, Department dep) {

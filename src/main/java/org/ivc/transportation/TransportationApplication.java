@@ -106,16 +106,31 @@ public class TransportationApplication {
     public void init() {
         AppRole adminRole = new AppRole("ROLE_ADMIN");
         AppRole userRole = new AppRole("ROLE_USER");
-
-        AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
-        AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
-        userRepository.saveAndFlush(admin);
-        userRepository.saveAndFlush(user);
-
+        
         TransportDep transportDep1 = new TransportDep("TransportDep1", "dAdr1", "dphone1");
         TransportDep transportDep2 = new TransportDep("TransportDep2", "dAdr2", "dphone2");
         tdS.addTransportDep(transportDep1);
         tdS.addTransportDep(transportDep2);
+        
+        Department dep1 = new Department("NAME-1", "ADDRES-1");
+        Department dep2 = new Department("NAME-2", "ADDRES-2");
+        Department dep3 = new Department("NAME-3", "ADDRES-3");
+        Department dep4 = new Department("NAME-4", "ADDRES-4");
+        Department dep5 = new Department("NAME-5", "ADDRES-5");
+        depS.saveDepartment(dep1);
+        depS.saveDepartment(dep2);
+        depS.saveDepartment(dep3);
+        depS.saveDepartment(dep4);
+        depS.saveDepartment(dep5);
+
+        AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
+        AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
+        admin.setDepartment(dep2);
+        admin.setTransportDep(transportDep1);
+        userRepository.saveAndFlush(admin);
+        userRepository.saveAndFlush(user);
+
+
 
         Driver driver1 = new Driver("fname1", "name1", "sname1", new Date(0), "address1", "phone1", "", transportDep1);
         driver1.setVacant(Boolean.TRUE);
@@ -166,18 +181,9 @@ public class TransportationApplication {
         tdS.addVechicle(vechicle4);
         tdS.addVechicle(vechicle5);
 
-        Department dep1 = new Department("NAME-1", "ADDRES-1");
-        Department dep2 = new Department("NAME-2", "ADDRES-2");
-        Department dep3 = new Department("NAME-3", "ADDRES-3");
-        Department dep4 = new Department("NAME-4", "ADDRES-4");
-        Department dep5 = new Department("NAME-5", "ADDRES-5");
-        depS.saveDepartment(dep1);
-        depS.saveDepartment(dep2);
-        depS.saveDepartment(dep3);
-        depS.saveDepartment(dep4);
-        depS.saveDepartment(dep5);
+        
 
-        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep1);
+        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
@@ -199,9 +205,9 @@ public class TransportationApplication {
         rec1.setStatus(RecordStatus.record_status_created);
         Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl1, null);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl2, null);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null);
         rec4.setStatus(RecordStatus.record_status_inprogress);
         Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null);
         rec5.setStatus(RecordStatus.record_status_completed);

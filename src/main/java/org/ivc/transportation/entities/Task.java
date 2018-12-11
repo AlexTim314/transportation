@@ -46,8 +46,8 @@ public class Task implements Serializable {
     @Column(length = 1024)
     private String reason;
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private TaskList taskList;
     
     public Task(String status,String reason,TaskList taskList){

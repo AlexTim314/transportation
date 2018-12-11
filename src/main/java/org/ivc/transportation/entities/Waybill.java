@@ -85,8 +85,8 @@ public class Waybill implements Serializable {
     @Column(length = 1024)
     private String note;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER)
     private TaskList taskList;
 
     public Waybill(String series, String number, Float departureOdometer

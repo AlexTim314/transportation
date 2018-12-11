@@ -55,12 +55,12 @@ public class Vechicle implements Serializable {
     
     private String note;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private TypeVechicle typeVechicle;
 
     public Vechicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, TypeVechicle typeVechicle) {

@@ -83,6 +83,24 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
+    
+    
+    
+    @GetMapping("/claims")
+    public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
+        if (principal != null) { 
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+
+            return claimService.getClaimsByDepartment(department.getId());
+        }
+        return null;
+    }
+    
+    
     /**
      * Метод для получения всех заявок выбранного промежутка времени.
      * Предполагается , что доступ к этому методу будет только у администратора.
@@ -241,6 +259,12 @@ public class ClaimController {
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
+//        @GetMapping("/claims/byUser/records")
+//    public Collection<Record> findRecrodsByClaim(Principal principal) {
+//       // System.out.println(claim);
+//     //   claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
+//        return claimService.get
+//    }
 
     /**
      * Метод добавляет новую запись в заявку подразделения. Номер подразделения

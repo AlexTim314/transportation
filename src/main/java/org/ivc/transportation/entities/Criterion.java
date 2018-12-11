@@ -41,8 +41,8 @@ public class Criterion implements Serializable {
     @Column(length = 1024)
     private String name;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private CriterionType criterionType;
 
     public Criterion(String name, CriterionType criterionType) {
