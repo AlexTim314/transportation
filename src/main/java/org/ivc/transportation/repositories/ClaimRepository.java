@@ -32,11 +32,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByAffirmationOrderByClDateAsc(Boolean a);
 
-    List<Claim> findByTipOrderByClDateDesc(ClaimType t);
+    List<Claim> findByClTypeOrderByClDateDesc(ClaimType t);
 
-    List<Claim> findByTipOrderByClDateAsc(ClaimType t);
+    List<Claim> findByClTypeOrderByClDateAsc(ClaimType t);
     
-    List<Claim> findByTipAndDepartmentIdOrderByClDateDesc(Long id, ClaimType t);
+    List<Claim> findByClTypeAndDepartmentIdOrderByClDateDesc(Long id, ClaimType t);
 
     List<Claim> findByDepartmentIdAndAffirmationOrderByClDateDesc(Long id, Boolean a);
 

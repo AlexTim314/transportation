@@ -65,8 +65,8 @@ import static org.ivc.transportation.config.trUtils.NamedCell.серия;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"record", "vechicle", "driver"})
-@ToString(exclude = {"record", "vechicle", "driver"})
+@EqualsAndHashCode(exclude = {"record", "vehicle", "driver"})
+@ToString(exclude = {"record", "vehicle", "driver"})
 public class Appointment implements Serializable {
 
     @Id
@@ -95,19 +95,19 @@ public class Appointment implements Serializable {
 
   //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
-    private Vechicle vechicle;
+    private Vehicle vehicle;
 
   //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
 
-    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vechicle vechicle) {
+    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vehicle vehicle) {
         this.dateTime = dateTime;
         this.status = status;
         this.note = note;
         this.driver = driver;
         this.record = record;
-        this.vechicle = vechicle;
+        this.vehicle = vehicle;
     }
 
 

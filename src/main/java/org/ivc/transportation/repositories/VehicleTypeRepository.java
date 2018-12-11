@@ -7,7 +7,7 @@ package org.ivc.transportation.repositories;
 
 
 import java.util.List;
-import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.VehicleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
  * @author first
  */
 @Repository
-public interface TypeVechicleRepository extends JpaRepository<TypeVechicle ,Long> {
+public interface VehicleTypeRepository extends JpaRepository<VehicleType ,Long> {
     
-    List<TypeVechicle> findBySpecialization(String s);
+    List<VehicleType> findBySpecialization(String s);
     
 }

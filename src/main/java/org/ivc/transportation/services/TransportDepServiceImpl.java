@@ -9,15 +9,15 @@ import java.util.Collection;
 import java.util.Optional;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.TypeVechicle;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
-import org.ivc.transportation.repositories.TypeVechicleRepository;
-import org.ivc.transportation.repositories.VechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ivc.transportation.repositories.VehicleTypeRepository;
+import org.ivc.transportation.repositories.VehicleRepository;
 
 /**
  *
@@ -32,9 +32,9 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Autowired
     private DriverRepository driverRep;
     @Autowired
-    private VechicleRepository vechicleRep;
+    private VehicleRepository vechicleRep;
     @Autowired
-    private TypeVechicleRepository typeVechicleRep;
+    private VehicleTypeRepository typeVechicleRep;
 
     @Override
     @Transactional
@@ -112,13 +112,13 @@ public class TransportDepServiceImpl implements TransportDepService {
 
     @Override
     @Transactional
-    public void addVechicle(Vechicle d) {
+    public void addVechicle(Vehicle d) {
         this.vechicleRep.save(d);
     }
 
     @Override
     @Transactional
-    public void updateVechicle(Vechicle d, Long id) {
+    public void updateVechicle(Vehicle d, Long id) {
         d.setId(id);
         vechicleRep.save(d);
     }
@@ -131,19 +131,19 @@ public class TransportDepServiceImpl implements TransportDepService {
 
     @Override
     @Transactional
-    public Collection<Vechicle> getVechicles() {
+    public Collection<Vehicle> getVechicles() {
         return vechicleRep.findAll();
     }
 
     @Override
     @Transactional
-    public Collection<Vechicle> findVechiclesByVacant(Boolean d) {
+    public Collection<Vehicle> findVechiclesByVacant(Boolean d) {
         return vechicleRep.findByVacant(d);
     }
 
     @Override
     @Transactional
-    public Collection<Vechicle> getVechiclesByTransportDepId(Long id) {
+    public Collection<Vehicle> getVechiclesByTransportDepId(Long id) {
         return vechicleRep.findByTransportDepId(id);
     }
 
@@ -154,12 +154,12 @@ public class TransportDepServiceImpl implements TransportDepService {
     }
 
     @Override
-    public void addTypeVechicle(TypeVechicle d) {
+    public void addTypeVechicle(VehicleType d) {
         this.typeVechicleRep.save(d);
     }
     
     @Override
-    public void updateTypeVechicle(TypeVechicle d, Long id) {
+    public void updateTypeVechicle(VehicleType d, Long id) {
          d.setId(id);
         typeVechicleRep.save(d);
     }
@@ -170,17 +170,17 @@ public class TransportDepServiceImpl implements TransportDepService {
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechicles() {
+    public Collection<VehicleType> getTypeVechicles() {
         return typeVechicleRep.findAll();
     }
 
     @Override
-    public Collection<Vechicle> getVechiclesByTypeVechicleId(Long id) {
-        return vechicleRep.findByTypeVechicleId(id);
+    public Collection<Vehicle> getVechiclesByTypeVechicleId(Long id) {
+        return vechicleRep.findByVehicleTypeId(id);
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s) {
+    public Collection<VehicleType> getTypeVechiclesBySpicialization(String s) {
        return typeVechicleRep.findBySpecialization(s);
     }
 

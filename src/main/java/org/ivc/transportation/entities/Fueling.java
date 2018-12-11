@@ -51,7 +51,6 @@ public class Fueling implements Serializable {
     @Column(nullable = false)
     private Float famountFuel;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
 
