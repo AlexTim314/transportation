@@ -5,29 +5,10 @@
  */
 package org.ivc.transportation.controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.AreaReference;
-import org.apache.poi.ss.util.CellReference;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
 import org.ivc.transportation.entities.Appointment;
@@ -80,7 +61,7 @@ public class AppointmentController {
      */
     @GetMapping("/appointments/byUser/{sD}/{eD}")
     public Collection<Appointment> getAppointmentsByUserAndDate(Principal principal, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
-        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+        if (principal != null) { 
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
