@@ -17,8 +17,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
 
         self.fetchClaims = function () {
-//           var dateRange = '{ "StartDate": "2018-10-20", "EndDate": "2018-10-24" }';  
-//           dateRange = JSON.parse(dateRange);
+
             var dd = new Date().getDate();
             var mm = new Date().getMonth();
             var yyyy = new Date().getFullYear();
