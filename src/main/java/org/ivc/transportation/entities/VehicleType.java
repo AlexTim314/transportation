@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import org.ivc.transportation.config.trUtils.VehicleSpecialization;
 
 /**
  *
@@ -36,11 +37,10 @@ public class VehicleType implements Serializable {
     @Column(length = 1024)
     private String type;
     
-    @NonNull
-    @Column(length = 1024)
-    private String specialization;
+    @NonNull    
+    private VehicleSpecialization specialization;
     
-     public VehicleType (String type, String specialization) {
+     public VehicleType (String type, VehicleSpecialization specialization) {
         this.type = type;
         this.specialization = specialization;
     }

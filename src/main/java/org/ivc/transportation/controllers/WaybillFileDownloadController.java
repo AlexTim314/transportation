@@ -30,14 +30,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
-import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.*;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
-import org.ivc.transportation.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -51,12 +49,12 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
  */
 @Controller
 public class WaybillFileDownloadController {
-    
+
     @PostMapping("/waybilldownload")
     public StreamingResponseBody download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
 
         if (principal != null) { //возможно стоит добавить проверку, что авторизован Диспетчер
-            if (appointment.getStatus() != trUtils.AppointmentStatus.appointment_status_completed) {
+            if (appointment.getStatus() != AppointmentStatus.appointment_status_completed) {
 
                 return outputStream -> {
                     String message = "Распоряжение не утверждено. Для печати "
@@ -65,12 +63,22 @@ public class WaybillFileDownloadController {
                     outputStream.write(message.getBytes());
                 };
             }
-            
-            appointment.getVehicleModel().getVehicleType();
+            VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
+            switch (specialization) {
+                case Пассажирский:
+                case Легковой:                    
+                    break;
+                case Грузовой:
+                case Спецтехника:
+                    break;
+                default:
+                    break;
+
+            };
 
             String excelFilePath = "Waybill.xls"; //
             Waybill waybill = appointment.getWaybill();
-            Vehicle vechicle = appointment.getVehicle();            
+            Vehicle vechicle = appointment.getVehicle();
             Driver driver = appointment.getDriver();
             Record record = appointment.getAppointmentGroup().getRecord();
             LocalDateTime dateTime = appointment.getDateTime();
@@ -80,12 +88,12 @@ public class WaybillFileDownloadController {
                 try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
                     workbook = WorkbookFactory.create(inputStream);
                     List<? extends Name> allNames = workbook.getAllNames();
-                    List<trUtils.NamedCell> expectedNamedCells = Arrays.stream(trUtils.NamedCell.values()).collect(Collectors.toList());
+                    List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
 
                     for (Name name : allNames) {
                         String cellName = name.getNameName().trim().toLowerCase().replace(" ", "_");
                         try {
-                            trUtils.NamedCell namedCell = trUtils.NamedCell.valueOf(cellName);
+                            NamedCell namedCell = NamedCell.valueOf(cellName);
                             Cell c = getCell(workbook, name);
                             switch (namedCell) {
                                 case серия:
@@ -129,10 +137,10 @@ public class WaybillFileDownloadController {
                                 case диспетчер:
                                     //TODO: после добавления извлекать из waybill
                                     User loginedUser = (User) ((Authentication) principal).getPrincipal();
-                                    c.setCellValue(loginedUser.getUsername());                                            
+                                    c.setCellValue(loginedUser.getUsername());
                                     break;
                                 case механик:
-                                    
+
                                     c.setCellValue(" механик Пока не поддерживается. Брать с формы?");
                                     break;
                                 case время_выезда_по_графику:
@@ -202,7 +210,7 @@ public class WaybillFileDownloadController {
                         System.out.println("Waybill downloading..");
                         outputStream.write(data, 0, nRead);
                     }
-                };             
+                };
             } catch (IOException ex) {
                 //log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
                 throw new RuntimeException("IOError writing file to output stream");
