@@ -7,7 +7,9 @@ package org.ivc.transportation.services;
 
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
@@ -76,6 +78,9 @@ public interface TransportDepService {
     public Collection<VehicleModel> getVehicleModels();
 
     public Collection<Vehicle> getVehiclesByVehicleModelId(Long id);
-
-
+    
+    public void addAppointment(Appointment appointment, Record record);
+    
+    public Record getRecordByAppointment(Appointment appointment);
+    
 }

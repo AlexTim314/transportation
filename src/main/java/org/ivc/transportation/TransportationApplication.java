@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.entities.AppRole;
@@ -12,6 +14,7 @@ import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import static org.ivc.transportation.config.trUtils.VehicleSpecialization.*;
+import org.ivc.transportation.entities.Appointment;
 
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Criterion;
@@ -27,7 +30,6 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.entities.Waypoint;
-import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
 
@@ -84,9 +86,6 @@ public class TransportationApplication {
 
     @Autowired
     private PlanService plS;
-
-    @Autowired
-    private AppointmentRepository aprep;
 
     @Autowired
     private CriterionService critServ;
@@ -310,17 +309,26 @@ wayps2.add(waypoint4);
 //        clS.getAllClaimsSortByDate().forEach(System.out::println);
 //        System.out.println("-----------Record after-----------------");
 //        clS.getRecords().forEach(System.out::println);
+        
+        
 
-//        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-1", rec4, driver1, vechicle1);
-//        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-2", rec4, driver2, vechicle2);
-//        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-3", rec4, driver3, vechicle3);
-//        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-4", rec4, driver4, vechicle4);
-//        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-5", rec4, driver5, vechicle5);
-//        appointmentServ.addAppointment(ap1);
-//        appointmentServ.addAppointment(ap2);
-//        appointmentServ.addAppointment(ap3);
-//        appointmentServ.addAppointment(ap4);
-//        appointmentServ.addAppointment(ap5);
+        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech1);
+        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech2);
+        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech3);
+        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech7);
+        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech8);
+        tdS.addAppointment(ap1, rec3);
+        tdS.addAppointment(ap2, rec4);
+        tdS.addAppointment(ap3, rec3);
+        tdS.addAppointment(ap4, rec4);
+        tdS.addAppointment(ap5, rec3);
+        System.out.println("-----------###########################-----------------");
+        System.out.println(tdS.getRecordByAppointment(ap1));
+        System.out.println(tdS.getRecordByAppointment(ap2));
+        System.out.println(tdS.getRecordByAppointment(ap3));
+        System.out.println(tdS.getRecordByAppointment(ap4));
+        System.out.println(tdS.getRecordByAppointment(ap5));
+        System.out.println("-----------###########################-----------------");
 //        System.out.println("-----------###########################-----------------");
 //        appointmentServ.getAppointmentByRecordAndStatus(rec4, AppointmentStatus.appointment_status_created).forEach(System.out::println);
 //        System.out.println("-----------###########################-----------------");

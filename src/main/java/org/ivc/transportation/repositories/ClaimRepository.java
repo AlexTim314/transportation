@@ -7,7 +7,6 @@ package org.ivc.transportation.repositories;
 
 import java.util.List;
 import java.sql.Date;
-import java.time.OffsetDateTime;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.entities.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;

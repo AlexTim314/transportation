@@ -6,12 +6,18 @@
 package org.ivc.transportation.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentGroup;
 import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
+import org.ivc.transportation.repositories.AppointmentGroupRepository;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
@@ -39,6 +45,10 @@ public class TransportDepServiceImpl implements TransportDepService {
     private VehicleTypeRepository vehicleTypeRep;
     @Autowired
     private VehicleModelRepository vehicleModelRep;
+    @Autowired
+    private AppointmentRepository appointmentRep;
+    @Autowired
+    private AppointmentGroupRepository appointmentGroupRep;
 
     @Override
     @Transactional
@@ -208,6 +218,22 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Override
     public Collection<Vehicle> getVehiclesByVehicleModelId(Long id) {
         return vehicleRep.findByVehicleModelId(id);
+    }
+
+    @Override
+    public void addAppointment(Appointment appointment, Record record) {
+        AppointmentGroup apg = new AppointmentGroup(record, appointment);
+        appointmentGroupRep.save(apg);
+        appointmentRep.save(appointment);
+    }
+
+    @Override
+    public Record getRecordByAppointment(Appointment appointment) {
+       List<AppointmentGroup> apg = appointmentGroupRep.findByAppointmentId(appointment.getId());
+       if (apg.isEmpty()) return null;
+       apg = appointmentGroupRep.findByRecordId(apg.get(0).getRecord().getId());
+       if (apg.isEmpty()) return null;
+       return apg.get(0).getRecord();
     }
 
 

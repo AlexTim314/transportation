@@ -34,7 +34,7 @@ import org.ivc.transportation.config.trUtils.AppointmentStatus;
 @EqualsAndHashCode(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
 @ToString(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
 public class Appointment implements Serializable {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -50,10 +50,6 @@ public class Appointment implements Serializable {
     @Column(nullable = true)
     private String note;
 
-    @NonNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    private AppointmentGroup appointmentGroup;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
 
@@ -63,20 +59,22 @@ public class Appointment implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
     
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
     
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     private VehicleModel vehicleModel;
 
 
-    public Appointment(LocalDateTime dateTime, AppointmentGroup appointmentGroup) {
+    public Appointment(LocalDateTime dateTime, TransportDep transportDep, VehicleModel vehicleModel) {
         this.dateTime = dateTime;
         this.status = AppointmentStatus.appointment_status_created;
-        this.appointmentGroup = appointmentGroup;
+        this.transportDep = transportDep;
+        this.vehicleModel = vehicleModel;
     }
-
-
+    
 /*
     public void excel2pdf() {
 
