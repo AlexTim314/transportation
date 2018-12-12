@@ -88,41 +88,48 @@
                             <option value="1">Самосвал</option>
                             <option value="2">Бульдозер</option>
                         </select>	-->
-                        <select ng-options="vt as vt.specialization for vt in clCtrl.vehicleTypes track by vt.id | filter: search" ng-model="clCtrl.record.vehicleType">
+                        <select name="criterion" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:search track by vt.id"   ng-model="clCtrl.record.vehicleType">
                         </select>
                     </div>	
                     <div class="form-item clearfix" >
                         <div class="left-block">
                             <label for="date-begin">Дата начала</label>
-                            <input type="date"  name="date-begin" required>
+                            <input type="date"  name="date-begin" ng-model="clCtrl.record.dapartureDate" required>
                         </div>
                         <div class="right-block">
                             <label for="date-end">Дата конца</label>
-                            <input type="date"  name="date-end" required>
+                            <input type="date"  name="date-end" ng-model="clCtrl.record.returnDate" required>
                         </div>
                     </div>	
                     <div class="form-item clearfix">
                         <div class="left-block">
                             <label for="time-begin">Время начала</label>
-                            <input type="time"  name="time-begin" required>
+                            <input type="time"  name="time-begin" ng-model="clCtrl.record.departureTime" required>
                         </div>
                         <div class="right-block">
                             <label for="time-end">Время конца</label>
-                            <input type="time"  name="time-end" required>
+                            <input type="time"  name="time-end" ng-model="clCtrl.record.returnTime" required>
+                        </div>
+                        <div class="left-block">
+                            <label for="time-delivery">Время подачи</label>
+                            <input type="time"  name="time-delivery" ng-model="clCtrl.record.timeDelivery" required>
                         </div>
                     </div>	
                     <div class="form-item">
                         <label for="purpose">Цель</label>
-                        <textarea name="purpose"   rows="10"></textarea>
+                        <textarea name="purpose"   rows="10" ng-model="clCtrl.record.purpose" ></textarea>
                     </div>
-                    <div class="custom-select form-item clearfix" ng-controller="routeTagController as routeTag">
+                    <div class="custom-select form-item clearfix"> <!--ng-controller="routeTagController as routeTag">-->
                         <div class="left-block-route">
                             <label for="route">Маршрут</label>
-                            <select name="route" ng-model="routeTag.routeText">
+                            <select name="route"> <!--ng-options="wp as wp.name for wp in clCtrl.waypoints track by wp.id" ng-model="clCtrl.record.waypoints">-->
+                                
+                            </select>
+<!--                            <select name="route" ng-model="routeTag.routeText">
                                 <option >Пл.10</option>
                                 <option >Пл.18</option>
                                 <option >Пл.23</option>
-                            </select> 
+                            </select> -->
                         </div>
                         <!--	
                         <div class="right-block-route">
@@ -131,7 +138,7 @@
                         <div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>-->
                     </div>	
                     <div class="form-item">
-                        <button class="btn submit" id="btn-add-edit"></button>
+                        <button class="btn submit" id="btn-add-edit" ng-click="clCtrl.createRecord(clCtrl.record)"></button>
                     </div>
 
                 </form>

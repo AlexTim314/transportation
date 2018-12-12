@@ -51,6 +51,20 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 }
                         );
             },
+            
+            fetchWaypoints: function () {
+                return $http.get('/transportation/claims/byUser/records/waypoints')
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching Waypoints in records');
+                                    return $q.reject(decodeURI(errResponse));
+                                }
+                        );
+            },
 
             createClaim: function (claim) {
                 var str = document.getElementById("formRecord-id");
@@ -69,6 +83,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
             },
 
             createRecord: function (record) {
+                record.waypoints=null;
                 return $http.post('/transportation/claims/byUser/records/create',
                         JSON.stringify(record), {headers: self.headers})
                         .then(
