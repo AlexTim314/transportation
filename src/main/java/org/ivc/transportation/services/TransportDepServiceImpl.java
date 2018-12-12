@@ -36,7 +36,7 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Autowired
     private VehicleRepository vehicleRep;
     @Autowired
-    private VehicleTypeRepository typeVechicleRep;
+    private VehicleTypeRepository vehicleTypeRep;
     @Autowired
     private VehicleModelRepository vehicleModelRep;
 
@@ -159,29 +159,29 @@ public class TransportDepServiceImpl implements TransportDepService {
 
     @Override
     public void addVehicleType(VehicleType d) {
-        this.typeVechicleRep.save(d);
+        this.vehicleTypeRep.save(d);
     }
     
     @Override
     public void updateVehicleType(VehicleType d, Long id) {
          d.setId(id);
-        typeVechicleRep.save(d);
+        vehicleTypeRep.save(d);
     }
 
     @Override
     public void removeVehicleType(Long id) {
-        typeVechicleRep.deleteById(id);
+        vehicleTypeRep.deleteById(id);
     }
 
     @Override
     public Collection<VehicleType> getVehicleTypes() {
-        return typeVechicleRep.findAll();
+        return vehicleTypeRep.findAll();
     }
 
 
     @Override
     public Collection<VehicleType> getVehicleTypesBySpecialization(String s) {
-       return typeVechicleRep.findBySpecialization(s);
+       return vehicleTypeRep.findBySpecialization(s);
     }
 
     @Override
