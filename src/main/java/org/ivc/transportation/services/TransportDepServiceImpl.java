@@ -5,9 +5,14 @@
  */
 package org.ivc.transportation.services;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentGroup;
 import org.ivc.transportation.entities.Driver;
@@ -235,6 +240,13 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Override
     public List<AppointmentGroup> getAppointmentGroups(Record record) {
         return appointmentGroupRep.findByRecordId(record.getId());
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByTransportDepAndDateRange(TransportDep transportDep, DateRange dateRange) {
+        LocalDateTime dStart = LocalDateTime.parse(dateRange.StartDate.toString()+"T00:00:00");
+        LocalDateTime dEnd = LocalDateTime.parse(dateRange.EndDate.toString()+"T00:00:00");
+        return appointmentRep.findAllByTransportDepIdAndAppDateTimeBetweenOrderByAppDateTimeDesc(transportDep.getId(), dStart, dEnd);
     }
 
 }
