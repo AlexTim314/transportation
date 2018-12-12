@@ -2,6 +2,7 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
@@ -89,6 +90,16 @@ public class DispatcherServiceImpl implements DispatcherService {
     private boolean checkTransportDep(Principal principal, Vehicle vehicle) {
         TransportDep transportDep = getTransportDep(principal);
         return transportDep != null && transportDep.equals(vehicle.getTransportDep());
+    }
+
+    @Override
+    public List<Appointment> getAppointments(Principal principal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Appointment editAppointment(Principal principal, Appointment appointment) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
