@@ -43,11 +43,13 @@ public class AppointmentGroup implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Record record;
 
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     private Appointment appointment;
 
-    public AppointmentGroup(Record record) {
+    public AppointmentGroup(Record record, Appointment appointment) {
         this.record = record;
+        this.appointment = appointment;
     }
 
 }

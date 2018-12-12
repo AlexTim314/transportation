@@ -90,9 +90,6 @@ public class TransportationApplication {
     private PlanService plS;
 
     @Autowired
-    private AppointmentRepository aprep;
-
-    @Autowired
     private CriterionService critServ;
 
     @Autowired
@@ -314,17 +311,26 @@ wayps2.add(waypoint4);
 //        clS.getAllClaimsSortByDate().forEach(System.out::println);
 //        System.out.println("-----------Record after-----------------");
 //        clS.getRecords().forEach(System.out::println);
+        
+        
 
-//        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-1", rec4, driver1, vechicle1);
-//        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-2", rec4, driver2, vechicle2);
-//        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-3", rec4, driver3, vechicle3);
-//        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-4", rec4, driver4, vechicle4);
-//        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-5", rec4, driver5, vechicle5);
-//        appointmentServ.addAppointment(ap1);
-//        appointmentServ.addAppointment(ap2);
-//        appointmentServ.addAppointment(ap3);
-//        appointmentServ.addAppointment(ap4);
-//        appointmentServ.addAppointment(ap5);
+        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech1);
+        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech2);
+        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech3);
+        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech7);
+        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech8);
+        tdS.addAppointment(ap1, rec3);
+        tdS.addAppointment(ap2, rec4);
+        tdS.addAppointment(ap3, rec3);
+        tdS.addAppointment(ap4, rec4);
+        tdS.addAppointment(ap5, rec3);
+        System.out.println("-----------###########################-----------------");
+        System.out.println(tdS.getRecordByAppointment(ap1));
+        System.out.println(tdS.getRecordByAppointment(ap2));
+        System.out.println(tdS.getRecordByAppointment(ap3));
+        System.out.println(tdS.getRecordByAppointment(ap4));
+        System.out.println(tdS.getRecordByAppointment(ap5));
+        System.out.println("-----------###########################-----------------");
 //        System.out.println("-----------###########################-----------------");
 //        appointmentServ.getAppointmentByRecordAndStatus(rec4, AppointmentStatus.appointment_status_created).forEach(System.out::println);
 //        System.out.println("-----------###########################-----------------");

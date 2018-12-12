@@ -36,6 +36,8 @@ import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
+import org.ivc.transportation.services.TransportDepService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,6 +49,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
  */
 @Controller
 public class WaybillFileDownloadController {
+    
+    @Autowired
+    private TransportDepService tdS;
 
     @PostMapping("/waybilldownload")
     public StreamingResponseBody download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
@@ -66,7 +71,8 @@ public class WaybillFileDownloadController {
             Waybill waybill = appointment.getWaybill();
             Vehicle vechicle = appointment.getVehicle();            
             Driver driver = appointment.getDriver();
-            Record record = appointment.getAppointmentGroup().getRecord();
+            //Record record = appointment.getRecord();
+            Record record = tdS.getRecordByAppointment(appointment);
             LocalDateTime dateTime = appointment.getDateTime();
 
             try {
