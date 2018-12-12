@@ -1,6 +1,7 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
@@ -79,9 +80,12 @@ public class DispatcherServiceImpl implements DispatcherService {
     }
 
     @Override
-    public List<Appointment> getAppointments(Principal principal) {
+    public List<Appointment> getAppointments(Principal principal, LocalDateTime startDate, LocalDateTime endDate) {
         TransportDep transportDep = getTransportDep(principal);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (transportDep != null) {
+            appointmentRepository.findAllByTransportDepIdAndAppDateTimeBetweenOrderByAppDateTimeDesc(transportDep.getId(), startDate, endDate);
+        }
+        return null;
     }
 
     @Override
