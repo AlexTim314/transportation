@@ -6,6 +6,7 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
@@ -31,6 +32,9 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
     public List<Driver> getDrivers(Principal principal) {
@@ -69,9 +73,24 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public void deleteVehicle(Principal principal, Vehicle vehicle) {
-        if(checkTransportDep(principal, vehicle)){
+        if (checkTransportDep(principal, vehicle)) {
             vehicleRepository.delete(vehicle);
         }
+    }
+
+    @Override
+    public List<Appointment> getAppointments(Principal principal) {
+        TransportDep transportDep = getTransportDep(principal);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Appointment editAppointment(Principal principal, Appointment appointment) {
+        TransportDep transportDep = getTransportDep(principal);
+        if (transportDep != null && transportDep.equals(appointment.getTransportDep())) {
+            return appointmentRepository.save(appointment);
+        }
+        return null;
     }
 
     private TransportDep getTransportDep(Principal principal) {
@@ -90,16 +109,6 @@ public class DispatcherServiceImpl implements DispatcherService {
     private boolean checkTransportDep(Principal principal, Vehicle vehicle) {
         TransportDep transportDep = getTransportDep(principal);
         return transportDep != null && transportDep.equals(vehicle.getTransportDep());
-    }
-
-    @Override
-    public List<Appointment> getAppointments(Principal principal) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Appointment editAppointment(Principal principal, Appointment appointment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
