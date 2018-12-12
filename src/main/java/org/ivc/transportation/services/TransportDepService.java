@@ -6,8 +6,11 @@
 package org.ivc.transportation.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentGroup;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
@@ -81,6 +84,10 @@ public interface TransportDepService {
     
     public void addAppointment(Appointment appointment, Record record);
     
-    public Record getRecordByAppointment(Appointment appointment);
+    public List<AppointmentGroup> getAppointmentGroups(Appointment appointment);
+    
+    public List<AppointmentGroup> getAppointmentGroups(Record record);
+    
+    public List<Appointment> getAppointmentsByTransportDepAndDateRange(TransportDep transportDep, DateRange dateRange);
     
 }

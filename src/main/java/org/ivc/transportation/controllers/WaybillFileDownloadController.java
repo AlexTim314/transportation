@@ -90,8 +90,8 @@ public class WaybillFileDownloadController {
             Vehicle vechicle = appointment.getVehicle();
             Driver driver = appointment.getDriver();
             //Record record = appointment.getRecord();
-            Record record = tdS.getRecordByAppointment(appointment);
-            LocalDateTime dateTime = appointment.getDateTime();
+            Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
+            LocalDateTime dateTime = appointment.getAppDateTime();
 
             try {
                 Workbook workbook;
