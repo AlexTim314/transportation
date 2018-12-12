@@ -36,6 +36,10 @@ import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vechicle;
 import org.ivc.transportation.entities.Waybill;
+import org.ivc.transportation.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +52,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Controller
 public class WaybillFileDownloadController {
 
+    @Autowired
+    private UserRepository userRepository;
+    
     @PostMapping("/waybilldownload")
     public StreamingResponseBody download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
 
@@ -121,7 +128,8 @@ public class WaybillFileDownloadController {
                                     c.setCellValue("класс Пока не поддерживается.");
                                     break;
                                 case диспетчер:
-                                    c.setCellValue(principal.getName());
+                                    User loginedUser = (User) ((Authentication) principal).getPrincipal();
+                                    c.setCellValue(loginedUser.getUsername());                                            
                                     break;
                                 case механик:
                                     c.setCellValue(" механик Пока не поддерживается. Брать с формы?");
@@ -149,7 +157,8 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(vechicle.getFuelRemnant());
                                     break;
                                 case заказчик:
-                                    c.setCellValue(" заказчик Пока не поддерживается. Брать с формы?");
+                                    //нужно короткое имя для Подразделения                                    
+                                    c.setCellValue(record.getClaim().getDepartment().getName() + " " + record.getCarBoss());
                                     break;
                             }
 

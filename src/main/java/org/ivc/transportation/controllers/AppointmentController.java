@@ -54,7 +54,7 @@ public class AppointmentController {
      * подразделение не указано, то будет вызвано исключение
      * NotSpecifiedDepartmentException с соответствующим сообщением.
      *
-     * @param principal данные ползователя
+     * @param principal данные пользователя
      * @param sD начальная дата фильтрации
      * @param eD конечная дата фильтрации
      * @return список назначений
