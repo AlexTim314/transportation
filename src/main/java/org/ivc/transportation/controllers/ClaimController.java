@@ -190,6 +190,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+            claim.setAffirmation(Boolean.FALSE);
             claim.setDepartment(department);
             claimService.addClaim(claim);
             return claimService.getClaimsByDepartment(department.getId());

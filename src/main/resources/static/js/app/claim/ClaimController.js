@@ -7,16 +7,21 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.claim = {id: null, clDate: '', affirmation: '', tip: '', department: {name: ''}};
         self.record = {id: null, weekHash: '', type: '', datetime: '', dapartureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clDate: ''}};
+        self.waypoint = {name: '', latitude: '', longitude: ''};
         self.departments = [];
         self.claims = [];
         self.records = [];
+        self.waypoints = [];
 
 
         self.fetchClaims = function () {
 //           var dateRange = '{ "StartDate": "2018-10-20", "EndDate": "2018-10-24" }';  
 //           dateRange = JSON.parse(dateRange);
+           var dd = new Date().getDate();
+           var mm = new Date().getMonth();
+           var yyyy = new Date().getFullYear();
             var sD = '2018-10-20';
-            var eD = '2018-10-24';
+            var eD = yyyy+'-'+mm+'-'+dd;
             ClaimService.fetchClaims(sD, eD)
                     .then(
                             function (d) {
@@ -35,15 +40,9 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             }else{
                 clm.isVisible = !clm.isVisible;
             }
-            //self.claim = clm;
-            console.log('2 zapisi vniz');
-            console.log(clm);
-            console.log(clm.records);
-            console.log('===============');
-            
+
             if(clm.records === undefined){
                 self.fetchAllRecords(clm);
-//                clm.records = self.records;
             }
         };
         
@@ -62,7 +61,87 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
         self.fetchClaims();
-      //  self.fetchAllRecords();
+        
+        self.createClaim = function (claim) {
+           var dd = new Date().getDate();
+           var mm = new Date().getMonth();
+           var yyyy = new Date().getFullYear();
+            claim.clDate = yyyy+'-'+mm+'-'+dd;           
+            ClaimService.createClaim(claim)
+                    .then(
+                            self.fetchClaims,
+                            function (errResponse) {
+                                console.error('Error while creating Claim.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+        
+        self.createRecord = function (record) {         
+            ClaimService.createRecord(record)
+                    .then(
+                            self.fetchRecords,
+                            function (errResponse) {
+                                console.error('Error while creating Record.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
+
+//        self.updateClaim = function (claim) {
+//            ClaimService.updateClaim(claim)
+//                    .then(
+//                            self.fetchAllClaims,
+//                            function (errResponse) {
+//                                console.error('Error while updating Claim.');
+//                                showAlert(errResponse);
+//                            }
+//                    );
+//        };
+
+        self.updateRecord = function (record) {
+            ClaimService.updateRecord(record)
+                    .then(
+                            self.fetchAllRecords,
+                            function (errResponse) {
+                                console.error('Error while updating Record.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+
+        self.deleteClaim = function (claim) {
+            ClaimService.deleteClaim(claim)
+                    .then(
+                            self.fetchAllClaims,
+                            function (errResponse) {
+                                console.error('Error while deleting Claim.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+        
+        self.deleteRecord = function (record) {
+            ClaimService.deleteRecord(record)
+                    .then(
+                            self.fetchAllRecords,
+                            function (errResponse) {
+                                console.error('Error while deleting Record.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
+        
+        self.submit = function () {
+//            if (self.claim.claimId === null) {
+//                self.createClaim(self.claim);
+//            } else {
+//                self.updateClaim(self.claim);
+//            }
+console.log('sumbit')
+            self.reset();
+        };
 
 
     }]);

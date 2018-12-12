@@ -184,11 +184,11 @@ public class TransportationApplication {
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
-        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_spec, dep1);
+        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_additional, dep1);
         cl3.setAffirmation(Boolean.TRUE);
-        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_car, dep2);
+        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_additional, dep2);
         cl4.setAffirmation(Boolean.FALSE);
-        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_urgent, dep1);
+        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_weekly, dep1);
         cl5.setAffirmation(Boolean.FALSE);
         clS.addClaim(cl1);
         clS.addClaim(cl2);
@@ -229,7 +229,7 @@ public class TransportationApplication {
         System.out.println("-----------order by date desc-----------------");
         clS.getAllClaimsSortByDate().forEach(System.out::println);
         System.out.println("-----------by tip car order date desc-----------------");
-        clS.getClaimsByTip(ClaimType.claim_type_car).forEach(System.out::println);
+        clS.getClaimsByTip(ClaimType.claim_type_additional).forEach(System.out::println);
         System.out.println("-----------by tip weekly order date asc-----------------");
         clS.getClaimsByTipAsc(ClaimType.claim_type_weekly).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date desc-----------------");
