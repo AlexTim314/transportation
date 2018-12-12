@@ -228,13 +228,13 @@ public class TransportDepServiceImpl implements TransportDepService {
     }
 
     @Override
-    public Record getRecordByAppointment(Appointment appointment) {
-       List<AppointmentGroup> apg = appointmentGroupRep.findByAppointmentId(appointment.getId());
-       if (apg.isEmpty()) return null;
-       apg = appointmentGroupRep.findByRecordId(apg.get(0).getRecord().getId());
-       if (apg.isEmpty()) return null;
-       return apg.get(0).getRecord();
+    public List<AppointmentGroup> getAppointmentGroups(Appointment appointment) {
+        return appointmentGroupRep.findByAppointmentId(appointment.getId());
     }
 
+    @Override
+    public List<AppointmentGroup> getAppointmentGroups(Record record) {
+        return appointmentGroupRep.findByRecordId(record.getId());
+    }
 
 }
