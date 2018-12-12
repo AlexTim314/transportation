@@ -51,7 +51,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
  */
 @Controller
 public class WaybillFileDownloadController {
-    
+
     @Autowired
     private TransportDepService tdS;
 
@@ -68,18 +68,22 @@ public class WaybillFileDownloadController {
                     outputStream.write(message.getBytes());
                 };
             }
-            VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
+            
+            /*VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
+            
             switch (specialization) {
                 case Пассажирский:
-                case Легковой:                    
+                case Легковой:
+                    createWaybillForm6();
                     break;
                 case Грузовой:
                 case Спецтехника:
+                    createWaybillForm3();
                     break;
                 default:
                     break;
 
-            };
+            };*/
 
             String excelFilePath = "Waybill.xls"; //
             Waybill waybill = appointment.getWaybill();
@@ -193,34 +197,34 @@ public class WaybillFileDownloadController {
                     }
                 }
 
-                try (FileOutputStream outputStream = new FileOutputStream("Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls")) {
-                    workbook.write(outputStream);
-                    workbook.close();
+                File file = new File("Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls");
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                workbook.write(fileOutputStream);
+                workbook.close();
+
+                try {
+                    // get your file as InputStream
+                    response.setContentType("application/xls");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls\"");
+                    InputStream inputStream = new FileInputStream(file);
+                    return outputStream -> {
+                        //   workbook.write(outputStream);
+                        int nRead;
+                        byte[] data = new byte[1024];
+                        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                            System.out.println("Waybill downloading..");
+                            outputStream.write(data, 0, nRead);
+                        }
+                    };
+                } catch (IOException ex) {
+                    //log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
+                    throw new RuntimeException("IOError writing file to output stream");
                 }
 
             } catch (IOException | EncryptedDocumentException ex) {
                 ex.printStackTrace();
             }
 
-            String fileName = "Waybill.xls";
-
-            try {
-                // get your file as InputStream
-                response.setContentType("application/xls");
-                response.setHeader("Content-Disposition", "attachment; filename=\"Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls\"");
-                InputStream inputStream = new FileInputStream(new File(fileName));
-                return outputStream -> {
-                    int nRead;
-                    byte[] data = new byte[1024];
-                    while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                        System.out.println("Waybill downloading..");
-                        outputStream.write(data, 0, nRead);
-                    }
-                };
-            } catch (IOException ex) {
-                //log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
-                throw new RuntimeException("IOError writing file to output stream");
-            }
         }
         return null;
     }
@@ -233,6 +237,14 @@ public class WaybillFileDownloadController {
         Sheet s = workbook.getSheet(cellRef.getSheetName());
         Row r = s.getRow(cellRef.getRow());
         return r.getCell(cellRef.getCol());
+    }
+
+    private void createWaybillForm6() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void createWaybillForm3() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
