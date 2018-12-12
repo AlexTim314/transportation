@@ -61,16 +61,16 @@ public class Vehicle implements Serializable {
     
    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
-    private VehicleType vehicleType;
+    private VehicleModel vehicleModel;
 
-    public Vehicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, VehicleType vehicleType) {
+    public Vehicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, VehicleModel vehicleModel) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
         this.vacant = Boolean.TRUE;
         this.note = note;
         this.transportDep = transportDep;
-        this.vehicleType = vehicleType;
+        this.vehicleModel = vehicleModel;
 
     }
 }

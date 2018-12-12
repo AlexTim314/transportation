@@ -27,6 +27,7 @@ import org.ivc.transportation.entities.TaskList;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
@@ -153,24 +154,38 @@ public class TransportationApplication {
         VehicleType typeVech6 = new VehicleType("Грузовик", "Грузовой");
         VehicleType typeVech7 = new VehicleType("АГП", "Специальный");
         VehicleType typeVech8 = new VehicleType("Микроавтобус", "Пассажирский");
-        tdS.addTypeVechicle(typeVech1);
-        tdS.addTypeVechicle(typeVech2);
-        tdS.addTypeVechicle(typeVech3);
-        tdS.addTypeVechicle(typeVech4);
-        tdS.addTypeVechicle(typeVech5);
-        tdS.addTypeVechicle(typeVech6);
-        tdS.addTypeVechicle(typeVech7);
-        tdS.addTypeVechicle(typeVech8);
+        tdS.addVehicleType(typeVech1);
+        tdS.addVehicleType(typeVech2);
+        tdS.addVehicleType(typeVech3);
+        tdS.addVehicleType(typeVech4);
+        tdS.addVehicleType(typeVech5);
+        tdS.addVehicleType(typeVech6);
+        tdS.addVehicleType(typeVech7);
+        tdS.addVehicleType(typeVech8);
+        
+        
 
-        Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, typeVech1);
+        VehicleModel modelVech1 = new VehicleModel("ПАЗ123", typeVech1);
+        VehicleModel modelVech2 = new VehicleModel("КРАЗ123", typeVech2);
+        VehicleModel modelVech3 = new VehicleModel("ВАЗ123", typeVech3);
+        VehicleModel modelVech7 = new VehicleModel("УРАЛ123", typeVech7);
+        VehicleModel modelVech8 = new VehicleModel("ГАЗ123", typeVech8);
+        tdS.addVehicleModel(modelVech1);
+        tdS.addVehicleModel(modelVech2);
+        tdS.addVehicleModel(modelVech3);
+        tdS.addVehicleModel(modelVech7);
+        tdS.addVehicleModel(modelVech8);
+        
+
+        Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
         vechicle1.setVacant(Boolean.TRUE);
-        Vehicle vechicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, typeVech2);
+        Vehicle vechicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, modelVech2);
         vechicle2.setVacant(Boolean.TRUE);
-        Vehicle vechicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, typeVech8);
+        Vehicle vechicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, modelVech8);
         vechicle3.setVacant(Boolean.FALSE);
-        Vehicle vechicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, typeVech7);
+        Vehicle vechicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, modelVech7);
         vechicle4.setVacant(Boolean.TRUE);
-        Vehicle vechicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, typeVech3);
+        Vehicle vechicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, modelVech3);
         vechicle5.setVacant(Boolean.TRUE);
         tdS.addVechicle(vechicle1);
         tdS.addVechicle(vechicle2);
