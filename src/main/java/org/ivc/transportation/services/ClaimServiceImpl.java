@@ -11,14 +11,14 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
-import org.ivc.transportation.repositories.TypeVechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ivc.transportation.repositories.VehicleTypeRepository;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Autowired
     private RecordRepository recordRep;
     @Autowired
-    private TypeVechicleRepository typeVechicleRep;
+    private VehicleTypeRepository typeVechicleRep;
 
     @Override
     @Transactional
@@ -68,8 +68,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByTip(ClaimType t) {
-        return claimRep.findByTipOrderByClDateDesc(t);
+    public Collection<Claim> getClaimsByClType(ClaimType t) {
+        return claimRep.findByClTypeOrderByClDateDesc(t);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByTipAsc(ClaimType t) {
-        return claimRep.findByTipOrderByClDateAsc(t);
+    public Collection<Claim> getClaimsByClTypeAsc(ClaimType t) {
+        return claimRep.findByClTypeOrderByClDateAsc(t);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t) {
-        return claimRep.findByTipAndDepartmentIdOrderByClDateDesc(id, t);
+    public Collection<Claim> getClaimsByDepartmentAndClType(Long id, ClaimType t) {
+        return claimRep.findByClTypeAndDepartmentIdOrderByClDateDesc(id, t);
     }
 
     @Override
@@ -189,12 +189,12 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechicles() {
+    public Collection<VehicleType> getVehicleTypes() {
         return typeVechicleRep.findAll();
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s) {
+    public Collection<VehicleType> getVehicleTypesBySpicialization(String s) {
         return typeVechicleRep.findBySpecialization(s);
     }
 

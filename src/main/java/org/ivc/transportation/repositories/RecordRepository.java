@@ -33,5 +33,5 @@ public interface RecordRepository extends JpaRepository<Record, Long>{
    
    List<Record> deleteByClaimId(Long id);
    
-   List<Record> findByTypeVechicleId(Long id);
+   List<Record> findByVehicleTypeId(Long id);
 }

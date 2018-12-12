@@ -37,6 +37,20 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 }
                         );
             },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/claims/byUser/records/vehicleType')
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching VehicleTypes in records');
+                                    return $q.reject(decodeURI(errResponse));
+                                }
+                        );
+            },
 
             createClaim: function (claim) {
                 var str = document.getElementById("formRecord-id");

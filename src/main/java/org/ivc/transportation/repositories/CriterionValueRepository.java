@@ -17,11 +17,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CriterionValueRepository extends JpaRepository<CriterionValue, Long> {
 
-    List<CriterionValue> deleteByVechicleId(Long id);
+    List<CriterionValue> deleteByVehicleId(Long id);
 
     List<CriterionValue> findByCriterionId(Long id);
 
-    List<CriterionValue> findByVechicleId(Long id);
+    List<CriterionValue> findByVehicleId(Long id);
 
     List<CriterionValue> findByRecordId(Long id);
     

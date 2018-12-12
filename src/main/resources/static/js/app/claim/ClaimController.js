@@ -4,14 +4,16 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
     function ($scope, ClaimService) {
         var self = this;
         self.department = {id: null, name: '', addres: ''};
+        self.vehicleType = {type: '', specialization: ''};
         self.claim = {id: null, clDate: '', affirmation: '', tip: '', department: {name: ''}};
         self.record = {id: null, weekHash: '', type: '', datetime: '', dapartureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
-            purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clDate: ''}};
-        self.waypoint = {name: '', latitude: '', longitude: ''};
+            purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clDate: ''}, vehicleType: {specialization: ''}, waypoints: []};
+        self.waypoint = {name: '', latitude: '', longitude: ''}; 
         self.departments = [];
         self.claims = [];
         self.records = [];
         self.waypoints = [];
+        self.vehicleTypes = [];
 
 
         self.fetchClaims = function () {
@@ -59,8 +61,39 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                             }
                     );
         };
+        
+        self.fetchAllVehicleTypes = function () {
 
+            ClaimService.fetchVehicleTypes()
+                    .then(
+                            function (d) {
+                                self.vehicleTypes = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching VehicleType');
+                                alert(errResponse);
+                            }
+                    );
+        };
+        
+        
         self.fetchClaims();
+        self.fetchAllVehicleTypes();
+        
+//        self.fetchVehicleByTypes = function (vehType) {
+//
+//            ClaimService.fetchVehicleTypes(vehType)
+//                    .then(
+//                            function (d) {
+//                                self.vehicleTypes = d;
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while fetching VehicleType');
+//                                alert(errResponse);
+//                            }
+//                    );
+//        };
+
         
         self.createClaim = function (claim) {
            var dd = new Date().getDate();

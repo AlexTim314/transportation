@@ -75,19 +75,21 @@
                 <form action="#" method="POST">
                     <div class="custom-select form-item">
                         <label for="type">Тип транспорта</label>
-                        <select name="type-vehicle" ng-model="clCtrl.record.">
-                            <option value="1">Пассажирский</option>
-                            <option value="2">Легковой</option>
-                            <option value="3">Грузовой</option>
-                            <option value="4">Спецтехника</option>
+                        <select name="type-vehicle" ng-model="search">
+                            <option value="Пассажирский">Пассажирский</option>
+                            <option value="Легковой">Легковой</option>
+                            <option value="Грузовой">Грузовой</option>
+                            <option value="Спецтехника">Спецтехника</option>
                         </select>
                     </div>	
                     <div class="form-item" >
                         <label for="criterion">Вид техники</label>
-                        <select name="criterion" required>
+<!--                        <select name="criterion" ng-model="" ng-repeat="" required>
                             <option value="1">Самосвал</option>
                             <option value="2">Бульдозер</option>
-                        </select>	
+                        </select>	-->
+                        <select ng-options="vt as vt.specialization for vt in clCtrl.vehicleTypes track by vt.id | filter: search" ng-model="clCtrl.record.vehicleType">
+                        </select>
                     </div>	
                     <div class="form-item clearfix" >
                         <div class="left-block">

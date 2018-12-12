@@ -29,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"criterion", "record", "vechicle"})
-@EqualsAndHashCode(exclude = {"criterion", "record", "vechicle"})
+@ToString(exclude = {"criterion", "record", "vehicle"})
+@EqualsAndHashCode(exclude = {"criterion", "record", "vehicle"})
 public class CriterionValue implements Serializable {
 
     @Id
@@ -40,22 +40,19 @@ public class CriterionValue implements Serializable {
     @Column(nullable = false)
     private String crValue;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Record record;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
-    private Vechicle vechicle;
+    private Vehicle vehicle;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Criterion criterion;
 
-    public CriterionValue(String value, Record record, Vechicle vechicle, Criterion criterion) {
+    public CriterionValue(String value, Record record, Vehicle vehicle, Criterion criterion) {
         this.crValue = value;
         this.record = record;
-        this.vechicle = vechicle;
+        this.vehicle = vehicle;
         this.criterion = criterion;
 
     }

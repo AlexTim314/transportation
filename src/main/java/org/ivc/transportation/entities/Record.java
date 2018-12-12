@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
@@ -33,8 +35,8 @@ import org.ivc.transportation.config.trUtils.RecordStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"claim", "plan","typeVechicle"})
-@EqualsAndHashCode(exclude = {"claim", "plan","typeVechicle"})
+@ToString(exclude = {"claim", "plan","vehicleType","waypoints"})
+@EqualsAndHashCode(exclude = {"claim", "plan","vehicleType","waypoints"})
 public class Record implements Serializable {
 
     @Id
@@ -102,10 +104,13 @@ public class Record implements Serializable {
     
    
     @OneToOne(fetch = FetchType.EAGER)
-    private TypeVechicle typeVechicle;
+    private VehicleType vehicleType;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Waypoint> waypoints;
 
     public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, TypeVechicle typeVechicle) {
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, VehicleType vehicleType, Set<Waypoint> waypoints) {
 
         this.weekHash = weekHash;
         this.type = type;
@@ -122,7 +127,8 @@ public class Record implements Serializable {
         this.status = RecordStatus.record_status_created;
         this.description = description;
         this.claim = claim;
-        this.typeVechicle = typeVechicle;
+        this.vehicleType = vehicleType;
+        this.waypoints = waypoints;
 
     }
 

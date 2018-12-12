@@ -16,7 +16,7 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.AppointmentService;
@@ -38,15 +38,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AppointmentController {
-    
+
     @Autowired
     private AppointmentService appointServ;
+
+    @Autowired
+    private ClaimService claimService;
     
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private ClaimService claimService;
 
     /**
      * Метод возвращает пользователю все назначения по диапазону дат. Номер
@@ -61,15 +61,7 @@ public class AppointmentController {
      */
     @GetMapping("/appointments/byUser/{sD}/{eD}")
     public Collection<Appointment> getAppointmentsByUserAndDate(Principal principal, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
-        if (principal != null) { 
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
-            if (department == null) {
-                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }
-            return appointServ.getAppointmentByDate(sD, eD);
-        }
-        return null;
+        return appointServ.getAppointmentByDate(principal, sD, eD);
     }
 
     /**
@@ -378,14 +370,14 @@ public class AppointmentController {
      * @return список назначений
      */
     @PostMapping("/appointments/byUser/{sD}/{eD}/vechicle")
-    public Collection<Appointment> getAppointmentsByUserAndVechicleAndDate(Principal principal, @RequestBody Vechicle v, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
+    public Collection<Appointment> getAppointmentsByUserAndVechicleAndDate(Principal principal, @RequestBody Vehicle v, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return appointServ.getAppointmentByVechicleAndDate(v, eD, eD);
+            return appointServ.getAppointmentByVehicleAndDate(v, eD, eD);
         }
         return null;
     }
@@ -404,16 +396,16 @@ public class AppointmentController {
      * @return список назначений
      */
     @PostMapping("/appointments/byUser/{sD}/{eD}/{aps}/vechicle")
-    public Collection<Appointment> getAppointmentsByUserAndVechicleAndStatusAndDate(Principal principal, @RequestBody Vechicle v, @PathVariable("aps") AppointmentStatus aps, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
+    public Collection<Appointment> getAppointmentsByUserAndVechicleAndStatusAndDate(Principal principal, @RequestBody Vehicle v, @PathVariable("aps") AppointmentStatus aps, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return appointServ.getAppointmentByVechicleAndStatusAndDate(v, aps, eD, eD);
+            return appointServ.getAppointmentByVehicleAndStatusAndDate(v, aps, eD, eD);
         }
         return null;
     }
-    
+
 }

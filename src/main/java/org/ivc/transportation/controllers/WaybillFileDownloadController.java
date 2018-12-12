@@ -34,7 +34,7 @@ import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,7 +64,7 @@ public class WaybillFileDownloadController {
 
             String excelFilePath = "Waybill.xls"; //
             Waybill waybill = appointment.getWaybill();
-            Vechicle vechicle = appointment.getVechicle();            
+            Vehicle vechicle = appointment.getVehicle();            
             Driver driver = appointment.getDriver();
             Record record = appointment.getRecord();
             LocalDateTime dateTime = appointment.getDateTime();
