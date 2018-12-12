@@ -66,7 +66,7 @@ public class WaybillFileDownloadController {
             Waybill waybill = appointment.getWaybill();
             Vehicle vechicle = appointment.getVehicle();            
             Driver driver = appointment.getDriver();
-            Record record = appointment.getRecord();
+            Record record = appointment.getAppointmentGroup().getRecord();
             LocalDateTime dateTime = appointment.getDateTime();
 
             try {

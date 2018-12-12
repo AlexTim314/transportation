@@ -5,28 +5,8 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,21 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.AreaReference;
-import org.apache.poi.ss.util.CellReference;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
-import static org.ivc.transportation.config.trUtils.NamedCell.серия;
 
 /**
  *
@@ -65,8 +31,8 @@ import static org.ivc.transportation.config.trUtils.NamedCell.серия;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
-@ToString(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
+@EqualsAndHashCode(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
+@ToString(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
 public class Appointment implements Serializable {
 
     @Id
@@ -81,23 +47,19 @@ public class Appointment implements Serializable {
     @Column(nullable = false)
     private AppointmentStatus status;
 
-    @NonNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String note;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
-    private Record record;
+    private AppointmentGroup appointmentGroup;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
     
@@ -108,13 +70,10 @@ public class Appointment implements Serializable {
     private VehicleModel vehicleModel;
 
 
-    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vehicle vehicle) {
+    public Appointment(LocalDateTime dateTime, AppointmentGroup appointmentGroup) {
         this.dateTime = dateTime;
-        this.status = status;
-        this.note = note;
-        this.driver = driver;
-        this.record = record;
-        this.vehicle = vehicle;
+        this.status = AppointmentStatus.appointment_status_created;
+        this.appointmentGroup = appointmentGroup;
     }
 
 

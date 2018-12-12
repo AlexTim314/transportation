@@ -35,6 +35,8 @@ public class Department implements Serializable {
 
     @Column(length = 1024)
     private String addres;
+    
+    private String shortName;
 
     public Department(String name, String addres) {
         this.name = name;

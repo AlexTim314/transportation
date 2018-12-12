@@ -34,7 +34,6 @@ import org.ivc.transportation.entities.Waypoint;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
-import org.ivc.transportation.services.AppointmentService;
 
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.CriterionService;
@@ -95,9 +94,6 @@ public class TransportationApplication {
 
     @Autowired
     private CriterionService critServ;
-
-    @Autowired
-    private AppointmentService appointmentServ;
 
     @Autowired
     private WaybillService waybillService;
@@ -319,25 +315,25 @@ wayps2.add(waypoint4);
 //        System.out.println("-----------Record after-----------------");
 //        clS.getRecords().forEach(System.out::println);
 
-        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-1", rec4, driver1, vechicle1);
-        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-2", rec4, driver2, vechicle2);
-        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-3", rec4, driver3, vechicle3);
-        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-4", rec4, driver4, vechicle4);
-        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-5", rec4, driver5, vechicle5);
-        appointmentServ.addAppointment(ap1);
-        appointmentServ.addAppointment(ap2);
-        appointmentServ.addAppointment(ap3);
-        appointmentServ.addAppointment(ap4);
-        appointmentServ.addAppointment(ap5);
-        System.out.println("-----------###########################-----------------");
-        appointmentServ.getAppointmentByRecordAndStatus(rec4, AppointmentStatus.appointment_status_created).forEach(System.out::println);
-        System.out.println("-----------###########################-----------------");
-        LocalDateTime dateTimeStart = LocalDateTime.parse("2018-11-21T15:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        LocalDateTime dateTimeEnd = LocalDateTime.parse("2018-11-22T19:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        appointmentServ.getAppointmentByRecordAndStatusAndDate(rec4, AppointmentStatus.appointment_status_created, dateTimeStart, dateTimeEnd).forEach(System.out::println);
-        System.out.println("-----------###########################-----------------");
-        List<Record> rls = (List<Record>) clS.getRecordsByClaim(cl2.getId());
-        appointmentServ.getAppointmentByRecordsAndStatus(rls, AppointmentStatus.appointment_status_created).forEach(System.out::println);
+//        Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-1", rec4, driver1, vechicle1);
+//        Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-2", rec4, driver2, vechicle2);
+//        Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-3", rec4, driver3, vechicle3);
+//        Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-4", rec4, driver4, vechicle4);
+//        Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), AppointmentStatus.appointment_status_created, "APPOINTMENT-NOTE-5", rec4, driver5, vechicle5);
+//        appointmentServ.addAppointment(ap1);
+//        appointmentServ.addAppointment(ap2);
+//        appointmentServ.addAppointment(ap3);
+//        appointmentServ.addAppointment(ap4);
+//        appointmentServ.addAppointment(ap5);
+//        System.out.println("-----------###########################-----------------");
+//        appointmentServ.getAppointmentByRecordAndStatus(rec4, AppointmentStatus.appointment_status_created).forEach(System.out::println);
+//        System.out.println("-----------###########################-----------------");
+//        LocalDateTime dateTimeStart = LocalDateTime.parse("2018-11-21T15:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+//        LocalDateTime dateTimeEnd = LocalDateTime.parse("2018-11-22T19:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+//        appointmentServ.getAppointmentByRecordAndStatusAndDate(rec4, AppointmentStatus.appointment_status_created, dateTimeStart, dateTimeEnd).forEach(System.out::println);
+//        System.out.println("-----------###########################-----------------");
+//        List<Record> rls = (List<Record>) clS.getRecordsByClaim(cl2.getId());
+//        appointmentServ.getAppointmentByRecordsAndStatus(rls, AppointmentStatus.appointment_status_created).forEach(System.out::println);
 
         CriterionType crT1 = new CriterionType("л/с");
         CriterionType crT2 = new CriterionType("чел");
@@ -395,14 +391,14 @@ wayps2.add(waypoint4);
         waybillService.addWaybill(waybill2);
         waybillService.addWaybill(waybill3);
 
-        ap1.setWaybill(waybill1);
-        ap2.setWaybill(waybill2);
-        ap3.setWaybill(waybill3);
+//        ap1.setWaybill(waybill1);
+//        ap2.setWaybill(waybill2);
+//        ap3.setWaybill(waybill3);
 
         //ap1.createWaybill();
         //ap1.excel2pdf();
 
-        System.out.println("ap1:" + ap1.toString());
+//        System.out.println("ap1:" + ap1.toString());
 
     }
 
