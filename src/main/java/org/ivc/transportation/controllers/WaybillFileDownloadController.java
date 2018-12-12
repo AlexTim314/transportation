@@ -51,9 +51,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
  */
 @Controller
 public class WaybillFileDownloadController {
-
-    @Autowired
-    private UserRepository userRepository;
     
     @PostMapping("/waybilldownload")
     public StreamingResponseBody download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
@@ -68,6 +65,8 @@ public class WaybillFileDownloadController {
                     outputStream.write(message.getBytes());
                 };
             }
+            
+            appointment.getVehicleModel().getVehicleType();
 
             String excelFilePath = "Waybill.xls"; //
             Waybill waybill = appointment.getWaybill();
@@ -128,10 +127,12 @@ public class WaybillFileDownloadController {
                                     c.setCellValue("класс Пока не поддерживается.");
                                     break;
                                 case диспетчер:
+                                    //TODO: после добавления извлекать из waybill
                                     User loginedUser = (User) ((Authentication) principal).getPrincipal();
                                     c.setCellValue(loginedUser.getUsername());                                            
                                     break;
                                 case механик:
+                                    
                                     c.setCellValue(" механик Пока не поддерживается. Брать с формы?");
                                     break;
                                 case время_выезда_по_графику:
