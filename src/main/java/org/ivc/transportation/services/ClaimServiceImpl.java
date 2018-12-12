@@ -68,8 +68,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByTip(ClaimType t) {
-        return claimRep.findByTipOrderByClDateDesc(t);
+    public Collection<Claim> getClaimsByClType(ClaimType t) {
+        return claimRep.findByClTypeOrderByClDateDesc(t);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByTipAsc(ClaimType t) {
-        return claimRep.findByTipOrderByClDateAsc(t);
+    public Collection<Claim> getClaimsByClTypeAsc(ClaimType t) {
+        return claimRep.findByClTypeOrderByClDateAsc(t);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     @Transactional
-    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t) {
-        return claimRep.findByTipAndDepartmentIdOrderByClDateDesc(id, t);
+    public Collection<Claim> getClaimsByDepartmentAndClType(Long id, ClaimType t) {
+        return claimRep.findByClTypeAndDepartmentIdOrderByClDateDesc(id, t);
     }
 
     @Override
@@ -189,12 +189,12 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Collection<VehicleType> getTypeVechicles() {
+    public Collection<VehicleType> getVehicleTypes() {
         return typeVechicleRep.findAll();
     }
 
     @Override
-    public Collection<VehicleType> getTypeVechiclesBySpicialization(String s) {
+    public Collection<VehicleType> getVehicleTypesBySpicialization(String s) {
         return typeVechicleRep.findBySpecialization(s);
     }
 

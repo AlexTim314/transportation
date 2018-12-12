@@ -103,7 +103,6 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.submit = function () {
-            self.user.department = JSON.parse(self.user.department);
             if (self.user.userId === null) {
                 self.createUser(self.user);
             } else {

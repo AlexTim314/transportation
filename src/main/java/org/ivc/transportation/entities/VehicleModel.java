@@ -1,20 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
@@ -24,25 +23,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
-//@EqualsAndHashCode
-public class VehicleType implements Serializable {
+@ToString(exclude = {"vehicleType"})
+@EqualsAndHashCode(exclude = {"vehicleType"})
+public class VehicleModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(length = 1024)
-    private String type;
-    
-    @NonNull
-    @Column(length = 1024)
-    private String specialization;
-    
-     public VehicleType (String type, String specialization) {
-        this.type = type;
-        this.specialization = specialization;
+    private String ModelName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private VehicleType vehicleType;
+
+    public VehicleModel(String ModelName, VehicleType vehicleType) {
+        this.ModelName = ModelName;
+        this.vehicleType = vehicleType;
     }
-    
+
 }

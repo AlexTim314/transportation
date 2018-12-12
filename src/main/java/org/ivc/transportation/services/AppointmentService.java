@@ -1,5 +1,6 @@
 package org.ivc.transportation.services;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -27,15 +28,17 @@ public interface AppointmentService {
     
     public Collection<Appointment> getAppointmentByStatusAndDate(AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
+    public Collection<Appointment> getAppointmentByDate(Principal principal, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    
     public Collection<Appointment> getAppointmentByDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     public Collection<Appointment> getAppointmentByDriverAndDate(Driver d, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    public Collection<Appointment> getAppointmentByVechicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVehicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     public Collection<Appointment> getAppointmentByDriverAndStatusAndDate(Driver d, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vehicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVehicleAndStatusAndDate(Vehicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     public void updateAppointment(Appointment ap, Long id);
     

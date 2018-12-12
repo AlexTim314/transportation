@@ -30,9 +30,21 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
         self.addRowHandlers = function (clm) {
-            self.claim = clm;
-            self.fetchAllRecords(clm);
+            if(clm.isVisible === undefined){
+                clm.isVisible = true;
+            }else{
+                clm.isVisible = !clm.isVisible;
+            }
+            //self.claim = clm;
+            console.log('2 zapisi vniz');
+            console.log(clm);
+            console.log(clm.records);
+            console.log('===============');
             
+            if(clm.records === undefined){
+                self.fetchAllRecords(clm);
+//                clm.records = self.records;
+            }
         };
         
         self.fetchAllRecords = function (claim) {
@@ -40,7 +52,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             ClaimService.fetchAllRecords(claim)
                     .then(
                             function (d) {
-                                self.records = d;
+                                claim.records = d;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records');
@@ -50,7 +62,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
         self.fetchClaims();
-       // self.fetchAllRecords();
+      //  self.fetchAllRecords();
 
 
     }]);

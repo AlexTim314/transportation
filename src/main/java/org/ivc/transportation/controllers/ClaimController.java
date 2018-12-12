@@ -39,16 +39,16 @@ public class ClaimController {
     private UserRepository userRepository;
 
     /**
-     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°СЏРІРєРё РїРѕРґР°РЅРЅС‹Рµ РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµРј. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј.
+     * Метод возвращает заявки поданные подразделением. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением.
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param sD РЅР°С‡Р°Р»СЊРЅР°СЏ РґР°С‚Р°
-     * @param eD РєРѕРЅРµС‡РЅР°СЏ РґР°С‚Р°
-     * @param dr РґРёР°РїР°Р·РѕРЅ РґР°С‚
-     * @return РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё, РІРѕР·РІСЂР°С‰Р°РµС‚ null.
+     * @param principal данные пользователя
+     * @param sD начальная дата
+     * @param eD конечная дата
+     * @param dr диапазон дат
+     * @return При вызове без авторизации, возвращает null.
      */
     @GetMapping("/claims/byUser/{sD}/{eD}")
     public Collection<Claim> findClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
@@ -56,7 +56,7 @@ public class ClaimController {
         dr.StartDate = Date.valueOf(sD);
         dr.EndDate = Date.valueOf(eD);
         System.out.println(dr);
-        if (principal != null) { //РјРѕР¶РµС‚ Р»Рё principal Р±С‹С‚СЊ null РµСЃР»Рё РґРѕСЃС‚СѓРї С‚РѕР»СЊРєРѕ Р°РІС‚РѕСЂРёР·РѕРІР°РЅРЅС‹Р№?
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
@@ -70,13 +70,13 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р·Р°СЏРІРѕРє Р·Р°РґР°РЅРЅРѕРіРѕ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРµРґРїРѕР»Р°РіР°РµС‚СЃСЏ , С‡С‚Рѕ
-     * РґРѕСЃС‚СѓРї Рє СЌС‚РѕРјСѓ РјРµС‚РѕРґСѓ Р±СѓРґРµС‚ С‚РѕР»СЊРєРѕ Сѓ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°. РџРѕР»СЊР·РѕРІР°С‚РµР»СЏРј
-     * РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚СЃСЏ РјРµС‚РѕРґ getClaims(Principal principal).
+     * Метод для получения заявок заданного подразделения. Предполагается , что
+     * доступ к этому методу будет только у администратора. Пользователям
+     * предоставляется метод getClaims(Principal principal).
      *
-     * @param department РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ, Р·Р°СЏРІРєРё РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓСЋС‚СЃСЏ
-     * @param dr РґРёР°РїР°Р·РѕРЅ РґР°С‚
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
+     * @param department подразделение, заявки которого требуются
+     * @param dr диапазон дат
+     * @return список заявок подразделения
      */
     @PostMapping("/claims/byDepartment")
     public Collection<Claim> findClaimsByDepartment(@RequestBody Department department/*, @RequestBody DateRange dr*/) {
@@ -84,15 +84,33 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
+    
+    
+    
+    @GetMapping("/claims")
+    public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
+        if (principal != null) { 
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+
+            return claimService.getClaimsByDepartment(department.getId());
+        }
+        return null;
+    }
+    
+    
     /**
-     * РњРµС‚РѕРґ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РІСЃРµС… Р·Р°СЏРІРѕРє РІС‹Р±СЂР°РЅРЅРѕРіРѕ РїСЂРѕРјРµР¶СѓС‚РєР° РІСЂРµРјРµРЅРё.
-     * РџСЂРµРґРїРѕР»Р°РіР°РµС‚СЃСЏ , С‡С‚Рѕ РґРѕСЃС‚СѓРї Рє СЌС‚РѕРјСѓ РјРµС‚РѕРґСѓ Р±СѓРґРµС‚ С‚РѕР»СЊРєРѕ Сѓ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°.
-     * РџРѕР»СЊР·РѕРІР°С‚РµР»СЏРј РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚СЃСЏ РјРµС‚РѕРґ getClaims(Principal principal).
+     * Метод для получения всех заявок выбранного промежутка времени.
+     * Предполагается , что доступ к этому методу будет только у администратора.
+     * Пользователям предоставляется метод getClaims(Principal principal).
      *
-     * @param sD РЅР°С‡Р°Р»СЊРЅР°СЏ РґР°С‚Р°
-     * @param eD РєРѕРЅРµС‡РЅР°СЏ РґР°С‚Р°
-     * @param dr РґРёР°РїР°Р·РѕРЅ РґР°С‚
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє
+     * @param sD начальная дата
+     * @param eD конечная дата
+     * @param dr диапазон дат
+     * @return список заявок
      */
     @GetMapping("/claims/{sD}/{eD}")
     public Collection<Claim> findAllClaims(@PathVariable("sD") String sD, @PathVariable("eD") String eD) {
@@ -103,15 +121,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°СЏРІРєРё РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Рµ РїРѕ С‚РёРїСѓ. РќРѕРјРµСЂ
-     * РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё
-     * РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ
-     * NotSpecifiedDepartmentException СЃ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј.
+     * Метод возвращает заявки подразделения отфильтрованные по типу. Номер
+     * подразделения извлекается из данных авторизовавшегося пользователя. Если
+     * подразделение не указано, то будет вызвано исключение
+     * NotSpecifiedDepartmentException с соответствующим сообщением.
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param type С‚РёРї Р·Р°СЏРІРєРё
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param type тип заявки
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @GetMapping("/claims/byType/{type}")
     public Collection<Claim> findUserClaimsByType(Principal principal, @PathVariable("type") String type) {
@@ -123,21 +141,21 @@ public class ClaimController {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
             claimService.getClaimsByDepartment(department.getId()).forEach(System.out::println);
-            return claimService.getClaimsByDepartmentAndTip(department.getId(), ct);
+            return claimService.getClaimsByDepartmentAndClType(department.getId(), ct);
         }
         return null;
     }
 
     /**
-     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°СЏРІРєРё РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Рµ РїРѕ СЃРѕСЃС‚РѕСЏРЅРёСЋ. РќРѕРјРµСЂ
-     * РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё
-     * РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ
-     * NotSpecifiedDepartmentException СЃ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј.
+     * Метод возвращает заявки подразделения отфильтрованные по состоянию. Номер
+     * подразделения извлекается из данных авторизовавшегося пользователя. Если
+     * подразделение не указано, то будет вызвано исключение
+     * NotSpecifiedDepartmentException с соответствующим сообщением.
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param affirm СЃРѕСЃС‚РѕСЏРЅРёРµ Р·Р°СЏРІРєРё (РїРѕРґС‚РІРµСЂР¶РґРµРЅР° РёР»Рё РЅРµРїРѕРґС‚РІРµСЂР¶РґРµРЅР°)
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param affirm состояние заявки (подтверждена или неподтверждена)
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @GetMapping("/claims/byAffirmation/{affirm}")
     public Collection<Claim> findClaimsByAffirmation(Principal principal, @PathVariable("affirm") String affirm) {
@@ -155,15 +173,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РґРѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ Р·Р°СЏРІРєСѓ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод добавляет новую заявку подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param claim СѓРґР°Р»СЏРµРјР°СЏ Р·Р°СЏРІРєР°
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param claim удаляемая заявка
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @PostMapping("/claims/byUser/create")
     public Collection<Claim> addClaim(Principal principal, @RequestBody Claim claim) {
@@ -181,15 +199,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ СѓРґР°Р»СЏРµС‚ Р·Р°СЏРІРєСѓ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РёР·РІР»РµРєР°РµС‚СЃСЏ РёР·
-     * РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ
-     * Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод удаляет заявку подразделения. Номер подразделения извлекается из
+     * данных авторизовавшегося пользователя. Если подразделение не указано, то
+     * будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param claim СѓРґР°Р»СЏРµРјР°СЏ Р·Р°СЏРІРєР°
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param claim удаляемая заявка
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @DeleteMapping("/claims/byUser/delete/")
     public Collection<Claim> delClaimByUser(Principal principal, @RequestBody Claim claim) {
@@ -206,15 +224,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РёР·РјРµРЅСЏРµС‚ Р·Р°СЏРІРєСѓ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ РёР·РІР»РµРєР°РµС‚СЃСЏ РёР·
-     * РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ
-     * Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод изменяет заявку подразделения. Номер подразделения извлекается из
+     * данных авторизовавшегося пользователя. Если подразделение не указано, то
+     * будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param claim РёР·РјРµРЅСЏРµРјР°СЏ Р·Р°СЏРІРєР°
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param claim изменяемая заявка
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @PutMapping("/claims/byUser/update")
     public Collection<Claim> updateClaimByUser(Principal principal, @RequestBody Claim claim) {
@@ -231,10 +249,10 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РїРёСЃРё РґР»СЏ РєР°Р¶РґРѕР№ Р·Р°СЏРІРєРё.
+     * Метод возвращает записи для каждой заявки.
      *
-     * @param claim Р·Р°СЏРІРєР°
-     * @return СЃРїРёСЃРѕРє Р·Р°РїРёСЃРµР№
+     * @param claim заявка
+     * @return список записей
      */
     @PostMapping("/claims/byUser/records")
     public Collection<Record> findRecrodsByClaim(@RequestBody Claim claim) {
@@ -242,17 +260,23 @@ public class ClaimController {
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
+//        @GetMapping("/claims/byUser/records")
+//    public Collection<Record> findRecrodsByClaim(Principal principal) {
+//       // System.out.println(claim);
+//     //   claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
+//        return claimService.get
+//    }
 
     /**
-     * РњРµС‚РѕРґ РґРѕР±Р°РІР»СЏРµС‚ РЅРѕРІСѓСЋ Р·Р°РїРёСЃСЊ РІ Р·Р°СЏРІРєСѓ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод добавляет новую запись в заявку подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param record Р·Р°РїРёСЃСЊ
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @PostMapping("/claims/byUser/records/create")
     public Collection<Record> addRecord(Principal principal, @RequestBody Record record) {
@@ -269,15 +293,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»СЏРµС‚ Р·Р°РїРёСЃСЊ РІ Р·Р°СЏРІРєРµ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод обновляет запись в заявке подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param record Р·Р°РїРёСЃСЊ
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @PutMapping("/claims/byUser/records/update")
     public Collection<Record> updateRecord(Principal principal, @RequestBody Record record) {
@@ -294,15 +318,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ СѓРґР°Р»СЏРµС‚ Р·Р°РїРёСЃСЊ РІ Р·Р°СЏРІРєРµ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод удаляет запись в заявке подразделения. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param record Р·Р°РїРёСЃСЊ
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param record запись
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @DeleteMapping("/claims/byUser/records/delete")
     public Collection<Record> delRecord(Principal principal, @RequestBody Record record) {
@@ -320,15 +344,15 @@ public class ClaimController {
     }
 
     /**
-     * РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє С‚РёРїРѕРІ С‚СЂР°РЅРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ. РќРѕРјРµСЂ РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ
-     * РёР·РІР»РµРєР°РµС‚СЃСЏ РёР· РґР°РЅРЅС‹С… Р°РІС‚РѕСЂРёР·РѕРІР°РІС€РµРіРѕСЃСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. Р•СЃР»Рё РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
-     * РЅРµ СѓРєР°Р·Р°РЅРѕ, С‚Рѕ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅРѕ РёСЃРєР»СЋС‡РµРЅРёРµ NotSpecifiedDepartmentException СЃ
-     * СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј СЃРѕРѕР±С‰РµРЅРёРµРј
+     * Метод возвращает список типов транпортных средств. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением
      *
-     * @param principal РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-     * @param spec СЃРїРµС†РёР°Р»РёР·Р°С†РёСЏ С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ
-     * @return СЃРїРёСЃРѕРє Р·Р°СЏРІРѕРє РїРѕРґСЂР°Р·РґРµР»РµРЅРёСЏ. РџСЂРё РІС‹Р·РѕРІРµ Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё,
-     * РІРѕР·РІСЂР°С‰Р°РµС‚ null
+     * @param principal данные пользователя
+     * @param spec специализация транспортных средств
+     * @return список заявок подразделения. При вызове без авторизации,
+     * возвращает null
      */
     @GetMapping("/claims/byUser/records/{spec}")
     public Collection<VehicleType> getTypeVechicleBySpecialization(Principal principal, @PathVariable("spec") String spec) {
@@ -338,7 +362,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return claimService.getTypeVechiclesBySpicialization(spec);
+            return claimService.getVehicleTypesBySpicialization(spec);
         }
         return null;
     }

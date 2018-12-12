@@ -1,16 +1,23 @@
 package org.ivc.transportation.services;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.ivc.transportation.config.trUtils;
+import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.AppointmentRepository;
+import org.ivc.transportation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +31,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRep;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -56,6 +66,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public Collection<Appointment> getAppointmentByDate(Principal principal, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            return appointmentRep.findByDateTimeBetweenOrderByDateTimeDesc(dateTimeStart, dateTimeEnd);
+        }
+        return null;
+    }
+
+    @Override
     public Collection<Appointment> getAppointmentByDate(LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
         return appointmentRep.findByDateTimeBetweenOrderByDateTimeDesc(dateTimeStart, dateTimeEnd);
     }
@@ -66,8 +89,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Collection<Appointment> getAppointmentByVechicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
-        return appointmentRep.findByVechicleIdAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), dateTimeStart, dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVehicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        return appointmentRep.findByVehicleIdAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), dateTimeStart, dateTimeEnd);
     }
 
     @Override
@@ -76,8 +99,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vehicle v, trUtils.AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
-        return appointmentRep.findByVechicleIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), aps, dateTimeStart, dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVehicleAndStatusAndDate(Vehicle v, trUtils.AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+        return appointmentRep.findByVehicleIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), aps, dateTimeStart, dateTimeEnd);
     }
 
     @Override

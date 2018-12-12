@@ -66,8 +66,8 @@ public class Driver implements Serializable {
     private String note;
 
 //    @JsonIgnore
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
 
     public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String note,TransportDep transportDep) {

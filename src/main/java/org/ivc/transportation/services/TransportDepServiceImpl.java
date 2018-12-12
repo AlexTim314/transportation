@@ -11,13 +11,15 @@ import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.repositories.VehicleTypeRepository;
+import org.ivc.transportation.repositories.VehicleRepository;
 
 /**
  *
@@ -32,9 +34,11 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Autowired
     private DriverRepository driverRep;
     @Autowired
-    private VehicleRepository vechicleRep;
+    private VehicleRepository vehicleRep;
     @Autowired
     private VehicleTypeRepository typeVechicleRep;
+    @Autowired
+    private VehicleModelRepository vehicleModelRep;
 
     @Override
     @Transactional
@@ -113,75 +117,98 @@ public class TransportDepServiceImpl implements TransportDepService {
     @Override
     @Transactional
     public void addVechicle(Vehicle d) {
-        this.vechicleRep.save(d);
+        this.vehicleRep.save(d);
     }
 
     @Override
     @Transactional
     public void updateVechicle(Vehicle d, Long id) {
         d.setId(id);
-        vechicleRep.save(d);
+        vehicleRep.save(d);
     }
 
     @Override
     @Transactional
     public void removeVechicle(Long id) {
-        vechicleRep.deleteById(id);
+        vehicleRep.deleteById(id);
     }
 
     @Override
     @Transactional
     public Collection<Vehicle> getVechicles() {
-        return vechicleRep.findAll();
+        return vehicleRep.findAll();
     }
 
     @Override
     @Transactional
     public Collection<Vehicle> findVechiclesByVacant(Boolean d) {
-        return vechicleRep.findByVacant(d);
+        return vehicleRep.findByVacant(d);
     }
 
     @Override
     @Transactional
     public Collection<Vehicle> getVechiclesByTransportDepId(Long id) {
-        return vechicleRep.findByTransportDepId(id);
+        return vehicleRep.findByTransportDepId(id);
     }
 
     @Override
     @Transactional
     public Optional getVechicleById(Long id) {
-        return vechicleRep.findById(id);
+        return vehicleRep.findById(id);
     }
 
     @Override
-    public void addTypeVechicle(VehicleType d) {
+    public void addVehicleType(VehicleType d) {
         this.typeVechicleRep.save(d);
     }
     
     @Override
-    public void updateTypeVechicle(VehicleType d, Long id) {
+    public void updateVehicleType(VehicleType d, Long id) {
          d.setId(id);
         typeVechicleRep.save(d);
     }
 
     @Override
-    public void removeTypeVechicle(Long id) {
+    public void removeVehicleType(Long id) {
         typeVechicleRep.deleteById(id);
     }
 
     @Override
-    public Collection<VehicleType> getTypeVechicles() {
+    public Collection<VehicleType> getVehicleTypes() {
         return typeVechicleRep.findAll();
     }
 
+
     @Override
-    public Collection<Vehicle> getVechiclesByTypeVechicleId(Long id) {
-        return vechicleRep.findByTypeVechicleId(id);
+    public Collection<VehicleType> getVehicleTypesBySpecialization(String s) {
+       return typeVechicleRep.findBySpecialization(s);
     }
 
     @Override
-    public Collection<VehicleType> getTypeVechiclesBySpicialization(String s) {
-       return typeVechicleRep.findBySpecialization(s);
+    public void addVehicleModel(VehicleModel m) {
+        vehicleModelRep.save(m);
     }
+
+    @Override
+    public void updateVehicleModel(VehicleModel m, Long id) {
+        m.setId(id);
+        vehicleModelRep.save(m);
+    }
+
+    @Override
+    public void removeVehicleModel(Long id) {
+        vehicleModelRep.deleteById(id);
+    }
+
+    @Override
+    public Collection<VehicleModel> getVehicleModels() {
+        return vehicleModelRep.findAll();
+    }
+
+    @Override
+    public Collection<Vehicle> getVehiclesByVehicleModelId(Long id) {
+        return vehicleRep.findByVehicleModelId(id);
+    }
+
 
 }

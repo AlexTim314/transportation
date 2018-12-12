@@ -38,15 +38,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AppointmentController {
-    
+
     @Autowired
     private AppointmentService appointServ;
+
+    @Autowired
+    private ClaimService claimService;
     
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private ClaimService claimService;
 
     /**
      * Метод возвращает пользователю все назначения по диапазону дат. Номер
@@ -54,22 +54,14 @@ public class AppointmentController {
      * подразделение не указано, то будет вызвано исключение
      * NotSpecifiedDepartmentException с соответствующим сообщением.
      *
-     * @param principal данные ползователя
+     * @param principal данные пользователя
      * @param sD начальная дата фильтрации
      * @param eD конечная дата фильтрации
      * @return список назначений
      */
     @GetMapping("/appointments/byUser/{sD}/{eD}")
     public Collection<Appointment> getAppointmentsByUserAndDate(Principal principal, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
-        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
-            if (department == null) {
-                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }
-            return appointServ.getAppointmentByDate(sD, eD);
-        }
-        return null;
+        return appointServ.getAppointmentByDate(principal, sD, eD);
     }
 
     /**
@@ -385,7 +377,7 @@ public class AppointmentController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return appointServ.getAppointmentByVechicleAndDate(v, eD, eD);
+            return appointServ.getAppointmentByVehicleAndDate(v, eD, eD);
         }
         return null;
     }
@@ -411,9 +403,9 @@ public class AppointmentController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return appointServ.getAppointmentByVechicleAndStatusAndDate(v, aps, eD, eD);
+            return appointServ.getAppointmentByVehicleAndStatusAndDate(v, aps, eD, eD);
         }
         return null;
     }
-    
+
 }

@@ -40,11 +40,11 @@ public interface ClaimService {
 
     public Collection<Claim> getClaimsByAffirmationAsc(Boolean b);
 
-    public Collection<Claim> getClaimsByTip(ClaimType t);
+    public Collection<Claim> getClaimsByClType(ClaimType t);
 
-    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t);
+    public Collection<Claim> getClaimsByDepartmentAndClType(Long id, ClaimType t);
 
-    public Collection<Claim> getClaimsByTipAsc(ClaimType t);
+    public Collection<Claim> getClaimsByClTypeAsc(ClaimType t);
 
     public Collection<Claim> getClaimsByDepAndAffirmation(Long id, Boolean a);
 
@@ -72,7 +72,7 @@ public interface ClaimService {
 
     public Collection<Record> getRecordsByHash(String d);
 
-    public Collection<VehicleType> getTypeVechicles();
+    public Collection<VehicleType> getVehicleTypes();
 
-    public Collection<VehicleType> getTypeVechiclesBySpicialization(String s);
+    public Collection<VehicleType> getVehicleTypesBySpicialization(String s);
 }

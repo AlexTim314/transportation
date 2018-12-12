@@ -29,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"transportDep","typeVechicle"})
-@EqualsAndHashCode(exclude = {"transportDep","typeVechicle"})
+@ToString(exclude = {"transportDep","vehicleType"})
+@EqualsAndHashCode(exclude = {"transportDep","vehicleType"})
 public class Vehicle implements Serializable {
 
     @Id
@@ -55,22 +55,22 @@ public class Vehicle implements Serializable {
     
     private String note;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    private VehicleType VehicleType;
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
+    private VehicleModel vehicleModel;
 
-    public Vehicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, VehicleType typeVechicle) {
+    public Vehicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, VehicleModel vehicleModel) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
         this.vacant = Boolean.TRUE;
         this.note = note;
         this.transportDep = transportDep;
-        this.VehicleType = typeVechicle;
+        this.vehicleModel = vehicleModel;
 
     }
 }

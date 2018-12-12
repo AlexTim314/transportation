@@ -21,7 +21,7 @@ edit_open=function() {
  var str = document.getElementById("form-add");
  str.style.display="block";
  var str1 = document.getElementById("btn-add-edit");
- str1.innerHTML="�?зменить";
+ str1.innerHTML="Изменить";
 }
 
 formRecord_close=function(){
@@ -108,21 +108,21 @@ close_sidenav=function(){
 
 
 
-var tab = document.getElementById("tbl1");
-var elements = tab.getElementsByTagName('tr');
-var i;
-
-for (i = 1; i < elements.length; i++) {
-  elements[i].addEventListener("click", function() {
-  
-    var panel = this.nextElementSibling;
-    if (panel.classList.contains("hiddenRow")){
-       panel.classList.toggle("collapseRow");
-      this.classList.toggle("activeRow");   
-      } 
-   
-  });
-}
+//var tab = document.getElementById("tbl1");
+//var elements = tab.getElementsByTagName('tr');
+//var i;
+//
+//for (i = 1; i < elements.length; i++) {
+//  elements[i].addEventListener("click", function() {
+//  
+//    var panel = this.nextElementSibling;
+//    if (panel.classList.contains("hiddenRow")){
+//       panel.classList.toggle("collapseRow");
+//      this.classList.toggle("activeRow");   
+//      } 
+//   
+//  });
+//}
 
 var tab1 = document.getElementById("tbl2");
 var elements1 = tab1.getElementsByTagName('tr');
