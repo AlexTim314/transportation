@@ -41,7 +41,7 @@ public class Appointment implements Serializable {
 
     @NonNull
     @Column(nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime appDateTime;
 
     @NonNull
     @Column(nullable = false)
@@ -68,8 +68,8 @@ public class Appointment implements Serializable {
     private VehicleModel vehicleModel;
 
 
-    public Appointment(LocalDateTime dateTime, TransportDep transportDep, VehicleModel vehicleModel) {
-        this.dateTime = dateTime;
+    public Appointment(LocalDateTime appDateTime, TransportDep transportDep, VehicleModel vehicleModel) {
+        this.appDateTime = appDateTime;
         this.status = AppointmentStatus.appointment_status_created;
         this.transportDep = transportDep;
         this.vehicleModel = vehicleModel;

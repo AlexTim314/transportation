@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -88,6 +89,12 @@ public class Waybill implements Serializable {
     //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
     private TaskList taskList;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private AppUser Dispatcher;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private AppUser Mechanic;
 
     public Waybill(String series, String number, Float departureOdometer
             //, Float returnOdometer
