@@ -22,30 +22,34 @@ import lombok.ToString;
 
 /**
  *
- * @author Nesterov Yuriy
+ * @author first
  */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"criterionType"})
-@EqualsAndHashCode(exclude = {"criterionType"})
-public class Criterion implements Serializable {
+@ToString(exclude = {"record", "appointment"})
+@EqualsAndHashCode(exclude = {"record", "appointment"})
+public class AppointmentGroup implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
     @Column(length = 1024)
-    private String name;
+    private String note;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
-    private CriterionType criterionType;
+    private Record record;
 
-    public Criterion(String name, CriterionType criterionType) {
-        this.name = name;
-        this.criterionType = criterionType;
+    @NonNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Appointment appointment;
+
+    public AppointmentGroup(Record record, Appointment appointment) {
+        this.record = record;
+        this.appointment = appointment;
     }
+
 }

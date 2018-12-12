@@ -64,6 +64,10 @@ public class Driver implements Serializable {
     private Boolean vacant;
     
     private String note;
+    
+    private String driverClass;
+    
+    private String driverLicense;
 
 //    @JsonIgnore
    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

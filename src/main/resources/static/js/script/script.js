@@ -87,7 +87,7 @@ open_tab2=function(){
 open_sidenav=function(){
     var str=document.getElementById("sidenav-id");
     var str1=document.getElementById("claim-create");
-    var str2=document.getElementById("sb-v-id");
+  //  var str2=document.getElementById("sb-v-id");
     str.style.width = '17%';
     str1.style.width = '82%';
     

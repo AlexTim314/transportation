@@ -5,7 +5,6 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -32,10 +31,10 @@ import org.ivc.transportation.config.trUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
-@ToString(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
+@EqualsAndHashCode(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
+@ToString(exclude = {"appointmentGroup", "vehicle", "driver", "transportDep", "vehicleModel"})
 public class Appointment implements Serializable {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -48,43 +47,34 @@ public class Appointment implements Serializable {
     @Column(nullable = false)
     private AppointmentStatus status;
 
-    @NonNull
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String note;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Record record;
-
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Vehicle vehicle;
 
-  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
     
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
     
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     private VehicleModel vehicleModel;
 
 
-    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vehicle vehicle) {
+    public Appointment(LocalDateTime dateTime, TransportDep transportDep, VehicleModel vehicleModel) {
         this.dateTime = dateTime;
-        this.status = status;
-        this.note = note;
-        this.driver = driver;
-        this.record = record;
-        this.vehicle = vehicle;
+        this.status = AppointmentStatus.appointment_status_created;
+        this.transportDep = transportDep;
+        this.vehicleModel = vehicleModel;
     }
-
-
+    
 /*
     public void excel2pdf() {
 

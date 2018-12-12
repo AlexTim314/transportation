@@ -15,9 +15,7 @@ public class trUtils {
 
     public static enum ClaimType {
         claim_type_weekly,
-        claim_type_spec,
-        claim_type_car,
-        claim_type_urgent
+        claim_type_additional
     }
 
     public static enum RecordStatus {
@@ -34,12 +32,19 @@ public class trUtils {
         appointment_status_canceled
     }
     
+    
+    public static enum VehicleSpecialization {
+        Пассажирский,
+        Легковой,
+        Грузовой,
+        Спецтехника;
+    }
+    
     public static class DateRange {
         public Date StartDate;
         public Date EndDate;
         
-        public DateRange() {
-            
+        public DateRange() {            
         }
     }
     

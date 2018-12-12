@@ -191,6 +191,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+            claim.setAffirmation(Boolean.FALSE);
             claim.setDepartment(department);
             claimService.addClaim(claim);
             return claimService.getClaimsByDepartment(department.getId());
@@ -354,15 +355,15 @@ public class ClaimController {
      * @return список заявок подразделения. При вызове без авторизации,
      * возвращает null
      */
-    @GetMapping("/claims/byUser/records/{spec}")
-    public Collection<VehicleType> getTypeVechicleBySpecialization(Principal principal, @PathVariable("spec") String spec) {
+    @GetMapping("/claims/byUser/records/vehicleType")
+    public Collection<VehicleType> getTypeVehicleBySpecialization(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return claimService.getVehicleTypesBySpicialization(spec);
+            return claimService.getVehicleTypes();
         }
         return null;
     }
