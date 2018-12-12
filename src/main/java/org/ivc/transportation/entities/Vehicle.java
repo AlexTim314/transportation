@@ -31,7 +31,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(exclude = {"transportDep","typeVechicle"})
 @EqualsAndHashCode(exclude = {"transportDep","typeVechicle"})
-public class Vechicle implements Serializable {
+public class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,16 +61,16 @@ public class Vechicle implements Serializable {
     
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    private TypeVechicle typeVechicle;
+    private VehicleType VehicleType;
 
-    public Vechicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, TypeVechicle typeVechicle) {
+    public Vehicle(String number, Double fuelRemnant, Double odometr, String note, TransportDep transportDep, VehicleType typeVechicle) {
         this.number = number;
         this.fuelRemnant = fuelRemnant;
         this.odometr = odometr;
         this.vacant = Boolean.TRUE;
         this.note = note;
         this.transportDep = transportDep;
-        this.typeVechicle = typeVechicle;
+        this.VehicleType = typeVechicle;
 
     }
 }

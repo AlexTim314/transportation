@@ -11,14 +11,14 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
-import org.ivc.transportation.repositories.TypeVechicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ivc.transportation.repositories.VehicleTypeRepository;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Autowired
     private RecordRepository recordRep;
     @Autowired
-    private TypeVechicleRepository typeVechicleRep;
+    private VehicleTypeRepository typeVechicleRep;
 
     @Override
     @Transactional
@@ -189,12 +189,12 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechicles() {
+    public Collection<VehicleType> getTypeVechicles() {
         return typeVechicleRep.findAll();
     }
 
     @Override
-    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s) {
+    public Collection<VehicleType> getTypeVechiclesBySpicialization(String s) {
         return typeVechicleRep.findBySpecialization(s);
     }
 

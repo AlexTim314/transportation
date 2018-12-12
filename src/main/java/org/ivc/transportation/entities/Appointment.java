@@ -95,13 +95,13 @@ public class Appointment implements Serializable {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    private Vechicle vechicle;
+    private Vehicle vechicle;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     private Waybill waybill;
 
-    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vechicle vechicle) {
+    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vehicle vechicle) {
         this.dateTime = dateTime;
         this.status = status;
         this.note = note;

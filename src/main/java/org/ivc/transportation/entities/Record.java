@@ -92,7 +92,6 @@ public class Record implements Serializable {
     @Column(length = 1024)
     private String description;
 
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     private Claim claim;
 
@@ -102,10 +101,10 @@ public class Record implements Serializable {
     
    
     @OneToOne(fetch = FetchType.EAGER)
-    private TypeVechicle typeVechicle;
+    private VehicleType typeVechicle;
 
     public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, TypeVechicle typeVechicle) {
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, VehicleType typeVechicle) {
 
         this.weekHash = weekHash;
         this.type = type;

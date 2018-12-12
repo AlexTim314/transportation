@@ -7,7 +7,7 @@ import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Vehicle;
 
 /**
  *
@@ -31,11 +31,11 @@ public interface AppointmentService {
 
     public Collection<Appointment> getAppointmentByDriverAndDate(Driver d, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    public Collection<Appointment> getAppointmentByVechicleAndDate(Vechicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVechicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     public Collection<Appointment> getAppointmentByDriverAndStatusAndDate(Driver d, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vechicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vehicle v, AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     public void updateAppointment(Appointment ap, Long id);
     

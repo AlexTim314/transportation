@@ -28,7 +28,7 @@ import lombok.ToString;
 @NoArgsConstructor
 //@ToString
 //@EqualsAndHashCode
-public class TypeVechicle implements Serializable {
+public class VehicleType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +42,7 @@ public class TypeVechicle implements Serializable {
     @Column(length = 1024)
     private String specialization;
     
-     public TypeVechicle (String type, String specialization) {
+     public VehicleType (String type, String specialization) {
         this.type = type;
         this.specialization = specialization;
     }

@@ -8,7 +8,7 @@ import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Collection<Appointment> getAppointmentByVechicleAndDate(Vechicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+    public Collection<Appointment> getAppointmentByVechicleAndDate(Vehicle v, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
         return appointmentRep.findByVechicleIdAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), dateTimeStart, dateTimeEnd);
     }
 
@@ -76,7 +76,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vechicle v, trUtils.AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
+    public Collection<Appointment> getAppointmentByVechicleAndStatusAndDate(Vehicle v, trUtils.AppointmentStatus aps, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd) {
         return appointmentRep.findByVechicleIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(v.getId(), aps, dateTimeStart, dateTimeEnd);
     }
 

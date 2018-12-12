@@ -46,13 +46,13 @@ public class CriterionValue implements Serializable {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    private Vechicle vechicle;
+    private Vehicle vechicle;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Criterion criterion;
 
-    public CriterionValue(String value, Record record, Vechicle vechicle, Criterion criterion) {
+    public CriterionValue(String value, Record record, Vehicle vechicle, Criterion criterion) {
         this.crValue = value;
         this.record = record;
         this.vechicle = vechicle;

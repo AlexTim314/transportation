@@ -16,7 +16,7 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.AppointmentService;
@@ -378,7 +378,7 @@ public class AppointmentController {
      * @return список назначений
      */
     @PostMapping("/appointments/byUser/{sD}/{eD}/vechicle")
-    public Collection<Appointment> getAppointmentsByUserAndVechicleAndDate(Principal principal, @RequestBody Vechicle v, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
+    public Collection<Appointment> getAppointmentsByUserAndVechicleAndDate(Principal principal, @RequestBody Vehicle v, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
@@ -404,7 +404,7 @@ public class AppointmentController {
      * @return список назначений
      */
     @PostMapping("/appointments/byUser/{sD}/{eD}/{aps}/vechicle")
-    public Collection<Appointment> getAppointmentsByUserAndVechicleAndStatusAndDate(Principal principal, @RequestBody Vechicle v, @PathVariable("aps") AppointmentStatus aps, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
+    public Collection<Appointment> getAppointmentsByUserAndVechicleAndStatusAndDate(Principal principal, @RequestBody Vehicle v, @PathVariable("aps") AppointmentStatus aps, @PathVariable("sD") LocalDateTime sD, @PathVariable("eD") LocalDateTime eD) {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();

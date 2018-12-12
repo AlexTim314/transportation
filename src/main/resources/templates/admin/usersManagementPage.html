@@ -32,7 +32,12 @@
                 <tr>
                     <td>Department</td>
                     <td>
-                        <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
+<!--                        <input list="departments" ng-model="ctrl.user.department">
+                        <datalist id="departments">
+                            <option value="">NONE</option>
+                            <option ng-repeat="dep in ctrl.departments" value="{{dep.name}}" ng-value="{{dep}}"></option>
+                        </datalist>-->
+                        <select onchange="true" ng-options="dep as dep.name for dep in ctrl.departments" ng-model="ctrl.user.department">
                             <option value="">NONE</option>
                         </select>
                     </td>

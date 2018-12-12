@@ -25,8 +25,8 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TaskList;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.TypeVechicle;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
@@ -43,11 +43,8 @@ import org.ivc.transportation.services.WaybillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -133,14 +130,14 @@ public class TransportationApplication {
         tdS.addDriver(driver4);
         tdS.addDriver(driver5);
 
-        TypeVechicle typeVech1 = new TypeVechicle("Автобус", "Пассажирский");
-        TypeVechicle typeVech2 = new TypeVechicle("Самосвал", "Грузовой");
-        TypeVechicle typeVech3 = new TypeVechicle("Легковой", "Легковой");
-        TypeVechicle typeVech4 = new TypeVechicle("Автокран", "Специальный");
-        TypeVechicle typeVech5 = new TypeVechicle("Фура", "Грузовой");
-        TypeVechicle typeVech6 = new TypeVechicle("Грузовик", "Грузовой");
-        TypeVechicle typeVech7 = new TypeVechicle("АГП", "Специальный");
-        TypeVechicle typeVech8 = new TypeVechicle("Микроавтобус", "Пассажирский");
+        VehicleType typeVech1 = new VehicleType("Автобус", "Пассажирский");
+        VehicleType typeVech2 = new VehicleType("Самосвал", "Грузовой");
+        VehicleType typeVech3 = new VehicleType("Легковой", "Легковой");
+        VehicleType typeVech4 = new VehicleType("Автокран", "Специальный");
+        VehicleType typeVech5 = new VehicleType("Фура", "Грузовой");
+        VehicleType typeVech6 = new VehicleType("Грузовик", "Грузовой");
+        VehicleType typeVech7 = new VehicleType("АГП", "Специальный");
+        VehicleType typeVech8 = new VehicleType("Микроавтобус", "Пассажирский");
         tdS.addTypeVechicle(typeVech1);
         tdS.addTypeVechicle(typeVech2);
         tdS.addTypeVechicle(typeVech3);
@@ -150,15 +147,15 @@ public class TransportationApplication {
         tdS.addTypeVechicle(typeVech7);
         tdS.addTypeVechicle(typeVech8);
 
-        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2, typeVech1);
+        Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, typeVech1);
         vechicle1.setVacant(Boolean.TRUE);
-        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1, typeVech2);
+        Vehicle vechicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, typeVech2);
         vechicle2.setVacant(Boolean.TRUE);
-        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2, typeVech8);
+        Vehicle vechicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, typeVech8);
         vechicle3.setVacant(Boolean.FALSE);
-        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1, typeVech7);
+        Vehicle vechicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, typeVech7);
         vechicle4.setVacant(Boolean.TRUE);
-        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2, typeVech3);
+        Vehicle vechicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, typeVech3);
         vechicle5.setVacant(Boolean.TRUE);
         tdS.addVechicle(vechicle1);
         tdS.addVechicle(vechicle2);
@@ -349,9 +346,9 @@ public class TransportationApplication {
         critServ.removeCriterionType(crT3.getId());
 
         TaskList taskList = null;//new TaskList();
-        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "�?справено", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "�?справено", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "�?справно", "Здоров", "Замечаний нет", taskList);
         waybillService.addWaybill(waybill1);
         waybillService.addWaybill(waybill2);
         waybillService.addWaybill(waybill3);
