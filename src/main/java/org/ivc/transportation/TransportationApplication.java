@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.config.trUtils.AppointmentStatus;
 import org.ivc.transportation.entities.AppRole;
@@ -29,6 +30,7 @@ import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.Waybill;
+import org.ivc.transportation.entities.Waypoint;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.UserRepository;
@@ -40,6 +42,7 @@ import org.ivc.transportation.services.DepartmentService;
 import org.ivc.transportation.services.PlanService;
 import org.ivc.transportation.services.TransportDepService;
 import org.ivc.transportation.services.WaybillService;
+import org.ivc.transportation.services.WaypointService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -98,6 +101,9 @@ public class TransportationApplication {
 
     @Autowired
     private WaybillService waybillService;
+    
+    @Autowired
+    private WaypointService waypointService;
 
     @PostConstruct
     @Transactional
@@ -128,7 +134,14 @@ public class TransportationApplication {
         userRepository.saveAndFlush(admin);
         userRepository.saveAndFlush(user);
 
-
+Waypoint waypoint1 = new Waypoint("ЦИ-4", 45.617189, 63.319406);
+Waypoint waypoint2 = new Waypoint("Пл. 10", 45.622546, 63.317654);
+Waypoint waypoint3 = new Waypoint("Пл. 18", 45.907923, 63.332956);
+Waypoint waypoint4 = new Waypoint("Пл. 31", 45.992120, 63.571223);
+waypointService.addWaypoint(waypoint1);
+waypointService.addWaypoint(waypoint2);
+waypointService.addWaypoint(waypoint3);
+waypointService.addWaypoint(waypoint4);
 
         Driver driver1 = new Driver("fname1", "name1", "sname1", new Date(0), "address1", "phone1", "", transportDep1);
         driver1.setVacant(Boolean.TRUE);
@@ -149,10 +162,10 @@ public class TransportationApplication {
         VehicleType typeVech1 = new VehicleType("Автобус", "Пассажирский");
         VehicleType typeVech2 = new VehicleType("Самосвал", "Грузовой");
         VehicleType typeVech3 = new VehicleType("Легковой", "Легковой");
-        VehicleType typeVech4 = new VehicleType("Автокран", "Специальный");
+        VehicleType typeVech4 = new VehicleType("Автокран", "Спецтехника");
         VehicleType typeVech5 = new VehicleType("Фура", "Грузовой");
         VehicleType typeVech6 = new VehicleType("Грузовик", "Грузовой");
-        VehicleType typeVech7 = new VehicleType("АГП", "Специальный");
+        VehicleType typeVech7 = new VehicleType("АГП", "Спецтехника");
         VehicleType typeVech8 = new VehicleType("Микроавтобус", "Пассажирский");
         tdS.addVehicleType(typeVech1);
         tdS.addVehicleType(typeVech2);
@@ -199,11 +212,11 @@ public class TransportationApplication {
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
-        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_spec, dep1);
+        Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_additional, dep1);
         cl3.setAffirmation(Boolean.TRUE);
-        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_car, dep2);
+        Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_additional, dep2);
         cl4.setAffirmation(Boolean.FALSE);
-        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_urgent, dep1);
+        Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_weekly, dep1);
         cl5.setAffirmation(Boolean.FALSE);
         clS.addClaim(cl1);
         clS.addClaim(cl2);
@@ -213,15 +226,22 @@ public class TransportationApplication {
 
         String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
 
-        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null);
+Set<Waypoint> wayps1 = new HashSet<Waypoint>();
+wayps1.add(waypoint1);
+wayps1.add(waypoint3);
+Set<Waypoint> wayps2 = new HashSet<Waypoint>();
+wayps2.add(waypoint2);
+wayps2.add(waypoint4);
+        
+        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null,wayps1);
         rec1.setStatus(RecordStatus.record_status_created);
-        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null);
+        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null,wayps2);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null,wayps1);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null,wayps2);
         rec4.setStatus(RecordStatus.record_status_inprogress);
-        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null);
+        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null,wayps1);
         rec5.setStatus(RecordStatus.record_status_completed);
         clS.addRecord(rec1);
         clS.addRecord(rec2);
@@ -229,6 +249,7 @@ public class TransportationApplication {
         clS.addRecord(rec4);
         clS.addRecord(rec5);
 
+        
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
@@ -244,7 +265,7 @@ public class TransportationApplication {
         System.out.println("-----------order by date desc-----------------");
         clS.getAllClaimsSortByDate().forEach(System.out::println);
         System.out.println("-----------by tip car order date desc-----------------");
-        clS.getClaimsByClType(ClaimType.claim_type_car).forEach(System.out::println);
+        clS.getClaimsByClType(ClaimType.claim_type_additional).forEach(System.out::println);
         System.out.println("-----------by tip weekly order date asc-----------------");
         clS.getClaimsByClTypeAsc(ClaimType.claim_type_weekly).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date desc-----------------");

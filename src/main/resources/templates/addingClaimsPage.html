@@ -31,7 +31,7 @@
 
     </head>
     <body ng-app="Transportation" >
-        <div class="wrapper">
+        <div class="wrapper"ng-controller="ClaimController as clCtrl" >
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
                 <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
@@ -58,15 +58,16 @@
                 </div>
             </form>
             <!--Record Form --> 
-            <div class="formRecord" id="formRecord-id">
+            <div class="formRecord" id="formRecord-id" >
                 <i class="fas fa-times i-close" onclick="formRecord_close()"></i>
                 <label for="type-claim">Тип заявки</label>
-                <select name="type-claim">
-                    <option value="1">Еженедельная</option>
-                    <option value="2">Дополнительная</option>
+                <select name="type-claim" ng-model="clCtrl.claim.tip">
+                    <option value="">---Выберите---</option>
+                    <option value="claim_type_weekly">Еженедельная</option>
+                    <option value="claim_type_additional">Дополнительная</option>
                 </select>
                 <input type="file" name="post-file" multiple accept="image/*">		
-                <button class="btn delete">Создать</button>
+                <button class="btn delete" ng-click="clCtrl.createClaim(clCtrl.claim)" >Создать</button>
             </div>
             <!----------------------------------------------ADD-FORM------------------->
             <div class="menu-new-claim" id="form-add">
@@ -74,19 +75,21 @@
                 <form action="#" method="POST">
                     <div class="custom-select form-item">
                         <label for="type">Тип транспорта</label>
-                        <select name="type">
-                            <option value="1">Пассажирский</option>
-                            <option value="2">Легковой</option>
-                            <option value="3">Грузовой</option>
-                            <option value="4">Спецтехника</option>
+                        <select name="type-vehicle" ng-model="search">
+                            <option value="Пассажирский">Пассажирский</option>
+                            <option value="Легковой">Легковой</option>
+                            <option value="Грузовой">Грузовой</option>
+                            <option value="Спецтехника">Спецтехника</option>
                         </select>
                     </div>	
                     <div class="form-item" >
                         <label for="criterion">Вид техники</label>
-                        <select name="criterion" required>
+<!--                        <select name="criterion" ng-model="" ng-repeat="" required>
                             <option value="1">Самосвал</option>
                             <option value="2">Бульдозер</option>
-                        </select>	
+                        </select>	-->
+                        <select ng-options="vt as vt.specialization for vt in clCtrl.vehicleTypes track by vt.id | filter: search" ng-model="clCtrl.record.vehicleType">
+                        </select>
                     </div>	
                     <div class="form-item clearfix" >
                         <div class="left-block">
@@ -141,7 +144,7 @@
                     </ul>-->
 
 
-            <div class="main clearfix" ng-controller="ClaimController as ctrl" >
+            <div class="main clearfix"  >
                 <div class="header clearfix">
                     <!--Logo -->
                     <div class="logo">
@@ -149,7 +152,7 @@
                     <!--Text header -->
 
                     <h1>Структурное подразделение</h1>
-                    <h3>{{ctrl.claim.department.name}}</h3>
+                    <h3>{{clCtrl.claim.department.name}}</h3>
                     <!--Navigation -->	
 
                     <nav class="nav-horizontal">
@@ -243,7 +246,7 @@
                                 <th>Заявки</th>
                             </tr>
                             <tbody>
-                                <tr ng-repeat-start="claim in ctrl.claims" style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)">                                
+                                <tr ng-repeat-start="claim in clCtrl.claims" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
                                     <td>
                                         <label class="custom-checkbox">
                                             <input type="checkbox" >1
@@ -280,7 +283,7 @@
                                                 <td>{{record.purpose}}
                                                     <button class="btn-hidden btn delete"><i class="fas fa-trash-alt" ></i>Удалить</button>
                                                 </td>
-                                                <td>Пл.10-Пл.23</td>
+                                                <td>Waypoints</td>
 
                                                 <td>
                                                     <button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>  			
@@ -329,7 +332,7 @@
                                     <th>Заявки</th>
                                     <th>Статус</th>
                                 </tr>
-                                <tr ng-repeat="claim in ctrl.claims" ng-click="ctrl.addRowHandlers(claim)" style = "cursor: pointer">                        
+                                <tr ng-repeat="claim in clCtrl.claims" ng-click="clCtrl.addRowHandlers(claim)" style = "cursor: pointer">                        
                                     <td>№ {{claim.id}} от {{claim.clDate}}</td>
                                     <td><span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span></td>
                                 </tr>

@@ -15,9 +15,7 @@ public class trUtils {
 
     public static enum ClaimType {
         claim_type_weekly,
-        claim_type_spec,
-        claim_type_car,
-        claim_type_urgent
+        claim_type_additional
     }
 
     public static enum RecordStatus {
