@@ -6,6 +6,7 @@
 package org.ivc.transportation.config;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -32,12 +33,19 @@ public class trUtils {
         appointment_status_canceled
     }
     
+    
+    public static enum VehicleSpecialization {
+        Пассажирский,
+        Легковой,
+        Грузовой,
+        Спецтехника;
+    }
+    
     public static class DateRange {
         public Date StartDate;
         public Date EndDate;
         
-        public DateRange() {
-            
+        public DateRange() {            
         }
     }
     

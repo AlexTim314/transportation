@@ -25,14 +25,19 @@
                     <td>Username:</td>
                     <td><input type="text" ng-disabled="ctrl.user.userId !== null" ng-model="ctrl.user.userName" size="16"/></td>
                 </tr>
-                <tr ng-show="ctrl.user.userId===null">
+                <tr ng-show="ctrl.user.userId === null">
                     <td>Password:</td>
                     <td><input type='password' name='password' ng-model="ctrl.user.password"/></td>
                 </tr>
                 <tr>
                     <td>Department</td>
                     <td>
-                        <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
+<!--                        <input list="departments" ng-model="ctrl.user.department">
+                        <datalist id="departments">
+                            <option value="">NONE</option>
+                            <option ng-repeat="dep in ctrl.departments" value="{{dep.name}}" ng-value="{{dep}}"></option>
+                        </datalist>-->
+                        <select onchange="true" ng-options="dep as dep.name for dep in ctrl.departments" ng-model="ctrl.user.department">
                             <option value="">NONE</option>
                         </select>
                     </td>
@@ -59,7 +64,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td><button ng-click="ctrl.test()">test</button></td>
                     <td></td>
                     <td></td>
                     <td><button type="button" ng-click="ctrl.reset()" class="delete-button">reset</button></td>
@@ -69,7 +74,7 @@
                 </tr>
             </table>
         </form>
-        <br/>
+        <br/>        
         <table border="1">
             <tr>
                 <th>Username</th>

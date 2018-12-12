@@ -16,6 +16,7 @@ import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.WaypointService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
