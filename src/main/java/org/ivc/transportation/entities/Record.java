@@ -33,8 +33,8 @@ import org.ivc.transportation.config.trUtils.RecordStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"claim", "plan","typeVechicle"})
-@EqualsAndHashCode(exclude = {"claim", "plan","typeVechicle"})
+@ToString(exclude = {"claim", "plan","vehicleType"})
+@EqualsAndHashCode(exclude = {"claim", "plan","vehicleType"})
 public class Record implements Serializable {
 
     @Id
@@ -102,10 +102,10 @@ public class Record implements Serializable {
     
    
     @OneToOne(fetch = FetchType.EAGER)
-    private TypeVechicle typeVechicle;
+    private VehicleType vehicleType;
 
     public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, TypeVechicle typeVechicle) {
+            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, VehicleType vehicleType) {
 
         this.weekHash = weekHash;
         this.type = type;
@@ -122,7 +122,7 @@ public class Record implements Serializable {
         this.status = RecordStatus.record_status_created;
         this.description = description;
         this.claim = claim;
-        this.typeVechicle = typeVechicle;
+        this.vehicleType = vehicleType;
 
     }
 

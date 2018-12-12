@@ -13,8 +13,8 @@ import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.TypeVechicle;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.entities.Vehicle;
 
 /**
  *
@@ -40,11 +40,11 @@ public interface ClaimService {
 
     public Collection<Claim> getClaimsByAffirmationAsc(Boolean b);
 
-    public Collection<Claim> getClaimsByTip(ClaimType t);
+    public Collection<Claim> getClaimsByClType(ClaimType t);
 
-    public Collection<Claim> getClaimsByDepartmentAndTip(Long id, ClaimType t);
+    public Collection<Claim> getClaimsByDepartmentAndClType(Long id, ClaimType t);
 
-    public Collection<Claim> getClaimsByTipAsc(ClaimType t);
+    public Collection<Claim> getClaimsByClTypeAsc(ClaimType t);
 
     public Collection<Claim> getClaimsByDepAndAffirmation(Long id, Boolean a);
 
@@ -72,7 +72,7 @@ public interface ClaimService {
 
     public Collection<Record> getRecordsByHash(String d);
 
-    public Collection<TypeVechicle> getTypeVechicles();
+    public Collection<VehicleType> getVehicleTypes();
 
-    public Collection<TypeVechicle> getTypeVechiclesBySpicialization(String s);
+    public Collection<VehicleType> getVehicleTypesBySpicialization(String s);
 }

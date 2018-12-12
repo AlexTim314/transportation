@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,15 +17,15 @@ import lombok.ToString;
 
 /**
  *
- * @author Nesterov Yuriy
+ * @author first
  */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"criterionType"})
-@EqualsAndHashCode(exclude = {"criterionType"})
-public class Criterion implements Serializable {
+@ToString(exclude = {"vehicleType"})
+@EqualsAndHashCode(exclude = {"vehicleType"})
+public class VehicleModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,14 +33,14 @@ public class Criterion implements Serializable {
 
     @NonNull
     @Column(length = 1024)
-    private String name;
+    private String ModelName;
 
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
-    private CriterionType criterionType;
+    private VehicleType vehicleType;
 
-    public Criterion(String name, CriterionType criterionType) {
-        this.name = name;
-        this.criterionType = criterionType;
+    public VehicleModel(String ModelName, VehicleType vehicleType) {
+        this.ModelName = ModelName;
+        this.vehicleType = vehicleType;
     }
+
 }

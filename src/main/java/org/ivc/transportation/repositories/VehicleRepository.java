@@ -5,19 +5,21 @@
  */
 package org.ivc.transportation.repositories;
 
-
 import java.util.List;
-import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author first
+ * @author Nesterov Yuriy
  */
 @Repository
-public interface TypeVechicleRepository extends JpaRepository<TypeVechicle ,Long> {
-    
-    List<TypeVechicle> findBySpecialization(String s);
-    
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+
+    List<Vehicle> findByTransportDepId(Long id);
+
+    List<Vehicle> findByVacant(Boolean d);
+
+    List<Vehicle> findByVehicleModelId(Long id);
 }

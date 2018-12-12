@@ -28,10 +28,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByDriverIdAndDateTimeBetweenOrderByDateTimeDesc(Long id, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    List<Appointment> findByVechicleIdAndDateTimeBetweenOrderByDateTimeDesc(Long id, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    List<Appointment> findByVehicleIdAndDateTimeBetweenOrderByDateTimeDesc(Long id, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
     List<Appointment> findByDriverIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(Long id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
-    List<Appointment> findByVechicleIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(Long id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
+    List<Appointment> findByVehicleIdAndStatusAndDateTimeBetweenOrderByDateTimeDesc(Long id, AppointmentStatus status, LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd);
 
 }

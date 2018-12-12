@@ -32,8 +32,8 @@ import org.ivc.transportation.config.trUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"record", "vechicle", "driver"})
-@ToString(exclude = {"record", "vechicle", "driver"})
+@EqualsAndHashCode(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
+@ToString(exclude = {"record", "vehicle", "driver", "transportDep", "vehicleModel"})
 public class Appointment implements Serializable {
 
     @Id
@@ -52,29 +52,36 @@ public class Appointment implements Serializable {
     @Column(nullable = false)
     private String note;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Record record;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Vechicle vechicle;
+  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Vehicle vehicle;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+  //  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER)
     private Waybill waybill;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TransportDep transportDep;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private VehicleModel vehicleModel;
 
-    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vechicle vechicle) {
+
+    public Appointment(LocalDateTime dateTime, AppointmentStatus status, String note, Record record, Driver driver, Vehicle vehicle) {
         this.dateTime = dateTime;
         this.status = status;
         this.note = note;
         this.driver = driver;
         this.record = record;
-        this.vechicle = vechicle;
+        this.vehicle = vehicle;
     }
 
 

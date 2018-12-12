@@ -53,8 +53,8 @@ public class Work extends Task implements Serializable {
     @NonNull
     private Double endOdometer;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+  // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER)
     private Waypoint waypoint;
 
     public Work(Date beginTime, Date endTime, Double beginOdometer, Double endOdometer, Waypoint waypoint) {

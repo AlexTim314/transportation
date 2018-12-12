@@ -25,8 +25,9 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TaskList;
 import org.ivc.transportation.entities.TransportDep;
-import org.ivc.transportation.entities.TypeVechicle;
-import org.ivc.transportation.entities.Vechicle;
+import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
@@ -103,16 +104,31 @@ public class TransportationApplication {
     public void init() {
         AppRole adminRole = new AppRole("ROLE_ADMIN");
         AppRole userRole = new AppRole("ROLE_USER");
-
-        AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
-        AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
-        userRepository.saveAndFlush(admin);
-        userRepository.saveAndFlush(user);
-
+        
         TransportDep transportDep1 = new TransportDep("TransportDep1", "dAdr1", "dphone1");
         TransportDep transportDep2 = new TransportDep("TransportDep2", "dAdr2", "dphone2");
         tdS.addTransportDep(transportDep1);
         tdS.addTransportDep(transportDep2);
+        
+        Department dep1 = new Department("NAME-1", "ADDRES-1");
+        Department dep2 = new Department("NAME-2", "ADDRES-2");
+        Department dep3 = new Department("NAME-3", "ADDRES-3");
+        Department dep4 = new Department("NAME-4", "ADDRES-4");
+        Department dep5 = new Department("NAME-5", "ADDRES-5");
+        depS.saveDepartment(dep1);
+        depS.saveDepartment(dep2);
+        depS.saveDepartment(dep3);
+        depS.saveDepartment(dep4);
+        depS.saveDepartment(dep5);
+
+        AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
+        AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
+        admin.setDepartment(dep2);
+        admin.setTransportDep(transportDep1);
+        userRepository.saveAndFlush(admin);
+        userRepository.saveAndFlush(user);
+
+
 
         Driver driver1 = new Driver("fname1", "name1", "sname1", new Date(0), "address1", "phone1", "", transportDep1);
         driver1.setVacant(Boolean.TRUE);
@@ -130,32 +146,46 @@ public class TransportationApplication {
         tdS.addDriver(driver4);
         tdS.addDriver(driver5);
 
-        TypeVechicle typeVech1 = new TypeVechicle("Автобус", "Пассажирский");
-        TypeVechicle typeVech2 = new TypeVechicle("Самосвал", "Грузовой");
-        TypeVechicle typeVech3 = new TypeVechicle("Легковой", "Легковой");
-        TypeVechicle typeVech4 = new TypeVechicle("Автокран", "Специальный");
-        TypeVechicle typeVech5 = new TypeVechicle("Фура", "Грузовой");
-        TypeVechicle typeVech6 = new TypeVechicle("Грузовик", "Грузовой");
-        TypeVechicle typeVech7 = new TypeVechicle("АГП", "Специальный");
-        TypeVechicle typeVech8 = new TypeVechicle("Микроавтобус", "Пассажирский");
-        tdS.addTypeVechicle(typeVech1);
-        tdS.addTypeVechicle(typeVech2);
-        tdS.addTypeVechicle(typeVech3);
-        tdS.addTypeVechicle(typeVech4);
-        tdS.addTypeVechicle(typeVech5);
-        tdS.addTypeVechicle(typeVech6);
-        tdS.addTypeVechicle(typeVech7);
-        tdS.addTypeVechicle(typeVech8);
+        VehicleType typeVech1 = new VehicleType("Автобус", "Пассажирский");
+        VehicleType typeVech2 = new VehicleType("Самосвал", "Грузовой");
+        VehicleType typeVech3 = new VehicleType("Легковой", "Легковой");
+        VehicleType typeVech4 = new VehicleType("Автокран", "Специальный");
+        VehicleType typeVech5 = new VehicleType("Фура", "Грузовой");
+        VehicleType typeVech6 = new VehicleType("Грузовик", "Грузовой");
+        VehicleType typeVech7 = new VehicleType("АГП", "Специальный");
+        VehicleType typeVech8 = new VehicleType("Микроавтобус", "Пассажирский");
+        tdS.addVehicleType(typeVech1);
+        tdS.addVehicleType(typeVech2);
+        tdS.addVehicleType(typeVech3);
+        tdS.addVehicleType(typeVech4);
+        tdS.addVehicleType(typeVech5);
+        tdS.addVehicleType(typeVech6);
+        tdS.addVehicleType(typeVech7);
+        tdS.addVehicleType(typeVech8);
+        
+        
 
-        Vechicle vechicle1 = new Vechicle("123", 36.0, 1234.2, "", transportDep2, typeVech1);
+        VehicleModel modelVech1 = new VehicleModel("ПАЗ123", typeVech1);
+        VehicleModel modelVech2 = new VehicleModel("КРАЗ123", typeVech2);
+        VehicleModel modelVech3 = new VehicleModel("ВАЗ123", typeVech3);
+        VehicleModel modelVech7 = new VehicleModel("УРАЛ123", typeVech7);
+        VehicleModel modelVech8 = new VehicleModel("ГАЗ123", typeVech8);
+        tdS.addVehicleModel(modelVech1);
+        tdS.addVehicleModel(modelVech2);
+        tdS.addVehicleModel(modelVech3);
+        tdS.addVehicleModel(modelVech7);
+        tdS.addVehicleModel(modelVech8);
+        
+
+        Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
         vechicle1.setVacant(Boolean.TRUE);
-        Vechicle vechicle2 = new Vechicle("456", 45.8, 123544.5, "", transportDep1, typeVech2);
+        Vehicle vechicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, modelVech2);
         vechicle2.setVacant(Boolean.TRUE);
-        Vechicle vechicle3 = new Vechicle("521", 33.2, 453454.2, "На ремонте", transportDep2, typeVech8);
+        Vehicle vechicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, modelVech8);
         vechicle3.setVacant(Boolean.FALSE);
-        Vechicle vechicle4 = new Vechicle("054", 86.2, 154543.0, "", transportDep1, typeVech7);
+        Vehicle vechicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, modelVech7);
         vechicle4.setVacant(Boolean.TRUE);
-        Vechicle vechicle5 = new Vechicle("007", 56.7, 145774.8, "", transportDep2, typeVech3);
+        Vehicle vechicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, modelVech3);
         vechicle5.setVacant(Boolean.TRUE);
         tdS.addVechicle(vechicle1);
         tdS.addVechicle(vechicle2);
@@ -163,18 +193,9 @@ public class TransportationApplication {
         tdS.addVechicle(vechicle4);
         tdS.addVechicle(vechicle5);
 
-        Department dep1 = new Department("NAME-1", "ADDRES-1");
-        Department dep2 = new Department("NAME-2", "ADDRES-2");
-        Department dep3 = new Department("NAME-3", "ADDRES-3");
-        Department dep4 = new Department("NAME-4", "ADDRES-4");
-        Department dep5 = new Department("NAME-5", "ADDRES-5");
-        depS.saveDepartment(dep1);
-        depS.saveDepartment(dep2);
-        depS.saveDepartment(dep3);
-        depS.saveDepartment(dep4);
-        depS.saveDepartment(dep5);
+        
 
-        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep1);
+        Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl1.setAffirmation(Boolean.FALSE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
@@ -196,9 +217,9 @@ public class TransportationApplication {
         rec1.setStatus(RecordStatus.record_status_created);
         Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl1, null);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl2, null);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null);
         rec4.setStatus(RecordStatus.record_status_inprogress);
         Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null);
         rec5.setStatus(RecordStatus.record_status_completed);
@@ -223,9 +244,9 @@ public class TransportationApplication {
         System.out.println("-----------order by date desc-----------------");
         clS.getAllClaimsSortByDate().forEach(System.out::println);
         System.out.println("-----------by tip car order date desc-----------------");
-        clS.getClaimsByTip(ClaimType.claim_type_car).forEach(System.out::println);
+        clS.getClaimsByClType(ClaimType.claim_type_car).forEach(System.out::println);
         System.out.println("-----------by tip weekly order date asc-----------------");
-        clS.getClaimsByTipAsc(ClaimType.claim_type_weekly).forEach(System.out::println);
+        clS.getClaimsByClTypeAsc(ClaimType.claim_type_weekly).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date desc-----------------");
         clS.getClaimsByAffirmation(Boolean.TRUE).forEach(System.out::println);
         System.out.println("-----------by affirmation true order date asc-----------------");

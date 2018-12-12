@@ -24,7 +24,14 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
             },
 
             fetchAllRecords: function (claim) {
-                console.log(claim);
+                
+//              var panel = this.nextElementSibling;
+//             if (panel.classList.contains("hiddenRow")){
+//                 panel.classList.toggle("collapseRow");
+//                 this.classList.toggle("activeRow");   
+//                 
+//                } 
+              //  console.log(claim);
                 return $http.post('/transportation/claims/byUser/records',
                         JSON.stringify(claim), {headers: self.headers})
                         .then(

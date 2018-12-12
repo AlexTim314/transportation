@@ -9,7 +9,7 @@ import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentExc
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.TypeVechicle;
+import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
@@ -83,6 +83,24 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
+    
+    
+    
+    @GetMapping("/claims")
+    public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
+        if (principal != null) { 
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+
+            return claimService.getClaimsByDepartment(department.getId());
+        }
+        return null;
+    }
+    
+    
     /**
      * Метод для получения всех заявок выбранного промежутка времени.
      * Предполагается , что доступ к этому методу будет только у администратора.
@@ -122,7 +140,7 @@ public class ClaimController {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
             claimService.getClaimsByDepartment(department.getId()).forEach(System.out::println);
-            return claimService.getClaimsByDepartmentAndTip(department.getId(), ct);
+            return claimService.getClaimsByDepartmentAndClType(department.getId(), ct);
         }
         return null;
     }
@@ -241,6 +259,12 @@ public class ClaimController {
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
+//        @GetMapping("/claims/byUser/records")
+//    public Collection<Record> findRecrodsByClaim(Principal principal) {
+//       // System.out.println(claim);
+//     //   claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
+//        return claimService.get
+//    }
 
     /**
      * Метод добавляет новую запись в заявку подразделения. Номер подразделения
@@ -330,14 +354,14 @@ public class ClaimController {
      * возвращает null
      */
     @GetMapping("/claims/byUser/records/{spec}")
-    public Collection<TypeVechicle> getTypeVechicleBySpecialization(Principal principal, @PathVariable("spec") String spec) {
+    public Collection<VehicleType> getTypeVechicleBySpecialization(Principal principal, @PathVariable("spec") String spec) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return claimService.getTypeVechiclesBySpicialization(spec);
+            return claimService.getVehicleTypesBySpicialization(spec);
         }
         return null;
     }
