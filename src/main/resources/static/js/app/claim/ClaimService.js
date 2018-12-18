@@ -13,6 +13,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                 return $http.get('/transportation/claims/byUser/' + startDate + '/' + endDate)
                         .then(
                                 function (response) {
+                                    console.log('fetching claims');
+                                    console.log(response.data);
                                     return response.data;
 
                                 },
@@ -28,6 +30,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                         JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
+                                    console.log('fetching records');
+                                    console.log(response.data);
                                     return response.data;
 
                                 },
@@ -42,6 +46,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                 return $http.get('/transportation/claims/byUser/records/vehicleType')
                         .then(
                                 function (response) {
+                                    console.log('fetching vechicletypes');
                                     return response.data;
 
                                 },
@@ -56,6 +61,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                 return $http.get('/transportation/claims/byUser/records/waypoints')
                         .then(
                                 function (response) {
+                                    console.log('fetching waypoints');
                                     return response.data;
 
                                 },
@@ -73,6 +79,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                         JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
+                                    console.log('Create Claim');
+                                    console.log(response.data);
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -88,6 +96,8 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                         JSON.stringify(record), {headers: self.headers})
                         .then(
                                 function (response) {
+                                    console.log('Create Record');
+                                    console.log(response.data);
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -111,7 +121,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
 //            },
 
             updateRecord: function (record) {
-                return $http.put('/transportation/claims/byUser/records/update/',
+                return $http.put('/transportation/claims/byUser/records/update',
                         JSON.stringify(record), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -126,7 +136,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
 
             deleteClaim: function (claim) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/claims/byUser/delete/',
+                    url: '/transportation/claims/byUser/delete',
                     data: JSON.stringify(claim),
                     headers: self.headers
                 }).then(
@@ -142,7 +152,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
 
             deleteRecord: function (record) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/claims/byUser/records/delete/',
+                    url: '/transportation/claims/byUser/records/delete',
                     data: JSON.stringify(record),
                     headers: self.headers
                 }).then(

@@ -5,10 +5,12 @@
  */
 package org.ivc.transportation.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,17 +60,17 @@ public class Record implements Serializable {
     @Column(nullable = false)
     private Date returnDate;
 
-    @NonNull
+    @NonNull    
     @Column(nullable = false)
-    private Time departureTime;
+    private LocalDateTime departureTime;
+
+    @NonNull  
+    @Column(nullable = false)
+    private LocalDateTime returnTime;
 
     @NonNull
     @Column(nullable = false)
-    private Time returnTime;
-
-    @NonNull
-    @Column(nullable = false)
-    private Time timeDelivery;
+    private LocalDateTime timeDelivery;
 
     @Column(length = 1024)
     private String carBoss;
@@ -109,8 +111,8 @@ public class Record implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Waypoint> waypoints;
 
-    public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, Time departureTime, String description,
-            Time returnTime, Time timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, VehicleType vehicleType, Set<Waypoint> waypoints) {
+    public Record(String weekHash, Date datetime, Date departureDate, Date returnDate, LocalDateTime departureTime, String description,
+            LocalDateTime returnTime, LocalDateTime timeDelivery, String type, String purpose, String serviceField, String templateName, String carBoss, Claim claim, VehicleType vehicleType, Set<Waypoint> waypoints) {
 
         this.weekHash = weekHash;
         this.type = type;

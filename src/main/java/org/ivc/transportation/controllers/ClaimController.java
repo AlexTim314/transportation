@@ -2,7 +2,10 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collection;
+import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
@@ -196,6 +199,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+            
             claim.setAffirmation(Boolean.FALSE);
             claim.setDepartment(department);
             claimService.addClaim(claim);
@@ -263,6 +267,7 @@ public class ClaimController {
     @PostMapping("/claims/byUser/records")
     public Collection<Record> findRecrodsByClaim(@RequestBody Claim claim) {
         System.out.println(claim);
+        System.out.println("+++++++++++++++++++++++++++++++++");
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
@@ -294,6 +299,7 @@ public class ClaimController {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
             claimService.addRecord(record);
+            System.out.println(record.getClaim());
             return claimService.getRecordsByClaim(record.getClaim().getId());
         }
         return null;
