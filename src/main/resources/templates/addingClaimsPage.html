@@ -10,7 +10,6 @@
         <script src="js/app/app.js"></script>
         <script src="js/app/claim/ClaimService.js"></script>
         <script src="js/app/claim/ClaimController.js"></script>
-
         <script src="js/app/routeTagController.js"></script>
 
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
@@ -61,7 +60,7 @@
             <div class="formRecord" id="formRecord-id" >
                 <i class="fas fa-times i-close" onclick="formRecord_close()"></i>
                 <label for="type-claim">Тип заявки</label>
-                <select name="type-claim" ng-model="clCtrl.claim.tip">
+                <select name="type-claim" ng-model="clCtrl.claim.clType">
                     <option value="">---Выберите---</option>
                     <option value="claim_type_weekly">Еженедельная</option>
                     <option value="claim_type_additional">Дополнительная</option>
@@ -75,7 +74,7 @@
                 <form action="#" method="POST">
                     <div class="custom-select form-item">
                         <label for="type">Тип транспорта</label>
-                        <select name="type-vehicle" ng-model="search">
+                        <select name="type-vehicle" ng-model="searchType">
                             <option value="Пассажирский">Пассажирский</option>
                             <option value="Легковой">Легковой</option>
                             <option value="Грузовой">Грузовой</option>
@@ -88,41 +87,52 @@
                             <option value="1">Самосвал</option>
                             <option value="2">Бульдозер</option>
                         </select>	-->
-                        <select ng-options="vt as vt.specialization for vt in clCtrl.vehicleTypes track by vt.id | filter: search" ng-model="clCtrl.record.vehicleType">
+                        <select name="criterion" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:searchType track by vt.id"   ng-model="clCtrl.record.vehicleType">
                         </select>
                     </div>	
                     <div class="form-item clearfix" >
                         <div class="left-block">
                             <label for="date-begin">Дата начала</label>
-                            <input type="date"  name="date-begin" required>
+                            <input type="date"  name="date-begin" ng-model="clCtrl.record.departureDate" required>
                         </div>
                         <div class="right-block">
                             <label for="date-end">Дата конца</label>
-                            <input type="date"  name="date-end" required>
+                            <input type="date"  name="date-end" ng-model="clCtrl.record.returnDate" required>
                         </div>
                     </div>	
                     <div class="form-item clearfix">
                         <div class="left-block">
                             <label for="time-begin">Время начала</label>
-                            <input type="time"  name="time-begin" required>
+                            <input type="time"  name="time-begin" ng-model="clCtrl.record.departureTime" required>
                         </div>
                         <div class="right-block">
                             <label for="time-end">Время конца</label>
-                            <input type="time"  name="time-end" required>
+                            <input type="time"  name="time-end" ng-model="clCtrl.record.returnTime" required>
+                        </div>
+                         <div>
+                            <label for="time-delivery">Время подачи</label>
+                            <input type="time"  name="time-delivery" ng-model="clCtrl.record.timeDelivery" required>
+                        </div>
+                         <div>
+                            <label for="car-boss">Старший машины</label>
+                            <input type="text"  name="car-boss" ng-model="clCtrl.record.carBoss" required>
                         </div>
                     </div>	
                     <div class="form-item">
                         <label for="purpose">Цель</label>
-                        <textarea name="purpose"   rows="10"></textarea>
+                        <textarea name="purpose"   rows="10" ng-model="clCtrl.record.purpose" ></textarea>
                     </div>
-                    <div class="custom-select form-item clearfix" ng-controller="routeTagController as routeTag">
+                    <div class="custom-select form-item clearfix"> <!--ng-controller="routeTagController as routeTag">-->
                         <div class="left-block-route">
                             <label for="route">Маршрут</label>
-                            <select name="route" ng-model="routeTag.routeText">
+                            <select name="route"> <!--ng-options="wp as wp.name for wp in clCtrl.waypoints track by wp.id" ng-model="clCtrl.record.waypoints">-->
+                                
+                            </select>
+<!--                            <select name="route" ng-model="routeTag.routeText">
                                 <option >Пл.10</option>
                                 <option >Пл.18</option>
                                 <option >Пл.23</option>
-                            </select> 
+                            </select> -->
                         </div>
                         <!--	
                         <div class="right-block-route">
@@ -131,7 +141,7 @@
                         <div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>-->
                     </div>	
                     <div class="form-item">
-                        <button class="btn submit" id="btn-add-edit"></button>
+                        <button class="btn submit" id="btn-add-edit" onclick="menu_close()" ng-click="clCtrl.createRecord(clCtrl.record)"></button>
                     </div>
 
                 </form>
@@ -180,12 +190,11 @@
                             <div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
                             <div class="filter">
                                 <div class="filter-container" >
-
                                     <p>Фильтрация</p>
-                                    <div class="filter-type"><i class="fas fa-car"></i></div>
-                                    <div class="filter-type"><i class="fas fa-bus-alt"></i></div>
-                                    <div class="filter-type"><i class="fas fa-truck"></i></div>
-                                    <div class="filter-type"><i class="fas fa-tractor"></i></div>
+                                    <div class="filter-type"><i class="fas fa-car" ng-click="searchSpecFilter='Легковой'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-bus-alt" ng-click="searchSpecFilter='Пассажирский'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-truck" ng-click="searchSpecFilter='Грузовой'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-tractor" ng-click="searchSpecFilter='Спецтехника'"></i></div>
                                 </div>
                                 <div class="filter-container">
                                     <label for="route-filter">Маршрут</label>
@@ -194,9 +203,9 @@
                                     </select>
                                 </div>
                                 <div class="filter-container" id="f-empls" >
-                                    <label for="declarer-filter">Вид техники</label>
-                                    <select name="declarer-filter">
-                                        <option value="1"></option>
+                                    <label for="declarer-filter">Вид техники</label>                                                                     
+                                    <select name="declarer-filter" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:searchSpecFilter track by vt.id"   ng-model="searchTypeFilter">
+                                       
                                     </select>
                                 </div>
                                 <div class="filter-container">
@@ -220,7 +229,7 @@
                                     </select>
                                 </div>
                                 <div class="filter-container">
-                                    <button class="btn apply ">Применить</button>	
+                                    <button ng-click="search=searchTypeFilter.type" class="btn apply">Применить</button>	
                                 </div>
 
                             </div>
@@ -237,7 +246,7 @@
                             <span class="filter-elem edit">За неделю</span>
                         </div>
                         <div class="table-header clearfix">
-                            <input type="search">
+                            <input type="search" ng-model="search">
                             <button class="btn edit"><i class="fas fa-search"></i></button>	
                         </div>		
                         <table class="table-record" id="tbl1" >
@@ -253,7 +262,7 @@
                                             <span class="checkmark"></span>
                                         </label>		
                                     </td>
-                                    <td>№ {{claim.id}} от {{claim.clDate}} 
+                                    <td>№ {{claim.id}} от {{claim.clDate | date: 'dd.MM.yyyy'}} 
                                         <div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
                                     </td>
                                 </tr>
@@ -271,22 +280,22 @@
                                                 <th>Маршрут</th>
                                                 <th></th>
                                             </tr>
-                                            <tr  ng-repeat="record in claim.records">
-                                                <td>{{record.type}}</td>
-                                                <td>transport type</td>
-                                                <td>{{record.datetime}}</td>
-                                                <td>{{record.timeDelivery}}</td>
+                                            <tr  ng-repeat="record in claim.records | filter:search">
+                                                <td>{{record.vehicleType.specialization}}</td>
+                                                <td>{{record.vehicleType.type}}</td>
+                                                <td>{{record.departureDate | date:'dd.MM.yyyy'}}</td>
+                                                <td>{{record.timeDelivery | date:'hh:mm'}}</td>
                                                 <td>{{record.carBoss}}
-                                                    <button class="btn-hidden btn edit" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
+                                                    <button class="btn-hidden btn edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
                                                     </button>
                                                 </td>
                                                 <td>{{record.purpose}}
-                                                    <button class="btn-hidden btn delete"><i class="fas fa-trash-alt" ></i>Удалить</button>
+                                                    <button class="btn-hidden btn delete" ng-click="clCtrl.deleteRecord(record)"><i class="fas fa-trash-alt" ></i>Удалить</button>
                                                 </td>
                                                 <td>Waypoints</td>
 
                                                 <td>
-                                                    <button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></button>  			
+                                                    <button class="btn eye" ng-click="clCtrl.addRowHandlersRecords(record)" onclick="more_open()" ><i class="far fa-eye"></i></button>  			
                                                 </td>
                                                 <td>
                                                     <button class="btn eye" onclick="{{record.}}"><i class="far fa-eye"></i></button>  			
@@ -311,13 +320,13 @@
                             <i class="fas fa-times" onclick="more_close()"></i>
                         </div>
                         <ul>
-                            <li><label>Тип транспорта:<span>Грузовой</span></label></li>
-                            <li><label>Дата выезда:<span>12.08.2018</span></label></li>
-                            <li><label>Время выезда:<span>08:00</span></label></li>
-                            <li><label>Маршрут:<span>Пл.10-Пл.23</span></label></li>
-                            <li><label>Ответственный:<span>Сидоров С.С.</span></label></li>
-                            <li><label>Масса груза:<span>1000 кг.</span></label></li>
-                            <li><label>Количество мест:<span>4 чел.</span></label></li>
+                            <li><label>Тип транспорта:<span>{{clCtrl.record.vehicleType.type}}</span></label></li>
+                            <li><label>Дата выезда:<span>{{clCtrl.record.departureDate |date:'dd.MM.yyyy'}}</span></label></li>
+                            <li><label>Время выезда:<span>{{clCtrl.record.departureTime |date: 'hh:mm'}}</span></label></li>
+                            <li><label>Дата возвращения:<span>{{clCtrl.record.returnDate |date:'dd.MM.yyyy'}}</span></label></li>
+                            <li><label>Время возвращения:<span>{{clCtrl.record.returnTime |date: 'hh:mm'}}</span></label></li>
+                            <li><label>Время подачи:<span>{{clCtrl.record.timeDelivery |date: 'hh:mm'}}</span></label></li>
+                            <li><label>Маршрут:<span>..Не реализовано..</span></label></li>
                         </ul>
                     </div>	
 
@@ -353,8 +362,8 @@
                                                 <th>Водитель</th>
                                                 <th></th>
                                             </tr>
-                                            <tr>
-                                                <td>Пассажирский</td>
+                                            <tr ng-repeat="record in claim.records">
+                                               <td>{{record.vehicleType.specialization}}</td>
                                                 <td>20.12.2018</td>
                                                 <td>08:00</td>
                                                 <td>Перевозка пассажиров</td>
@@ -365,42 +374,8 @@
                                                     <button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
                                                 </td>
                                             </tr>
-                                            <!--		  			<tr>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
-                                                                                            
-                                                                                                    
-                                                                                            
-                                                                                            </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                    
-                                                                                            <td>-</td>
-                                                                                            <td></td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></td>
-                                                                                    </tr>-->
                                         </table>
                                     </td>	
-                                    <!--			  			</tr>
-                                                                                    <tr>                        
-                                                                                            <td>№ {{claim.id}} от {{claim.clDate}}</td>
-                                                                                            <td><span class="claim-status "><i class="fas fa-clock"></i>Ожидается</span></td>
-                                                                                    </tr>
-                                                                                    <tr>                        
-                                                                                            <td>№ {{claim.id}} от {{claim.clDate}}</td>
-                                                                                            <td><span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отмена</span></td>
-                                                                                    </tr>		  			-->
                             </table>	
 
                         </div>	
