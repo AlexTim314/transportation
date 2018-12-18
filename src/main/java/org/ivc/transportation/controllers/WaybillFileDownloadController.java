@@ -5,6 +5,8 @@
  */
 package org.ivc.transportation.controllers;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -19,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.SpreadsheetVersion;
@@ -30,17 +34,25 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
-import org.ivc.transportation.config.trUtils.*;
+import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.config.trUtils.AppointmentStatus;
+import org.ivc.transportation.config.trUtils.NamedCell;
+import org.ivc.transportation.config.trUtils.VehicleSpecialization;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
+import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -55,39 +67,72 @@ public class WaybillFileDownloadController {
     @Autowired
     private TransportDepService tdS;
 
-    @PostMapping("/waybilldownload")
-    public StreamingResponseBody download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ServletContext servletContext;
+
+    /**
+     * МЕтод для проверки работы формирования путевых листов. В релиз не пойдёт.
+     *
+     * @param response
+     * @param principal
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @GetMapping("/waybilldownloadDebug")
+    public void download(HttpServletResponse response, Principal principal) throws FileNotFoundException, IOException {
+        trUtils.DateRange dr = new trUtils.DateRange();
+        dr.StartDate = Date.valueOf("2018-01-01");
+        dr.EndDate = Date.valueOf("2018-12-31");
+
+        Appointment appointment = null;
+
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
+            if (transportDep == null) {
+                throw new IllegalArgumentException("Error. У пользователя не указан транспортный отдел. Добавить обработку исключения."); //NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            appointment = tdS.getAppointmentsByTransportDepAndDateRange(transportDep, dr).get(0);
+            appointment.setStatus(AppointmentStatus.appointment_status_completed);
+        }
+
+        download(response, principal, appointment);
+    }
+
+    // @PostMapping("/waybilldownload")
+    public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
 
         if (principal != null) { //возможно стоит добавить проверку, что авторизован Диспетчер
             if (appointment.getStatus() != AppointmentStatus.appointment_status_completed) {
 
-                return outputStream -> {
-                    String message = "Распоряжение не утверждено. Для печати "
-                            + "путевого листа, прежде требуется согласовать и "
-                            + "утвердить распоряжение.";
-                    outputStream.write(message.getBytes());
-                };
+                String message = "Error2. Распоряжение не утверждено. Для печати "
+                        + "путевого листа, прежде требуется согласовать и "
+                        + "утвердить распоряжение." + appointment.getStatus();
+                System.out.println(message);
             }
-            
-            /*VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
-            
+
+            String excelFilePath; 
+            VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
             switch (specialization) {
                 case Пассажирский:
                 case Легковой:
-                    createWaybillForm6();
+            /*        excelFilePath = "Waybill6.xls";
                     break;
-                case Грузовой:
-                case Спецтехника:
-                    createWaybillForm3();
-                    break;
+              */  case Грузовой:
+                case Спецтехника:                    
                 default:
+                    excelFilePath = "Waybill3.xls";
                     break;
-
-            };*/
-
-            String excelFilePath = "Waybill.xls"; //
+            };
+            
+            
             Waybill waybill = appointment.getWaybill();
             Vehicle vechicle = appointment.getVehicle();
+            
             Driver driver = appointment.getDriver();
             //Record record = appointment.getRecord();
             Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
@@ -121,17 +166,17 @@ public class WaybillFileDownloadController {
                                 case год:
                                     c.setCellValue(dateTime.getYear());
                                     break;
-                                /* возможно не меняется
-                            case организация:
-                                c.setCellValue("организация Пока не поддерживается.");
-                                break;
-                            case адрес_телефон:
-                                c.setCellValue("адрес_телефон Пока не поддерживается.");
-                                break;
-                                 */
-                                case марка:
+                                    /*
+                                 case организация:
+                                    c.setCellValue("организация Пока не поддерживается.");
+                                    break;
+                                case адрес_телефон:
+                                    c.setCellValue("адрес_телефон Пока не поддерживается.");
+                                    break;
+                               case марка:
                                     c.setCellValue("марка Пока не поддерживается.");
                                     break;
+                                    */
                                 case госномер:
                                     c.setCellValue(vechicle.getNumber());
                                     break;
@@ -139,19 +184,16 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
                                     break;
                                 case удостоверение:
-                                    c.setCellValue(" удостоверение Пока не поддерживается.");
+                                    c.setCellValue(driver.getDriverLicense());
                                     break;
                                 case класс:
-                                    c.setCellValue("класс Пока не поддерживается.");
+                                    c.setCellValue(driver.getDriverClass());
                                     break;
                                 case диспетчер:
-                                    //TODO: после добавления извлекать из waybill
-                                    User loginedUser = (User) ((Authentication) principal).getPrincipal();
-                                    c.setCellValue(loginedUser.getUsername());
+                                    c.setCellValue(waybill.getDispatcher().getUserName());
                                     break;
                                 case механик:
-
-                                    c.setCellValue(" механик Пока не поддерживается. Брать с формы?");
+                                    c.setCellValue(waybill.getMechanic().getUserName());
                                     break;
                                 case время_выезда_по_графику:
                                     c.setCellValue(record.getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -176,8 +218,7 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(vechicle.getFuelRemnant());
                                     break;
                                 case заказчик:
-                                    //нужно короткое имя для Подразделения                                    
-                                    c.setCellValue(record.getClaim().getDepartment().getName() + " " + record.getCarBoss());
+                                    c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
                                     break;
                             }
 
@@ -197,36 +238,66 @@ public class WaybillFileDownloadController {
                     }
                 }
 
-                File file = new File("Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls");
+                String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
+                File file = File.createTempFile("waybill", specialization.name());
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 workbook.write(fileOutputStream);
-                workbook.close();
+                workbook.close();                
 
                 try {
-                    // get your file as InputStream
-                    response.setContentType("application/xls");
-                    response.setHeader("Content-Disposition", "attachment; filename=\"Путевой лист " + waybill.getSeries() + " №" + waybill.getNumber() + ".xls\"");
-                    InputStream inputStream = new FileInputStream(file);
-                    return outputStream -> {
-                        //   workbook.write(outputStream);
-                        int nRead;
-                        byte[] data = new byte[1024];
-                        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                            System.out.println("Waybill downloading..");
-                            outputStream.write(data, 0, nRead);
-                        }
-                    };
+                    MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
+                    MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
+
+                    response.setContentType(mediaType.getType());
+                    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+                    response.setContentLength((int) file.length());
+
+                    BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
+                    BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());                    
+
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = 0;
+                    while ((bytesRead = inStream.read(buffer)) != -1) {
+                        System.out.println("Waybill downloading..");
+                        outStream.write(buffer, 0, bytesRead);
+                    }
+                    outStream.flush();
+                    inStream.close();
+                  
                 } catch (IOException ex) {
-                    //log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
                     throw new RuntimeException("IOError writing file to output stream");
                 }
 
             } catch (IOException | EncryptedDocumentException ex) {
                 ex.printStackTrace();
             }
-
         }
-        return null;
+    }
+
+    private void createWaybillForm6(HttpServletResponse response, Appointment appointment) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void createWaybillForm3(HttpServletResponse response, Appointment appointment) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    class MediaTypeUtils {
+
+        // abc.zip
+        // abc.pdf,..
+        public MediaType getMediaTypeForFileName(ServletContext servletContext, String fileName) {
+            // application/pdf
+            // application/xml
+            // image/gif, ...
+            String mineType = servletContext.getMimeType(fileName);
+            try {
+                MediaType mediaType = MediaType.parseMediaType(mineType);
+                return mediaType;
+            } catch (Exception e) {
+                return MediaType.APPLICATION_OCTET_STREAM;
+            }
+        }
     }
 
     private Cell getCell(Workbook workbook, Name name) {
@@ -237,14 +308,6 @@ public class WaybillFileDownloadController {
         Sheet s = workbook.getSheet(cellRef.getSheetName());
         Row r = s.getRow(cellRef.getRow());
         return r.getCell(cellRef.getCol());
-    }
-
-    private void createWaybillForm6() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void createWaybillForm3() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

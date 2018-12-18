@@ -93,7 +93,7 @@ public class TransportationApplication {
 
     @Autowired
     private WaybillService waybillService;
-    
+
     @Autowired
     private WaypointService waypointService;
 
@@ -102,12 +102,12 @@ public class TransportationApplication {
     public void init() {
         AppRole adminRole = new AppRole("ROLE_ADMIN");
         AppRole userRole = new AppRole("ROLE_USER");
-        
+
         TransportDep transportDep1 = new TransportDep("TransportDep1", "dAdr1", "dphone1");
         TransportDep transportDep2 = new TransportDep("TransportDep2", "dAdr2", "dphone2");
         tdS.addTransportDep(transportDep1);
         tdS.addTransportDep(transportDep2);
-        
+
         Department dep1 = new Department("NAME-1", "ADDRES-1");
         Department dep2 = new Department("NAME-2", "ADDRES-2");
         Department dep3 = new Department("NAME-3", "ADDRES-3");
@@ -126,14 +126,14 @@ public class TransportationApplication {
         userRepository.saveAndFlush(admin);
         userRepository.saveAndFlush(user);
 
-Waypoint waypoint1 = new Waypoint("ЦИ-4", 45.617189, 63.319406);
-Waypoint waypoint2 = new Waypoint("Пл. 10", 45.622546, 63.317654);
-Waypoint waypoint3 = new Waypoint("Пл. 18", 45.907923, 63.332956);
-Waypoint waypoint4 = new Waypoint("Пл. 31", 45.992120, 63.571223);
-waypointService.addWaypoint(waypoint1);
-waypointService.addWaypoint(waypoint2);
-waypointService.addWaypoint(waypoint3);
-waypointService.addWaypoint(waypoint4);
+        Waypoint waypoint1 = new Waypoint("ЦИ-4", 45.617189, 63.319406);
+        Waypoint waypoint2 = new Waypoint("Пл. 10", 45.622546, 63.317654);
+        Waypoint waypoint3 = new Waypoint("Пл. 18", 45.907923, 63.332956);
+        Waypoint waypoint4 = new Waypoint("Пл. 31", 45.992120, 63.571223);
+        waypointService.addWaypoint(waypoint1);
+        waypointService.addWaypoint(waypoint2);
+        waypointService.addWaypoint(waypoint3);
+        waypointService.addWaypoint(waypoint4);
 
         Driver driver1 = new Driver("fname1", "name1", "sname1", new Date(0), "address1", "phone1", "", transportDep1);
         driver1.setVacant(Boolean.TRUE);
@@ -167,8 +167,6 @@ waypointService.addWaypoint(waypoint4);
         tdS.addVehicleType(typeVech6);
         tdS.addVehicleType(typeVech7);
         tdS.addVehicleType(typeVech8);
-        
-        
 
         VehicleModel modelVech1 = new VehicleModel("ПАЗ123", typeVech1);
         VehicleModel modelVech2 = new VehicleModel("КРАЗ123", typeVech2);
@@ -180,7 +178,6 @@ waypointService.addWaypoint(waypoint4);
         tdS.addVehicleModel(modelVech3);
         tdS.addVehicleModel(modelVech7);
         tdS.addVehicleModel(modelVech8);
-        
 
         Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
         vechicle1.setVacant(Boolean.TRUE);
@@ -197,8 +194,6 @@ waypointService.addWaypoint(waypoint4);
         tdS.addVechicle(vechicle3);
         tdS.addVechicle(vechicle4);
         tdS.addVechicle(vechicle5);
-
-        
 
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl1.setAffirmation(Boolean.FALSE);
@@ -218,22 +213,22 @@ waypointService.addWaypoint(waypoint4);
 
         String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
 
-Set<Waypoint> wayps1 = new HashSet<Waypoint>();
-wayps1.add(waypoint1);
-wayps1.add(waypoint3);
-Set<Waypoint> wayps2 = new HashSet<Waypoint>();
-wayps2.add(waypoint2);
-wayps2.add(waypoint4);
-        
-        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null,wayps1);
+        Set<Waypoint> wayps1 = new HashSet<Waypoint>();
+        wayps1.add(waypoint1);
+        wayps1.add(waypoint3);
+        Set<Waypoint> wayps2 = new HashSet<Waypoint>();
+        wayps2.add(waypoint2);
+        wayps2.add(waypoint4);
+
+        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null, wayps1);
         rec1.setStatus(RecordStatus.record_status_created);
-        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null,wayps2);
+        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null, wayps2);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null,wayps1);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null, wayps1);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null,wayps2);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null, wayps2);
         rec4.setStatus(RecordStatus.record_status_inprogress);
-        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null,wayps1);
+        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), Time.valueOf(LocalTime.now()), "Какойто текст", Time.valueOf(LocalTime.now()), Time.valueOf(LocalTime.now()), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null, wayps1);
         rec5.setStatus(RecordStatus.record_status_completed);
         clS.addRecord(rec1);
         clS.addRecord(rec2);
@@ -241,7 +236,6 @@ wayps2.add(waypoint4);
         clS.addRecord(rec4);
         clS.addRecord(rec5);
 
-        
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
@@ -310,14 +304,49 @@ wayps2.add(waypoint4);
 //        clS.getAllClaimsSortByDate().forEach(System.out::println);
 //        System.out.println("-----------Record after-----------------");
 //        clS.getRecords().forEach(System.out::println);
-        
-        
 
         Appointment ap1 = new Appointment(LocalDateTime.parse("2018-11-21T09:10:11", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech1);
         Appointment ap2 = new Appointment(LocalDateTime.parse("2018-11-21T12:13:14", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech2);
         Appointment ap3 = new Appointment(LocalDateTime.parse("2018-11-21T15:16:17", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech3);
         Appointment ap4 = new Appointment(LocalDateTime.parse("2018-11-22T18:19:20", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep2, modelVech7);
         Appointment ap5 = new Appointment(LocalDateTime.parse("2018-11-22T21:22:23", DateTimeFormatter.ISO_LOCAL_DATE_TIME), transportDep1, modelVech8);
+        ap1.setDriver(driver5);
+        ap2.setDriver(driver2);
+        ap3.setDriver(driver5);
+        ap4.setDriver(driver2);
+        ap5.setDriver(driver5);
+        ap1.setVehicle(vechicle1);
+        ap2.setVehicle(vechicle2);
+        ap3.setVehicle(vechicle3);
+        ap4.setVehicle(vechicle4);
+        ap5.setVehicle(vechicle5);
+
+        TaskList taskList = null;//new TaskList();
+        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
+        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
+        
+        AppUser dispatcher = new AppUser("Диспетчер Д.Д.", PASSWORD, true, new HashSet<>());
+        userRepository.save(dispatcher);
+        AppUser mechanic = new AppUser("Механик М.М.", PASSWORD, true, new HashSet<>());
+        userRepository.save(mechanic);
+        
+        waybill1.setDispatcher(dispatcher);
+        waybill1.setMechanic(mechanic);
+        waybill2.setDispatcher(dispatcher);
+        waybill2.setMechanic(mechanic);
+        waybill3.setDispatcher(dispatcher);
+        waybill3.setMechanic(mechanic);
+        
+        waybillService.addWaybill(waybill1);
+        waybillService.addWaybill(waybill2);
+        waybillService.addWaybill(waybill3);
+
+        ap1.setWaybill(waybill1);
+        ap2.setWaybill(waybill2);
+        ap3.setWaybill(waybill3);
+        ap4.setWaybill(waybill1);
+        ap5.setWaybill(waybill1);
         tdS.addAppointment(ap1, rec3);
         tdS.addAppointment(ap2, rec4);
         tdS.addAppointment(ap3, rec3);
@@ -333,7 +362,7 @@ wayps2.add(waypoint4);
         DateRange dr = new DateRange();
         dr.StartDate = Date.valueOf("2018-01-01");
         dr.EndDate = Date.valueOf("2018-12-31");
-        
+
         tdS.getAppointmentsByTransportDepAndDateRange(transportDep1, dr).forEach(System.out::println);
 //        System.out.println("-----------###########################-----------------");
 //        appointmentServ.getAppointmentByRecordAndStatus(rec4, AppointmentStatus.appointment_status_created).forEach(System.out::println);
@@ -392,23 +421,6 @@ wayps2.add(waypoint4);
         System.out.println("critServ*************************************************************");
 
         critServ.removeCriterionType(crT3.getId());
-
-        TaskList taskList = null;//new TaskList();
-        Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
-        Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
-        waybillService.addWaybill(waybill1);
-        waybillService.addWaybill(waybill2);
-        waybillService.addWaybill(waybill3);
-
-//        ap1.setWaybill(waybill1);
-//        ap2.setWaybill(waybill2);
-//        ap3.setWaybill(waybill3);
-
-        //ap1.createWaybill();
-        //ap1.excel2pdf();
-
-//        System.out.println("ap1:" + ap1.toString());
 
     }
 

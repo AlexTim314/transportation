@@ -14,7 +14,6 @@ import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,9 +83,7 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
-    
-    
-    
+        
     @GetMapping("/claims")
     public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
         if (principal != null) { 
@@ -362,7 +359,7 @@ public class ClaimController {
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }
+            }            
             return claimService.getVehicleTypes();
         }
         return null;
