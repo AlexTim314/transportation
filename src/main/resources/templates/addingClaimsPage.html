@@ -83,6 +83,10 @@
                     </div>	
                     <div class="form-item" >
                         <label for="criterion">Вид техники</label>
+<!--                        <select name="criterion" ng-model="" ng-repeat="" required>
+                            <option value="1">Самосвал</option>
+                            <option value="2">Бульдозер</option>
+                        </select>	-->
                         <select name="criterion" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:searchType track by vt.id"   ng-model="clCtrl.record.vehicleType">
                         </select>
                     </div>	
