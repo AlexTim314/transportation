@@ -46,11 +46,14 @@ public class FileStorage implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Claim claim;
 
-    public FileStorage(String fileName, String fileType, byte[] file, Claim claim) {
+    public FileStorage(String fileName, String fileType, byte[] file) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.file = file;
-        this.claim = claim;
+    }
+    
+    public byte[] getData() {
+        return file;
     }
 
 }

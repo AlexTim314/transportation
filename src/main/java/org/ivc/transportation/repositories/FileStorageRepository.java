@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * @author first
  */
 @Repository
-public interface FileStorageRepository extends JpaRepository<FileStorage, String> {
+public interface FileStorageRepository extends JpaRepository<FileStorage, Long> {
 
     List<FileStorage> findByClaimId(Long id);
 }

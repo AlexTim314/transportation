@@ -78,7 +78,9 @@ public interface ClaimService {
 
     public Collection<VehicleType> getVehicleTypesBySpicialization(String s);
     
-    public FileStorage storeFile(MultipartFile file, Claim claim);
+    public FileStorage storeFile(MultipartFile file);
     
-//    public FileStorage getFile(Long id);
+    public Collection<FileStorage> getFiles(Long id);
+    
+    public FileStorage getFile(Long id);
 }

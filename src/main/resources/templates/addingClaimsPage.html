@@ -11,6 +11,7 @@
         <script src="js/app/claim/ClaimService.js"></script>
         <script src="js/app/claim/ClaimController.js"></script>
         <script src="js/app/routeTagController.js"></script>
+<!--        <script src="js/script/fileStorage.js"></script>-->
 
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
         <link href="fontawesome/css/all.css" rel="stylesheet">
@@ -65,13 +66,21 @@
                     <option value="claim_type_weekly">Еженедельная</option>
                     <option value="claim_type_additional">Дополнительная</option>
                 </select>
-                <input type="file" name="post-file" multiple accept="image/*">		
+                <!--                <input id="singleFileUploadInput" type="file" name="post-file" multiple accept="image/*">-->
+<!--                <form id="multipleUploadForm" name="multipleUploadForm">-->
+                    <input id="multipleFileUploadInput" type="file" name="post-file" multiple accept="image/*">
+<!--                    <button type="submit" class="primary submit-btn">Загрузить</button>
+                </form>-->
+                <div class="upload-response">
+                    <div id="multipleFileUploadError"></div>
+                    <div id="multipleFileUploadSuccess"></div>
+                </div>
                 <button class="btn delete" ng-click="clCtrl.createClaim(clCtrl.claim)" >Создать</button>
             </div>
             <!----------------------------------------------ADD-FORM------------------->
             <div class="menu-new-claim" id="form-add">
                 <i class="fas fa-times" onclick="menu_close()"></i>
-                <form action="#" method="POST">
+                <form>
                     <div class="custom-select form-item">
                         <label for="type">Тип транспорта</label>
                         <select name="type-vehicle" ng-model="searchType">
@@ -83,11 +92,7 @@
                     </div>	
                     <div class="form-item" >
                         <label for="criterion">Вид техники</label>
-<!--                        <select name="criterion" ng-model="" ng-repeat="" required>
-                            <option value="1">Самосвал</option>
-                            <option value="2">Бульдозер</option>
-                        </select>	-->
-                        <select name="criterion" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:searchType track by vt.id"   ng-model="clCtrl.record.vehicleType">
+                        <select name="criterion" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes| filter:searchType track by vt.id"   ng-model="clCtrl.record.vehicleType">
                         </select>
                     </div>	
                     <div class="form-item clearfix" >
@@ -109,11 +114,11 @@
                             <label for="time-end">Время конца</label>
                             <input type="time"  name="time-end" ng-model="clCtrl.record.returnTime" required>
                         </div>
-                         <div>
+                        <div>
                             <label for="time-delivery">Время подачи</label>
                             <input type="time"  name="time-delivery" ng-model="clCtrl.record.timeDelivery" required>
                         </div>
-                         <div>
+                        <div>
                             <label for="car-boss">Старший машины</label>
                             <input type="text"  name="car-boss" ng-model="clCtrl.record.carBoss" required>
                         </div>
@@ -126,13 +131,13 @@
                         <div class="left-block-route">
                             <label for="route">Маршрут</label>
                             <select name="route"> <!--ng-options="wp as wp.name for wp in clCtrl.waypoints track by wp.id" ng-model="clCtrl.record.waypoints">-->
-                                
+
                             </select>
-<!--                            <select name="route" ng-model="routeTag.routeText">
-                                <option >Пл.10</option>
-                                <option >Пл.18</option>
-                                <option >Пл.23</option>
-                            </select> -->
+                            <!--                            <select name="route" ng-model="routeTag.routeText">
+                                                            <option >Пл.10</option>
+                                                            <option >Пл.18</option>
+                                                            <option >Пл.23</option>
+                                                        </select> -->
                         </div>
                         <!--	
                         <div class="right-block-route">
@@ -191,10 +196,10 @@
                             <div class="filter">
                                 <div class="filter-container" >
                                     <p>Фильтрация</p>
-                                    <div class="filter-type"><i class="fas fa-car" ng-click="searchSpecFilter='Легковой'"></i></div>
-                                    <div class="filter-type"><i class="fas fa-bus-alt" ng-click="searchSpecFilter='Пассажирский'"></i></div>
-                                    <div class="filter-type"><i class="fas fa-truck" ng-click="searchSpecFilter='Грузовой'"></i></div>
-                                    <div class="filter-type"><i class="fas fa-tractor" ng-click="searchSpecFilter='Спецтехника'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-car" ng-click="searchSpecFilter = 'Легковой'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-bus-alt" ng-click="searchSpecFilter = 'Пассажирский'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-truck" ng-click="searchSpecFilter = 'Грузовой'"></i></div>
+                                    <div class="filter-type"><i class="fas fa-tractor" ng-click="searchSpecFilter = 'Спецтехника'"></i></div>
                                 </div>
                                 <div class="filter-container">
                                     <label for="route-filter">Маршрут</label>
@@ -204,8 +209,8 @@
                                 </div>
                                 <div class="filter-container" id="f-empls" >
                                     <label for="declarer-filter">Вид техники</label>                                                                     
-                                    <select name="declarer-filter" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter:searchSpecFilter track by vt.id"   ng-model="searchTypeFilter">
-                                       
+                                    <select name="declarer-filter" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes| filter:searchSpecFilter track by vt.id"   ng-model="searchTypeFilter">
+
                                     </select>
                                 </div>
                                 <div class="filter-container">
@@ -229,7 +234,7 @@
                                     </select>
                                 </div>
                                 <div class="filter-container">
-                                    <button ng-click="search=searchTypeFilter.type" class="btn apply">Применить</button>	
+                                    <button ng-click="search = searchTypeFilter.type" class="btn apply">Применить</button>	
                                 </div>
 
                             </div>
@@ -255,14 +260,14 @@
                                 <th>Заявки</th>
                             </tr>
                             <tbody>
-                                <tr ng-repeat-start="claim in clCtrl.claims" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
+                                <tr ng-repeat-start="claim in clCtrl.claims | filter:search" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
                                     <td>
                                         <label class="custom-checkbox">
                                             <input type="checkbox" >1
                                             <span class="checkmark"></span>
                                         </label>		
                                     </td>
-                                    <td>№ {{claim.id}} от {{claim.clDate | date: 'dd.MM.yyyy'}} 
+                                    <td>№ {{claim.id}} от {{claim.clDate| date: 'dd.MM.yyyy'}} 
                                         <div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
                                     </td>
                                 </tr>
@@ -280,11 +285,11 @@
                                                 <th>Маршрут</th>
                                                 <th></th>
                                             </tr>
-                                            <tr  ng-repeat="record in claim.records | filter:search">
+                                            <tr  ng-repeat="record in claim.records| filter:search">
                                                 <td>{{record.vehicleType.specialization}}</td>
                                                 <td>{{record.vehicleType.type}}</td>
-                                                <td>{{record.departureDate | date:'dd.MM.yyyy'}}</td>
-                                                <td>{{record.timeDelivery | date:'hh:mm'}}</td>
+                                                <td>{{record.departureDate| date:'dd.MM.yyyy'}}</td>
+                                                <td>{{record.timeDelivery| date:'hh:mm'}}</td>
                                                 <td>{{record.carBoss}}
                                                     <button class="btn-hidden btn edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
                                                     </button>
@@ -318,11 +323,11 @@
                         </div>
                         <ul>
                             <li><label>Тип транспорта:<span>{{clCtrl.record.vehicleType.type}}</span></label></li>
-                            <li><label>Дата выезда:<span>{{clCtrl.record.departureDate |date:'dd.MM.yyyy'}}</span></label></li>
-                            <li><label>Время выезда:<span>{{clCtrl.record.departureTime |date: 'hh:mm'}}</span></label></li>
-                            <li><label>Дата возвращения:<span>{{clCtrl.record.returnDate |date:'dd.MM.yyyy'}}</span></label></li>
-                            <li><label>Время возвращения:<span>{{clCtrl.record.returnTime |date: 'hh:mm'}}</span></label></li>
-                            <li><label>Время подачи:<span>{{clCtrl.record.timeDelivery |date: 'hh:mm'}}</span></label></li>
+                            <li><label>Дата выезда:<span>{{clCtrl.record.departureDate|date:'dd.MM.yyyy'}}</span></label></li>
+                            <li><label>Время выезда:<span>{{clCtrl.record.departureTime|date: 'hh:mm'}}</span></label></li>
+                            <li><label>Дата возвращения:<span>{{clCtrl.record.returnDate|date:'dd.MM.yyyy'}}</span></label></li>
+                            <li><label>Время возвращения:<span>{{clCtrl.record.returnTime|date: 'hh:mm'}}</span></label></li>
+                            <li><label>Время подачи:<span>{{clCtrl.record.timeDelivery|date: 'hh:mm'}}</span></label></li>
                             <li><label>Маршрут:<span>..Не реализовано..</span></label></li>
                         </ul>
                     </div>	
@@ -360,7 +365,7 @@
                                                 <th></th>
                                             </tr>
                                             <tr ng-repeat="record in claim.records">
-                                               <td>{{record.vehicleType.specialization}}</td>
+                                                <td>{{record.vehicleType.specialization}}</td>
                                                 <td>20.12.2018</td>
                                                 <td>08:00</td>
                                                 <td>Перевозка пассажиров</td>

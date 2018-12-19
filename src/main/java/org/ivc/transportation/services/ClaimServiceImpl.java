@@ -1,6 +1,6 @@
 package org.ivc.transportation.services;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.sql.Date;
@@ -17,6 +17,7 @@ import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.FileStorage;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.exceptions.FileNotFoundException;
 import org.ivc.transportation.exceptions.FileStorageException;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.FileStorageRepository;
@@ -211,7 +212,7 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public FileStorage storeFile(MultipartFile file,Claim claim) {
+    public FileStorage storeFile(MultipartFile file) {
        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
@@ -220,7 +221,7 @@ public class ClaimServiceImpl implements ClaimService {
                 throw new FileStorageException("Неверный путь к файлу " + fileName);
             }
 
-            FileStorage dbFile = new FileStorage(fileName, file.getContentType(), file.getBytes(), claim);
+            FileStorage dbFile = new FileStorage(fileName, file.getContentType(), file.getBytes());
 
             return fileStorageRep.save(dbFile);
         } catch (IOException ex) {
@@ -228,11 +229,20 @@ public class ClaimServiceImpl implements ClaimService {
         } 
     }
 
-//    @Override
-//    public FileStorage getFile(Long id) {
-//            return fileStorageRep.findByClaimId(id)
-//                    
-//    }
+    @Override
+    public Collection<FileStorage> getFiles(Long id) {
+       return fileStorageRep.findByClaimId(id);
+    }
+    
+    @Override
+    public FileStorage getFile(Long fileId) {
+        return fileStorageRep.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
+    }
+
+
+
+
     
     
 
