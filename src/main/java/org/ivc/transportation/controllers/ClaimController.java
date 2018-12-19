@@ -2,7 +2,10 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collection;
+import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
@@ -10,9 +13,11 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.entities.Waypoint;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
+import org.ivc.transportation.services.WaypointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -36,6 +41,9 @@ public class ClaimController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private WaypointService waypointService;
 
     /**
      * Метод возвращает заявки поданные подразделением. Номер подразделения
@@ -82,9 +90,7 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
-    
-    
-    
+        
     @GetMapping("/claims")
     public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
         if (principal != null) { 
@@ -189,6 +195,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+            
             claim.setAffirmation(Boolean.FALSE);
             claim.setDepartment(department);
             claimService.addClaim(claim);
@@ -256,6 +263,7 @@ public class ClaimController {
     @PostMapping("/claims/byUser/records")
     public Collection<Record> findRecrodsByClaim(@RequestBody Claim claim) {
         System.out.println(claim);
+        System.out.println("+++++++++++++++++++++++++++++++++");
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
@@ -273,6 +281,7 @@ public class ClaimController {
      */
     @PostMapping("/claims/byUser/records/create")
     public Collection<Record> addRecord(Principal principal, @RequestBody Record record) {
+        System.out.println(record);
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
@@ -280,6 +289,7 @@ public class ClaimController {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
             claimService.addRecord(record);
+            System.out.println(record.getClaim());
             return claimService.getRecordsByClaim(record.getClaim().getId());
         }
         return null;
@@ -348,14 +358,27 @@ public class ClaimController {
      * возвращает null
      */
     @GetMapping("/claims/byUser/records/vehicleType")
-    public Collection<VehicleType> getTypeVehicleBySpecialization(Principal principal) {
+    public Collection<VehicleType> getTypeVehicle(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }            
+            return claimService.getVehicleTypes();
+        }
+        return null;
+    }
+    
+    @GetMapping("/claims/byUser/records/waypoints")
+    public Collection<Waypoint> getWaypoints(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            return claimService.getVehicleTypes();
+            return waypointService.getWaypoints();
         }
         return null;
     }
