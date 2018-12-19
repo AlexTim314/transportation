@@ -37,7 +37,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 }
                         );
             },
-            
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/claims/byUser/records/vehicleType')
                         .then(

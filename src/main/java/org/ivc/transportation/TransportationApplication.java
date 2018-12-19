@@ -53,23 +53,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransportationApplication {
 
     private static final String PASSWORD = "$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu";
-//    @Autowired
-//    private TransportDepRepository transportDepRepository;
-//    @Autowired
-//    private DriverRepository driverRepository;
-//    @Autowired
-//    private DepartmentRepository departmentRepository;
-//    @Autowired
-//    private VechicleRepository vclRepository;
-//    @Autowired
-//    private ClaimRepository claimRepository;
+    
     @Autowired
     private TransportDepService tdS;
 
-    /*
-    @Autowired
-    private DriverService drvS;
-     */
     @Autowired
     private DepartmentService depS;
     /*

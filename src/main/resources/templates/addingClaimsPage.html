@@ -13,22 +13,9 @@
 
         <script src="js/app/routeTagController.js"></script>
 
-        <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+<!--        <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">-->
         <link href="fontawesome/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css">
-        <!--	<meta charset="UTF-8">
-                
-                <title>Комплекс автотраспортного обеспечения</title>
-                <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
-                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-                <link href="assets/fontawesome/css/all.css" rel="stylesheet">
-                <link rel="stylesheet" href="assets/style/style.css">
-                        
-                <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-                <script src="assets/app/app.js"></script>-->
-        <!--	<script src="assets/app/directives/firstDirective.js"></script>-->
-        <!--	<script src="assets/app/controllers/routeTagController.js"></script>-->
-
     </head>
     <body ng-app="Transportation" >
         <div class="wrapper"ng-controller="ClaimController as clCtrl" >
@@ -61,7 +48,7 @@
             <div class="formRecord" id="formRecord-id" >
                 <i class="fas fa-times i-close" onclick="formRecord_close()"></i>
                 <label for="type-claim">Тип заявки</label>
-                <select name="type-claim" ng-model="clCtrl.claim.tip">
+                <select name="type-claim" ng-model="clCtrl.claim.clType">
                     <option value="">---Выберите---</option>
                     <option value="claim_type_weekly">Еженедельная</option>
                     <option value="claim_type_additional">Дополнительная</option>
@@ -84,11 +71,7 @@
                     </div>	
                     <div class="form-item" >
                         <label for="criterion">Вид техники</label>
-<!--                        <select name="criterion" ng-model="" ng-repeat="" required>
-                            <option value="1">Самосвал</option>
-                            <option value="2">Бульдозер</option>
-                        </select>	-->
-                        <select ng-options="vt as vt.specialization for vt in clCtrl.vehicleTypes track by vt.id | filter: search" ng-model="clCtrl.record.vehicleType">
+                        <select ng-options="vt as vt.type for vt in clCtrl.vehicleTypes | filter: search track by vt.id" ng-model="clCtrl.record.vehicleTypes">
                         </select>
                     </div>	
                     <div class="form-item clearfix" >
@@ -124,11 +107,6 @@
                                 <option >Пл.23</option>
                             </select> 
                         </div>
-                        <!--	
-                        <div class="right-block-route">
-                               <div class="edit fa fa-plus" ng-click="routeTag.addTag()"></div>
-                        </div>
-                        <div ng-show="tag.done" class="route-tag" ng-repeat=" tag in routeTag.tags">{{tag.text}}</div>-->
                     </div>	
                     <div class="form-item">
                         <button class="btn submit" id="btn-add-edit"></button>
@@ -136,14 +114,6 @@
 
                 </form>
             </div>
-            <!--	
-                    <ul class="add-temp">
-                            <li>Пассажирский,25 человек, время выезда:08:00</li>
-                            <li>Грузовой,2 пассажира,1тонна,время выезда:08:00</li>
-                            <li>Грузовой,2 пассажира,1тонна,время выезда:08:00</li>
-                    </ul>-->
-
-
             <div class="main clearfix"  >
                 <div class="header clearfix">
                     <!--Logo -->
@@ -362,42 +332,8 @@
                                                     <button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
                                                 </td>
                                             </tr>
-                                            <!--		  			<tr>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
-                                                                                            
-                                                                                                    
-                                                                                            
-                                                                                            </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                    
-                                                                                            <td>-</td>
-                                                                                            <td></td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td>-</td>
-                                                                                            <td><button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i></td>
-                                                                                    </tr>-->
                                         </table>
                                     </td>	
-                                    <!--			  			</tr>
-                                                                                    <tr>                        
-                                                                                            <td>№ {{claim.id}} от {{claim.clDate}}</td>
-                                                                                            <td><span class="claim-status "><i class="fas fa-clock"></i>Ожидается</span></td>
-                                                                                    </tr>
-                                                                                    <tr>                        
-                                                                                            <td>№ {{claim.id}} от {{claim.clDate}}</td>
-                                                                                            <td><span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отмена</span></td>
-                                                                                    </tr>		  			-->
                             </table>	
 
                         </div>	
@@ -409,6 +345,5 @@
 
 
         <script type="text/javascript" src="js/script/script.js"></script>
-        <!--<script type="text/javascript" src="assets/script/script.js"></script>-->
     </body>
 </html>

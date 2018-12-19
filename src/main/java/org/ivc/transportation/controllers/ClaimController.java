@@ -14,7 +14,6 @@ import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,7 +79,6 @@ public class ClaimController {
      */
     @PostMapping("/claims/byDepartment")
     public Collection<Claim> findClaimsByDepartment(@RequestBody Department department/*, @RequestBody DateRange dr*/) {
-        //return claimService.getAllClaimsByDate(dr);
         return claimService.getClaimsByDepartment(department.getId());
     }
 
@@ -261,12 +259,6 @@ public class ClaimController {
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
-//        @GetMapping("/claims/byUser/records")
-//    public Collection<Record> findRecrodsByClaim(Principal principal) {
-//       // System.out.println(claim);
-//     //   claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
-//        return claimService.get
-//    }
 
     /**
      * Метод добавляет новую запись в заявку подразделения. Номер подразделения
