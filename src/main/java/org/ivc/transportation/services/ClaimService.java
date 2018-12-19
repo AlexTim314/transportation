@@ -12,9 +12,11 @@ import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.FileStorage;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -75,4 +77,8 @@ public interface ClaimService {
     public Collection<VehicleType> getVehicleTypes();
 
     public Collection<VehicleType> getVehicleTypesBySpicialization(String s);
+    
+    public FileStorage storeFile(MultipartFile file, Claim claim);
+    
+//    public FileStorage getFile(Long id);
 }
