@@ -4,15 +4,22 @@ package org.ivc.transportation.controllers;
  *
  * @author user
  */
+import java.security.Principal;
+import java.sql.Date;
 import java.util.Collection;
 import java.util.Optional;
+import org.ivc.transportation.config.trUtils;
+import org.ivc.transportation.entities.Appointment;
 
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,7 +96,7 @@ public class TransportDepController {
     }
 
     @PostMapping("/transportDeps/vechicles")
-    public Collection<Vehicle> getVechicles(@RequestBody TransportDep department) {
+    public Collection<Vehicle> getVechicles(@RequestBody TransportDep department) {        
         return transportDepService.getVechiclesByTransportDepId(department.getId());
     }
 
@@ -134,4 +141,26 @@ public class TransportDepController {
         transportDepService.removeVehicleType(t.getId());
         return transportDepService.getVehicleTypes();
     }
+    
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @GetMapping("/transportDeps/appointments/{sD}/{eD}") //transportDeps/appointments/2018-01-01/2018-12-31
+    public Collection<Appointment> findAppointmentsByDateRange(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD) {
+        trUtils.DateRange dr = new trUtils.DateRange();
+        dr.StartDate = Date.valueOf(sD);
+        dr.EndDate = Date.valueOf(eD);
+       
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
+            if (transportDep == null) {
+                throw new IllegalArgumentException("У пользователя не указан транспортный отдел. Добавить обработку исключения."); //NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            return transportDepService.getAppointmentsByTransportDepAndDateRange(transportDep, dr);            
+        }
+        return null;
+    }
+    
 }
