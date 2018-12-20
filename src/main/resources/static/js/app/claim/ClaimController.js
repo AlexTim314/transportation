@@ -49,11 +49,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
         self.addRowHandlersRecords = function (rec) {
-            console.log('rowhandler{')
-            console.log(rec);
-            console.log('}rowhandler')
             self.record = rec;
-
         };
 
         self.fetchAllRecords = function (claim) {
@@ -68,6 +64,8 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                                 alert(errResponse);
                             }
                     );
+            
+            
         };
 
         self.fetchAllVehicleTypes = function () {
@@ -147,7 +145,6 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 record.returnDate = new Date(record.returnDate);
                 record.returnTime = new Date(record.returnTime);
                 record.timeDelivery = new Date(record.timeDelivery);
-                alert('Стоп');
                 ClaimService.createRecord(record)
                     .then(
                             self.fetchAllRecords(self.claim),
@@ -212,12 +209,12 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             self.record.id = record.id;
             self.record.weekHash = record.weekHash;
             self.record.type = record.type;
-            self.record.datetime = record.datetime;
-            self.record.departureDate = record.departureDate;
-            self.record.returnDate = record.returnDate;
-            self.record.timeDelivery = record.timeDelivery;
-            self.record.departureTime = record.departureTime;
-            self.record.returnTime = record.returnTime;
+            self.record.datetime = new Date(record.datetime);
+            self.record.departureDate = new Date(record.departureDate);
+            self.record.returnDate = new Date(record.returnDate);
+            self.record.timeDelivery = new Date(record.timeDelivery);
+            self.record.departureTime = new Date(record.departureTime);
+            self.record.returnTime = new Date(record.returnTime);
             self.record.purpose = record.purpose;
             self.record.serviceField = record.serviceField;
             self.record.templateName = record.templateName;
