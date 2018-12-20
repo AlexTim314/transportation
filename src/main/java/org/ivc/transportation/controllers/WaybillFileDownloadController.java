@@ -167,15 +167,17 @@ public class WaybillFileDownloadController {
                                 break;
 
                             case организация:
-                                c.setCellValue("организация Пока не поддерживается.");
+                                c.setCellValue(record.getClaim().getDepartment().getName()
+                                        + " " + record.getClaim().getDepartment().getAddres());
                                 break;
-                            case адрес_телефон:
-                                c.setCellValue("адрес_телефон Пока не поддерживается.");
-                                break;
+                           /* 
+                                case адрес_телефон:
+                                c.setCellValue();
+                                break;*/
                             case марка:
-                                c.setCellValue("марка Пока не поддерживается.");
+                                c.setCellValue(vechicle.getVehicleModel().getModelName());
                                 break;
-
+                                
                             case госномер:
                                 c.setCellValue(vechicle.getNumber());
                                 break;
