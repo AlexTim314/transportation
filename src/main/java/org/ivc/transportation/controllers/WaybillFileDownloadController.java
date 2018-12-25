@@ -12,7 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -44,6 +43,7 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
+import org.ivc.transportation.exceptions.NullPrincipalException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +53,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 /**
  *
@@ -74,11 +72,10 @@ public class WaybillFileDownloadController {
     private ServletContext servletContext;
 
     /**
-     * МЕтод для проверки работы формирования путевых листов. В релиз не пойдёт.
+     * Метод для проверки работы формирования путевых листов. В релиз не пойдёт.
      *
      * @param response
      * @param principal
-     * @return
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -106,180 +103,176 @@ public class WaybillFileDownloadController {
     // @PostMapping("/waybilldownload")
     public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
 
-        if (principal != null) { //возможно стоит добавить проверку, что авторизован Диспетчер
-            if (appointment.getStatus() != AppointmentStatus.appointment_status_completed) {
+        if (principal == null) {
+            throw new NullPrincipalException("Неавторизованный доступ к данной странице закрыт. "
+                    + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
+        }
+        if (appointment.getStatus() != AppointmentStatus.appointment_status_completed) {
 
-                String message = "Error2. Распоряжение не утверждено. Для печати "
-                        + "путевого листа, прежде требуется согласовать и "
-                        + "утвердить распоряжение." + appointment.getStatus();
-                System.out.println(message);
+            String message = "Error2. Распоряжение не утверждено. Для печати "
+                    + "путевого листа, прежде требуется согласовать и "
+                    + "утвердить распоряжение." + appointment.getStatus();
+            System.out.println(message);
+        }
+
+        String excelFilePath;
+        VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
+        switch (specialization) {
+            case Пассажирский:
+            case Легковой:
+                excelFilePath = "Waybill6.xls";
+                break;
+            case Грузовой:
+            case Спецтехника:
+            default:
+                excelFilePath = "Waybill3.xls";
+                break;
+        };
+
+        Waybill waybill = appointment.getWaybill();
+        Vehicle vechicle = appointment.getVehicle();
+
+        Driver driver = appointment.getDriver();
+        //Record record = appointment.getRecord();
+        Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
+        LocalDateTime dateTime = appointment.getAppDateTime();
+
+        try {
+            Workbook workbook;
+            try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
+                workbook = WorkbookFactory.create(inputStream);
+                List<? extends Name> allNames = workbook.getAllNames();
+                List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
+
+                for (Name name : allNames) {
+                    String cellName = name.getNameName().trim().toLowerCase().replace(" ", "_");
+                    try {
+                        NamedCell namedCell = NamedCell.valueOf(cellName);
+                        Cell c = getCell(workbook, name);
+                        switch (namedCell) {
+                            case серия:
+                                c.setCellValue(waybill.getSeries());
+                                break;
+                            case номер:
+                                c.setCellValue(waybill.getNumber());
+                                break;
+                            case число:
+                                c.setCellValue(dateTime.getDayOfMonth());
+                                break;
+                            case месяц:
+                                c.setCellValue(dateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru")));
+                                break;
+                            case год:
+                                c.setCellValue(dateTime.getYear());
+                                break;
+
+                            case организация:
+                                c.setCellValue(record.getClaim().getDepartment().getName()
+                                        + " " + record.getClaim().getDepartment().getAddres());
+                                break;
+                           /* 
+                                case адрес_телефон:
+                                c.setCellValue();
+                                break;*/
+                            case марка:
+                                c.setCellValue(vechicle.getVehicleModel().getModelName());
+                                break;
+                                
+                            case госномер:
+                                c.setCellValue(vechicle.getNumber());
+                                break;
+                            case водитель:
+                                c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
+                                break;
+                            case удостоверение:
+                                c.setCellValue(driver.getDriverLicense());
+                                break;
+                            case класс:
+                                c.setCellValue(driver.getDriverClass());
+                                break;
+                            case диспетчер:
+                                c.setCellValue(waybill.getDispatcher().getUserName());
+                                break;
+                            case механик:
+                                c.setCellValue(waybill.getMechanic().getUserName());
+                                break;
+                            case время_выезда_по_графику:
+                                c.setCellValue(record.getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                break;
+                            case время_возвращения_по_графику:
+                                c.setCellValue(record.getReturnTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                break;
+                            case показание_спидометра_при_выезде:
+                                c.setCellValue(vechicle.getOdometr());
+                                break;
+                            case принял:
+                                c.setCellValue(driver.getFirstname() + " "
+                                        + driver.getName().charAt(0) + "."
+                                        + driver.getSurname().charAt(0) + ".");
+                                break;
+                            case сдал:
+                                c.setCellValue(driver.getFirstname() + " "
+                                        + driver.getName().charAt(0) + "."
+                                        + driver.getSurname().charAt(0) + ".");
+                                break;
+                            case остаток_горючего_при_выезде:
+                                c.setCellValue(vechicle.getFuelRemnant());
+                                break;
+                            case заказчик:
+                                c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
+                                break;
+                        }
+
+                        expectedNamedCells.remove(namedCell);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("В файле " + excelFilePath + " обнаружен"
+                                + " именованный диапазон, который не ожидался."
+                                + " Имя " + cellName + " не представлено в списке возможных."
+                                + " Никаких действий не выполнено.");
+                    }
+                }
+                if (!expectedNamedCells.isEmpty()) {
+                    System.out.println("В файле " + excelFilePath + "не обнаружены"
+                            + " все ожидавшиеся именованные диапазоны."
+                            + " Ячейки со следующими именами не были заполнены: "
+                            + expectedNamedCells.toString());
+                }
             }
 
-            String excelFilePath; 
-            VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
-            switch (specialization) {
-                case Пассажирский:
-                case Легковой:
-            /*        excelFilePath = "Waybill6.xls";
-                    break;
-              */  case Грузовой:
-                case Спецтехника:                    
-                default:
-                    excelFilePath = "Waybill3.xls";
-                    break;
-            };
-            
-            
-            Waybill waybill = appointment.getWaybill();
-            Vehicle vechicle = appointment.getVehicle();
-            
-            Driver driver = appointment.getDriver();
-            //Record record = appointment.getRecord();
-            Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
-            LocalDateTime dateTime = appointment.getAppDateTime();
+            String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
+            File file = File.createTempFile("waybill", specialization.name());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            workbook.write(fileOutputStream);
+            workbook.close();
 
             try {
-                Workbook workbook;
-                try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
-                    workbook = WorkbookFactory.create(inputStream);
-                    List<? extends Name> allNames = workbook.getAllNames();
-                    List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
+                MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
+                MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
 
-                    for (Name name : allNames) {
-                        String cellName = name.getNameName().trim().toLowerCase().replace(" ", "_");
-                        try {
-                            NamedCell namedCell = NamedCell.valueOf(cellName);
-                            Cell c = getCell(workbook, name);
-                            switch (namedCell) {
-                                case серия:
-                                    c.setCellValue(waybill.getSeries());
-                                    break;
-                                case номер:
-                                    c.setCellValue(waybill.getNumber());
-                                    break;
-                                case число:
-                                    c.setCellValue(dateTime.getDayOfMonth());
-                                    break;
-                                case месяц:
-                                    c.setCellValue(dateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru")));
-                                    break;
-                                case год:
-                                    c.setCellValue(dateTime.getYear());
-                                    break;
-                                    /*
-                                 case организация:
-                                    c.setCellValue("организация Пока не поддерживается.");
-                                    break;
-                                case адрес_телефон:
-                                    c.setCellValue("адрес_телефон Пока не поддерживается.");
-                                    break;
-                               case марка:
-                                    c.setCellValue("марка Пока не поддерживается.");
-                                    break;
-                                    */
-                                case госномер:
-                                    c.setCellValue(vechicle.getNumber());
-                                    break;
-                                case водитель:
-                                    c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
-                                    break;
-                                case удостоверение:
-                                    c.setCellValue(driver.getDriverLicense());
-                                    break;
-                                case класс:
-                                    c.setCellValue(driver.getDriverClass());
-                                    break;
-                                case диспетчер:
-                                    c.setCellValue(waybill.getDispatcher().getUserName());
-                                    break;
-                                case механик:
-                                    c.setCellValue(waybill.getMechanic().getUserName());
-                                    break;
-                                case время_выезда_по_графику:
-                                    c.setCellValue(record.getDepartureTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                                    break;
-                                case время_возвращения_по_графику:
-                                    c.setCellValue(record.getReturnTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                                    break;
-                                case показание_спидометра_при_выезде:
-                                    c.setCellValue(vechicle.getOdometr());
-                                    break;
-                                case принял:
-                                    c.setCellValue(driver.getFirstname() + " "
-                                            + driver.getName().charAt(0) + "."
-                                            + driver.getSurname().charAt(0) + ".");
-                                    break;
-                                case сдал:
-                                    c.setCellValue(driver.getFirstname() + " "
-                                            + driver.getName().charAt(0) + "."
-                                            + driver.getSurname().charAt(0) + ".");
-                                    break;
-                                case остаток_горючего_при_выезде:
-                                    c.setCellValue(vechicle.getFuelRemnant());
-                                    break;
-                                case заказчик:
-                                    c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
-                                    break;
-                            }
+                response.setContentType(mediaType.getType());
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+                response.setContentLength((int) file.length());
 
-                            expectedNamedCells.remove(namedCell);
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("В файле " + excelFilePath + " обнаружен"
-                                    + " именованный диапазон, который не ожидался."
-                                    + " Имя " + cellName + " не представлено в списке возможных."
-                                    + " Никаких действий не выполнено.");
-                        }
-                    }
-                    if (!expectedNamedCells.isEmpty()) {
-                        System.out.println("В файле " + excelFilePath + "не обнаружены"
-                                + " все ожидавшиеся именованные диапазоны."
-                                + " Ячейки со следующими именами не были заполнены: "
-                                + expectedNamedCells.toString());
-                    }
+                BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
+                BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
+
+                byte[] buffer = new byte[1024];
+                int bytesRead = 0;
+                while ((bytesRead = inStream.read(buffer)) != -1) {
+                    System.out.println("Waybill downloading..");
+                    outStream.write(buffer, 0, bytesRead);
                 }
+                outStream.flush();
+                inStream.close();
 
-                String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
-                File file = File.createTempFile("waybill", specialization.name());
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                workbook.write(fileOutputStream);
-                workbook.close();                
-
-                try {
-                    MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-                    MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
-
-                    response.setContentType(mediaType.getType());
-                    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
-                    response.setContentLength((int) file.length());
-
-                    BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
-                    BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());                    
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead = 0;
-                    while ((bytesRead = inStream.read(buffer)) != -1) {
-                        System.out.println("Waybill downloading..");
-                        outStream.write(buffer, 0, bytesRead);
-                    }
-                    outStream.flush();
-                    inStream.close();
-                  
-                } catch (IOException ex) {
-                    throw new RuntimeException("IOError writing file to output stream");
-                }
-
-            } catch (IOException | EncryptedDocumentException ex) {
-                ex.printStackTrace();
+            } catch (IOException ex) {
+                throw new RuntimeException("IOError writing file to output stream");
             }
+
+        } catch (IOException | EncryptedDocumentException ex) {
+            ex.printStackTrace();
         }
-    }
 
-    private void createWaybillForm6(HttpServletResponse response, Appointment appointment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void createWaybillForm3(HttpServletResponse response, Appointment appointment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     class MediaTypeUtils {

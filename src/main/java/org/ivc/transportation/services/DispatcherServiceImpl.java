@@ -48,6 +48,7 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public Driver saveDriver(Principal principal, Driver driver) {
+        driver.setTransportDep(getTransportDep(principal));
         return driverRepository.save(driver);
     }
 
@@ -67,6 +68,7 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public Vehicle saveVehicle(Principal principal, Vehicle vehicle) {
+        vehicle.setTransportDep(getTransportDep(principal));
         return vehicleRepository.save(vehicle);
     }
 

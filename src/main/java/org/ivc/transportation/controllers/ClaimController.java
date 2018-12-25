@@ -11,6 +11,7 @@ import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.FileStorage;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Waypoint;
@@ -18,7 +19,7 @@ import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.WaypointService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.ivc.transportation.utils.UploadFileResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
 
 /**
  *
@@ -44,6 +61,7 @@ public class ClaimController {
     
     @Autowired
     private WaypointService waypointService;
+
 
     /**
      * Метод возвращает заявки поданные подразделением. Номер подразделения
@@ -381,6 +399,39 @@ public class ClaimController {
             return waypointService.getWaypoints();
         }
         return null;
+    }
+    
+    
+    @PostMapping("/claims/byUser/uploadFile")
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+        FileStorage dbFile = claimService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/claims/byUser/downloadFile/")
+                .path(dbFile.getId().toString())
+                .toUriString();
+
+        return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
+                file.getContentType(), file.getSize());
+    }
+    
+    @PostMapping("/claims/byUser/uploadMultipleFiles")
+    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        return Arrays.asList(files)
+                .stream()
+                .map(file -> uploadFile(file))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/claims/byUser/downloadFile/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId) {
+        // Load file from database
+        FileStorage dbFile = claimService.getFile(fileId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                .body(new ByteArrayResource(dbFile.getData()));
     }
 
 }

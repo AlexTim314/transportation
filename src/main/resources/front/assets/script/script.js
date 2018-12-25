@@ -9,7 +9,7 @@ menu_close=function() {
  str.style.display="none";
 }
 more_open=function() {
- var str = document.getElementById("more-id");  
+ var str = document.getElementById("more-id");
  str.style.display="block";
 }
 more_close=function() {

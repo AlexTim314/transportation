@@ -1,8 +1,12 @@
 package org.ivc.transportation.services;
 
+
+import java.io.IOException;
 import java.util.Collection;
 import java.sql.Date;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import org.ivc.transportation.config.trUtils.RecordStatus;
@@ -10,15 +14,21 @@ import org.ivc.transportation.config.trUtils.*;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.entities.FileStorage;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
+import org.ivc.transportation.exceptions.FileNotFoundException;
+import org.ivc.transportation.exceptions.FileStorageException;
 import org.ivc.transportation.repositories.ClaimRepository;
+import org.ivc.transportation.repositories.FileStorageRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.ivc.transportation.repositories.VehicleTypeRepository;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -34,6 +44,9 @@ public class ClaimServiceImpl implements ClaimService {
     private RecordRepository recordRep;
     @Autowired
     private VehicleTypeRepository typeVechicleRep;
+    
+    @Autowired
+    private FileStorageRepository fileStorageRep;
 
     @Override
     @Transactional
@@ -197,5 +210,40 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<VehicleType> getVehicleTypesBySpicialization(String s) {
         return typeVechicleRep.findBySpecialization(s);
     }
+
+    @Override
+    public FileStorage storeFile(MultipartFile file) {
+       String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            // Проверка на наличие неверных символов в имени файла
+            if(fileName.contains("..")) {
+                throw new FileStorageException("Неверный путь к файлу " + fileName);
+            }
+
+            FileStorage dbFile = new FileStorage(fileName, file.getContentType(), file.getBytes());
+
+            return fileStorageRep.save(dbFile);
+        } catch (IOException ex) {
+            throw new FileStorageException("Невозможно сохранить файл " + fileName + ". Повторите попытку!", ex);
+        } 
+    }
+
+    @Override
+    public Collection<FileStorage> getFiles(Long id) {
+       return fileStorageRep.findByClaimId(id);
+    }
+    
+    @Override
+    public FileStorage getFile(Long fileId) {
+        return fileStorageRep.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
+    }
+
+
+
+
+    
+    
 
 }

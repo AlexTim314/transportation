@@ -26,6 +26,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
             },
 
             fetchAllRecords: function (claim) {
+//                return $http.get('/transportation/claims/byUser/records')
                 return $http.post('/transportation/claims/byUser/records',
                         JSON.stringify(claim), {headers: self.headers})
                         .then(

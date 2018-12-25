@@ -6,6 +6,8 @@ import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.DispatcherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,13 +45,15 @@ public class DispatcherController {
     }
 
     @DeleteMapping("/dispatcher/delete_driver")
-    public Driver deleteDriver(Principal principal, @RequestBody Driver driver) {
-        return dispatcherService.saveDriver(principal, driver);
+    public ResponseEntity<String> deleteDriver(Principal principal, @RequestBody Driver driver) {
+        dispatcherService.deleteDriver(principal, driver);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/dispatcher/delete_vehicle")
-    public Vehicle deleteVehicle(Principal principal, @RequestBody Vehicle vehicle) {
-        return dispatcherService.saveVehicle(principal, vehicle);
+    public ResponseEntity<String> deleteVehicle(Principal principal, @RequestBody Vehicle vehicle) {
+        dispatcherService.deleteVehicle(principal, vehicle);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
