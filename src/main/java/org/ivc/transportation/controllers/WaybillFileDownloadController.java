@@ -105,9 +105,7 @@ public class WaybillFileDownloadController {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
-            if (transportDep == null) {
-                throw new IllegalArgumentException("Error. У пользователя не указан транспортный отдел. Добавить обработку исключения."); //NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }
+            if (transportDep == null) {unexpectedNull("Транспортный отдел");}
             appointment = tdS.getAppointmentsByTransportDepAndDateRange(transportDep, dr).get(0);
             appointment.setStatus(AppointmentStatus.appointment_status_completed);
         }
@@ -136,7 +134,8 @@ public class WaybillFileDownloadController {
         switch (specialization) {
             case Пассажирский:
             case Легковой:
-                excelFilePath = "Waybill6.xls";
+                //excelFilePath = "Waybill6.xls";
+                excelFilePath = "Waybill3.xls";
                 break;
             case Грузовой:
             case Спецтехника:
@@ -278,7 +277,8 @@ public class WaybillFileDownloadController {
                     byte[] buffer = new byte[1024];
                     int bytesRead = 0;
                     while ((bytesRead = inStream.read(buffer)) != -1) {
-                        System.out.println("Waybill downloading..");
+                        
+                        System.out.println("Waybill downloading..(" + bytesRead +"bytes)");
                         outStream.write(buffer, 0, bytesRead);
                     }
                     
