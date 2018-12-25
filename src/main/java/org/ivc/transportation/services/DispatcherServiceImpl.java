@@ -48,14 +48,12 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public Driver saveDriver(Principal principal, Driver driver) {
-        return checkTransportDep(principal, driver) ? driverRepository.save(driver) : null;
+        return driverRepository.save(driver);
     }
 
     @Override
     public void deleteDriver(Principal principal, Driver driver) {
-        if (checkTransportDep(principal, driver)) {
-            driverRepository.delete(driver);
-        }
+        driverRepository.delete(driver);
     }
 
     @Override
@@ -69,14 +67,12 @@ public class DispatcherServiceImpl implements DispatcherService {
 
     @Override
     public Vehicle saveVehicle(Principal principal, Vehicle vehicle) {
-        return checkTransportDep(principal, vehicle) ? vehicleRepository.save(vehicle) : null;
+        return vehicleRepository.save(vehicle);
     }
 
     @Override
     public void deleteVehicle(Principal principal, Vehicle vehicle) {
-        if (checkTransportDep(principal, vehicle)) {
-            vehicleRepository.delete(vehicle);
-        }
+        vehicleRepository.delete(vehicle);
     }
 
     @Override
@@ -103,16 +99,6 @@ public class DispatcherServiceImpl implements DispatcherService {
             return userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
         }
         return null;
-    }
-
-    private boolean checkTransportDep(Principal principal, Driver driver) {
-        TransportDep transportDep = getTransportDep(principal);
-        return transportDep != null && transportDep.equals(driver.getTransportDep());
-    }
-
-    private boolean checkTransportDep(Principal principal, Vehicle vehicle) {
-        TransportDep transportDep = getTransportDep(principal);
-        return transportDep != null && transportDep.equals(vehicle.getTransportDep());
     }
 
 }
