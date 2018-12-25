@@ -334,7 +334,7 @@ i{
 .menu-new-claim{
 	display: none;
 	position: absolute;
-	top:20%;
+	top:10%;
 	left:35%;
 	width: 20%;
 	min-width: 284px;
@@ -357,7 +357,7 @@ i{
 }
 .form-item{
 	display: block;
-	margin:10% 10%;
+	margin:7% 7%;
 	font-size: 0.9em;
 
 }
@@ -372,7 +372,15 @@ i{
 	
 }
 
+.none-active-bg{
+	display: none;
+	position: absolute;
+	background: transparent;
+	width: 100%;
+	height: 100vh;
+	z-index: 99;
 
+}
 .menu-new-claim input,select,textarea{
 	width: 100%;
 	padding-top:5px; 
@@ -714,13 +722,24 @@ input[type="search"]:hover{
 	position: absolute;
 	width: 50px;
 	min-width:100px;
-	right:2px;
-	top:50%;
-	margin-top:-17px;
 	max-height: 35px;
 }
-.table-record tr:hover{
+.add-hover2{
+	right:2px;
+	top:50%;
+	margin-top:-17px;	
+}
+.add-hover1{
+	right:110px;
+	top:50%;
+	margin-top:-17px;
+}
+.table-record tr:hover{ 
 	background: grey;
+/*	border-color: grey;*/
+}
+.table-record tr:hover + .hiddenRow .cell-item:before{
+	background: grey;			
 }
 .table-record tr:hover .add-hover{
 	display: block;
@@ -867,13 +886,14 @@ input[type="search"]:hover{
 	width: 10%;
 }
 .table-claim th:nth-child(8){
-	width: 5%;
+	width: 8%;
 	min-width: 50px;
 }
 
 .table-claim select{
 	border:none;
 }
+
 .table-claim td{
 	position: relative;
 	padding-top:10px;
@@ -968,6 +988,10 @@ input[type="search"]:hover{
 /*	padding-top: 1%;
 	padding-bottom:1%;*/
 	overflow: hidden;	
+	text-transform: uppercase;
+}
+.table-status  td{
+	padding:10px 10px;
 }
 .table-status tr th:fist-child {
 	border-top-left-radius: 3px;	
@@ -978,11 +1002,52 @@ input[type="search"]:hover{
 }
 .table-status tr:hover{
 	background: grey;
+
 }
-.dropdown{
-	width: 100%;
-	height:30px;
-	background: grey;
+.table-status tr:hover td{
+	border-bottom-color: grey;
+}
+.table-status td:first-child:before{
+	content: "";
+	position: absolute;
+	top:50%;
+	margin-top:-10px;
+	left: -10px;
+	height: 20px;
+	width: 20px;
+	transform: rotate(45deg);
+	background: var(--edit-btn-color1);
+	opacity: 0;
+}
+.table-status tr:hover td:first-child:before{
+	opacity: 1;
+}
+.table-status tr:hover td{
+	cursor: pointer;
+}
+.table-status tr th:nth-child(1){
+	width: 10%;
+}
+.table-status tr th:nth-child(2){
+	width: 10%;
+}
+.table-status tr th:nth-child(3){
+	width: 10%;
+}
+.table-status tr th:nth-child(4){
+	width: 20%;
+}
+.table-status tr th:nth-child(5){
+	width: 10%;
+}
+.table-status tr th:nth-child(6){
+	width: 10%;
+}
+.table-status tr th:nth-child(7){
+	width: 10%;
+}
+.table-status tr th:nth-child(8){
+	width: 10%;
 }
 /*-------------------------------STYLE WIDTH TABLE STATUS---------------*/
 

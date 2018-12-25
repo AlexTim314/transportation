@@ -101,6 +101,12 @@ public class TransportationApplication {
         Department dep3 = new Department("NAME-3", "ADDRES-3");
         Department dep4 = new Department("NAME-4", "ADDRES-4");
         Department dep5 = new Department("NAME-5", "ADDRES-5");
+        dep1.setShortName("КАТО");
+        dep2.setShortName("ЦИ-1");
+        dep3.setShortName("ЦИ-3");
+        dep4.setShortName("ЦИ-4");
+        dep1.setShortName("Крайний");
+        
         depS.saveDepartment(dep1);
         depS.saveDepartment(dep2);
         depS.saveDepartment(dep3);
@@ -201,22 +207,22 @@ public class TransportationApplication {
 
         String[] hash = {"g54drg546s", "g54drg546s", "g54drg546s", "s6d54g6s846h5", "s6d54g6s846h5"};
 
-Set<Waypoint> wayps1 = new HashSet<Waypoint>();
-wayps1.add(waypoint1);
-wayps1.add(waypoint3);
-Set<Waypoint> wayps2 = new HashSet<Waypoint>();
-wayps2.add(waypoint2);
-wayps2.add(waypoint4);
-        
-        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null,wayps1);
+        Set<Waypoint> wayps1 = new HashSet<>();
+        wayps1.add(waypoint1);
+        wayps1.add(waypoint3);
+        Set<Waypoint> wayps2 = new HashSet<>();
+        wayps2.add(waypoint2);
+        wayps2.add(waypoint4);
+
+        Record rec1 = new Record(hash[0], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут1", "Сервисное поле", "шаблон1", "Старший машины 1", cl1, null, wayps1);
         rec1.setStatus(RecordStatus.record_status_created);
-        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null,wayps2);
+        Record rec2 = new Record(hash[1], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут2", "Сервисное поле", "шаблон2", "Старший машины 2", cl1, null, wayps2);
         rec2.setStatus(RecordStatus.record_status_inprogress);
-        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null,wayps1);
+        Record rec3 = new Record(hash[2], Date.valueOf("2018-10-20"), Date.valueOf("2018-10-20"), Date.valueOf("2018-10-25"), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут3", "Сервисное поле", "шаблон3", "Старший машины 3", cl3, null, wayps1);
         rec3.setStatus(RecordStatus.record_status_created);
-        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null,wayps2);
+        Record rec4 = new Record(hash[3], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут4", "Сервисное поле", "шаблон4", "Старший машины 4", cl4, null, wayps2);
         rec4.setStatus(RecordStatus.record_status_inprogress);
-        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T"+LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null,wayps1);
+        Record rec5 = new Record(hash[4], Date.valueOf("2018-10-24"), Date.valueOf("2018-10-24"), Date.valueOf("2018-10-29"), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Какойто текст", LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), LocalDateTime.parse("1970-01-01T" + LocalTime.now(), DateTimeFormatter.ISO_LOCAL_DATE_TIME), "Пассажирский транспорт", "маршрут5", "Сервисное поле", "шаблон5", "Старший машины 5", cl2, null, wayps1);
         rec5.setStatus(RecordStatus.record_status_completed);
         clS.addRecord(rec1);
         clS.addRecord(rec2);
@@ -313,19 +319,19 @@ wayps2.add(waypoint4);
         Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
         Waybill waybill2 = new Waybill("серия1", "0002", 400.01f, 40.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
         Waybill waybill3 = new Waybill("серия2", "0001", 300.01f, 30.5f, "Исправно", "Здоров", "Замечаний нет", taskList);
-        
+
         AppUser dispatcher = new AppUser("Диспетчер Д.Д.", PASSWORD, true, new HashSet<>());
         userRepository.save(dispatcher);
         AppUser mechanic = new AppUser("Механик М.М.", PASSWORD, true, new HashSet<>());
         userRepository.save(mechanic);
-        
+
         waybill1.setDispatcher(dispatcher);
         waybill1.setMechanic(mechanic);
         waybill2.setDispatcher(dispatcher);
         waybill2.setMechanic(mechanic);
         waybill3.setDispatcher(dispatcher);
         waybill3.setMechanic(mechanic);
-        
+
         waybillService.addWaybill(waybill1);
         waybillService.addWaybill(waybill2);
         waybillService.addWaybill(waybill3);

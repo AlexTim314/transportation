@@ -3,13 +3,15 @@ menu_open=function() {
  str.style.display="block";
  var str1 = document.getElementById("btn-add-edit");
  str1.innerHTML="Добавить";
+ document.getElementById('no-active1').style.display = 'block';
 }
 menu_close=function() {
  var str = document.getElementById("form-add");
  str.style.display="none";
+  document.getElementById('no-active1').style.display = 'none';
 }
 more_open=function() {
- var str = document.getElementById("more-id");  
+ var str = document.getElementById("more-id");
  str.style.display="block";
 }
 more_close=function() {
@@ -22,6 +24,7 @@ edit_open=function() {
  str.style.display="block";
  var str1 = document.getElementById("btn-add-edit");
  str1.innerHTML="Изменить";
+  document.getElementById('no-active1').style.display = 'block';
 }
 
 formRecord_close=function(){

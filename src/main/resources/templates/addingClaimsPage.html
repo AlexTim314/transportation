@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <meta name="_csrf" th:content="${_csrf.token}"/>
+          <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +11,24 @@
         <script src="js/app/claim/ClaimService.js"></script>
         <script src="js/app/claim/ClaimController.js"></script>
         <script src="js/app/routeTagController.js"></script>
-<!--        <script src="js/script/fileStorage.js"></script>-->
+       <script src="js/script/fileStorage.js"></script>
 
 <!--        <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">-->
         <link href="fontawesome/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css"> 
+<!--        	<meta charset="UTF-8">
+                
+                <title>Комплекс автотраспортного обеспечения</title>
+                <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+                <link href="assets/fontawesome/css/all.css" rel="stylesheet">
+                <link rel="stylesheet" href="assets/style/style.css">
+                        
+                <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+                <script src="assets/app/app.js"></script>-->
+        <!--	<script src="assets/app/directives/firstDirective.js"></script>-->
+        <!--	<script src="assets/app/controllers/routeTagController.js"></script>-->
+
     </head>
     <body ng-app="Transportation" >
         <div class="wrapper"ng-controller="ClaimController as clCtrl" >
@@ -64,8 +77,17 @@
                 </div>
                 <button class="btn delete" ng-click="clCtrl.createClaim(clCtrl.claim)" >Создать</button>
             </div>
+            <div class="none-active-bg" id="no-active2">
+            <div class="dialog-window" id="dialog-window">
+				<i class="fas fa-times i-close " onclick="formClose('dialog-window','no-active2')"></i>
+				<p>Вы уверены, что хотите удалить?</p>
+				<div class="btn edit" onclick="formClose('dialog-window','no-active2')">Отмена</div>
+				<div class="btn delete" ng-click="clCtrl.delRecieveRecord()" onclick="formClose('dialog-window','no-active2')"><i class="fas  fa-trash-alt"></i>Удалить</div>			
+			</div>
+			</div>
             <!----------------------------------------------ADD-FORM------------------->
-            <div class="menu-new-claim" id="form-add">
+            <div class="none-active-bg" id="no-active1">
+           	  <div class="menu-new-claim" id="form-add">
                 <i class="fas fa-times" onclick="menu_close()"></i>
                 <form>
                     <div class="custom-select form-item">
@@ -100,16 +122,16 @@
                         <div class="right-block">
                             <label for="time-end">Время конца</label>
                             <input type="time"  name="time-end" ng-model="clCtrl.record.returnTime" required>
-                        </div>
-                        <div>
+                        </div>                        
+                    </div>	
+                    <div class="form-item clearfix">
                             <label for="time-delivery">Время подачи</label>
                             <input type="time"  name="time-delivery" ng-model="clCtrl.record.timeDelivery" required>
                         </div>
-                        <div>
+                    <div class="form-item clearfix">
                             <label for="car-boss">Старший машины</label>
                             <input type="text"  name="car-boss" ng-model="clCtrl.record.carBoss" required>
-                        </div>
-                    </div>	
+                    </div>
                     <div class="form-item">
                         <label for="purpose">Цель</label>
                         <textarea name="purpose"   rows="10" ng-model="clCtrl.record.purpose" ></textarea>
@@ -132,7 +154,8 @@
                     </div>
 
                 </form>
-            </div>
+              </div>
+        	</div>
             <div class="main clearfix"  >
                 <div class="header clearfix">
                     <!--Logo -->
@@ -145,8 +168,8 @@
                     <!--Navigation -->	
 
                     <nav class="nav-horizontal">
-                        <div class="btn active" id="tab-btn1" onclick="open_tab1()">Подача заявок</div>
-                        <div class="btn" id="tab-btn2" onclick="open_tab2()">Статус заявок</div>			
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1','tab-btn1',2)">Подача заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2','tab-btn2',2)">Статус заявок</div>			
                     </nav>
 
                     <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
@@ -168,38 +191,38 @@
                         <li class="menu-item" id="new">
                             <div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
                             <div class="filter">
-                                <div class="filter-container" >
+                                <div class="filter-container tab1 tab2" >
                                     <p>Фильтрация</p>
                                     <div class="filter-type"><i class="fas fa-car" ng-click="searchSpecFilter = 'Легковой'"></i></div>
                                     <div class="filter-type"><i class="fas fa-bus-alt" ng-click="searchSpecFilter = 'Пассажирский'"></i></div>
                                     <div class="filter-type"><i class="fas fa-truck" ng-click="searchSpecFilter = 'Грузовой'"></i></div>
                                     <div class="filter-type"><i class="fas fa-tractor" ng-click="searchSpecFilter = 'Спецтехника'"></i></div>
                                 </div>
-                                <div class="filter-container">
+                                <div class="filter-container tab1 tab2">
                                     <label for="route-filter">Маршрут</label>
                                     <select name="route-filter">
                                         <option value="1">Пл.10-Пл.23</option>
                                     </select>
                                 </div>
-                                <div class="filter-container" id="f-empls" >
+                                <div class="filter-container tab1 tab2" id="f-empls" >
                                     <label for="declarer-filter">Вид техники</label>                                                                     
                                     <select name="declarer-filter" ng-options="vt as vt.type for vt in clCtrl.vehicleTypes| filter:searchSpecFilter track by vt.id"   ng-model="searchTypeFilter">
 
                                     </select>
                                 </div>
-                                <div class="filter-container">
+                                <div class="filter-container tab1 tab2">
                                     <label for="date-filter">Дата выезда</label>
                                     <input type="date" name="date-filter">
                                     </select>
                                 </div>
-                                <div class="filter-container" id="f-trnsp" style="display:none;">
+                                <div class="filter-container tab2" id="f-trnsp" style="display:none;">
                                     <label for="transport-filter">Название транспорта</label>
                                     <select name="transport-filter">
                                         <option value="1">ПАЗ</option>
                                         <option value="2">ГАЗ 66</option>
                                     </select>
                                 </div>
-                                <div class="filter-container" id="f-sts" style="display:none;">
+                                <div class="filter-container tab2" id="f-sts" style="display:none;">
                                     <label for="status-filter">Статус заявки</label>
                                     <select name="status-filter">
                                         <option value="1"><i class="fas fa-ban"></i>Отмена</option>
@@ -226,8 +249,8 @@
                         </div>
                         <div class="table-header clearfix">
                             <input type="search" ng-model="search">
-                            <button class="btn edit"><i class="fas fa-search"></i></button>	
-                        </div>		
+                        </div>
+                        <div class="height-wrapper"> 		
                         <table class="table-record" id="tbl1" >
                             <tr class="header-level">
                                 <th></th>
@@ -237,16 +260,17 @@
                                 <tr ng-repeat-start="claim in clCtrl.claims | filter:search" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
                                     <td>
                                         <label class="custom-checkbox">
-                                            <input type="checkbox" >1
+                                            <input type="checkbox" >-
                                             <span class="checkmark"></span>
                                         </label>		
                                     </td>
                                     <td>№ {{claim.id}} от {{claim.clDate| date: 'dd.MM.yyyy'}} 
-                                        <div class="add-hover delete btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
+                                        <div class="add-hover add-hover1  edit btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
+                                        <div class="add-hover add-hover2 delete btn" onclick="formOpen('dialog-window','no-active2')"><i class="fas fa-trash-alt"></i>Удалить</div>
                                     </td>
                                 </tr>
                                 <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
-                                    <td colspan="2">
+                                    <td colspan="2"  class="cell-item">
                                         <table class="table-claim">
 
                                             <tr>		
@@ -265,16 +289,18 @@
                                                 <td>{{record.departureDate| date:'dd.MM.yyyy'}}</td>
                                                 <td>{{record.timeDelivery| date:'hh:mm'}}</td>
                                                 <td>{{record.carBoss}}
-                                                    <button class="btn-hidden btn edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
-                                                    </button>
+                                                  <!--   <button class="btn-hidden btn edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"><i class="fas fa-edit" ></i>Изменить
+                                                    </button> -->
                                                 </td>
                                                 <td>{{record.purpose}}
-                                                    <button class="btn-hidden btn delete" ng-click="clCtrl.deleteRecord(record)"><i class="fas fa-trash-alt" ></i>Удалить</button>
+                                                   <!--  <button class="btn-hidden btn delete" ng-click="clCtrl.deleteRecord(record)"><i class="fas fa-trash-alt" ></i>Удалить</button> -->
                                                 </td>
                                                 <td>Waypoints</td>
 
                                                 <td>
-                                                    <button class="btn eye" ng-click="clCtrl.addRowHandlersRecords(record)" onclick="more_open()" ><i class="far fa-eye"></i></button>  			
+                                               <!--      <button class="btn eye" ng-click="clCtrl.addRowHandlersRecords(record)" onclick="more_open()" ><i class="far fa-eye"></i></button> -->
+                                                    <i class="fas fa-lg fa-edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"></i>
+                                                    <i class="fas fa-lg fa-trash-alt" ng-click="clCtrl.recieveRecord(record)" onclick="formOpen('dialog-window','no-active2')"></i>  			
                                                 </td>
                                             </tr>
                                         </table>
@@ -282,10 +308,11 @@
                                 </tr>                           
                             </tbody>
                         </table>
+                    </div>
 
 
                         <div class="assert-block clearfix">
-                            <button class="btn edit assert"><i class="fas fa-clipboard-check"></i>Утвердить</button>
+                            <button class="btn edit assert" ng-click="clCtrl.approvalClaims()"><i class="fas fa-clipboard-check"></i>Утвердить</button>
                             <button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
                         </div>
                     </div>
@@ -302,7 +329,7 @@
                             <li><label>Дата возвращения:<span>{{clCtrl.record.returnDate|date:'dd.MM.yyyy'}}</span></label></li>
                             <li><label>Время возвращения:<span>{{clCtrl.record.returnTime|date: 'hh:mm'}}</span></label></li>
                             <li><label>Время подачи:<span>{{clCtrl.record.timeDelivery|date: 'hh:mm'}}</span></label></li>
-                            <li><label>Маршрут:<span>..Не реализовано..</span></label></li>
+                             <li><label>Маршрут:<span data-ng-repeat="waypoint in clCtrl.record.waypoints">{{waypoint.name}} {{$first ? '' : ', '}}</span></label></li>
                         </ul>
                     </div>	
 
@@ -314,18 +341,18 @@
                                 <span class="filter-elem edit">Сегодня</span>
                                 <span class="filter-elem edit">За неделю</span>
                             </div>
-
+                        <div class="height-wrapper">  
                             <table class="table-record" id="tbl2">
                                 <tr>
                                     <th>Заявки</th>
                                     <th>Статус</th>
                                 </tr>
-                                <tr ng-repeat="claim in clCtrl.claims" ng-click="clCtrl.addRowHandlers(claim)" style = "cursor: pointer">                        
+                                <tr  ng-repeat-start="claim in clCtrl.claims" ng-click="clCtrl.addRowHandlers(claim)" style = "cursor: pointer">                        
                                     <td>№ {{claim.id}} от {{claim.clDate}}</td>
                                     <td><span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span></td>
                                 </tr>
-                                <tr class="hiddenRow collapseRow">
-                                    <td colspan="2">
+                                <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>>
+                                    <td colspan="2" class="cell-item">
                                         <table class=" table-status">
 
                                             <tr>
@@ -336,23 +363,32 @@
                                                 <th>Маршрут</th>
                                                 <th>Транспорт</th>
                                                 <th>Водитель</th>
+                                                <th>Статус</th>
                                                 <th></th>
                                             </tr>
                                             <tr ng-repeat="record in claim.records">
                                                 <td>{{record.vehicleType.specialization}}</td>
-                                                <td>20.12.2018</td>
-                                                <td>08:00</td>
-                                                <td>Перевозка пассажиров</td>
-                                                <td>Пл.10-Пл.18</td>
-                                                <td>ПАЗ X234XX</td>
-                                                <td>Иванов И.И.</td>
+                                                 <td>{{record.departureDate| date:'dd.MM.yyyy'}}</td>
+                                               <td>{{record.timeDelivery| date:'hh:mm'}}</td>  
+                                                <td>{{record.purpose}}</td>
+                                               <td>
+                                                    <span data-ng-repeat="waypoint in record.waypoints">{{waypoint.name}} {{$last ? '' : ', '}}</span>
+                                                </td>
+                                                <td>..не реализовано..</td>
+                                                <td class="td-relative">
+                                                	<i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
+                                                	Иванов И.И.
+
+                                                </td>
+                                                <td>Готово</td>
                                                 <td>
                                                     <button class="btn eye" onclick="more_open()"><i class="far fa-eye"></i>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>	
-                            </table>	
+                            </table>
+                        </div>    	
 
                         </div>	
                     </div>
@@ -362,6 +398,7 @@
 
 
 
-        <script type="text/javascript" src="js/script/script.js"></script>
+         <script type="text/javascript" src="js/script/script.js"></script> 
+<!--        <script type="text/javascript" src="assets/script/script.js"></script>-->
     </body>
 </html>
