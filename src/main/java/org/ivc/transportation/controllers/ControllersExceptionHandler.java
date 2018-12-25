@@ -7,6 +7,7 @@ package org.ivc.transportation.controllers;
 
 import org.ivc.transportation.exceptions.NullPrincipalException;
 import org.ivc.transportation.exceptions.NonExistingDepartmentException;
+import org.ivc.transportation.exceptions.UnexpectedNullException;
 import org.ivc.transportation.exceptions.NotSpecifiedDepartmentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,5 +43,13 @@ public class ControllersExceptionHandler extends ResponseEntityExceptionHandler 
     String handleNullPrincipalException(NullPrincipalException ex) {
         return ex.getMessage();
     }
+    
+    @ResponseBody
+    @ExceptionHandler(UnexpectedNullException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String handleUnexpectedNullException(UnexpectedNullException ex) {
+        return ex.getMessage();
+    }
+    
  
 }

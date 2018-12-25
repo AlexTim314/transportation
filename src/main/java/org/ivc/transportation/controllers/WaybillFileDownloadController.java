@@ -5,6 +5,7 @@
  */
 package org.ivc.transportation.controllers;
 
+import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -20,7 +21,20 @@ import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.ServiceUI;
+import javax.print.SimpleDoc;
+import javax.print.attribute.AttributeSet;
+import javax.print.attribute.HashAttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.EncryptedDocumentException;
@@ -44,6 +58,7 @@ import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.exceptions.NullPrincipalException;
+import org.ivc.transportation.exceptions.UnexpectedNullException;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,9 +105,7 @@ public class WaybillFileDownloadController {
         if (principal != null) { //может ли principal быть null если доступ только авторизованный?
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
-            if (transportDep == null) {
-                throw new IllegalArgumentException("Error. У пользователя не указан транспортный отдел. Добавить обработку исключения."); //NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }
+            if (transportDep == null) {unexpectedNull("Транспортный отдел");}
             appointment = tdS.getAppointmentsByTransportDepAndDateRange(transportDep, dr).get(0);
             appointment.setStatus(AppointmentStatus.appointment_status_completed);
         }
@@ -107,6 +120,7 @@ public class WaybillFileDownloadController {
             throw new NullPrincipalException("Неавторизованный доступ к данной странице закрыт. "
                     + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
         }
+        if (appointment == null) { unexpectedNull("Назначение"); }
         if (appointment.getStatus() != AppointmentStatus.appointment_status_completed) {
 
             String message = "Error2. Распоряжение не утверждено. Для печати "
@@ -120,7 +134,8 @@ public class WaybillFileDownloadController {
         switch (specialization) {
             case Пассажирский:
             case Легковой:
-                excelFilePath = "Waybill6.xls";
+                //excelFilePath = "Waybill6.xls";
+                excelFilePath = "Waybill3.xls";
                 break;
             case Грузовой:
             case Спецтехника:
@@ -130,12 +145,14 @@ public class WaybillFileDownloadController {
         };
 
         Waybill waybill = appointment.getWaybill();
+        if (waybill == null) { unexpectedNull("Путевой лист"); }
         Vehicle vechicle = appointment.getVehicle();
-
+        if (vechicle == null) { unexpectedNull("Транспортное средство"); }
         Driver driver = appointment.getDriver();
-        //Record record = appointment.getRecord();
+        if (driver == null) { unexpectedNull("Водитель"); }
         Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
         LocalDateTime dateTime = appointment.getAppDateTime();
+        
 
         try {
             Workbook workbook;
@@ -165,15 +182,16 @@ public class WaybillFileDownloadController {
                             case год:
                                 c.setCellValue(dateTime.getYear());
                                 break;
-
                             case организация:
-                                c.setCellValue("организация Пока не поддерживается.");
+                                c.setCellValue(record.getClaim().getDepartment().getName()
+                                        + " " + record.getClaim().getDepartment().getAddres());
                                 break;
-                            case адрес_телефон:
-                                c.setCellValue("адрес_телефон Пока не поддерживается.");
-                                break;
+                            /* 
+                                case адрес_телефон:
+                                c.setCellValue();
+                                break;*/
                             case марка:
-                                c.setCellValue("марка Пока не поддерживается.");
+                                c.setCellValue(vechicle.getVehicleModel().getModelName());
                                 break;
 
                             case госномер:
@@ -230,8 +248,8 @@ public class WaybillFileDownloadController {
                     }
                 }
                 if (!expectedNamedCells.isEmpty()) {
-                    System.out.println("В файле " + excelFilePath + "не обнаружены"
-                            + " все ожидавшиеся именованные диапазоны."
+                    System.out.println("В файле " + excelFilePath + " обнаружены"
+                            + " не все ожидавшиеся именованные диапазоны."
                             + " Ячейки со следующими именами не были заполнены: "
                             + expectedNamedCells.toString());
                 }
@@ -239,6 +257,8 @@ public class WaybillFileDownloadController {
 
             String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
             File file = File.createTempFile("waybill", specialization.name());
+
+           
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             workbook.close();
@@ -251,17 +271,19 @@ public class WaybillFileDownloadController {
                 response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
                 response.setContentLength((int) file.length());
 
-                BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file));
-                BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-
-                byte[] buffer = new byte[1024];
-                int bytesRead = 0;
-                while ((bytesRead = inStream.read(buffer)) != -1) {
-                    System.out.println("Waybill downloading..");
-                    outStream.write(buffer, 0, bytesRead);
+                try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
+                    BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
+                    
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = 0;
+                    while ((bytesRead = inStream.read(buffer)) != -1) {
+                        
+                        System.out.println("Waybill downloading..(" + bytesRead +"bytes)");
+                        outStream.write(buffer, 0, bytesRead);
+                    }
+                    
+                    outStream.flush();
                 }
-                outStream.flush();
-                inStream.close();
 
             } catch (IOException ex) {
                 throw new RuntimeException("IOError writing file to output stream");
@@ -271,6 +293,12 @@ public class WaybillFileDownloadController {
             ex.printStackTrace();
         }
 
+    }
+
+    private void unexpectedNull(String message) {
+     throw new UnexpectedNullException("Внимание! Не обнаружены данные"
+             + " необходимые для выполнения операции. Отсутствует значение для поля \"" + message 
+             + "\". В случае повторения ошибки обратитесь к администратору.");
     }
 
     class MediaTypeUtils {
