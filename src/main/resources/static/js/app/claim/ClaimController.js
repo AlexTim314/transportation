@@ -14,6 +14,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.records = [];
         self.waypoints = [];
         self.vehicleTypes = [];
+        var recObj;
 
 
         self.fetchClaims = function () {
@@ -64,8 +65,8 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                                 alert(errResponse);
                             }
                     );
-            
-            
+
+
         };
 
         self.fetchAllVehicleTypes = function () {
@@ -139,13 +140,13 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 record.status = 'record_status_created';
                 console.log('created');
             }
-                record.datetime = new Date();
-                record.departureDate = new Date(record.departureDate);
-                record.departureTime = new Date(record.departureTime);
-                record.returnDate = new Date(record.returnDate);
-                record.returnTime = new Date(record.returnTime);
-                record.timeDelivery = new Date(record.timeDelivery);
-                ClaimService.createRecord(record)
+            record.datetime = new Date();
+            record.departureDate = new Date(record.departureDate);
+            record.departureTime = new Date(record.departureTime);
+            record.returnDate = new Date(record.returnDate);
+            record.returnTime = new Date(record.returnTime);
+            record.timeDelivery = new Date(record.timeDelivery);
+            ClaimService.createRecord(record)
                     .then(
                             self.fetchAllRecords(self.claim),
                             function (errResponse) {
@@ -192,6 +193,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.deleteRecord = function (record) {
             ClaimService.deleteRecord(record)
                     .then(
+                            self.fetchClaims,
                             self.fetchAllRecords,
                             function (errResponse) {
                                 console.error('Error while deleting Record.');
@@ -224,6 +226,36 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             self.record.claim = record.claim;
             self.record.vehicleType = record.vehicleType;
             self.record.waypoints = record.waypoints;
+        };
+
+        self.approvalClaims = function () {
+            var table = document.getElementById("tbl1");
+            var elem = table.getElementsByTagName("input");
+            var k = 1;
+            for (i = 0; i < elem.length; i++) {
+                console.log(i);
+                console.log(table.rows[k].cells[1].innerHTML);
+                k = k + 2;
+                // if (elem[i].checked === true){
+                //    console.log(table.rows[i+1].cells[1].innerHTML);
+                //     console.log('верно строка'+i);
+                // } else {
+                //     console.log('Неверно строка'+i);
+                // }
+
+            }
+
+        };
+
+        self.recieveRecord = function (record) {
+            recObj = record;
+            console.log(recObj);
+        };
+
+        self.delRecieveRecord = function () {
+
+            self.deleteRecord(recObj);
+            console.log("deleted!")
         };
 
 
