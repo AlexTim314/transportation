@@ -5,7 +5,6 @@
  */
 package org.ivc.transportation.controllers;
 
-import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -21,20 +20,7 @@ import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.ServiceUI;
-import javax.print.SimpleDoc;
-import javax.print.attribute.AttributeSet;
-import javax.print.attribute.HashAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.EncryptedDocumentException;
@@ -112,6 +98,33 @@ public class WaybillFileDownloadController {
 
         download(response, principal, appointment);
     }
+    
+     /**
+     * Метод для проверки работы формирования путевых листов. В релиз не пойдёт.
+     *
+     * @param response
+     * @param principal
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @GetMapping("/waybilldownload/all")
+    public void downloadAll(HttpServletResponse response, Principal principal) throws FileNotFoundException, IOException {
+        trUtils.DateRange dr = new trUtils.DateRange();
+        dr.StartDate = Date.valueOf("2018-01-01");
+        dr.EndDate = Date.valueOf("2018-12-31");
+
+        Appointment appointment = null;
+
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
+            if (transportDep == null) {unexpectedNull("Транспортный отдел");}
+            appointment = tdS.getAppointmentsByTransportDepAndDateRange(transportDep, dr).get(0);
+            appointment.setStatus(AppointmentStatus.appointment_status_completed);
+        }
+
+        download(response, principal, appointment);
+    }
 
     // @PostMapping("/waybilldownload")
     public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
@@ -133,9 +146,8 @@ public class WaybillFileDownloadController {
         VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
         switch (specialization) {
             case Пассажирский:
-            case Легковой:
-                //excelFilePath = "Waybill6.xls";
-                excelFilePath = "Waybill3.xls";
+            case Легковой:                
+                excelFilePath = "Waybill6.xls";
                 break;
             case Грузовой:
             case Спецтехника:
@@ -146,10 +158,11 @@ public class WaybillFileDownloadController {
 
         Waybill waybill = appointment.getWaybill();
         if (waybill == null) { unexpectedNull("Путевой лист"); }
-        Vehicle vechicle = appointment.getVehicle();
-        if (vechicle == null) { unexpectedNull("Транспортное средство"); }
+        Vehicle vehicle = appointment.getVehicle();
+        if (vehicle == null) { unexpectedNull("Транспортное средство"); }
         Driver driver = appointment.getDriver();
         if (driver == null) { unexpectedNull("Водитель"); }
+        //TODO: добавить обработку случая, когда  Записей больше 1
         Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
         LocalDateTime dateTime = appointment.getAppDateTime();
         
@@ -158,6 +171,7 @@ public class WaybillFileDownloadController {
             Workbook workbook;
             try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
                 workbook = WorkbookFactory.create(inputStream);
+                
                 List<? extends Name> allNames = workbook.getAllNames();
                 List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
 
@@ -191,11 +205,11 @@ public class WaybillFileDownloadController {
                                 c.setCellValue();
                                 break;*/
                             case марка:
-                                c.setCellValue(vechicle.getVehicleModel().getModelName());
+                                c.setCellValue(vehicle.getVehicleModel().getModelName());
                                 break;
 
                             case госномер:
-                                c.setCellValue(vechicle.getNumber());
+                                c.setCellValue(vehicle.getNumber());
                                 break;
                             case водитель:
                                 c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
@@ -219,7 +233,7 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(record.getReturnTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                                 break;
                             case показание_спидометра_при_выезде:
-                                c.setCellValue(vechicle.getOdometr());
+                                c.setCellValue(vehicle.getOdometr());
                                 break;
                             case принял:
                                 c.setCellValue(driver.getFirstname() + " "
@@ -232,7 +246,7 @@ public class WaybillFileDownloadController {
                                         + driver.getSurname().charAt(0) + ".");
                                 break;
                             case остаток_горючего_при_выезде:
-                                c.setCellValue(vechicle.getFuelRemnant());
+                                c.setCellValue(vehicle.getFuelRemnant());
                                 break;
                             case заказчик:
                                 c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
@@ -254,6 +268,8 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
+            
+           // workbook.createSheet("доплер");
 
             String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
             File file = File.createTempFile("waybill", specialization.name());
