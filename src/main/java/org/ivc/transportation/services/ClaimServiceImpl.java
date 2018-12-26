@@ -145,6 +145,12 @@ public class ClaimServiceImpl implements ClaimService {
     public Collection<Claim> getClaimsByDepartmentAndClType(Long id, ClaimType t) {
         return claimRep.findByClTypeAndDepartmentIdOrderByClDateDesc(id, t);
     }
+    
+      @Override
+      @Transactional
+    public Collection<Claim> getAllClaimsByDepartmentAndAffirmationAndDate(Long id, Boolean a, DateRange dr) {
+        return claimRep.findAllByDepartmentIdAndAffirmationAndClDateBetweenOrderByClDateDesc(id, a, dr.StartDate, dr.EndDate);
+    }
 
     @Override
     @Transactional
@@ -239,6 +245,8 @@ public class ClaimServiceImpl implements ClaimService {
         return fileStorageRep.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
     }
+
+  
 
 
 

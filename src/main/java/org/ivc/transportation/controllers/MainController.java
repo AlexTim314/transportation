@@ -1,21 +1,6 @@
 package org.ivc.transportation.controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.ss.util.AreaReference;
-import org.apache.poi.ss.util.CellReference;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.WebUtils;
@@ -67,10 +52,9 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model) {        
+    public String loginPage(Model model) {
         return "loginPage";
     }
-   
 
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
@@ -146,8 +130,8 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
-    
-       @RequestMapping(value = "/addDepClaimShow", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/addDepClaimShow", method = RequestMethod.GET)
     public String getDepClaims(Model model, Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -155,12 +139,21 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
-    
-         @RequestMapping(value = "/addWaypointsShow", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/addWaypointsShow", method = RequestMethod.GET)
     public String getWaypointsShow(Model model, Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return "waypointsPage";
+        }
+        return accessDenied(model, principal);
+    }
+
+    @RequestMapping(value = "/dispatcher", method = RequestMethod.GET)
+    public String getDispatcherPage(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "dispatcherPage";
         }
         return accessDenied(model, principal);
     }

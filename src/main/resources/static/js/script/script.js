@@ -44,19 +44,14 @@ formLogin_open=function(){
   var str = document.getElementById("formLogin");
   str.style.display="block";
 }
-formOpen=function(name,nbg){
+formOpen=function(name){
     var str = document.getElementById(name);
     str.style.display="block";
-    document.getElementById(nbg).style.display ="block";
-  
 }
-formClose=function(name,nbg){
+formClose=function(name){
     var str = document.getElementById(name);
     str.style.display="none";
-    document.getElementById(nbg).style.display ="none";
-
 }
-
 formEditOpen=function(name){
     var str = document.getElementById(name);
     str.style.display="block";
@@ -170,34 +165,34 @@ turn_tabs2=function() {
 // }
 // open_tab();
 
-//var tab = document.getElementById("tbl1");
-//var elements = tab.getElementsByTagName('tr');
-//var i;
-//
-//for (i = 1; i < elements.length; i++) {
-//  elements[i].addEventListener("click", function() {
-//  
-//    var panel = this.nextElementSibling;
-//    if (panel.classList.contains("hiddenRow")){
-//       panel.classList.toggle("collapseRow");
-//      this.classList.toggle("activeRow");   
-//      } 
-//   
-//  });
-//}
+var tab = document.getElementById("tbl1");
+var elements = tab.getElementsByTagName('tr');
+var i;
 
-//var tab1 = document.getElementById("tbl2");
-//var elements1 = tab1.getElementsByTagName('tr');
-//var i;
-//
-//for (i = 1; i < elements1.length; i++) {
-//  elements1[i].addEventListener("click", function() {
-//  
-//    var panel1 = this.nextElementSibling;
-//    if (panel1.classList.contains("hiddenRow")){
-//       panel1.classList.toggle("collapseRow");
-//      this.classList.toggle("activeRow");   
-//      } 
-//   
-//  });
-//}
+for (i = 1; i < elements.length; i++) {
+  elements[i].addEventListener("click", function() {
+  
+    var panel = this.nextElementSibling;
+    if (panel.classList.contains("hiddenRow")){
+       panel.classList.toggle("collapseRow");
+      this.classList.toggle("activeRow");   
+      } 
+   
+  });
+}
+
+var tab1 = document.getElementById("tbl2");
+var elements1 = tab1.getElementsByTagName('tr');
+var i;
+
+for (i = 1; i < elements1.length; i++) {
+  elements1[i].addEventListener("click", function() {
+  
+    var panel1 = this.nextElementSibling;
+    if (panel1.classList.contains("hiddenRow")){
+       panel1.classList.toggle("collapseRow");
+      this.classList.toggle("activeRow");   
+      } 
+   
+  });
+}

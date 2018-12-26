@@ -10,24 +10,44 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clType: ''}, vehicleType: {specialization: ''}, waypoints: []};
         self.waypoint = {name: '', latitude: '', longitude: ''};
         self.departments = [];
-        self.claims = [];
+        self.unapprovedClaims = [];
+        self.approvedClaims = [];
         self.records = [];
         self.waypoints = [];
         self.vehicleTypes = [];
         var recObj;
 
 
-        self.fetchClaims = function () {
+        self.fetchUnapprovedClaims = function () {
 
             var dd = new Date().getDate();
-            var mm = new Date().getMonth();
+            var mm = new Date().getMonth() + 1;
             var yyyy = new Date().getFullYear();
             var sD = '2018-10-20';
             var eD = yyyy + '-' + mm + '-' + dd;
-            ClaimService.fetchClaims(sD, eD)
+            ClaimService.fetchUnapprovedClaims(sD, eD)
                     .then(
                             function (d) {
-                                self.claims = d;
+                                self.unapprovedClaims = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Claims');
+                                alert(errResponse);
+                            }
+                    );
+        };
+
+        self.fetchApprovedClaims = function () {
+
+            var dd = new Date().getDate();
+            var mm = new Date().getMonth() + 1;
+            var yyyy = new Date().getFullYear();
+            var sD = '2018-10-20';
+            var eD = yyyy + '-' + mm + '-' + dd;
+            ClaimService.fetchApprovedClaims(sD, eD)
+                    .then(
+                            function (d) {
+                                self.approvedClaims = d;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Claims');
@@ -98,9 +118,11 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
 
-        self.fetchClaims();
+        self.fetchUnapprovedClaims();
+        self.fetchApprovedClaims();
         self.fetchAllVehicleTypes();
         self.fetchAllWaypoints();
+        console.log('месяц ' + new Date().getMonth());
 
 //        self.fetchVehicleByTypes = function (vehType) {
 //
@@ -118,13 +140,17 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
 
         self.createClaim = function (claim) {
+            if (claim.id !== null) {
+                claim.id = null;
+            }
             var dd = new Date().getDate();
-            var mm = new Date().getMonth();
+            var mm = new Date().getMonth() + 1;
             var yyyy = new Date().getFullYear();
             claim.clDate = yyyy + '-' + mm + '-' + dd;
             ClaimService.createClaim(claim)
                     .then(
-                            self.fetchClaims,
+                            self.fetchUnapprovedClaims(),
+                            self.fetchUnapprovedClaims(),
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
                                 showAlert(errResponse);
@@ -140,33 +166,47 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 record.status = 'record_status_created';
                 console.log('created');
             }
-            record.datetime = new Date();
-            record.departureDate = new Date(record.departureDate);
-            record.departureTime = new Date(record.departureTime);
-            record.returnDate = new Date(record.returnDate);
-            record.returnTime = new Date(record.returnTime);
-            record.timeDelivery = new Date(record.timeDelivery);
-            ClaimService.createRecord(record)
-                    .then(
-                            self.fetchAllRecords(self.claim),
-                            function (errResponse) {
-                                console.error('Error while creating Record.');
-                                showAlert(errResponse);
-                            }
-                    );
+            if (self.claim.clType === 'claim_type_weekly') {
+                console.log(self.claim.clType);
+
+                var date1 = new Date(record.departureDate);
+                var date2 = new Date(record.returnDate);
+                var date0 = new Date();
+                record.weekHash = date0.getTime();
+                for (i = 0; i < 5; i++) {
+                    
+                    record.datetime = new Date(date0+i);
+                    record.departureDate = new Date(date1+i);
+                    record.departureTime = new Date(record.departureTime);
+                    record.returnDate = new Date(date2+i);
+                    record.returnTime = new Date(record.returnTime);
+                    record.timeDelivery = new Date(record.timeDelivery);
+                    ClaimService.createRecord(record)
+                            .then(self.fetchUnapprovedClaims(),
+                                    self.fetchAllRecords(self.claim),
+                                    function (errResponse) {
+                                        console.error('Error while creating Record.');
+                                        showAlert(errResponse);
+                                    }
+                            );
+                }
+            } else {
+                record.datetime = new Date();
+                record.departureDate = new Date(record.departureDate);
+                record.departureTime = new Date(record.departureTime);
+                record.returnDate = new Date(record.returnDate);
+                record.returnTime = new Date(record.returnTime);
+                record.timeDelivery = new Date(record.timeDelivery);
+                ClaimService.createRecord(record)
+                        .then(self.fetchUnapprovedClaims(),
+                                self.fetchAllRecords(self.claim),
+                                function (errResponse) {
+                                    console.error('Error while creating Record.');
+                                    showAlert(errResponse);
+                                }
+                        );
+            }
         };
-
-
-//        self.updateClaim = function (claim) {
-//            ClaimService.updateClaim(claim)
-//                    .then(
-//                            self.fetchAllClaims,
-//                            function (errResponse) {
-//                                console.error('Error while updating Claim.');
-//                                showAlert(errResponse);
-//                            }
-//                    );
-//        };
 
         self.updateRecord = function (record) {
             ClaimService.updateRecord(record)
@@ -182,7 +222,8 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.deleteClaim = function (claim) {
             ClaimService.deleteClaim(claim)
                     .then(
-                            self.fetchAllClaims,
+                            self.fetchUnapprovedClaims(),
+                            self.fetchAllRecords,
                             function (errResponse) {
                                 console.error('Error while deleting Claim.');
                                 showAlert(errResponse);
@@ -193,7 +234,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.deleteRecord = function (record) {
             ClaimService.deleteRecord(record)
                     .then(
-                            self.fetchClaims,
+                            self.fetchUnapprovedClaims(),
                             self.fetchAllRecords,
                             function (errResponse) {
                                 console.error('Error while deleting Record.');
@@ -228,6 +269,28 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             self.record.waypoints = record.waypoints;
         };
 
+//        self.creatingRecord = function () {
+//            self.record.id = '';
+//            self.record.weekHash = '';
+//            self.record.type = '';
+//            self.record.datetime = '';
+//            self.record.departureDate = '';
+//            self.record.returnDate = '';
+//            self.record.timeDelivery = '';
+//            self.record.departureTime = '';
+//            self.record.returnTime = '';
+//            self.record.purpose = '';
+//            self.record.serviceField = '';
+//            self.record.templateName = '';
+//            self.record.carBoss = '';
+//            self.record.status = '';
+//            self.record.description = '';
+//            self.record.claim = '';
+//            self.record.vehicleType = '';
+//            self.record.waypoints = '';
+//            
+//        };
+
         self.approvalClaims = function () {
             var table = document.getElementById("tbl1");
             var elem = table.getElementsByTagName("input");
@@ -249,27 +312,24 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
         self.recieveObject = function (obj) {
             recObj = obj;
-            if (recObj.hasOwnProperty('clType')) {
-                console.log('принят объект Claim');
-                console.log(recObj);
-            }
-            if (recObj.hasOwnProperty('weekHash')) {
-                console.log('принят объект Record');
-                console.log(recObj);
-            }
+            formOpen('no-active2');
+//            if (recObj.hasOwnProperty('clType')) {
+//                console.log('принят объект Claim');
+//            }
+//            if (recObj.hasOwnProperty('weekHash')) {
+//                console.log('принят объект Record');
+//            }
         };
 
         self.delRecObject = function () {
             if (recObj.hasOwnProperty('clType')) {
                 self.deleteClaim(recObj);
                 console.log("Claim deleted!");
-                recObj = null;
             }
             if (recObj.hasOwnProperty('weekHash')) {
                 self.deleteRecord(recObj);
                 console.log("Record deleted!");
-                recObj = null;
-            }           
+            }
         };
 
     }]);

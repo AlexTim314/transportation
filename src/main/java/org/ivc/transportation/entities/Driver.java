@@ -55,7 +55,7 @@ public class Driver implements Serializable {
 
     @NonNull
     @Column(length = 1024)
-    private String addres;
+    private String address;
 
     private String phone;
 
@@ -74,11 +74,11 @@ public class Driver implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private TransportDep transportDep;
 
-    public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String note,TransportDep transportDep) {
+    public Driver(String firstname, String name, String surname, Date birthday, String address, String phone, String note,TransportDep transportDep) {
         this.firstname = firstname;
         this.surname = surname;
         this.birthday = birthday;
-        this.addres = addres;
+        this.address = address;
         this.phone = phone;
         this.vacant = Boolean.TRUE;
         this.name = name;

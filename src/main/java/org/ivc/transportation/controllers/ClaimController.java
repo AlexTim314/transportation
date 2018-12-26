@@ -2,7 +2,10 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collection;
+import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
@@ -61,7 +64,7 @@ public class ClaimController {
 
 
     /**
-     * Метод возвращает заявки поданные подразделением. Номер подразделения
+     * Метод возвращает неутвержденные заявки поданные подразделением. Номер подразделения
      * извлекается из данных авторизовавшегося пользователя. Если подразделение
      * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
      * соответствующим сообщением.
@@ -72,8 +75,8 @@ public class ClaimController {
      * @param dr диапазон дат
      * @return При вызове без авторизации, возвращает null.
      */
-    @GetMapping("/claims/byUser/{sD}/{eD}")
-    public Collection<Claim> findClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
+    @GetMapping("/claims/byUser/unapproved/{sD}/{eD}")
+    public Collection<Claim> findUnapprovedClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
         DateRange dr = new DateRange();
         dr.StartDate = Date.valueOf(sD);
         dr.EndDate = Date.valueOf(eD);
@@ -84,9 +87,37 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            //return claimService.getClaimsByDepartment(department.getId());
-            claimService.getClaimsByDepartment(department.getId()).forEach(System.out::println);
-            return claimService.getAllClaimsByDepartmentAndDate(department.getId(), dr);
+            return claimService.getAllClaimsByDepartmentAndAffirmationAndDate(department.getId(), Boolean.FALSE, dr);
+        }
+        return null;
+    }
+    
+    
+        /**
+     * Метод возвращает утвержденные заявки поданные подразделением. Номер подразделения
+     * извлекается из данных авторизовавшегося пользователя. Если подразделение
+     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
+     * соответствующим сообщением.
+     *
+     * @param principal данные пользователя
+     * @param sD начальная дата
+     * @param eD конечная дата
+     * @param dr диапазон дат
+     * @return При вызове без авторизации, возвращает null.
+     */
+    @GetMapping("/claims/byUser/approved/{sD}/{eD}")
+    public Collection<Claim> findApprovedClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
+        DateRange dr = new DateRange();
+        dr.StartDate = Date.valueOf(sD);
+        dr.EndDate = Date.valueOf(eD);
+        System.out.println(dr);
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            return claimService.getAllClaimsByDepartmentAndAffirmationAndDate(department.getId(), Boolean.TRUE, dr);
         }
         return null;
     }
@@ -102,7 +133,6 @@ public class ClaimController {
      */
     @PostMapping("/claims/byDepartment")
     public Collection<Claim> findClaimsByDepartment(@RequestBody Department department/*, @RequestBody DateRange dr*/) {
-        //return claimService.getAllClaimsByDate(dr);
         return claimService.getClaimsByDepartment(department.getId());
     }
 
@@ -231,8 +261,10 @@ public class ClaimController {
      * @return список заявок подразделения. При вызове без авторизации,
      * возвращает null
      */
-    @DeleteMapping("/claims/byUser/delete/")
+    @DeleteMapping("/claims/byUser/delete")
     public Collection<Claim> delClaimByUser(Principal principal, @RequestBody Claim claim) {
+        System.out.println("udalenie claim");
+         System.out.println(claim);
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
@@ -283,12 +315,6 @@ public class ClaimController {
         claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
         return claimService.getRecordsByClaim(claim.getId());
     }
-//        @GetMapping("/claims/byUser/records")
-//    public Collection<Record> findRecrodsByClaim(Principal principal) {
-//       // System.out.println(claim);
-//     //   claimService.getRecordsByClaim(claim.getId()).forEach(System.out::println);
-//        return claimService.get
-//    }
 
     /**
      * Метод добавляет новую запись в заявку подразделения. Номер подразделения

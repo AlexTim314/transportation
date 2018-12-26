@@ -95,7 +95,7 @@ public class TransportDepController {
     }
 
     @PostMapping("/transportDeps/vechicles")
-    public Collection<Vehicle> getVechicles(@RequestBody TransportDep department) {
+    public Collection<Vehicle> getVechicles(@RequestBody TransportDep department) {        
         return transportDepService.getVechiclesByTransportDepId(department.getId());
     }
 
