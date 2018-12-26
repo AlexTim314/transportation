@@ -148,9 +148,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             var yyyy = new Date().getFullYear();
             claim.clDate = yyyy + '-' + mm + '-' + dd;
             ClaimService.createClaim(claim)
-                    .then(
-                            self.fetchUnapprovedClaims(),
-                            self.fetchUnapprovedClaims(),
+                    .then(  
+                           //self.fetchUnapprovedClaims(),
+                            //self.fetchUnapprovedClaims(),
+                            location.reload(),
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
                                 showAlert(errResponse);
@@ -175,6 +176,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 var time1 = new Date(record.departureTime);
                 var time2 = new Date(record.returnTime);
                 var time3 = new Date(record.timeDelivery);
+
                 newRecord.claim = self.claim;
                 newRecord.waypoints = null;
                 newRecord.status = 'record_status_created';
@@ -182,10 +184,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
                 newRecord.datetime = new Date(date0.setDate(date0.getDate()));
                 newRecord.departureDate = new Date(date1.setDate(date1.getDate()));
-                newRecord.departureTime = new Date(time1.setTime(time1.getHours()+5));//+5 часов от гринвича
+                newRecord.departureTime = new Date(time1.setTime(time1.getHours()));
                 newRecord.returnDate = new Date(date2.setDate(date2.getDate()));
-                newRecord.returnTime = new Date(time2.setTime(time1.getHours()+5));
-                newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()+5));
+                newRecord.returnTime = new Date(time2.setTime(time1.getHours()));
+                newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()));
                 ClaimService.createRecord(newRecord)
                         .then(self.fetchUnapprovedClaims(),
                                 self.fetchAllRecords(self.claim),
@@ -197,10 +199,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 for (i = 0; i < 4; i++) {
                     newRecord.datetime = new Date(date0.setDate(date0.getDate()));
                     newRecord.departureDate = new Date(date1.setDate(date1.getDate() + 1));
-                    newRecord.departureTime = new Date(time1.setTime(time1.getHours()+5));
+                    newRecord.departureTime = new Date(time1.setTime(time1.getHours()));
                     newRecord.returnDate = new Date(date2.setDate(date2.getDate() + 1));
-                    newRecord.returnTime = new Date(time2.setTime(time1.getHours()+5));
-                    newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()+5));
+                    newRecord.returnTime = new Date(time2.setTime(time1.getHours()));
+                    newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()));
                     ClaimService.createRecord(newRecord)
                             .then(self.fetchUnapprovedClaims(),
                                     self.fetchAllRecords(self.claim),
@@ -219,10 +221,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 var time2 = new Date(record.returnTime);
                 var time3 = new Date(record.timeDelivery);
                 record.departureDate = new Date(record.departureDate);
-                record.departureTime = new Date(time1.setTime(time1.getHours()+5));
+                record.departureTime = new Date(time1.setTime(time1.getHours()));
                 record.returnDate = new Date(record.returnDate);
-                record.returnTime = new Date(time2.setTime(time1.getHours()+5));
-                record.timeDelivery = new Date(time1.setTime(time3.getHours()+5));
+                record.returnTime = new Date(time2.setTime(time1.getHours()));
+                record.timeDelivery = new Date(time1.setTime(time3.getHours()));
                 ClaimService.createRecord(record)
                         .then(self.fetchUnapprovedClaims(),
                                 self.fetchAllRecords(self.claim),
@@ -248,8 +250,9 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.deleteClaim = function (claim) {
             ClaimService.deleteClaim(claim)
                     .then(
-                            self.fetchUnapprovedClaims(),
-                            self.fetchAllRecords,
+                           // self.fetchUnapprovedClaims(),
+                          // self.fetchAllRecords,
+                            location.reload(),
                             function (errResponse) {
                                 console.error('Error while deleting Claim.');
                                 showAlert(errResponse);
