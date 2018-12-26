@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
@@ -336,6 +337,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+           ///ZonedDateTime
             claimService.addRecord(record);
             System.out.println(record.getClaim());
             return claimService.getRecordsByClaim(record.getClaim().getId());
