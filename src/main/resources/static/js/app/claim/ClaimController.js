@@ -247,16 +247,29 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
         };
 
-        self.recieveRecord = function (record) {
-            recObj = record;
-            console.log(recObj);
+        self.recieveObject = function (obj) {
+            recObj = obj;
+            if (recObj.hasOwnProperty('clType')) {
+                console.log('принят объект Claim');
+                console.log(recObj);
+            }
+            if (recObj.hasOwnProperty('weekHash')) {
+                console.log('принят объект Record');
+                console.log(recObj);
+            }
         };
 
-        self.delRecieveRecord = function () {
-
-            self.deleteRecord(recObj);
-            console.log("deleted!")
+        self.delRecObject = function () {
+            if (recObj.hasOwnProperty('clType')) {
+                self.deleteClaim(recObj);
+                console.log("Claim deleted!");
+                recObj = null;
+            }
+            if (recObj.hasOwnProperty('weekHash')) {
+                self.deleteRecord(recObj);
+                console.log("Record deleted!");
+                recObj = null;
+            }           
         };
-
 
     }]);

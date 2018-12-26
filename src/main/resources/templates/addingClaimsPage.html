@@ -82,7 +82,7 @@
 				<i class="fas fa-times i-close " onclick="formClose('dialog-window','no-active2')"></i>
 				<p>Вы уверены, что хотите удалить?</p>
 				<div class="btn edit" onclick="formClose('dialog-window','no-active2')">Отмена</div>
-				<div class="btn delete" ng-click="clCtrl.delRecieveRecord()" onclick="formClose('dialog-window','no-active2')"><i class="fas  fa-trash-alt"></i>Удалить</div>			
+				<div class="btn delete" ng-click="clCtrl.delRecObject()" onclick="formClose('dialog-window','no-active2')"><i class="fas  fa-trash-alt"></i>Удалить</div>			
 			</div>
 			</div>
             <!----------------------------------------------ADD-FORM------------------->
@@ -271,7 +271,7 @@
                                     </td>
                                     <td>№ {{claim.id}} от {{claim.clDate| date: 'dd.MM.yyyy'}} 
                                         <div class="add-hover add-hover1  edit btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
-                                        <div class="add-hover add-hover2 delete btn" onclick="formOpen('dialog-window','no-active2')"><i class="fas fa-trash-alt"></i>Удалить</div>
+                                        <div class="add-hover add-hover2 delete btn" ng-click="clCtrl.recieveObject(claim)" onclick="formOpen('dialog-window','no-active2')"><i class="fas fa-trash-alt"></i>Удалить</div>
                                     </td>
                                 </tr>
                                 <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
@@ -305,7 +305,7 @@
                                                 <td>
                                                <!--      <button class="btn eye" ng-click="clCtrl.addRowHandlersRecords(record)" onclick="more_open()" ><i class="far fa-eye"></i></button> -->
                                                     <i class="fas fa-lg fa-edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"></i>
-                                                    <i class="fas fa-lg fa-trash-alt" ng-click="clCtrl.recieveRecord(record)" onclick="formOpen('dialog-window','no-active2')"></i>  			
+                                                    <i class="fas fa-lg fa-trash-alt" ng-click="clCtrl.recieveObject(record)" onclick="formOpen('dialog-window','no-active2')"></i>  			
                                                 </td>
                                             </tr>
                                         </table>
