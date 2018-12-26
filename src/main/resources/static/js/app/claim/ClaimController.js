@@ -9,12 +9,22 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.record = {id: null, weekHash: '', type: '', datetime: '', departureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clType: ''}, vehicleType: {specialization: ''}, waypoints: []};
         self.waypoint = {name: '', latitude: '', longitude: ''};
+        self.driver = {id: null, firstname: '', name: '', surname: '',birthday: '', address: '', phone: '', note: ''};
+        self.vehicle = {id: null, number: '', fuelRemnant: '', odometr: '', note: '', vehicleModel:{modelName:''}};
+        self.vehicleModel = {id: null, modelName:'', vehicleType: {specialization: ''}};
+        self.appointment = {id: null, appDateTime: '', vehicleModel:{modelName:''}};
+        self.appointmentGroup = {id: null, note: '', record: {timeDelivery: ''}, appointment: {appDateTime: ''}};
         self.departments = [];
         self.unapprovedClaims = [];
         self.approvedClaims = [];
         self.records = [];
         self.waypoints = [];
         self.vehicleTypes = [];
+        self.drivers = [];
+        self.vehicles = [];
+        self.vehicleModels = [];
+        self.appointments = [];
+        self.appointmentGroups = [];
         var recObj;
 
 
