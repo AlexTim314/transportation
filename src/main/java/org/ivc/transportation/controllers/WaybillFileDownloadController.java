@@ -5,7 +5,6 @@
  */
 package org.ivc.transportation.controllers;
 
-import java.awt.Desktop;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -21,20 +20,7 @@ import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.ServiceUI;
-import javax.print.SimpleDoc;
-import javax.print.attribute.AttributeSet;
-import javax.print.attribute.HashAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.EncryptedDocumentException;
@@ -112,6 +98,33 @@ public class WaybillFileDownloadController {
 
         download(response, principal, appointment);
     }
+    
+     /**
+     * Метод для проверки работы формирования путевых листов. В релиз не пойдёт.
+     *
+     * @param response
+     * @param principal
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @GetMapping("/waybilldownload/all")
+    public void downloadAll(HttpServletResponse response, Principal principal) throws FileNotFoundException, IOException {
+        trUtils.DateRange dr = new trUtils.DateRange();
+        dr.StartDate = Date.valueOf("2018-01-01");
+        dr.EndDate = Date.valueOf("2018-12-31");
+
+        Appointment appointment = null;
+
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            TransportDep transportDep = userRepository.findByUserName(loginedUser.getUsername()).getTransportDep();
+            if (transportDep == null) {unexpectedNull("Транспортный отдел");}
+            appointment = tdS.getAppointmentsByTransportDepAndDateRange(transportDep, dr).get(0);
+            appointment.setStatus(AppointmentStatus.appointment_status_completed);
+        }
+
+        download(response, principal, appointment);
+    }
 
     // @PostMapping("/waybilldownload")
     public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
@@ -133,9 +146,8 @@ public class WaybillFileDownloadController {
         VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
         switch (specialization) {
             case Пассажирский:
-            case Легковой:
-                //excelFilePath = "Waybill6.xls";
-                excelFilePath = "Waybill3.xls";
+            case Легковой:                
+                excelFilePath = "Waybill6.xls";
                 break;
             case Грузовой:
             case Спецтехника:
