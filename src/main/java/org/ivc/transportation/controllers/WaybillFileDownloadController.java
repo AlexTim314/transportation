@@ -158,10 +158,11 @@ public class WaybillFileDownloadController {
 
         Waybill waybill = appointment.getWaybill();
         if (waybill == null) { unexpectedNull("Путевой лист"); }
-        Vehicle vechicle = appointment.getVehicle();
-        if (vechicle == null) { unexpectedNull("Транспортное средство"); }
+        Vehicle vehicle = appointment.getVehicle();
+        if (vehicle == null) { unexpectedNull("Транспортное средство"); }
         Driver driver = appointment.getDriver();
         if (driver == null) { unexpectedNull("Водитель"); }
+        //TODO: добавить обработку случая, когда  Записей больше 1
         Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
         LocalDateTime dateTime = appointment.getAppDateTime();
         
@@ -170,6 +171,7 @@ public class WaybillFileDownloadController {
             Workbook workbook;
             try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
                 workbook = WorkbookFactory.create(inputStream);
+                
                 List<? extends Name> allNames = workbook.getAllNames();
                 List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
 
@@ -203,11 +205,11 @@ public class WaybillFileDownloadController {
                                 c.setCellValue();
                                 break;*/
                             case марка:
-                                c.setCellValue(vechicle.getVehicleModel().getModelName());
+                                c.setCellValue(vehicle.getVehicleModel().getModelName());
                                 break;
 
                             case госномер:
-                                c.setCellValue(vechicle.getNumber());
+                                c.setCellValue(vehicle.getNumber());
                                 break;
                             case водитель:
                                 c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
@@ -231,7 +233,7 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(record.getReturnTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                                 break;
                             case показание_спидометра_при_выезде:
-                                c.setCellValue(vechicle.getOdometr());
+                                c.setCellValue(vehicle.getOdometr());
                                 break;
                             case принял:
                                 c.setCellValue(driver.getFirstname() + " "
@@ -244,7 +246,7 @@ public class WaybillFileDownloadController {
                                         + driver.getSurname().charAt(0) + ".");
                                 break;
                             case остаток_горючего_при_выезде:
-                                c.setCellValue(vechicle.getFuelRemnant());
+                                c.setCellValue(vehicle.getFuelRemnant());
                                 break;
                             case заказчик:
                                 c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
@@ -266,6 +268,8 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
+            
+           // workbook.createSheet("доплер");
 
             String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
             File file = File.createTempFile("waybill", specialization.name());
