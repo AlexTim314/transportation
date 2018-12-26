@@ -190,15 +190,15 @@ public class TransportationApplication {
         tdS.addVechicle(vechicle5);
 
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
-        cl1.setAffirmation(Boolean.FALSE);
+        cl1.setAffirmation(Boolean.TRUE);
         Claim cl2 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl2.setAffirmation(Boolean.TRUE);
         Claim cl3 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_additional, dep1);
         cl3.setAffirmation(Boolean.TRUE);
         Claim cl4 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_additional, dep2);
-        cl4.setAffirmation(Boolean.FALSE);
+        cl4.setAffirmation(Boolean.TRUE);
         Claim cl5 = new Claim(Date.valueOf("2018-10-24"), ClaimType.claim_type_weekly, dep1);
-        cl5.setAffirmation(Boolean.FALSE);
+        cl5.setAffirmation(Boolean.TRUE);
         clS.addClaim(cl1);
         clS.addClaim(cl2);
         clS.addClaim(cl3);

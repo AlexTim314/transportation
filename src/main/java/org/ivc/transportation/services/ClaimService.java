@@ -55,6 +55,8 @@ public interface ClaimService {
     public Collection<Claim> getAllClaimsByDate(DateRange dr);
 
     public Collection<Claim> getAllClaimsByDepartmentAndDate(Long id, DateRange dr);
+    
+    public Collection<Claim> getAllClaimsByDepartmentAndAffirmationAndDate(Long id, Boolean a, DateRange dr);
 
     public void addRecord(Record d);
 
