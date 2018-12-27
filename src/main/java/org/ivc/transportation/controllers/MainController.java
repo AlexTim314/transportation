@@ -110,7 +110,7 @@ public class MainController {
         return accessDenied(model, principal);
     }
 
-    @RequestMapping(value = "/departmentsShow", method = RequestMethod.GET)
+    @RequestMapping(value = "/departments", method = RequestMethod.GET)
     public String getAllDepartments(Model model, Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
