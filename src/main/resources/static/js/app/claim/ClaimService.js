@@ -9,11 +9,27 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchClaims: function (startDate, endDate) {
-                return $http.get('/transportation/claims/byUser/' + startDate + '/' + endDate)
+            fetchUnapprovedClaims: function (startDate, endDate) {
+                return $http.get('/transportation/claims/byUser/unapproved/' + startDate + '/' + endDate)
                         .then(
                                 function (response) {
-                                    console.log('fetching claims');
+                                    console.log('fetching unapproved claims');
+                                    console.log(response.data);
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching claims');
+                                    return $q.reject(decodeURI(errResponse));
+                                }
+                        );
+            },
+            
+            fetchApprovedClaims: function (startDate, endDate) {
+                return $http.get('/transportation/claims/byUser/approved/' + startDate + '/' + endDate)
+                        .then(
+                                function (response) {
+                                    console.log('fetching approved claims');
                                     console.log(response.data);
                                     return response.data;
 
@@ -86,6 +102,21 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating claim');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            confirmClaims: function (claims) {
+                return $http.put('/transportation/claims/byUser/confirm',
+                        JSON.stringify(claims), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    console.log('Confirm Claims');
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while confirming claims');
                                     return $q.reject(errResponse);
                                 }
                         );

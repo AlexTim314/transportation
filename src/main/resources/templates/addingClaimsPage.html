@@ -79,10 +79,10 @@
             </div>
             <div class="none-active-bg" id="no-active2">
             <div class="dialog-window" id="dialog-window">
-				<i class="fas fa-times i-close " onclick="formClose('dialog-window','no-active2')"></i>
+				<i class="fas fa-times i-close " onclick="formClose('no-active2')"></i>
 				<p>Вы уверены, что хотите удалить?</p>
-				<div class="btn edit" onclick="formClose('dialog-window','no-active2')">Отмена</div>
-				<div class="btn delete" ng-click="clCtrl.delRecieveRecord()" onclick="formClose('dialog-window','no-active2')"><i class="fas  fa-trash-alt"></i>Удалить</div>			
+				<div class="btn edit" onclick="formClose('no-active2')">Отмена</div>
+				<div class="btn delete" ng-click="clCtrl.delRecObject()" onclick="formClose('no-active2')"><i class="fas  fa-trash-alt"></i>Удалить</div>			
 			</div>
 			</div>
             <!----------------------------------------------ADD-FORM------------------->
@@ -257,16 +257,16 @@
                                 <th>Заявки</th>
                             </tr>
                             <tbody>
-                                <tr ng-repeat-start="claim in clCtrl.claims | filter:search" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
+                                <tr ng-repeat-start="claim in clCtrl.unapprovedClaims| filter:search" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
                                     <td>
                                         <label class="custom-checkbox">
-                                            <input type="checkbox" >-
+                                            <input type="checkbox" ng-value="claim.affirmation" ng-click="claim.affirmation = !claim.affirmation">-
                                             <span class="checkmark"></span>
                                         </label>		
                                     </td>
                                     <td>№ {{claim.id}} от {{claim.clDate| date: 'dd.MM.yyyy'}} 
-                                        <div class="add-hover add-hover1  edit btn" onclick="menu_open()"><i class="fas fa-plus"></i>Добавить</div>
-                                        <div class="add-hover add-hover2 delete btn" onclick="formOpen('dialog-window','no-active2')"><i class="fas fa-trash-alt"></i>Удалить</div>
+                                        <div class="add-hover add-hover1  edit btn" onclick="menu_open()" ><i class="fas fa-plus"></i>Добавить</div>
+                                        <div class="add-hover add-hover2 delete btn" ng-click="clCtrl.recieveObject(claim)"><i class="fas fa-trash-alt"></i>Удалить</div>
                                     </td>
                                 </tr>
                                 <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
@@ -300,7 +300,7 @@
                                                 <td>
                                                <!--      <button class="btn eye" ng-click="clCtrl.addRowHandlersRecords(record)" onclick="more_open()" ><i class="far fa-eye"></i></button> -->
                                                     <i class="fas fa-lg fa-edit" ng-click="clCtrl.editRecord(record)" onclick="edit_open()"></i>
-                                                    <i class="fas fa-lg fa-trash-alt" ng-click="clCtrl.recieveRecord(record)" onclick="formOpen('dialog-window','no-active2')"></i>  			
+                                                    <i class="fas fa-lg fa-trash-alt" ng-click="clCtrl.recieveObject(record)"></i>  			
                                                 </td>
                                             </tr>
                                         </table>
@@ -309,10 +309,8 @@
                             </tbody>
                         </table>
                     </div>
-
-
                         <div class="assert-block clearfix">
-                            <button class="btn edit assert" ng-click="clCtrl.approvalClaims()"><i class="fas fa-clipboard-check"></i>Утвердить</button>
+                            <button class="btn edit assert" ng-click="clCtrl.confirmClaims()"><i class="fas fa-clipboard-check"></i>Утвердить</button>
                             <button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
                         </div>
                     </div>
@@ -341,13 +339,13 @@
                                 <span class="filter-elem edit">Сегодня</span>
                                 <span class="filter-elem edit">За неделю</span>
                             </div>
-                        <div class="height-wrapper">  
+                            <div class="height-wrapper">  
                             <table class="table-record" id="tbl2">
                                 <tr>
                                     <th>Заявки</th>
                                     <th>Статус</th>
                                 </tr>
-                                <tr  ng-repeat-start="claim in clCtrl.claims" ng-click="clCtrl.addRowHandlers(claim)" style = "cursor: pointer">                        
+                                <tr  ng-repeat-start="claim in clCtrl.approvedClaims" ng-click="clCtrl.addRowHandlers(claim)" style = "cursor: pointer">                        
                                     <td>№ {{claim.id}} от {{claim.clDate}}</td>
                                     <td><span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span></td>
                                 </tr>

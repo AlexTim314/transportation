@@ -2,10 +2,7 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.Collection;
-import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.config.trUtils.ClaimType;
 import org.ivc.transportation.config.trUtils.DateRange;
 import static org.ivc.transportation.config.trUtils.errNotSpecifiedDepartmentException;
@@ -43,8 +40,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
+import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -58,16 +54,15 @@ public class ClaimController {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private WaypointService waypointService;
 
-
     /**
-     * Метод возвращает заявки поданные подразделением. Номер подразделения
-     * извлекается из данных авторизовавшегося пользователя. Если подразделение
-     * не указано, то будет вызвано исключение NotSpecifiedDepartmentException с
-     * соответствующим сообщением.
+     * Метод возвращает неутвержденные заявки поданные подразделением. Номер
+     * подразделения извлекается из данных авторизовавшегося пользователя. Если
+     * подразделение не указано, то будет вызвано исключение
+     * NotSpecifiedDepartmentException с соответствующим сообщением.
      *
      * @param principal данные пользователя
      * @param sD начальная дата
@@ -75,8 +70,8 @@ public class ClaimController {
      * @param dr диапазон дат
      * @return При вызове без авторизации, возвращает null.
      */
-    @GetMapping("/claims/byUser/{sD}/{eD}")
-    public Collection<Claim> findClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
+    @GetMapping("/claims/byUser/unapproved/{sD}/{eD}")
+    public Collection<Claim> findUnapprovedClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
         DateRange dr = new DateRange();
         dr.StartDate = Date.valueOf(sD);
         dr.EndDate = Date.valueOf(eD);
@@ -87,9 +82,36 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            //return claimService.getClaimsByDepartment(department.getId());
-            claimService.getClaimsByDepartment(department.getId()).forEach(System.out::println);
-            return claimService.getAllClaimsByDepartmentAndDate(department.getId(), dr);
+            return claimService.getAllClaimsByDepartmentAndAffirmationAndDate(department.getId(), Boolean.FALSE, dr);
+        }
+        return null;
+    }
+
+    /**
+     * Метод возвращает утвержденные заявки поданные подразделением. Номер
+     * подразделения извлекается из данных авторизовавшегося пользователя. Если
+     * подразделение не указано, то будет вызвано исключение
+     * NotSpecifiedDepartmentException с соответствующим сообщением.
+     *
+     * @param principal данные пользователя
+     * @param sD начальная дата
+     * @param eD конечная дата
+     * @param dr диапазон дат
+     * @return При вызове без авторизации, возвращает null.
+     */
+    @GetMapping("/claims/byUser/approved/{sD}/{eD}")
+    public Collection<Claim> findApprovedClaimsByUser(Principal principal, @PathVariable("sD") String sD, @PathVariable("eD") String eD/*@RequestBody DateRange dr*/) {
+        DateRange dr = new DateRange();
+        dr.StartDate = Date.valueOf(sD);
+        dr.EndDate = Date.valueOf(eD);
+        System.out.println(dr);
+        if (principal != null) { //может ли principal быть null если доступ только авторизованный?
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            return claimService.getAllClaimsByDepartmentAndAffirmationAndDate(department.getId(), Boolean.TRUE, dr);
         }
         return null;
     }
@@ -108,10 +130,9 @@ public class ClaimController {
         return claimService.getClaimsByDepartment(department.getId());
     }
 
-        
     @GetMapping("/claims")
     public Collection<Claim> findClaimsByDepartmentId(Principal principal) {
-        if (principal != null) { 
+        if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
@@ -122,8 +143,7 @@ public class ClaimController {
         }
         return null;
     }
-    
-    
+
     /**
      * Метод для получения всех заявок выбранного промежутка времени.
      * Предполагается , что доступ к этому методу будет только у администратора.
@@ -213,7 +233,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
-            
+
             claim.setAffirmation(Boolean.FALSE);
             claim.setDepartment(department);
             claimService.addClaim(claim);
@@ -233,8 +253,10 @@ public class ClaimController {
      * @return список заявок подразделения. При вызове без авторизации,
      * возвращает null
      */
-    @DeleteMapping("/claims/byUser/delete/")
+    @DeleteMapping("/claims/byUser/delete")
     public Collection<Claim> delClaimByUser(Principal principal, @RequestBody Claim claim) {
+        System.out.println("udalenie claim");
+        System.out.println(claim);
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
@@ -382,12 +404,12 @@ public class ClaimController {
             Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
-            }            
+            }
             return claimService.getVehicleTypes();
         }
         return null;
     }
-    
+
     @GetMapping("/claims/byUser/records/waypoints")
     public Collection<Waypoint> getWaypoints(Principal principal) {
         if (principal != null) {
@@ -400,8 +422,7 @@ public class ClaimController {
         }
         return null;
     }
-    
-    
+
     @PostMapping("/claims/byUser/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
         FileStorage dbFile = claimService.storeFile(file);
@@ -414,7 +435,7 @@ public class ClaimController {
         return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
-    
+
     @PostMapping("/claims/byUser/uploadMultipleFiles")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
@@ -432,6 +453,22 @@ public class ClaimController {
                 .contentType(MediaType.parseMediaType(dbFile.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
+    }
+
+    @PutMapping("/claims/byUser/confirm")
+    public ResponseEntity<String> confirmClaims(Principal principal, @RequestBody Claim[] claims) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            if (department == null) {
+                throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
+            }
+            for (Claim claim : claims) {
+                claimService.updateClaim(claim, claim.getId());
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

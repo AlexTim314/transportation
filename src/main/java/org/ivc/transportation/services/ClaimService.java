@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.util.Collection;
@@ -15,7 +10,6 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.FileStorage;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.VehicleType;
-import org.ivc.transportation.entities.Vehicle;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -55,6 +49,8 @@ public interface ClaimService {
     public Collection<Claim> getAllClaimsByDate(DateRange dr);
 
     public Collection<Claim> getAllClaimsByDepartmentAndDate(Long id, DateRange dr);
+    
+    public Collection<Claim> getAllClaimsByDepartmentAndAffirmationAndDate(Long id, Boolean a, DateRange dr);
 
     public void addRecord(Record d);
 

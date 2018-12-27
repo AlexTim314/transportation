@@ -27,6 +27,10 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findAllByDepartmentIdAndClDateBetweenOrderByClDateDesc(Long id, Date clDateStart, Date clDateEnd);
     
+    List<Claim> findAllByDepartmentIdAndAffirmationAndClDateBetweenOrderByClDateDesc(Long id, Boolean a, Date clDateStart, Date clDateEnd);
+    
+    List<Claim> findAllByDepartmentIdAndAffirmationAndClDateBetweenOrderByClDateAsc(Long id, Boolean a, Date clDateStart, Date clDateEnd);
+    
     List<Claim> findByAffirmationOrderByClDateDesc(Boolean a);
 
     List<Claim> findByAffirmationOrderByClDateAsc(Boolean a);
