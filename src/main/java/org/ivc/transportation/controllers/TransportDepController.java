@@ -11,11 +11,13 @@ import java.util.Optional;
 import org.ivc.transportation.config.trUtils;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.exceptions.NullPrincipalException;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.TransportDepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,6 +35,8 @@ public class TransportDepController {
 
     @Autowired
     private TransportDepService transportDepService;
+    @Autowired
+    private ClaimService claimService;
 
     /**
      * Метод возвращает список транспортных отделов. Предполагается , что доступ
@@ -162,6 +166,13 @@ public class TransportDepController {
         }
         return transportDepService.getAppointmentsByTransportDepAndDateRange(transportDep, dr);
 
+    }
+    
+    @GetMapping("/plan/records/{date}/{status}")
+    public Collection<Record> findRecordByDateAndState(Principal principal, @PathVariable("date") Date date, @PathVariable("status") trUtils.RecordStatus status){
+
+        return claimService.getRecordsByDateAndState(date, status);
+    
     }
 
 }

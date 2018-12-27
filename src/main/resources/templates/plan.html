@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+     <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Комплекс автотраспортного обеспечения</title>
+        <script  src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+         <script src="js/app/plan/PlanService.js"></script>
+        <script src="js/app/plan/PlanController.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
-	<link href="assets/fontawesome/css/all.css" rel="stylesheet">
-	<link rel="stylesheet" href="assets/style/style.css">
-	
-	<script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="assets/app/app.js"></script>
-	<script src="assets/app/directives/firstDirective.js"></script>
+	<link href="fontawesome/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/app/firstDirective.js"></script>
 
 </head>
-<body ng-app="myApp" >
-	<div class="wrapper">
+<body ng-app="Transportation" >
+    <div class="wrapper" ng-controller="PlanController as ctrl">
 		<!-- Login Form-->
 		<div class="sidebar-vertical" id="sb-v-id">
 			<i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
@@ -184,21 +187,20 @@
                             <tr class="header-level">
                                <th></th>
                                <th >ЗАЯВКИ</th>
-                            </tr>
-                            <tr ng-repeat="claim in ctrl.claims">                           
-                                        <tr style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)" class="activeRow">
+                            </tr>                       
+                                    <tr ng-repeat-start="dep in ctrl.departments" style = "cursor: pointer" ng-click="ctrl.addRowHandlers(dep)" class="activeRow">
                                             <td>
                                                 <label class="custom-checkbox">
                                                     <input type="checkbox" >1
                                                     <span class="checkmark"></span>
                                                 </label>		
                                             </td>
-                                            <td>Название подразделения 
+                                            <td>{{dep.name}}
                                           
                                             	<i class="counter-items">22/3</i>
                                             </td>
                                         </tr>
-                                        <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible">
+                                        <tr class="hiddenRow" ng-show="dep.isVisible !== undefined && dep.isVisible" ng-repeat-end>
                                             <td colspan="2" class="cell-item">
                                             	<i class="far fa-2x fa-save"></i>
                                                 <table class="table-claim">
@@ -213,21 +215,24 @@
 										  			<th>Марка Транспорта</th>
 										  			<th></th>
                                                     </tr>
-                                                    <tr  ng-repeat="record in ctrl.records">
-                                                        <td>{{record.type}}</td>
-                                                        <td>{{record.datetime}}</td>
-                                                        <td>{{record.timeDelivery}}</td>
-                                                        <td>{{record.carBoss}}
+                                                    <tr ng-repeat="record in dep.records">
+                                                        <td>{{record.vehicleType.type}}</td>
+                                                        <td>{{record.departureDate}}</td>
+                                                        <td>{{record.departureTime}}</td>
+                                                        <td>{{record.purpose}}
                                                         
                                                         </td>
-                                                        <td>{{record.purpose}}</td>                                                         
+                                                        <td>
+                                                            <span data-ng-repeat="waypoint in record.waypoints">{{waypoint.name}} {{$last ? '' : ', '}}</span>
+                                                        </td>                                                         
                                                         
                                                         <td>
-                                                        	<select name="ots">
+                                                            <select name="ots">
 											 					<option value="1">1</option>
 											 					<option value="2">2</option>
 											 					<option value="3">3</option>
 											 				</select>
+											 				
 											 				
 											 			</td>
 
@@ -374,6 +379,6 @@
 
 		
 	</div>
-<script type="text/javascript" src="assets/script/script.js"></script>	
+<script type="text/javascript" src="js/script/script.js"></script>	
 </body>
 </html>
