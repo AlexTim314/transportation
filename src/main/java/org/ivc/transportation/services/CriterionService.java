@@ -38,7 +38,7 @@ public interface CriterionService {
     
     public Collection<CriterionValue> getCriterionValuesByCriterionId(Long id);
     
-    public Collection<CriterionValue> getCriterionValuesByVechicleId(Long id);
+    public Collection<CriterionValue> getCriterionValuesByVehicleId(Long id);
     
     public Collection<CriterionValue> getCriterionValuesByRecordId(Long id);
     

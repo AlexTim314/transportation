@@ -61,10 +61,7 @@ public class TransportationApplication {
 
     @Autowired
     private DepartmentService depS;
-    /*
-    @Autowired
-    private VechicleService veclS;
-     */
+ 
     @Autowired
     private ClaimService clS;
 
@@ -174,21 +171,21 @@ public class TransportationApplication {
         tdS.addVehicleModel(modelVech7);
         tdS.addVehicleModel(modelVech8);
 
-        Vehicle vechicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
-        vechicle1.setVacant(Boolean.TRUE);
-        Vehicle vechicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, modelVech2);
-        vechicle2.setVacant(Boolean.TRUE);
-        Vehicle vechicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, modelVech8);
-        vechicle3.setVacant(Boolean.FALSE);
-        Vehicle vechicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, modelVech7);
-        vechicle4.setVacant(Boolean.TRUE);
-        Vehicle vechicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, modelVech3);
-        vechicle5.setVacant(Boolean.TRUE);
-        tdS.addVechicle(vechicle1);
-        tdS.addVechicle(vechicle2);
-        tdS.addVechicle(vechicle3);
-        tdS.addVechicle(vechicle4);
-        tdS.addVechicle(vechicle5);
+        Vehicle vehicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
+        vehicle1.setVacant(Boolean.TRUE);
+        Vehicle vehicle2 = new Vehicle("456", 45.8, 123544.5, "", transportDep1, modelVech2);
+        vehicle2.setVacant(Boolean.TRUE);
+        Vehicle vehicle3 = new Vehicle("521", 33.2, 453454.2, "На ремонте", transportDep2, modelVech8);
+        vehicle3.setVacant(Boolean.FALSE);
+        Vehicle vehicle4 = new Vehicle("054", 86.2, 154543.0, "", transportDep1, modelVech7);
+        vehicle4.setVacant(Boolean.TRUE);
+        Vehicle vehicle5 = new Vehicle("007", 56.7, 145774.8, "", transportDep2, modelVech3);
+        vehicle5.setVacant(Boolean.TRUE);
+        tdS.addVehicle(vehicle1);
+        tdS.addVehicle(vehicle2);
+        tdS.addVehicle(vehicle3);
+        tdS.addVehicle(vehicle4);
+        tdS.addVehicle(vehicle5);
 
         Claim cl1 = new Claim(Date.valueOf("2018-10-20"), ClaimType.claim_type_weekly, dep2);
         cl1.setAffirmation(Boolean.TRUE);
@@ -234,7 +231,7 @@ public class TransportationApplication {
         System.out.println("----------------------------");
         tdS.findDriversByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
-        tdS.findVechiclesByVacant(Boolean.TRUE).forEach(System.out::println);
+        tdS.findVehiclesByVacant(Boolean.TRUE).forEach(System.out::println);
         System.out.println("----------------------------");
         System.out.println(tdS.getDriversByTransportDepId(transportDep1.getId()));
         System.out.println("----------------------------");
@@ -310,11 +307,11 @@ public class TransportationApplication {
         ap3.setDriver(driver5);
         ap4.setDriver(driver2);
         ap5.setDriver(driver5);
-        ap1.setVehicle(vechicle1);
-        ap2.setVehicle(vechicle2);
-        ap3.setVehicle(vechicle3);
-        ap4.setVehicle(vechicle4);
-        ap5.setVehicle(vechicle5);
+        ap1.setVehicle(vehicle1);
+        ap2.setVehicle(vehicle2);
+        ap3.setVehicle(vehicle3);
+        ap4.setVehicle(vehicle4);
+        ap5.setVehicle(vehicle5);
 
         TaskList taskList = null;//new TaskList();
         Waybill waybill1 = new Waybill("серия1", "0001", 500.01f, 50.5f, "Исправено", "Здоров", "Замечаний нет", taskList);
@@ -397,14 +394,14 @@ public class TransportationApplication {
         critServ.addCriterion(cr7);
         critServ.addCriterion(cr8);
 
-        CriterionValue crV1 = new CriterionValue("115", rec5, vechicle1, cr1);
-        CriterionValue crV2 = new CriterionValue("14", rec1, vechicle1, cr2);
-        CriterionValue crV3 = new CriterionValue("15", rec2, vechicle3, cr3);
-        CriterionValue crV4 = new CriterionValue("25", rec3, vechicle2, cr4);
-        CriterionValue crV5 = new CriterionValue("20", rec3, vechicle2, cr5);
-        CriterionValue crV6 = new CriterionValue("2500", rec4, vechicle4, cr6);
-        CriterionValue crV7 = new CriterionValue("3560", rec5, vechicle2, cr7);
-        CriterionValue crV8 = new CriterionValue("2100", rec1, vechicle4, cr8);
+        CriterionValue crV1 = new CriterionValue("115", rec5, vehicle1, cr1);
+        CriterionValue crV2 = new CriterionValue("14", rec1, vehicle1, cr2);
+        CriterionValue crV3 = new CriterionValue("15", rec2, vehicle3, cr3);
+        CriterionValue crV4 = new CriterionValue("25", rec3, vehicle2, cr4);
+        CriterionValue crV5 = new CriterionValue("20", rec3, vehicle2, cr5);
+        CriterionValue crV6 = new CriterionValue("2500", rec4, vehicle4, cr6);
+        CriterionValue crV7 = new CriterionValue("3560", rec5, vehicle2, cr7);
+        CriterionValue crV8 = new CriterionValue("2100", rec1, vehicle4, cr8);
         critServ.addCriterionValue(crV1);
         critServ.addCriterionValue(crV2);
         critServ.addCriterionValue(crV3);

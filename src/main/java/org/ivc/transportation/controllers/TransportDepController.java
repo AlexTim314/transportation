@@ -94,49 +94,49 @@ public class TransportDepController {
         return transportDepService.getDriversByTransportDepId(d.getTransportDep().getId());
     }
 
-    @PostMapping("/transportDeps/vechicles")
-    public Collection<Vehicle> getVechicles(@RequestBody TransportDep department) {        
-        return transportDepService.getVechiclesByTransportDepId(department.getId());
+    @PostMapping("/transportDeps/vehicles")
+    public Collection<Vehicle> getVehicles(@RequestBody TransportDep department) {        
+        return transportDepService.getVehiclesByTransportDepId(department.getId());
     }
 
-    @PostMapping("/transportDeps/vechicles/create")
-    public Collection<Vehicle> addVechicle(@RequestBody Vehicle d) {
+    @PostMapping("/transportDeps/vehicles/create")
+    public Collection<Vehicle> addVehicle(@RequestBody Vehicle d) {
         d.setVacant(Boolean.TRUE);
-        transportDepService.addVechicle(d);
-        return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
+        transportDepService.addVehicle(d);
+        return transportDepService.getVehiclesByTransportDepId(d.getTransportDep().getId());
     }
 
-    @PutMapping("/transportDeps/vechicles/update")
-    public Collection<Vehicle> updateVechicle(@RequestBody Vehicle d) {
-        transportDepService.updateVechicle(d, d.getId());
-        return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
+    @PutMapping("/transportDeps/vehicles/update")
+    public Collection<Vehicle> updateVehicle(@RequestBody Vehicle d) {
+        transportDepService.updateVehicle(d, d.getId());
+        return transportDepService.getVehiclesByTransportDepId(d.getTransportDep().getId());
     }
 
-    @DeleteMapping("/transportDeps/vechicles/delete")
-    public Collection<Vehicle> delVechicle(@RequestBody Vehicle d) {
-        transportDepService.removeVechicle(d.getId());
-        return transportDepService.getVechiclesByTransportDepId(d.getTransportDep().getId());
+    @DeleteMapping("/transportDeps/vehicles/delete")
+    public Collection<Vehicle> delVehicle(@RequestBody Vehicle d) {
+        transportDepService.removeVehicle(d.getId());
+        return transportDepService.getVehiclesByTransportDepId(d.getTransportDep().getId());
     }
 
-    @GetMapping("/transportDeps/vechicles/typeVechicle")
+    @GetMapping("/transportDeps/vehicles/typeVehicle")
     public Collection<VehicleType> getVehicleType() {
         return transportDepService.getVehicleTypes();
     }
 
-    @PostMapping("/transportDeps/vechicles/typeVechicle/create")
+    @PostMapping("/transportDeps/vehicles/typeVehicle/create")
     public Collection<VehicleType> addVehicleType(@RequestBody VehicleType t) {
         transportDepService.addVehicleType(t);
         return transportDepService.getVehicleTypes();
     }
 
-    @PutMapping("/transportDeps/vechicles/typeVechicle/update")
+    @PutMapping("/transportDeps/vehicles/typeVehicle/update")
     public Collection<VehicleType> updateVehicleType(@RequestBody VehicleType t) {
         transportDepService.updateVehicleType(t, t.getId());
         return transportDepService.getVehicleTypes();
     }
 
-    @DeleteMapping("/transportDeps/vechicles/typeVechicle/delete")
-    public Collection<VehicleType> delTypeVechicle(@RequestBody VehicleType t) {
+    @DeleteMapping("/transportDeps/vehicles/typeVehicle/delete")
+    public Collection<VehicleType> delTypeVehicle(@RequestBody VehicleType t) {
         transportDepService.removeVehicleType(t.getId());
         return transportDepService.getVehicleTypes();
     }

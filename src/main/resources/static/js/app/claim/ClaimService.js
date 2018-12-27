@@ -63,7 +63,7 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                 return $http.get('/transportation/claims/byUser/records/vehicleType')
                         .then(
                                 function (response) {
-                                    console.log('fetching vechicletypes');
+                                    console.log('fetching vehicletypes');
                                     return response.data;
 
                                 },

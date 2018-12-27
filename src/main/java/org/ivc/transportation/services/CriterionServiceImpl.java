@@ -116,7 +116,7 @@ public class CriterionServiceImpl implements CriterionService {
 
     @Override
     @Transactional
-    public Collection<CriterionValue> getCriterionValuesByVechicleId(Long id) {
+    public Collection<CriterionValue> getCriterionValuesByVehicleId(Long id) {
         return cvr.deleteByVehicleId(id);
     }
 

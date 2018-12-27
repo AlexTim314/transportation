@@ -138,8 +138,8 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
                 );
             },
 
-            fetchAllVechicles: function (transportDep) {
-                return $http.post('/transportation/transportDeps/vechicles',
+            fetchAllVehicles: function (transportDep) {
+                return $http.post('/transportation/transportDeps/vehicles',
                         JSON.stringify(transportDep), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -147,49 +147,49 @@ App.factory('TransportDepService', ['$http', '$q', '$document', function ($http,
 
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching Vechicles in transportDep');
+                                    console.error('Error while fetching Vehicles in transportDep');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
-            createVechicle: function (vechicle) {
-                return $http.post('/transportation/transportDeps/vechicles/create',
-                        JSON.stringify(vechicle), {headers: self.headers})
+            createVehicle: function (vehicle) {
+                return $http.post('/transportation/transportDeps/vehicles/create',
+                        JSON.stringify(vehicle), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while updating TransportDep (createVechicle)');
+                                    console.error('Error while updating TransportDep (createVehicle)');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
 
-            updateVechicle: function (vechicle) {
-                return $http.put('/transportation/transportDeps/vechicles/update',
-                        JSON.stringify(vechicle), {headers: self.headers})
+            updateVehicle: function (vehicle) {
+                return $http.put('/transportation/transportDeps/vehicles/update',
+                        JSON.stringify(vehicle), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while updating Vechicle (TransportDep)');
+                                    console.error('Error while updating Vehicle (TransportDep)');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
-            deleteVechicle: function (vechicle) {
+            deleteVehicle: function (vehicle) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/transportDeps/vechicles/delete/',
-                    data: JSON.stringify(vechicle),
+                    url: '/transportation/transportDeps/vehicles/delete/',
+                    data: JSON.stringify(vehicle),
                     headers: self.headers
                 }).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while deleting Vechicle (TransportDep)');
+                            console.error('Error while deleting Vehicle (TransportDep)');
                             return $q.reject(errResponse);
                         }
                 );

@@ -48,19 +48,19 @@ public interface TransportDepService {
 
     public Collection<Driver> getDriversByTransportDepId(Long id);
 
-    public void addVechicle(Vehicle d);
+    public void addVehicle(Vehicle d);
 
-    public void updateVechicle(Vehicle d, Long id);
+    public void updateVehicle(Vehicle d, Long id);
 
-    public void removeVechicle(Long id);
+    public void removeVehicle(Long id);
 
-    public Collection<Vehicle> getVechicles();
+    public Collection<Vehicle> getVehicles();
 
-    public Collection<Vehicle> findVechiclesByVacant(Boolean d);
+    public Collection<Vehicle> findVehiclesByVacant(Boolean d);
 
-    public Collection<Vehicle> getVechiclesByTransportDepId(Long id);
+    public Collection<Vehicle> getVehiclesByTransportDepId(Long id);
 
-    public Optional getVechicleById(Long id);
+    public Optional getVehicleById(Long id);
 
     public void addVehicleType(VehicleType d);
 

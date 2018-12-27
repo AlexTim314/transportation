@@ -128,44 +128,44 @@ public class TransportDepServiceImpl implements TransportDepService {
 
     @Override
     @Transactional
-    public void addVechicle(Vehicle d) {
+    public void addVehicle(Vehicle d) {
         this.vehicleRep.save(d);
     }
 
     @Override
     @Transactional
-    public void updateVechicle(Vehicle d, Long id) {
+    public void updateVehicle(Vehicle d, Long id) {
         d.setId(id);
         vehicleRep.save(d);
     }
 
     @Override
     @Transactional
-    public void removeVechicle(Long id) {
+    public void removeVehicle(Long id) {
         vehicleRep.deleteById(id);
     }
 
     @Override
     @Transactional
-    public Collection<Vehicle> getVechicles() {
+    public Collection<Vehicle> getVehicles() {
         return vehicleRep.findAll();
     }
 
     @Override
     @Transactional
-    public Collection<Vehicle> findVechiclesByVacant(Boolean d) {
+    public Collection<Vehicle> findVehiclesByVacant(Boolean d) {
         return vehicleRep.findByVacant(d);
     }
 
     @Override
     @Transactional
-    public Collection<Vehicle> getVechiclesByTransportDepId(Long id) {
+    public Collection<Vehicle> getVehiclesByTransportDepId(Long id) {
         return vehicleRep.findByTransportDepId(id);
     }
 
     @Override
     @Transactional
-    public Optional getVechicleById(Long id) {
+    public Optional getVehicleById(Long id) {
         return vehicleRep.findById(id);
     }
 

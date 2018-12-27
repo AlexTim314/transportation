@@ -5,10 +5,10 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         var self = this;
         self.transportDep = {id: null, name: '', addres: '', phone: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
-        self.vechicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
+        self.vehicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
         self.transportDeps = [];
         self.drivers = [];
-        self.vechicles = [];
+        self.vehicles = [];
 
 
 
@@ -29,7 +29,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
         self.addRowHandlers = function (tDep) {
             self.transportDep = tDep;
             self.fetchAllDrivers(tDep);
-            self.fetchAllVechicles(tDep);
+            self.fetchAllVehicles(tDep);
         };
 
         self.fetchAllDrivers = function (transportDep) {
@@ -44,14 +44,14 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                             }
                     );
         };
-        self.fetchAllVechicles = function (transportDep) {
-            TransportDepService.fetchAllVechicles(transportDep)
+        self.fetchAllVehicles = function (transportDep) {
+            TransportDepService.fetchAllVehicles(transportDep)
                     .then(
                             function (d) {
-                                self.vechicles = d;
+                                self.vehicles = d;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Vechicles');
+                                console.error('Error while fetching Vehicles');
                                 showAlert(errResponse);
                             }
                     );
@@ -127,35 +127,35 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
                     );
         };
 
-        self.createVechicle = function (vechicle) {
-            vechicle.transportDep = self.transportDep;
-            TransportDepService.createVechicle(vechicle)
+        self.createVehicle = function (vehicle) {
+            vehicle.transportDep = self.transportDep;
+            TransportDepService.createVehicle(vehicle)
                     .then(
-                            self.fetchAllVechicles(self.transportDep),
+                            self.fetchAllVehicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while creating Vechicle in TransportDep with id = ' + self.transportDep.id);
+                                console.error('Error while creating Vehicle in TransportDep with id = ' + self.transportDep.id);
                                 alert(errResponse);
                             }
                     );
         };
 
-        self.updateVechicle = function (vechicle) {
-            TransportDepService.updateVechicle(vechicle)
+        self.updateVehicle = function (vehicle) {
+            TransportDepService.updateVehicle(vehicle)
                     .then(
-                            self.fetchAllVechicles(self.transportDep),
+                            self.fetchAllVehicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while updating Vechicle in TransportDep with id = ' + self.transportDep.id);
+                                console.error('Error while updating Vehicle in TransportDep with id = ' + self.transportDep.id);
                                 alert(errResponse);
                             }
                     );
         };
 
-        self.deleteVechicle = function (vechicle) {
-            TransportDepService.deleteVechicle(vechicle)
+        self.deleteVehicle = function (vehicle) {
+            TransportDepService.deleteVehicle(vehicle)
                     .then(
-                            self.fetchAllVechicles(self.transportDep),
+                            self.fetchAllVehicles(self.transportDep),
                             function (errResponse) {
-                                console.error('Error while deleting Vechicle in TransportDep with id = ' + self.transportDep.id);
+                                console.error('Error while deleting Vehicle in TransportDep with id = ' + self.transportDep.id);
                                 alert(errResponse);
                             }
                     );
@@ -179,13 +179,13 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             self.resetDriver();
         };
 
-        self.submitVechicle = function () {
-            if (self.Vechicle.vechicleId === null) {
-                self.createVechicle(self.vechicle);
+        self.submitVehicle = function () {
+            if (self.Vehicle.vehicleId === null) {
+                self.createVehicle(self.vehicle);
             } else {
-                self.updateVechicle(self.vechicle);
+                self.updateVehicle(self.vehicle);
             }
-            self.resetVechicle();
+            self.resetVehicle();
         };
 
         self.editTransportDep = function (transportDep) {
@@ -207,13 +207,13 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             self.driver.transportDep = driver.transportDep;
 
         };
-        self.editVechicle = function (vechicle) {
-            self.vechicle.id = vechicle.id;
-            self.vechicle.number = vechicle.number;
-            self.vechicle.fuelRemnant = vechicle.fuelRemnant;
-            self.vechicle.odometr = vechicle.odometr;
-            self.vechicle.note = vechicle.note;
-            self.vechicle.transportDep = vechicle.transportDep;
+        self.editVehicle = function (vehicle) {
+            self.vehicle.id = vehicle.id;
+            self.vehicle.number = vehicle.number;
+            self.vehicle.fuelRemnant = vehicle.fuelRemnant;
+            self.vehicle.odometr = vehicle.odometr;
+            self.vehicle.note = vehicle.note;
+            self.vehicle.transportDep = vehicle.transportDep;
         };
 
 
@@ -225,7 +225,7 @@ App.controller('TransportDepController', ['$scope', 'TransportDepService',
             self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', addres: '', phone: '', note: '', transportDep: {name: ""}};
         };
 
-        self.resetVechicle = function () {
-            self.vechicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
+        self.resetVehicle = function () {
+            self.vehicle = {id: null, number: '', fuelRemnant: null, odometr: null, note: '', transportDep: {name: ""}};
         };
     }]);

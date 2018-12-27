@@ -43,7 +43,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Autowired
     private RecordRepository recordRep;
     @Autowired
-    private VehicleTypeRepository typeVechicleRep;
+    private VehicleTypeRepository typeVehicleRep;
     
     @Autowired
     private FileStorageRepository fileStorageRep;
@@ -209,12 +209,12 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Collection<VehicleType> getVehicleTypes() {
-        return typeVechicleRep.findAll();
+        return typeVehicleRep.findAll();
     }
 
     @Override
     public Collection<VehicleType> getVehicleTypesBySpicialization(String s) {
-        return typeVechicleRep.findBySpecialization(s);
+        return typeVehicleRep.findBySpecialization(s);
     }
 
     @Override

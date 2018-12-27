@@ -226,7 +226,7 @@
                             </div>
                         </div>
                     </div>
-<!---------------------------------------------Vechicles table--------------------------------------------------------->
+<!---------------------------------------------Vehicles table--------------------------------------------------------->
                     <div class="generic-container">
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
@@ -235,13 +235,13 @@
                                 <div class="formcontainer">
                                     <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
                                                                     <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
-                                    <form ng-submit="ctrl.submitVechicle()" name="vechicleForm" class="form-horizontal">
-                                        <input type="hidden" ng-model="ctrl.vechicle.id" />
+                                    <form ng-submit="ctrl.submitVehicle()" name="vehicleForm" class="form-horizontal">
+                                        <input type="hidden" ng-model="ctrl.vehicle.id" />
                                         <div class="row">
                                             <div class="form-group col-md-12">
                                                 <label class="col-md-2 control-lable" for="number">Номер</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" ng-model="ctrl.vechicle.number" id="number" class="form-control input-sm" placeholder="Введите гос. № транспортного средства" required ng-minlength="3"/>
+                                                    <input type="text" ng-model="ctrl.vehicle.number" id="number" class="form-control input-sm" placeholder="Введите гос. № транспортного средства" required ng-minlength="3"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,7 +250,7 @@
                                             <div class="form-group col-md-12">
                                                 <label class="col-md-2 control-lable" for="fuelRemnant">Остатки топлива в баке</label>
                                                 <div class="col-md-7">
-                                                    <input type=text ng-model="ctrl.vechicle.fuelRemnant" id="fuelRemnant" class="form-control input-sm" placeholder="Введите кол-во топлива оставшегося в баке"/>
+                                                    <input type=text ng-model="ctrl.vehicle.fuelRemnant" id="fuelRemnant" class="form-control input-sm" placeholder="Введите кол-во топлива оставшегося в баке"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,7 +259,7 @@
                                             <div class="form-group col-md-12">
                                                 <label class="col-md-2 control-lable" for="odometr">Показания одометра</label>
                                                 <div class="col-md-7">
-                                                    <input type=text ng-model="ctrl.vechicle.odometr" id="odometr" class="form-control input-sm" placeholder="Введите показания одометра по окончанию работ"/>
+                                                    <input type=text ng-model="ctrl.vehicle.odometr" id="odometr" class="form-control input-sm" placeholder="Введите показания одометра по окончанию работ"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,7 +268,7 @@
                                             <div class="form-group col-md-12">
                                                 <label class="col-md-2 control-lable" for="note">Примечание</label>
                                                 <div class="col-md-7">
-                                                    <input type="text" ng-model="ctrl.vechicle.note" id="vnote" class="form-control input-sm" placeholder="Примечание"/>
+                                                    <input type="text" ng-model="ctrl.vehicle.note" id="vnote" class="form-control input-sm" placeholder="Примечание"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,8 +278,8 @@
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVechicle(ctrl.vechicle)">{{ctrl.vechicle.id===null?'Добавить':'Изменить'}}</button> 
-                                        <button type="button" ng-click="ctrl.resetVechicle()" class="btn btn-warning btn-sm" ng-disabled="vechicleForm.$pristine">Сбросить поля</button>
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicle(ctrl.vehicle)">{{ctrl.vehicle.id===null?'Добавить':'Изменить'}}</button> 
+                                        <button type="button" ng-click="ctrl.resetVehicle()" class="btn btn-warning btn-sm" ng-disabled="vehicleForm.$pristine">Сбросить поля</button>
                                     </div>
                                 </div>
 
@@ -288,7 +288,7 @@
                                     <div class="panel-heading"><span class="lead">Список транспортных средств</span></div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <table class="table table-hover" id="vechicles-table">
+                                            <table class="table table-hover" id="vehicles-table">
                                                 <thead>
                                                     <tr>                     
                                                         <th>Код</th>
@@ -300,14 +300,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "vechicle in ctrl.vechicles">
-                                                        <td>{{vechicle.id}}</td>
-                                                        <td>{{vechicle.number}}</td>
-                                                        <td>{{vechicle.fuelRemnant}}</td>
-                                                        <td>{{vechicle.odometr}}</td>
-                                                        <td>{{vechicle.note}}</td>
-                                                        <td><button type="button" ng-click="ctrl.editVechicle(vechicle)" class="btn btn-success">Изменить</button>
-                                                            <button type="button" ng-click="ctrl.deleteVechicle(vechicle)" class="btn btn-danger custom-width">Удалить</button></td>
+                                                    <tr style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''" ng-repeat= "vehicle in ctrl.vehicles">
+                                                        <td>{{vehicle.id}}</td>
+                                                        <td>{{vehicle.number}}</td>
+                                                        <td>{{vehicle.fuelRemnant}}</td>
+                                                        <td>{{vehicle.odometr}}</td>
+                                                        <td>{{vehicle.note}}</td>
+                                                        <td><button type="button" ng-click="ctrl.editVehicle(vehicle)" class="btn btn-success">Изменить</button>
+                                                            <button type="button" ng-click="ctrl.deleteVehicle(vehicle)" class="btn btn-danger custom-width">Удалить</button></td>
 
                                                     </tr>
                                                 </tbody>
