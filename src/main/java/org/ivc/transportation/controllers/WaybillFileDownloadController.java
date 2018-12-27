@@ -165,7 +165,6 @@ public class WaybillFileDownloadController {
         //TODO: добавить обработку случая, когда  Записей больше 1
         Record record = tdS.getAppointmentGroups(appointment).get(0).getRecord();
         LocalDateTime dateTime = appointment.getAppDateTime();
-        
 
         try {
             Workbook workbook;
