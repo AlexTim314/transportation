@@ -328,6 +328,7 @@ public class ClaimController {
             if (department == null) {
                 throw new NotSpecifiedDepartmentException(errNotSpecifiedDepartmentException);
             }
+           ///ZonedDateTime
             claimService.addRecord(record);
             System.out.println(record.getClaim());
             return claimService.getRecordsByClaim(record.getClaim().getId());

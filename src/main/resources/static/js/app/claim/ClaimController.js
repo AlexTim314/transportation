@@ -9,13 +9,22 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.record = {id: null, weekHash: '', type: '', datetime: '', departureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clType: ''}, vehicleType: {specialization: ''}, waypoints: []};
         self.waypoint = {name: '', latitude: '', longitude: ''};
+        self.driver = {id: null, firstname: '', name: '', surname: '',birthday: '', address: '', phone: '', note: ''};
+        self.vehicle = {id: null, number: '', fuelRemnant: '', odometr: '', note: '', vehicleModel:{modelName:''}};
+        self.vehicleModel = {id: null, modelName:'', vehicleType: {specialization: ''}};
+        self.appointment = {id: null, appDateTime: '', vehicleModel:{modelName:''}};
+        self.appointmentGroup = {id: null, note: '', record: {timeDelivery: ''}, appointment: {appDateTime: ''}};
         self.departments = [];
         self.unapprovedClaims = [];
         self.approvedClaims = [];
         self.records = [];
         self.waypoints = [];
         self.vehicleTypes = [];
-
+        self.drivers = [];
+        self.vehicles = [];
+        self.vehicleModels = [];
+        self.appointments = [];
+        self.appointmentGroups = [];
         var recObj;
 
 
@@ -204,10 +213,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 
                 newRecord.datetime = new Date(date0.setDate(date0.getDate()));
                 newRecord.departureDate = new Date(date1.setDate(date1.getDate()));
-                newRecord.departureTime = new Date(time1.setTime(time1.getHours()));
+                newRecord.departureTime = new Date(record.departureTime);
                 newRecord.returnDate = new Date(date2.setDate(date2.getDate()));
-                newRecord.returnTime = new Date(time2.setTime(time1.getHours()));
-                newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()));
+                newRecord.returnTime = new Date(record.returnTime);
+                newRecord.timeDelivery = new Date(record.timeDelivery);
                 ClaimService.createRecord(newRecord)
                         .then(self.fetchUnapprovedClaims(),
                                 self.fetchAllRecords(self.claim),
@@ -219,10 +228,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 for (i = 0; i < 4; i++) {
                     newRecord.datetime = new Date(date0.setDate(date0.getDate()));
                     newRecord.departureDate = new Date(date1.setDate(date1.getDate() + 1));
-                    newRecord.departureTime = new Date(time1.setTime(time1.getHours()));
+                    newRecord.departureTime = new Date(record.departureTime);
                     newRecord.returnDate = new Date(date2.setDate(date2.getDate() + 1));
-                    newRecord.returnTime = new Date(time2.setTime(time1.getHours()));
-                    newRecord.timeDelivery = new Date(time3.setTime(time1.getHours()));
+                    newRecord.returnTime = new Date(record.returnTime);
+                    newRecord.timeDelivery = new Date(record.timeDelivery);
                     ClaimService.createRecord(newRecord)
                             .then(self.fetchUnapprovedClaims(),
                                     self.fetchAllRecords(self.claim),
@@ -241,10 +250,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                 var time2 = new Date(record.returnTime);
                 var time3 = new Date(record.timeDelivery);
                 record.departureDate = new Date(record.departureDate);
-                record.departureTime = new Date(time1.setTime(time1.getHours()));
+                record.departureTime = new Date(record.departureTime);
                 record.returnDate = new Date(record.returnDate);
-                record.returnTime = new Date(time2.setTime(time1.getHours()));
-                record.timeDelivery = new Date(time1.setTime(time3.getHours()));
+                record.returnTime = new Date(record.returnTime);
+                record.timeDelivery = new Date(record.timeDelivery);
                 ClaimService.createRecord(record)
                         .then(self.fetchUnapprovedClaims(),
                                 self.fetchAllRecords(self.claim),
