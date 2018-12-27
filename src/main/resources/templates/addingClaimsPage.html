@@ -260,7 +260,7 @@
                                 <tr ng-repeat-start="claim in clCtrl.unapprovedClaims| filter:search" style = "cursor: pointer" ng-click="clCtrl.addRowHandlers(claim)">                                
                                     <td>
                                         <label class="custom-checkbox">
-                                            <input type="checkbox" >-
+                                            <input type="checkbox" ng-value="claim.affirmation" ng-click="claim.affirmation = !claim.affirmation">-
                                             <span class="checkmark"></span>
                                         </label>		
                                     </td>
@@ -309,10 +309,8 @@
                             </tbody>
                         </table>
                     </div>
-
-
                         <div class="assert-block clearfix">
-                            <button class="btn edit assert" ng-click="clCtrl.approvalClaims()"><i class="fas fa-clipboard-check"></i>Утвердить</button>
+                            <button class="btn edit assert" ng-click="clCtrl.confirmClaims()"><i class="fas fa-clipboard-check"></i>Утвердить</button>
                             <button class="btn edit "><i class="fas fa-file-export"></i>Экспорт...</button>
                         </div>
                     </div>

@@ -15,6 +15,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.records = [];
         self.waypoints = [];
         self.vehicleTypes = [];
+
         var recObj;
 
 
@@ -138,6 +139,25 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
 //                    );
 //        };
 
+        self.confirmClaims = function () {
+            var confirmedClaims = [];
+            for (var ind in self.unapprovedClaims) {
+                var c = self.unapprovedClaims[ind];
+                if (c.affirmation) {
+                    confirmedClaims.push(c);
+                    console.log(c);
+                }
+            }
+            ClaimService.confirmClaims(confirmedClaims)
+                    .then(
+                            self.fetchUnapprovedClaims(),
+                            self.fetchUnapprovedClaims(),
+                            function (errResponse) {
+                                console.error('Error while confirming Claims.');
+                                showAlert(errResponse);
+                            }
+                    );
+        };
 
         self.createClaim = function (claim) {
             if (claim.id !== null) {

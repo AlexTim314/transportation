@@ -106,6 +106,21 @@ App.factory('ClaimService', ['$http', '$q', '$document', function ($http, $q, $d
                                 }
                         );
             },
+            
+            confirmClaims: function (claims) {
+                return $http.put('/transportation/claims/byUser/confirm',
+                        JSON.stringify(claims), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    console.log('Confirm Claims');
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while confirming claims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             createRecord: function (record) {
                 record.waypoints=null;
