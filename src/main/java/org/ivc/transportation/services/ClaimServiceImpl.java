@@ -208,16 +208,19 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
+    @Transactional
     public Collection<VehicleType> getVehicleTypes() {
         return typeVehicleRep.findAll();
     }
 
     @Override
+    @Transactional
     public Collection<VehicleType> getVehicleTypesBySpicialization(String s) {
         return typeVehicleRep.findBySpecialization(s);
     }
 
     @Override
+    @Transactional
     public FileStorage storeFile(MultipartFile file) {
        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -236,14 +239,22 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
+    @Transactional
     public Collection<FileStorage> getFiles(Long id) {
        return fileStorageRep.findByClaimId(id);
     }
     
     @Override
+    @Transactional
     public FileStorage getFile(Long fileId) {
         return fileStorageRep.findById(fileId)
                 .orElseThrow(() -> new FileNotFoundException("File not found with id " + fileId));
+    }
+
+    @Override
+    @Transactional
+    public Collection<Record> getRecordsByDateAndState(Date d, RecordStatus t) {
+        return recordRep.findByStatusAndDatetime(t, d);
     }
 
   

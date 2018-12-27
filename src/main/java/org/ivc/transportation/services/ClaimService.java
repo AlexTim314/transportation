@@ -67,6 +67,8 @@ public interface ClaimService {
     public Collection<Record> getRecordsByState(RecordStatus t);
 
     public Collection<Record> getRecordsByDate(Date d);
+    
+    public Collection<Record> getRecordsByDateAndState(Date d, RecordStatus t);
 
     public Collection<Record> getRecordsByHash(String d);
 

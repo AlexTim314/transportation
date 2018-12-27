@@ -159,8 +159,9 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             }
             ClaimService.confirmClaims(confirmedClaims)
                     .then(
-                            self.fetchUnapprovedClaims(),
-                            self.fetchUnapprovedClaims(),
+                    // self.fetchUnapprovedClaims(),
+                    //       self.fetchUnapprovedClaims(),
+                    location.reload(),
                             function (errResponse) {
                                 console.error('Error while confirming Claims.');
                                 showAlert(errResponse);

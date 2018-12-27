@@ -157,4 +157,13 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
+    
+        @RequestMapping(value = "/plan", method = RequestMethod.GET)
+    public String getPlanPage(Model model, Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return "plan";
+        }
+        return accessDenied(model, principal);
+    }
 }
