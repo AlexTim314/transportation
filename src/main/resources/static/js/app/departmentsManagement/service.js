@@ -20,52 +20,52 @@ App.factory('DepartmentsManagementService', ['$http', '$q', '$document', functio
                                     return $q.reject(errResponse);
                                 }
                         );
-            },
-
-            createDepartment: function (department) {
-                return $http.post('/transportation/management/department_create',
-                        JSON.stringify(department), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while creating department');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            updateDepartment: function (department) {
-                return $http.put('/transportation/management/department_update',
-                        JSON.stringify(department), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while updating department');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            deleteDepartment: function (department) {
-                console.log(department);
-                return $http({method: 'DELETE',
-                    url: '/transportation/management/department_delete',
-                    data: JSON.stringify(department),
-                    headers: self.headers
-                }).then(
-                        function (response) {
-                            return response.data;
-                        },
-                        function (errResponse) {
-                            console.error('Error while deleting department');
-                            return $q.reject(errResponse);
-                        }
-                );
             }
+
+//            createDepartment: function (department) {
+//                return $http.post('/transportation/management/department_create',
+//                        JSON.stringify(department), {headers: self.headers})
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while creating department');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+//
+//            updateDepartment: function (department) {
+//                return $http.put('/transportation/management/department_update',
+//                        JSON.stringify(department), {headers: self.headers})
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while updating department');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+//
+//            deleteDepartment: function (department) {
+//                console.log(department);
+//                return $http({method: 'DELETE',
+//                    url: '/transportation/management/department_delete',
+//                    data: JSON.stringify(department),
+//                    headers: self.headers
+//                }).then(
+//                        function (response) {
+//                            return response.data;
+//                        },
+//                        function (errResponse) {
+//                            console.error('Error while deleting department');
+//                            return $q.reject(errResponse);
+//                        }
+//                );
+//            }
 
         };
     }]);

@@ -10,8 +10,8 @@
         <script src="js/lib/angular.min.js" ></script>
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
         <script src="js/app/app.js"></script>
-        <script src="js/app/DepartmentsManagement/service.js"></script>
-        <script src="js/app/DepartmentsManagement/controller.js"></script>
+        <script src="js/app/departmentsManagement/service.js"></script>
+        <script src="js/app/departmentsManagement/controller.js"></script>
 
         <link href="css/lib/bootstrap.css" rel="stylesheet"/>
         <link href="css/lib/app.css" rel="stylesheet"/>
@@ -33,7 +33,7 @@
                                     <input type="hidden" ng-model="ctrl.department.id" />
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label class="col-md-2 control-lable" for="fullname">Название подразделения</label>
+                                            <label class="col-md-2 control-lable" for="fullname">Полное название подразделения</label>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model="ctrl.department.fullname" id="fullname" class="form-control input-sm" placeholder="Введите полное название подразделения" required ng-minlength="3"/>
                                             </div>
@@ -42,7 +42,7 @@
 
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label class="col-md-2 control-lable" for="shortname">Название подразделения</label>
+                                            <label class="col-md-2 control-lable" for="shortname">Короткое название подразделения</label>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model="ctrl.department.shortname" id="shortname" class="form-control input-sm" placeholder="Введите сокращенное навание подразделения" required ng-minlength="3"/>
                                             </div>
@@ -60,7 +60,7 @@
 
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label class="col-md-2 control-lable" for="phone">Адрес</label>
+                                            <label class="col-md-2 control-lable" for="phone">Телефон</label>
                                             <div class="col-md-7">
                                                 <input type="text" ng-model="ctrl.department.phone" id="phone" class="form-control input-sm" placeholder="Введите телефон подразделения" required ng-minlength="3"/>
                                             </div>
