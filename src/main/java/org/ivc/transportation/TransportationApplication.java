@@ -3,10 +3,7 @@ package org.ivc.transportation;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -55,13 +52,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransportationApplication {
 
     private static final String PASSWORD = "$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu";
-    
+
     @Autowired
     private TransportDepService tdS;
 
     @Autowired
     private DepartmentService depS;
- 
+
     @Autowired
     private ClaimService clS;
 
@@ -93,7 +90,7 @@ public class TransportationApplication {
         TransportDep transportDep2 = new TransportDep("Транспортный отдел №5", "пл.9", "16-386");
         TransportDep transportDep3 = new TransportDep("Транспортный отдел №1", "пл.10", "17-345");
         TransportDep transportDep4 = new TransportDep("Транспортный отдел №2", "пл.2", "15-646");
-        
+
         tdS.addTransportDep(transportDep1);
         tdS.addTransportDep(transportDep2);
         tdS.addTransportDep(transportDep3);
@@ -111,7 +108,7 @@ public class TransportationApplication {
         dep4.setShortName("ЦИ-1");
         dep5.setShortName("КЭССТ");
         dep6.setShortName("ЦИ-7");
-        
+
         depS.saveDepartment(dep1);
         depS.saveDepartment(dep2);
         depS.saveDepartment(dep3);
@@ -121,6 +118,7 @@ public class TransportationApplication {
 
         AppUser admin = new AppUser("admin", PASSWORD, true, new HashSet<>(Arrays.asList(adminRole)));
         AppUser user = new AppUser("user", PASSWORD, true, new HashSet<>(Arrays.asList(userRole)));
+
         admin.setDepartment(dep2);
         admin.setTransportDep(transportDep1);
         userRepository.saveAndFlush(admin);
@@ -143,7 +141,7 @@ public class TransportationApplication {
         driver3.setVacant(Boolean.FALSE);
         Driver driver4 = new Driver("Абдурахманов", "Байдаулы", "Абдурахманович", Date.valueOf("1963-07-09"), "5 мкр., д.21-45", "+77712354789", "", transportDep2);
         driver4.setVacant(Boolean.TRUE);
-        Driver driver5 = new Driver("Гринч", "Роберт", "Рождествович",Date.valueOf("1989-12-31"), "ул. Титова, д.8-56", "+77773218523", "", transportDep1);
+        Driver driver5 = new Driver("Гринч", "Роберт", "Рождествович", Date.valueOf("1989-12-31"), "ул. Титова, д.8-56", "+77773218523", "", transportDep1);
         driver5.setVacant(Boolean.TRUE);
         tdS.addDriver(driver1);
         tdS.addDriver(driver2);
@@ -153,12 +151,18 @@ public class TransportationApplication {
 
         VehicleType typeVech1 = new VehicleType("Автобус", Пассажирский);
         VehicleType typeVech2 = new VehicleType("Самосвал", Грузовой);
-        VehicleType typeVech3 = new VehicleType("Легковой", Легковой);
+        VehicleType typeVech3 = new VehicleType("Седан", Легковой);
         VehicleType typeVech4 = new VehicleType("Автокран", Спецтехника);
         VehicleType typeVech5 = new VehicleType("Фура", Грузовой);
         VehicleType typeVech6 = new VehicleType("Грузовик", Грузовой);
         VehicleType typeVech7 = new VehicleType("АГП", Спецтехника);
         VehicleType typeVech8 = new VehicleType("Микроавтобус", Пассажирский);
+        VehicleType typeVech9 = new VehicleType("Внедорожник", Легковой);
+        VehicleType typeVech10 = new VehicleType("Представительский", Легковой);
+
+        VehicleType typeVech11 = new VehicleType("Топливозаправщик", Спецтехника);
+        VehicleType typeVech12 = new VehicleType("Землеройная техника", Спецтехника);
+
         tdS.addVehicleType(typeVech1);
         tdS.addVehicleType(typeVech2);
         tdS.addVehicleType(typeVech3);
@@ -167,17 +171,26 @@ public class TransportationApplication {
         tdS.addVehicleType(typeVech6);
         tdS.addVehicleType(typeVech7);
         tdS.addVehicleType(typeVech8);
+        tdS.addVehicleType(typeVech9);
+        tdS.addVehicleType(typeVech10);
+        tdS.addVehicleType(typeVech11);
+        tdS.addVehicleType(typeVech12);
 
-        VehicleModel modelVech1 = new VehicleModel("ПАЗ123", typeVech1);
-        VehicleModel modelVech2 = new VehicleModel("КРАЗ123", typeVech2);
-        VehicleModel modelVech3 = new VehicleModel("ВАЗ123", typeVech3);
-        VehicleModel modelVech7 = new VehicleModel("УРАЛ123", typeVech7);
+        VehicleModel modelVech1 = new VehicleModel("ПАЗ-32053", typeVech1);
+        VehicleModel modelVech2 = new VehicleModel("КРАЗ-260", typeVech2);
+        VehicleModel modelVech3 = new VehicleModel("УАЗ-31514", typeVech9);
+        VehicleModel modelVech7 = new VehicleModel("УРАЛ-4320", typeVech7);
         VehicleModel modelVech8 = new VehicleModel("ГАЗ123", typeVech8);
+        VehicleModel modelVech9 = new VehicleModel("МАЗ123", typeVech1);
+        VehicleModel modelVech10 = new VehicleModel("ЗИЛ-450650", typeVech2);
+
         tdS.addVehicleModel(modelVech1);
         tdS.addVehicleModel(modelVech2);
         tdS.addVehicleModel(modelVech3);
         tdS.addVehicleModel(modelVech7);
         tdS.addVehicleModel(modelVech8);
+        tdS.addVehicleModel(modelVech9);
+        tdS.addVehicleModel(modelVech10);
 
         Vehicle vehicle1 = new Vehicle("123", 36.0, 1234.2, "", transportDep2, modelVech1);
         vehicle1.setVacant(Boolean.TRUE);

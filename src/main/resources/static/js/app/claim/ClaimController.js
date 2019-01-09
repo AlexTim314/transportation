@@ -9,10 +9,10 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.record = {id: null, weekHash: '', type: '', datetime: '', departureDate: '', returnDate: '', timeDelivery: '', departureTime: '', returnTime: '',
             purpose: '', serviceField: '', templateName: '', carBoss: '', status: '', description: '', claim: {clType: ''}, vehicleType: {specialization: ''}, waypoints: []};
         self.waypoint = {name: '', latitude: '', longitude: ''};
-        self.driver = {id: null, firstname: '', name: '', surname: '',birthday: '', address: '', phone: '', note: ''};
-        self.vehicle = {id: null, number: '', fuelRemnant: '', odometr: '', note: '', vehicleModel:{modelName:''}};
-        self.vehicleModel = {id: null, modelName:'', vehicleType: {specialization: ''}};
-        self.appointment = {id: null, appDateTime: '', vehicleModel:{modelName:''}};
+        self.driver = {id: null, firstname: '', name: '', surname: '', birthday: '', address: '', phone: '', note: ''};
+        self.vehicle = {id: null, number: '', fuelRemnant: '', odometr: '', note: '', vehicleModel: {modelName: ''}};
+        self.vehicleModel = {id: null, modelName: '', vehicleType: {specialization: ''}};
+        self.appointment = {id: null, appDateTime: '', vehicleModel: {modelName: ''}};
         self.appointmentGroup = {id: null, note: '', record: {timeDelivery: ''}, appointment: {appDateTime: ''}};
         self.departments = [];
         self.unapprovedClaims = [];
@@ -159,9 +159,9 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
             }
             ClaimService.confirmClaims(confirmedClaims)
                     .then(
-                    // self.fetchUnapprovedClaims(),
-                    //       self.fetchUnapprovedClaims(),
-                    location.reload(),
+                            // self.fetchUnapprovedClaims(),
+                            //       self.fetchUnapprovedClaims(),
+                            location.reload(),
                             function (errResponse) {
                                 console.error('Error while confirming Claims.');
                                 showAlert(errResponse);
@@ -170,16 +170,14 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         };
 
         self.createClaim = function (claim) {
-            if (claim.id !== null) {
-                claim.id = null;
-            }
+            claim.id = null;
             var dd = new Date().getDate();
             var mm = new Date().getMonth() + 1;
             var yyyy = new Date().getFullYear();
             claim.clDate = yyyy + '-' + mm + '-' + dd;
             ClaimService.createClaim(claim)
-                    .then(  
-                           //self.fetchUnapprovedClaims(),
+                    .then(
+                            //self.fetchUnapprovedClaims(),
                             //self.fetchUnapprovedClaims(),
                             location.reload(),
                             function (errResponse) {
@@ -243,7 +241,7 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
                             );
                 }
             } else {
-                 record.claim = self.claim;
+                record.claim = self.claim;
                 record.waypoints = null;
                 record.status = 'record_status_created';
                 record.datetime = new Date();
@@ -280,8 +278,8 @@ App.controller('ClaimController', ['$scope', 'ClaimService',
         self.deleteClaim = function (claim) {
             ClaimService.deleteClaim(claim)
                     .then(
-                           // self.fetchUnapprovedClaims(),
-                          // self.fetchAllRecords,
+                            // self.fetchUnapprovedClaims(),
+                            // self.fetchAllRecords,
                             location.reload(),
                             function (errResponse) {
                                 console.error('Error while deleting Claim.');

@@ -26,6 +26,31 @@ App.factory('PlanService', ['$http', '$q', '$document', function ($http, $q, $do
                                 }
                         );
             },
+            fetchAllTransportDeps: function () {
+                return $http.get('/transportation/transportDeps')
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching transportDeps');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchAllModels: function () {
+                return $http.get('/transportation/vehicleModels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching models');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            }
             
         };
         
