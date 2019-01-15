@@ -85,6 +85,15 @@
                     <div class="panel panel-default">
                         <!-- Default panel contents -->
                         <div class="panel-heading"><span class="lead">Список подразделений </span></div>
+                        <br>
+                        <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="searching">Поиск</label>
+                                            <div class="col-md-7">
+                                                <input type="search" ng-model="search" id="searching" class="form-control input-sm"/>
+                                            </div>
+                                        </div>
+                                    </div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -99,7 +108,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="department in ctrl.departments">
+                                        <tr ng-repeat="department in ctrl.departments| filter:search">
                                             <td>{{department.id}}</td>
                                             <td>{{department.fullname}}</td>
                                             <td>{{department.shortname}}</td>

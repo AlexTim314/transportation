@@ -110,14 +110,14 @@ public class MainController {
         return accessDenied(model, principal);
     }
 
-    @RequestMapping(value = "/departments", method = RequestMethod.GET)
-    public String getAllDepartments(Model model, Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return "departmentPage";
-        }
-        return accessDenied(model, principal);
-    }
+//    @RequestMapping(value = "/departments", method = RequestMethod.GET)
+//    public String getAllDepartments(Model model, Principal principal) {
+//        if (principal != null) {
+//            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//            return "departmentPage";
+//        }
+//        return accessDenied(model, principal);
+//    }
 
     @RequestMapping(value = "/transportDepsShow", method = RequestMethod.GET)
     public String getAllTransportDeps(Model model, Principal principal) {
