@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -26,22 +25,41 @@ import lombok.ToString;
 public class TransportDep implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    @Column(nullable = false, unique = true)
-    private String name;  //number of department
+    @Column(name = "shortname", nullable = false, unique = true)
+    private String shortname;
 
-    @NonNull
-    private String addres;
+    @Column(name = "fullname", unique = true, length = 1024)
+    private String fullname;
 
-    @NonNull
+    @Column(name = "address", unique = true)
+    private String address;
+
+    @Column(name = "phone", unique = true)
     private String phone;
 
-    public TransportDep(String name, String addres, String phone) {
-        this.name = name;
-        this.addres = addres;
+    public TransportDep(String shortname) {
+        this.shortname = shortname;
+    }
+
+    public TransportDep(String shortname, String fullname) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+    }
+
+    public TransportDep(String shortname, String fullname, String address) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
+    }
+
+    public TransportDep(String shortname, String fullname, String address, String phone) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
         this.phone = phone;
     }
+
 }

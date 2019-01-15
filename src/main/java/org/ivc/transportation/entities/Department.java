@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -26,21 +25,41 @@ import lombok.ToString;
 public class Department implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 1024)
-    @NonNull
-    private String name;
+    @Column(name = "shortname", nullable = false, unique = true)
+    private String shortname;
 
-    @Column(length = 1024)
-    private String addres;
-    
-    private String shortName;
+    @Column(name = "fullname", unique = true, length = 1024)
+    private String fullname;
 
-    public Department(String name, String addres) {
-        this.name = name;
-        this.addres = addres;
+    @Column(name = "address", unique = true)
+    private String address;
+
+    @Column(name = "phone", unique = true)
+    private String phone;
+
+    public Department(String shortname) {
+        this.shortname = shortname;
+    }
+
+    public Department(String shortname, String fullname) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+    }
+
+    public Department(String shortname, String fullname, String address) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
+    }
+
+    public Department(String shortname, String fullname, String address, String phone) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
+        this.phone = phone;
     }
 
 }

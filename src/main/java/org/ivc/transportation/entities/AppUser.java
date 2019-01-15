@@ -1,6 +1,5 @@
 package org.ivc.transportation.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -19,23 +18,25 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {"roles", "department", "transportDep"})
 @ToString(exclude = {"roles", "department", "transportDep"})
 @Entity
-@Table(name = "App_User",
+@Table(name = "app_user",
         uniqueConstraints = {
-            @UniqueConstraint(name = "APP_USER_UK", columnNames = "User_Name")})
+            @UniqueConstraint(name = "APP_USER_UK", columnNames = "username")})
 public class AppUser {
 
     @Id
-    @GeneratedValue
-    @Column(name = "User_Id", nullable = false)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "User_Name", length = 36, nullable = false)
-    private String userName;
+    @Column(name = "username", length = 32, nullable = false)
+    private String username;
 
-    @Column(name = "Encryted_Password", length = 128, nullable = false)
+    @Column(name = "full_name", length = 128, nullable = false)
+    private String fullName;
+
+    @Column(name = "encrypted_password", length = 128, nullable = false)
     private String password;
 
-    @Column(name = "Enabled", length = 1, nullable = false)
+    @Column(name = "enabled", length = 1, nullable = false)
     private boolean enabled;
 
     @ManyToOne
@@ -45,25 +46,20 @@ public class AppUser {
     private TransportDep transportDep;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "User_Role", joinColumns = @JoinColumn(name = "User_Id"), inverseJoinColumns = @JoinColumn(name = "Role_Id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<AppRole> roles;
 
     @Transient
     private boolean selected;
 
-    public AppUser(Long userId, String userName, String encrytedPassword, boolean enabled, Set<AppRole> roles) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = encrytedPassword;
-        this.enabled = enabled;
-        this.roles = roles;
-    }
-
-    public AppUser(String userName, String password, boolean enabled, HashSet<AppRole> roles) {
-        this.userName = userName;
+    public AppUser(String username, String fullName, String password, boolean enabled, Department department, TransportDep transportDep, Set<AppRole> roles) {
+        this.username = username;
+        this.fullName = fullName;
         this.password = password;
         this.enabled = enabled;
+        this.department = department;
+        this.transportDep = transportDep;
         this.roles = roles;
-    }
+    }    
 
 }
