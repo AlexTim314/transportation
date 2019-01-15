@@ -55,7 +55,7 @@ public class TransportationApplication {
         Department dep1 = new Department("ЦИ-4", "ул. Титова, 7");
         Department dep2 = new Department("КАТО", "ул. Лейтенанта Шмидта, 3");
         Department dep3 = new Department("ЦИ-2", "пл. 200");
-        Department dep4 = new Department("ЦИ-1", "пл. 31");
+        Department dep4 = new Department("ЦИ-1", "пл. 31"); 
         Department dep5 = new Department("КЭССТ", "ул. Лейтенанта Шмидта, 5");
         Department dep6 = new Department("ЦИ-7", "ул. Авиационная, 7");
         dep1.setShortname("ЦИ-4");
