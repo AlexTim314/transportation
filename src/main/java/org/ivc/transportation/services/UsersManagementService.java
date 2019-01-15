@@ -64,7 +64,7 @@ public class UsersManagementService {
     }
 
     public AppUser updateUser(AppUser user) {
-        AppUser edittingUser = userRepository.findByUserName(user.getUserName());
+        AppUser edittingUser = userRepository.findByUsername(user.getUsername());
         Set<AppRole> roles = new HashSet<>();
         for (AppRole role : user.getRoles()) {
             role = roleRepository.findByRoleName(role.getRoleName());
@@ -79,10 +79,10 @@ public class UsersManagementService {
     }
 
     public void deleteUser(AppUser user) {
-        user = userRepository.findByUserName(user.getUserName());
+        user = userRepository.findByUsername(user.getUsername());
         user.setDepartment(null);
         user.setRoles(new HashSet<>());
-        userRepository.deleteById(user.getUserId());
+        userRepository.deleteById(user.getId());
     }
 
 }

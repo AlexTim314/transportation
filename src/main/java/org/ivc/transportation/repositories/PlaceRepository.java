@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import org.ivc.transportation.entities.AppRole;
+import org.ivc.transportation.entities.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
  * @author Sokolov Slava
  */
 @Repository("roleRepository")
-public interface RoleRepository extends JpaRepository<AppRole, Long> {
+public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-    AppRole findByRoleName(String roleName);
-    
 }

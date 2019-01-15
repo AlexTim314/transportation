@@ -9,17 +9,17 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "App_Role",
+@Table(name = "app_role",
         uniqueConstraints = {
-            @UniqueConstraint(name = "APP_ROLE_UK", columnNames = "Role_Name")})
+            @UniqueConstraint(name = "APP_ROLE_UK", columnNames = "role_name")})
 public class AppRole {
 
     @Id
-    @GeneratedValue
-    @Column(name = "Role_Id", nullable = false)
-    private Long roleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long id;
 
-    @Column(name = "Role_Name", length = 30, nullable = false)
+    @Column(name = "role_name", length = 30, nullable = false)
     private String roleName;
 
     public AppRole(String roleName) {

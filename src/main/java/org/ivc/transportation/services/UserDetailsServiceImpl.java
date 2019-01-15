@@ -24,16 +24,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        AppUser appUser = this.userRepository.findByUserName(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = this.userRepository.findByUsername(username);
 
         if (appUser == null) {
 //            System.out.println("User not found! " + userName);
-            throw new UsernameNotFoundException("User " + userName + " was not found in the database");
+            throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
 
 //        System.out.println("Found User: " + appUser);
-
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (appUser.getRoles() != null) {
             appUser.getRoles().forEach(r -> {
@@ -42,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             });
         }
 
-        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), //
+        UserDetails userDetails = (UserDetails) new User(appUser.getUsername(), //
                 appUser.getPassword(), grantList);
 
         return userDetails;

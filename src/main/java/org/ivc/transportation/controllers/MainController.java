@@ -23,12 +23,9 @@ public class MainController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/usersManagement", method = RequestMethod.GET)
-    public String userManagementPage(Principal principal) {
-        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-        System.out.println("-----------------------------------------");
-        System.out.println(loginedUser.getUsername());
-        return "admin/usersManagementPage";
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(Model model) {
+        return "test";
     }
 
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
@@ -101,7 +98,7 @@ public class MainController {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
 
-            Department department = userRepository.findByUserName(loginedUser.getUsername()).getDepartment();
+            Department department = userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
             if (department.getId() != id) {
                 return accessDenied(model, principal);
             }
@@ -157,8 +154,8 @@ public class MainController {
         }
         return accessDenied(model, principal);
     }
-    
-        @RequestMapping(value = "/plan", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/plan", method = RequestMethod.GET)
     public String getPlanPage(Model model, Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();

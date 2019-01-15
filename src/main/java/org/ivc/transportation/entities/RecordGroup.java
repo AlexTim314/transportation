@@ -1,6 +1,7 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,10 +22,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"creator", "affirmator", ""})
 @ToString(exclude = {"creator", "affirmator", ""})
-public class Record implements Serializable{
+public class RecordGroup implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @Column(name = "car_boss", nullable = false)
+    private String carBoss;
+    
 }

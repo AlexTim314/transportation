@@ -1,5 +1,5 @@
 -- Used by Spring Remember Me API.  
-CREATE TABLE Persistent_Logins (
+CREATE TABLE IF NOT EXISTS Persistent_Logins (
  
     username varchar(64) not null,
     series varchar(64) not null,
