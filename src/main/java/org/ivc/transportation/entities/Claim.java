@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"creator", "affirmator", ""})
 @ToString(exclude = {"creator", "affirmator", ""})
-public class RecordGroup implements Serializable{
+public class Claim implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
