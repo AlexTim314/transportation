@@ -90,3 +90,24 @@ insert into Place(name, address) values('Пл. 43', null);
 insert into Place(name, address) values('Пл. 45', null);
 insert into Place(name, address) values('Пл. 71', null);
 insert into Place(name, address) values('Пл. 72', null);
+
+CREATE TABLE IF NOT EXISTS Vehicle_Type (
+    id bigint NOT NULL DEFAULT nextval('vehicle_type_id_seq'::regclass),
+    type_name varchar(64),
+    specialization integer,
+    PRIMARY KEY (id)
+);
+
+insert into Vehicle_Type(type_name, specialization) values('Автобус', 0);
+insert into Vehicle_Type(type_name, specialization) values('Микроавтобус', 0);
+insert into Vehicle_Type(type_name, specialization) values('Внедорожник', 1);
+insert into Vehicle_Type(type_name, specialization) values('Представительский', 1);
+insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
+insert into Vehicle_Type(type_name, specialization) values('Бортовой', 2);
+insert into Vehicle_Type(type_name, specialization) values('Прицеп', 2);
+insert into Vehicle_Type(type_name, specialization) values('Самосвал', 2);
+insert into Vehicle_Type(type_name, specialization) values('Тягач с прицепом', 2);
+insert into Vehicle_Type(type_name, specialization) values('Автокран', 3);
+insert into Vehicle_Type(type_name, specialization) values('Автогидроподъемник', 3);
+insert into Vehicle_Type(type_name, specialization) values('Бульдозер', 4);
+
