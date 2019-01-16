@@ -42,6 +42,10 @@ public class VehicleTypesManagementService {
     public List<VehicleModel> getAllVehicleModels() {
         return vehicleModelRepository.findAll();
     }
+    
+    public List<VehicleModel> getVehicleModelsByVehicleType(VehicleType vehicleType) {
+        return vehicleModelRepository.findByVehicleTypeId(vehicleType.getId());
+    }
 
     public VehicleModel saveVehicleModel(VehicleModel vehicleModel) {
         return vehicleModelRepository.save(vehicleModel);
