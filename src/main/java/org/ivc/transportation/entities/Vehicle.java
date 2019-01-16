@@ -54,7 +54,7 @@ public class Vehicle implements Serializable {
     @ManyToOne
     private TransportDep transportDep;
 
-    @Column(length = 1024)
+    @Column(length = 254, nullable = true)    
     private String note;
 
     public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {

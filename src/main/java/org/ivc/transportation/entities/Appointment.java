@@ -33,15 +33,13 @@ public class Appointment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;   
 
-    @NonNull
     @Column(nullable = false)
     private LocalDateTime appDateTime;
 
-    @NonNull
     @Column(nullable = false)
     private AppointmentStatus status;
 
-    @Column(nullable = true)
+    @Column(length = 254, nullable = true)    
     private String note;
 
     @ManyToOne(fetch = FetchType.EAGER)
