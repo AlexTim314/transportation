@@ -10,12 +10,30 @@ package org.ivc.transportation.utils;
  * @author alextim
  */
 public class EntitiesUtils {
-    
-     public static enum VehicleSpecialization {
+
+    public static enum VehicleSpecialization {
         Пассажирский,
         Легковой,
         Грузовой,
         Спецтехника;
     }
+
+    public static enum VehicleStatus {
+        Исправно,
+        Неисправно,
+        Неработоспособно,
+        Ремонт,
+        Списано,
+        Другое;
+    }
     
+    public static enum DriverStatus{
+        Работоспособен,
+        Отпуск,
+        Больничный,
+        Отгул,
+        Уволен,
+        Другое;
+    }
+
 }

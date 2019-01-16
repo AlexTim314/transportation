@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils;
 
 /**
  *
@@ -28,23 +28,28 @@ public class VehicleInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-        @NonNull
+
     @Column(nullable = false)
     private Double fuel;
 
-    @NonNull
     @Column(nullable = false)
     private Double odometr;
 
-    @NonNull
     @Column(nullable = false)
     private int motohours;
 
-    public VehicleInfo(Double fuel, Double odometr, int motohours) {
+    @Column(nullable = false)
+    private EntitiesUtils.VehicleStatus status;
+
+    @Column(length = 1024)
+    private String note;
+
+    public VehicleInfo(Double fuel, Double odometr, int motohours, EntitiesUtils.VehicleStatus status, String note) {
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
+        this.status = status;
+        this.note = note;
     }
 
 }

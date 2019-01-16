@@ -19,12 +19,12 @@ import org.springframework.lang.NonNull;
  *
  * @author first
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"vehicleType"})
 @EqualsAndHashCode(exclude = {"vehicleType"})
+@Entity
 public class VehicleModel implements Serializable {
 
     @Id
@@ -32,7 +32,7 @@ public class VehicleModel implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(length = 1024)
+    @Column(length = 64)
     private String ModelName;
 
     @ManyToOne(fetch = FetchType.EAGER)
