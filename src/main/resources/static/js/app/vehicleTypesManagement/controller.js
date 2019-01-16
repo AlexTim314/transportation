@@ -3,8 +3,8 @@
 App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManagementService',
     function ($scope, VehicleTypesManagementService) {
         var self = this;
-        self.vehicleType = {id: null, type: '', vehicleModels: []};
-        self.vehicleModel = {id: null, modelName: '', vehicleType: ''};
+        self.vehicleType = {id: null, type: '', specialization: ''};
+        self.vehicleModel = {id: null, modelName: '', vehicleType: {type: ""}};
         self.vehicleTypes = [];
         self.vehicleModels = [];
 
@@ -20,7 +20,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
                             }
                     );
         };
-        
+
         self.fetchAllVehicleModels = function () {
             VehicleTypesManagementService.fetchAllVehicleModels()
                     .then(
@@ -33,11 +33,23 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
                             }
                     );
         };
-        
+
         self.fetchAllVehicleTypes();
         self.fetchAllVehicleModels();
         
-        
+        self.fetchVehicleModelsByType = function (vehType) {
+            VehicleTypesManagementService.fetchVehicleModelsByType(vehType)
+                    .then(
+                            function (d) {
+                                self.vehicleModels = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching VehicleModels by Type');
+                            }
+                    );
+        };
+
         self.createVehicleType = function (vehicleType) {
             VehicleTypesManagementService.createVehicleType(vehicleType)
                     .then(
@@ -47,11 +59,12 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
                             }
                     );
         };
-        
+
         self.createVehicleModel = function (vehicleModel) {
+            vehicleModel.vehicleType = self.vehicleType;
             VehicleTypesManagementService.createVehicleModel(vehicleModel)
                     .then(
-                            self.fetchAllVehicleModels,
+                            self.fetchVehicleModelsByType(vehicleType),
                             function (errResponse) {
                                 console.error('Error while creating VehicleModel.');
                             }
@@ -59,7 +72,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         };
 
         self.updateVehicleType = function (vehicleType) {
-           VehicleTypesManagementService.updateVehicleType(vehicleType)
+            VehicleTypesManagementService.updateVehicleType(vehicleType)
                     .then(
                             self.fetchAllVehicleTypes,
                             function (errResponse) {
@@ -67,11 +80,11 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
                             }
                     );
         };
-        
+
         self.updateVehicleModel = function (vehicleModel) {
-           VehicleTypesManagementService.updateVehicleModel(vehicleModel)
+            VehicleTypesManagementService.updateVehicleModel(vehicleModel)
                     .then(
-                            self.fetchAllVehicleModels,
+                            self.fetchVehicleModelsByType(vehicleType),
                             function (errResponse) {
                                 console.error('Error while updating VehicleModel.');
                             }
@@ -87,17 +100,17 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
                             }
                     );
         };
-        
+
         self.deleteVehicleModel = function (vehicleModel) {
             VehicleTypesManagementService.deleteVehicleModel(vehicleModel)
                     .then(
-                            self.fetchAllVehicleModels,
+                            self.fetchVehicleModelsByType(vehicleType),
                             function (errResponse) {
                                 console.error('Error while deleting VehicleModel.');
                             }
                     );
         };
-                
+
         self.submitVehicleType = function () {
             if (self.vehicleType.id === null) {
                 self.createVehicleType(self.vehicleType);
@@ -106,12 +119,12 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
             }
             self.reset();
         };
-        
-        self.submitVehicleType = function () {
-            if (self.vehicleType.id === null) {
-                self.createVehicleType(self.vehicleType);
+
+        self.submitVehicleModel = function () {
+            if (self.vehicleModel.id === null) {
+                self.createVehicleModel(self.vehicleModel);
             } else {
-                self.updateVehicleType(self.vehicleType);
+                self.updateVehicleModel(self.vehicleModel);
             }
             self.reset();
         };
@@ -120,9 +133,24 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
             self.vehicleType.id = vehicleType.id;
 
         };
-               
+
+        self.editVehicleModel = function (vehicleModel) {
+            self.vehicleModel.id = vehicleModel.id;
+
+        };
+
         self.resetVehicleType = function () {
-            self.vehicleType = {id: null, type: '', vehicleModels: []};
+            self.vehicleType = {id: null, type: '', specialization: ''};
+        };
+
+        self.resetVehicleModel = function () {
+            self.vehicleModel = {id: null, modelName: '', vehicleType: {type: ""}};
+        };
+        
+        //Функция передачи объекта по клику на строку таблицы
+        self.addRowHandlers = function (vehType) {
+            self.vehicleType = vehType;
+            self.fetchVehicleModelsByType(vehType);
         };
 
     }]);
