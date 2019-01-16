@@ -78,8 +78,7 @@ CREATE TABLE IF NOT EXISTS Place (
 );
 
 insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
-insert into Place(name, address) values('Пл. 10', 'ул. Авиационная, д. 1');
-insert into Place(name, address) values('Пл. 10', 'ул. Лейтенанта Шмидта, д. 1');
-insert into Place(name, address) values('Пл. 18', null);
-insert into Place(name, address) values('Пл. 44', null);
-insert into Place(name, address) values('Пл. 23', null);
+insert into Place(name, address) values('Пл. 18', 'ИП-1');
+insert into Place(name, address) values('Пл. 44', 'ИП-2');
+insert into Place(name, address) values('Пл. 97', 'ИП-3');
+insert into Place(name, address) values('Пл. 23', 'ИП-5');
