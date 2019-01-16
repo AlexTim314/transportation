@@ -55,6 +55,11 @@ public class VehicleTypesManagementController {
         return vehicleTypesManagementService.getAllVehicleModels();
     }
 
+    @GetMapping("/management/vehicleModelsByVehicleType")
+    public List<VehicleModel> getVehicleModelsByVehicleType(@RequestBody VehicleType vehicleType) {
+        return vehicleTypesManagementService.getVehicleModelsByVehicleType(vehicleType);
+    }
+
     @PostMapping("/management/vehicleModel_create")
     public VehicleModel createVehicleModel(@RequestBody VehicleModel vehicleModel) {
         return vehicleTypesManagementService.saveVehicleModel(vehicleModel);
