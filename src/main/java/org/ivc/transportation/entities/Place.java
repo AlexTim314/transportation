@@ -16,12 +16,12 @@ import lombok.ToString;
  *
  * @author Sokolov Slava
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {})
+@ToString(exclude = {})
+@Entity
 public class Place implements Serializable {
 
     @Id
@@ -31,7 +31,7 @@ public class Place implements Serializable {
     @Column(name = "name", nullable = false, unique = true, length = 1024)
     private String name;
 
-    @Column(name = "name", unique = true, length = 1024)
+    @Column(name = "address", unique = true, length = 1024)
     private String address;
 
 }

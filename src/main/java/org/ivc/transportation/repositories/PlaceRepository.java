@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Sokolov Slava
  */
-@Repository("roleRepository")
+@Repository("placeRepository")
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
 }

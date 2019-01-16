@@ -15,12 +15,12 @@ import lombok.ToString;
  *
  * @author Sokolov Slava
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"creator", "affirmator", ""})
-@ToString(exclude = {"creator", "affirmator", ""})
+@EqualsAndHashCode(exclude = {})
+@ToString(exclude = {})
+@Entity
 public class Record implements Serializable{
     
     @Id

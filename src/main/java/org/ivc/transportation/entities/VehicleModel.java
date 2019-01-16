@@ -1,7 +1,6 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +13,7 @@ import lombok.ToString;
 
 /**
  *
- * @author Sokolov Slava
+ * @author alextim
  */
 @Getter
 @Setter
@@ -22,13 +21,10 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {})
 @ToString(exclude = {})
 @Entity
-public class Claim implements Serializable {
+class VehicleModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "car_boss", nullable = false)
-    private String carBoss;
-
+    
 }

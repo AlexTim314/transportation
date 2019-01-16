@@ -15,12 +15,12 @@ import lombok.ToString;
  *
  * @author Sokolov Slava
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
 @ToString(exclude = {})
+@Entity
 public class VehicleType implements Serializable {
 
     @Id
