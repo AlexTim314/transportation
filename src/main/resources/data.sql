@@ -109,5 +109,5 @@ insert into Vehicle_Type(type_name, specialization) values('Самосвал', 2
 insert into Vehicle_Type(type_name, specialization) values('Тягач с прицепом', 2);
 insert into Vehicle_Type(type_name, specialization) values('Автокран', 3);
 insert into Vehicle_Type(type_name, specialization) values('Автогидроподъемник', 3);
-insert into Vehicle_Type(type_name, specialization) values('Бульдозер', 4);
+insert into Vehicle_Type(type_name, specialization) values('Бульдозер', 3);
 
