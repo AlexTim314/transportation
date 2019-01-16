@@ -62,6 +62,8 @@ App.controller('PlacesManagementController', ['$scope', 'PlacesManagementService
 
         self.editPlace = function (place) {
             self.place.id = place.id;
+            self.place.name = place.name;
+            self.place.address = place.address;
         };
                
         self.reset = function () {
