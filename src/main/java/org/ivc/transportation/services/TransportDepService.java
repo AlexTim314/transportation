@@ -23,7 +23,7 @@ public class TransportDepService {
     @Autowired
     private TransportDepRepository transportDepRepository;
     
-    public List<TransportDep> getAllTransportDeps() {
+    public List<TransportDep> findAllTransportDeps() {
         return transportDepRepository.findAll();
     }
     

@@ -31,7 +31,7 @@ public class TransportDepManagementController {
     
     @GetMapping("/management/transportDeps")
     public List<TransportDep> getAllTransportDeps() {
-        return transportDepService.getAllTransportDeps();
+        return transportDepService.findAllTransportDeps();
     }
 
     @PostMapping("/management/transportDep_create")
