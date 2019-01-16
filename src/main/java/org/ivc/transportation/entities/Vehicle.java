@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,5 +52,16 @@ public class Vehicle implements Serializable {
 
     @ManyToOne
     private TransportDep transportDep;
+
+    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleModel model, TransportDep transportDep) {
+        this.number = number;
+        this.fuel = fuel;
+        this.odometr = odometr;
+        this.motohours = motohours;
+        this.model = model;
+        this.transportDep = transportDep;
+    }
+    
+    
 
 }
