@@ -5,12 +5,12 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         var self = this;
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         self.departments = [];
-        
+
         self.fetchAllDepartments = function () {
             DepartmentsManagementService.fetchAllDepartments()
                     .then(
                             function (d) {
-                                self.departments= d;
+                                self.departments = d;
                                 console.log(d);
                             },
                             function (errResponse) {
@@ -18,11 +18,11 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
                             }
                     );
         };
-        
-        
+
+
         self.fetchAllDepartments();
-        
-               
+
+
         self.createDepartment = function (department) {
             DepartmentsManagementService.createDepartment(department)
                     .then(
@@ -34,7 +34,7 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         };
 
         self.updateDepartment = function (department) {
-           DepartmentsManagementService.updateDepartment(department)
+            DepartmentsManagementService.updateDepartment(department)
                     .then(
                             self.fetchAllDepartments,
                             function (errResponse) {
@@ -52,8 +52,8 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
                             }
                     );
         };
-                
-         self.submit = function () {
+
+        self.submit = function () {
             if (self.department.id === null) {
                 self.createDepartment(self.department);
             } else {
@@ -69,11 +69,11 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
             self.department.address = department.address;
             self.department.phone = department.phone;
         };
-               
+
         self.reset = function () {
             self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         };
-        
-         }]);
-        
+
+    }]);
+
 
