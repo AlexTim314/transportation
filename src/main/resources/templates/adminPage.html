@@ -29,7 +29,7 @@
                 </tr>
                 <tr th:each ="user : ${users}">
                     <td><input type="checkbox" th:checked="${user.selected}"/></td>
-                    <td th:utext="${user.userName}">...</td>
+                    <td th:utext="${user.username}">...</td>
                     <td th:utext="${user.enabled}">...</td>
                     <td><p th:each ="r: ${user.roles}"><span th:text="${r.roleName}">...</span></p></td>
                 </tr>
