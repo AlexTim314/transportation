@@ -16,12 +16,12 @@ import lombok.ToString;
  *
  * @author Sokolov Slava
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {})
+@ToString(exclude = {})
+@Entity
 public class Place implements Serializable {
 
     @Id

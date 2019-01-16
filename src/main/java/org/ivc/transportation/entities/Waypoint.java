@@ -21,10 +21,9 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {})
 @ToString(exclude = {})
 @Entity
-public class Record implements Serializable{
-    
+public class Waypoint implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 }
