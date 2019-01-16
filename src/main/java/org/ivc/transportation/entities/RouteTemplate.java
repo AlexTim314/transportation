@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,8 +21,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode(exclude = {"department"})
+@ToString(exclude = {"department"})
 @Entity
 @Table(name = "route_template")
 public class RouteTemplate implements Serializable {
@@ -30,5 +31,11 @@ public class RouteTemplate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "name", nullable = false, unique = true, length = 64)
+    private String name;
+
+    @ManyToOne
+    private Department department;
 
 }
