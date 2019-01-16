@@ -28,10 +28,10 @@ public class Place implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 1024)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "address", unique = true, length = 1024)
+    @Column(name = "address", unique = true)
     private String address;
 
 }

@@ -1,6 +1,7 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,18 @@ public class Claim implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "car_boss", nullable = false)
+    @Column(name = "template", length = 64)
+    private String template;   //название шаблона, если null, то заявка - от подразделения, в противном случае это шаблон 
+
+    @Column(name = "car_boss", nullable = false, length = 64)
     private String carBoss;
 
+    @Column(name = "purpose")
+    private String purpose;
+
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDate;
+
+    @Column(name = "affirmation_date")
+    private LocalDateTime affirmationDate;
 }

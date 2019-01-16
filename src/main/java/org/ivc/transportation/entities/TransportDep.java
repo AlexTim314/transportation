@@ -31,13 +31,13 @@ public class TransportDep implements Serializable {
     @Column(name = "shortname", nullable = false, unique = true)
     private String shortname;
 
-    @Column(name = "fullname", unique = true, length = 1024)
+    @Column(name = "fullname", unique = true, length = 64)
     private String fullname;
 
     @Column(name = "address", unique = true)
     private String address;
 
-    @Column(name = "phone", unique = true)
+    @Column(name = "phone", unique = true, length = 16)
     private String phone;
 
     public TransportDep(String shortname) {

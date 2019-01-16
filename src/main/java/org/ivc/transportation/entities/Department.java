@@ -28,16 +28,16 @@ public class Department implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "shortname", nullable = false, unique = true)
+    @Column(name = "shortname", nullable = false, unique = true, length = 64)
     private String shortname;
 
-    @Column(name = "fullname", unique = true, length = 1024)
+    @Column(name = "fullname", unique = true)
     private String fullname;
 
     @Column(name = "address", unique = true)
     private String address;
 
-    @Column(name = "phone", unique = true)
+    @Column(name = "phone", unique = true, length = 16)
     private String phone;
 
     public Department(String shortname) {
