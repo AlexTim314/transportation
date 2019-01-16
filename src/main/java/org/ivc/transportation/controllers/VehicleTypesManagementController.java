@@ -31,7 +31,7 @@ public class VehicleTypesManagementController {
 
     @GetMapping("/management/vehicleTypes")
     public List<VehicleType> getAllVehicleTypes() {
-        return vehicleTypesManagementService.getAllVehicleTypes();
+        return vehicleTypesManagementService.findAllVehicleTypes();
     }
 
     @PostMapping("/management/vehicleType_create")
@@ -52,12 +52,12 @@ public class VehicleTypesManagementController {
 
     @GetMapping("/management/vehicleModels")
     public List<VehicleModel> getAllVehicleModels() {
-        return vehicleTypesManagementService.getAllVehicleModels();
+        return vehicleTypesManagementService.findAllVehicleModels();
     }
 
     @GetMapping("/management/vehicleModelsByVehicleType")
     public List<VehicleModel> getVehicleModelsByVehicleType(@RequestBody VehicleType vehicleType) {
-        return vehicleTypesManagementService.getVehicleModelsByVehicleType(vehicleType);
+        return vehicleTypesManagementService.findVehicleModelsByVehicleType(vehicleType);
     }
 
     @PostMapping("/management/vehicleModel_create")

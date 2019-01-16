@@ -31,7 +31,7 @@ public class PlaceManagementController {
     
     @GetMapping("/management/places")
     public List<Place> getAllPlaces() {
-        return placeService.getAllPlaces();
+        return placeService.findAllPlaces();
     }
 
     @PostMapping("/management/place_create")

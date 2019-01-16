@@ -27,7 +27,7 @@ public class VehicleTypesManagementService {
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
 
-    public List<VehicleType> getAllVehicleTypes() {
+    public List<VehicleType> findAllVehicleTypes() {
         return vehicleTypeRepository.findAll();
     }
 
@@ -39,11 +39,11 @@ public class VehicleTypesManagementService {
         vehicleTypeRepository.delete(vehicleType);
     }
 
-    public List<VehicleModel> getAllVehicleModels() {
+    public List<VehicleModel> findAllVehicleModels() {
         return vehicleModelRepository.findAll();
     }
     
-    public List<VehicleModel> getVehicleModelsByVehicleType(VehicleType vehicleType) {
+    public List<VehicleModel> findVehicleModelsByVehicleType(VehicleType vehicleType) {
         return vehicleModelRepository.findByVehicleTypeId(vehicleType.getId());
     }
 
