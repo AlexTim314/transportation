@@ -1,16 +1,132 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+
+<html lang="ru">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>Departments</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/departmentsManagement/service.js"></script>
+        <script src="js/app/departmentsManagement/controller.js"></script>
+
+        <link href="css/lib/bootstrap.css" rel="stylesheet"/>
+        <link href="css/lib/app.css" rel="stylesheet"/>
+        <script>
+
+        </script>
     </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+
+    <body ng-app="Transportation" ng-controller="DepartmentsManagementController as ctrl">
+        <a href="http://localhost:8080/transportation/">Возврат на страницу приветствия<a>
+
+
+                <div class="generic-container" style="display:flex;">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Подразделение</span></div>
+                        <div class="panel-body">
+                            <div class="formcontainer">
+                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                                    <input type="hidden" ng-model="ctrl.department.id" />
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="fullname">Полное название подразделения</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.department.fullname" id="fullname" class="form-control input-sm" placeholder="Введите полное название подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="shortname">Короткое название подразделения</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.department.shortname" id="shortname" class="form-control input-sm" placeholder="Введите сокращенное навание подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="address">Адрес</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.department.address" id="address" class="form-control input-sm" placeholder="Введите адрес подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="phone">Телефон</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.department.phone" id="phone" class="form-control input-sm" placeholder="Введите телефон подразделения" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-actions floatRight">
+                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDepartment(ctrl.department)">{{ctrl.department.id===null?'Добавить':'Изменить'}}</button> 
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>	
+                    </div>
+
+
+
+
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Список подразделений </span></div>
+                        <br>
+                        <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="searching">Поиск</label>
+                                            <div class="col-md-7">
+                                                <input type="search" ng-model="search" id="searching" class="form-control input-sm"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                        <div class="panel-body">
+                            <div class="table-responsive" style="max-height: 40vh; min-height: 40vh; overflow-y: auto;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Полное название</th>
+                                            <th>Сокращённое название</th>
+                                            <th>Адрес</th>
+                                            <th>Телефон</th>
+                                            <th style="width: 200px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="department in ctrl.departments| filter:search">
+                                             
+                                            <td>{{department.id}}</td>
+                                            <td>{{department.fullname}}</td>
+                                            <td>{{department.shortname}}</td>
+                                            <td>{{department.address}}</td>
+                                            <td>{{department.phone}}</td>
+                                            <td><button type="button" ng-click="ctrl.editDepartment(department)" class="btn btn-success">Изменить</button>
+                                                <button type="button" ng-click="ctrl.deleteDepartment(department)" class="btn btn-danger custom-width">Удалить</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+
+                </html>

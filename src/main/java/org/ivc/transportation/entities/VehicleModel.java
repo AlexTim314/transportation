@@ -33,13 +33,13 @@ public class VehicleModel implements Serializable {
 
     @NonNull
     @Column(length = 64)
-    private String ModelName;
+    private String modelName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private VehicleType vehicleType;
 
-    public VehicleModel(String ModelName, VehicleType vehicleType) {
-        this.ModelName = ModelName;
+    public VehicleModel(String modelName, VehicleType vehicleType) {
+        this.modelName = modelName;
         this.vehicleType = vehicleType;
     }
 
