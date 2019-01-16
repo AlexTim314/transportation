@@ -11,6 +11,7 @@ import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.services.CommonService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -35,6 +36,9 @@ public class TransportationApplication {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+    
+    @Autowired
+    private CommonService commonService;
 
     @PostConstruct
     @Transactional
@@ -52,25 +56,8 @@ public class TransportationApplication {
         transportDepRepository.save(transportDep3);
         transportDepRepository.save(transportDep4);
 
-        Department dep1 = new Department("ЦИ-4", "ул. Титова, 7");
-        Department dep2 = new Department("КАТО", "ул. Лейтенанта Шмидта, 3");
-        Department dep3 = new Department("ЦИ-2", "пл. 200");
-        Department dep4 = new Department("ЦИ-1", "пл. 31"); 
-        Department dep5 = new Department("КЭССТ", "ул. Лейтенанта Шмидта, 5");
-        Department dep6 = new Department("ЦИ-7", "ул. Авиационная, 7");
-        dep1.setShortname("ЦИ-4");
-        dep2.setShortname("КАТО");
-        dep3.setShortname("ЦИ-2");
-        dep4.setShortname("ЦИ-1");
-        dep5.setShortname("КЭССТ");
-        dep6.setShortname("ЦИ-7");
-
-        departmentRepository.save(dep1);
-        departmentRepository.save(dep2);
-        departmentRepository.save(dep3);
-        departmentRepository.save(dep4);
-        departmentRepository.save(dep5);
-        departmentRepository.save(dep6);
+        Department dep1 = commonService.getDepartmentByName("ЦИП ИК");
+        Department dep2 = commonService.getDepartmentByName("Отдел организационного развития");
 
         AppUser admin = new AppUser("admin", "Тимошенко Александр Александрович", PASSWORD, true, dep1, transportDep1, new HashSet<>(Arrays.asList(adminRole)));
         AppUser user = new AppUser("user", "Соколов Вячеслав Владимирович", PASSWORD, true, dep2, transportDep2, new HashSet<>(Arrays.asList(userRole)));

@@ -31,4 +31,8 @@ public class CommonService {
         return transportDepRepository.findAll();
     }
     
+    public Department getDepartmentByName(String shortname) {
+        return departmentRepository.findByShortname(shortname);
+    }
+    
 }
