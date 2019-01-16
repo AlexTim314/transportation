@@ -15,6 +15,9 @@
 
         <link href="css/lib/bootstrap.css" rel="stylesheet"/>
         <link href="css/lib/app.css" rel="stylesheet"/>
+        <script>
+
+        </script>
     </head>
 
     <body ng-app="Transportation" ng-controller="DepartmentsManagementController as ctrl">
@@ -109,6 +112,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="department in ctrl.departments| filter:search">
+                                             
                                             <td>{{department.id}}</td>
                                             <td>{{department.fullname}}</td>
                                             <td>{{department.shortname}}</td>
