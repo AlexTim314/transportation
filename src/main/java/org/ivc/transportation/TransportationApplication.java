@@ -48,13 +48,9 @@ public class TransportationApplication {
 
         TransportDep transportDep1 = new TransportDep("Транспортный отдел №4", "ул. Лейтенанта Шмидта, 1", "18-275");
         TransportDep transportDep2 = new TransportDep("Транспортный отдел №5", "пл.9", "16-386");
-        TransportDep transportDep3 = new TransportDep("Транспортный отдел №1", "пл.10", "17-345");
-        TransportDep transportDep4 = new TransportDep("Транспортный отдел №2", "пл.2", "15-646");
 
         transportDepRepository.save(transportDep1);
         transportDepRepository.save(transportDep2);
-        transportDepRepository.save(transportDep3);
-        transportDepRepository.save(transportDep4);
 
         Department dep1 = commonService.getDepartmentByName("ЦИП ИК");
         Department dep2 = commonService.getDepartmentByName("Отдел организационного развития");

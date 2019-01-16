@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 
 /**
  *
@@ -44,8 +45,14 @@ public class Vehicle implements Serializable {
     @Column(name = "motohours", nullable = false)
     private int motohours;
 
-    @Column(name = "note")
+    @Column(name = "status")
+    private VehicleStatus status;
+
+    @Column(name = "note", length = 255)
     private String note;
+
+    @Column(name = "vacant", nullable = false)
+    private boolean vacant;
 
     @ManyToOne
     private VehicleModel model;
@@ -53,13 +60,16 @@ public class Vehicle implements Serializable {
     @ManyToOne
     private TransportDep transportDep;
 
-    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleModel model, TransportDep transportDep) {
+    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {
         this.number = number;
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
+        this.status = status;
+        this.vacant = vacant;
         this.model = model;
         this.transportDep = transportDep;
+        this.note = note;
     }
 
 }

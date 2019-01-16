@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 
 /**
  *
@@ -30,5 +31,11 @@ public class DriverInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
+
+    @Column(name = "status", nullable = false)
+    private DriverStatus status;
+
+    @Column(name = "note", length = 255)
+    private String note;
+
 }

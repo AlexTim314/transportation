@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 
 /**
  *
@@ -45,16 +46,21 @@ public class VehicleInfo implements Serializable {
     @Column(name = "motohours", nullable = false)
     private int motohours;
 
+    @Column(name = "status")
+    private VehicleStatus status;
+
     @Column(name = "note", length = 255)
     private String note;
 
     @ManyToOne
     private Vehicle vehicle;
 
-    public VehicleInfo(Double fuel, Double odometr, int motohours) {
+    public VehicleInfo(Double fuel, Double odometr, int motohours, VehicleStatus status, String note) {
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
+        this.status = status;
+        this.note = note;
     }
 
 }

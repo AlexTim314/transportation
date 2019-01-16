@@ -31,7 +31,7 @@ public class DepartmentManagementController {
     
     @GetMapping("/management/departments")
     public List<Department> getAllDepartments() {
-        return departmentService.getAllDepartments();
+        return departmentService.findAllDepartments();
     }
 
     @PostMapping("/management/department_create")

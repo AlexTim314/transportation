@@ -18,7 +18,7 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
     
-    public List<Department> getAllDepartments() {
+    public List<Department> findAllDepartments() {
         return departmentRepository.findAll();
     }
     

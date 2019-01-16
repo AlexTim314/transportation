@@ -18,7 +18,6 @@ import lombok.ToString;
  *
  * @author first
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor

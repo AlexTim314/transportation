@@ -23,7 +23,7 @@ public class PlaceService {
     @Autowired
     private PlaceRepository placeRepository;
     
-    public List<Place> getAllPlaces() {
+    public List<Place> findAllPlaces() {
         return placeRepository.findAll();
     }
     
