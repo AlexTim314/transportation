@@ -16,15 +16,6 @@ CREATE TABLE IF NOT EXISTS Department (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS Transport_dep (
-    id bigint NOT NULL DEFAULT nextval('transport_dep_id_seq'::regclass),
-    address varchar(255),
-    fullname varchar(255),
-    phone varchar(16),
-    shortname varchar(64) not null,
-    PRIMARY KEY (id)
-);
-
 insert into Department (shortname, fullname, address, phone) values('Служба эксплуатации РКТ', 'Служба эксплуатации ракетно-космической техники', null, null);
 insert into Department (shortname, fullname, address, phone) values('СМО', 'Служба медицинского обеспечения', null, null);
 insert into Department (shortname, fullname, address, phone) values('Управление', 'Управление', null, null);
@@ -61,6 +52,15 @@ insert into Department (address, fullname, phone, shortname) values (null,'Се�
 insert into Department (address, fullname, phone, shortname) values (null,'Служба безопасности',null,'Служба безопасности');
 insert into Department (address, fullname, phone, shortname) values (null,'Служба охраны труда и производственного контроля',null,'Служба ОТПК');
 
+CREATE TABLE IF NOT EXISTS Transport_dep (
+    id bigint NOT NULL DEFAULT nextval('transport_dep_id_seq'::regclass),
+    address varchar(255),
+    fullname varchar(255),
+    phone varchar(16),
+    shortname varchar(64) not null,
+    PRIMARY KEY (id)
+);
+
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 1','Отдел транспортных средств №1',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 2','Отдел транспортных средств №2',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 3','Отдел транспортных средств №3',null,null);
@@ -69,3 +69,16 @@ insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 6','Отдел транспортных средств №6',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 7','Отдел транспортных средств №7',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 8','Отдел транспортных средств №8',null,null);
+
+CREATE TABLE IF NOT EXISTS Place (
+    id bigint NOT NULL DEFAULT nextval('place_id_seq'::regclass),
+    name varchar(255),
+    address varchar(255),
+    PRIMARY KEY (id)
+);
+
+insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
+insert into Place(name, address) values('Пл. 18', 'ИП-1');
+insert into Place(name, address) values('Пл. 44', 'ИП-2');
+insert into Place(name, address) values('Пл. 97', 'ИП-3');
+insert into Place(name, address) values('Пл. 23', 'ИП-5');
