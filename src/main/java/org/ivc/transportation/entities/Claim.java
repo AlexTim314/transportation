@@ -16,19 +16,19 @@ import lombok.ToString;
  *
  * @author Sokolov Slava
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"creator", "affirmator", ""})
-@ToString(exclude = {"creator", "affirmator", ""})
-public class RecordGroup implements Serializable{
-    
+@EqualsAndHashCode(exclude = {})
+@ToString(exclude = {})
+@Entity
+public class Claim implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "car_boss", nullable = false)
     private String carBoss;
-    
+
 }

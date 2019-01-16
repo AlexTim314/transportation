@@ -16,12 +16,12 @@ import lombok.ToString;
  *
  * @author Nesterov Yuriy
  */
-@Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
+@Entity
 public class TransportDep implements Serializable {
 
     @Id
