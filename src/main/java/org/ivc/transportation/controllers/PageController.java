@@ -31,4 +31,9 @@ public class PageController {
         return "admin/placesManagementPage";
     }
     
+    @RequestMapping(value = "/vehicleTypesManagement", method = RequestMethod.GET)
+    public String vehicleTypesManagementPage() {
+        return "admin/vehicleTypesManagementPage";
+    }
+    
 }

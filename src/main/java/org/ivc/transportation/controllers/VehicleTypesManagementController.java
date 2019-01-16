@@ -55,7 +55,7 @@ public class VehicleTypesManagementController {
         return vehicleTypesManagementService.findAllVehicleModels();
     }
 
-    @GetMapping("/management/vehicleModelsByVehicleType")
+    @PostMapping("/management/vehicleModelsByVehicleType")
     public List<VehicleModel> getVehicleModelsByVehicleType(@RequestBody VehicleType vehicleType) {
         return vehicleTypesManagementService.findVehicleModelsByVehicleType(vehicleType);
     }
