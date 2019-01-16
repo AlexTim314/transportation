@@ -26,5 +26,14 @@ public class EntitiesUtils {
         Списано,
         Другое;
     }
+    
+    public static enum DriverStatus{
+        Работоспособен,
+        Отпуск,
+        Больничный,
+        Отгул,
+        Уволен,
+        Другое;
+    }
 
 }

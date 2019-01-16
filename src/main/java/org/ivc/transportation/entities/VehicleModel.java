@@ -19,12 +19,12 @@ import org.springframework.lang.NonNull;
  *
  * @author first
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"vehicleType"})
 @EqualsAndHashCode(exclude = {"vehicleType"})
+@Entity
 public class VehicleModel implements Serializable {
 
     @Id

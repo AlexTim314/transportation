@@ -54,13 +54,19 @@ public class Vehicle implements Serializable {
     @ManyToOne
     private TransportDep transportDep;
 
-    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleModel model, TransportDep transportDep) {
+    @Column(length = 1024)
+    private String note;
+
+    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {
         this.number = number;
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
+        this.status = status;
+        this.vacant = vacant;
         this.model = model;
         this.transportDep = transportDep;
+        this.note = note;
     }
     
 }
