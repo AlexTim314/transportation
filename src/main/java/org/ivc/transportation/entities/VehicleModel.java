@@ -32,7 +32,7 @@ public class VehicleModel implements Serializable {
     private Long id;
 
     @NonNull
-    @Column(length = 1024)
+    @Column(length = 64)
     private String ModelName;
 
     @ManyToOne(fetch = FetchType.EAGER)

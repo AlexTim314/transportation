@@ -7,13 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 
 /**
  *
@@ -31,21 +30,23 @@ public class Vehicle implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
     @Column(nullable = false)
     private String number;
 
-    @NonNull
     @Column(nullable = false)
     private Double fuel;
 
-    @NonNull
     @Column(nullable = false)
     private Double odometr;
 
-    @NonNull
     @Column(nullable = false)
     private int motohours;
+    
+    @Column(nullable = false)
+    private VehicleStatus status;
+    
+    @Column(nullable = false)
+    private Boolean vacant;
 
     @ManyToOne
     private VehicleModel model;
@@ -62,6 +63,4 @@ public class Vehicle implements Serializable {
         this.transportDep = transportDep;
     }
     
-    
-
 }

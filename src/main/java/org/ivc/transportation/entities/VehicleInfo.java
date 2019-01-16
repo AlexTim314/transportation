@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils;
 
 /**
  *
@@ -29,17 +30,17 @@ public class VehicleInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-        @NonNull
     @Column(nullable = false)
     private Double fuel;
 
-    @NonNull
     @Column(nullable = false)
     private Double odometr;
 
-    @NonNull
     @Column(nullable = false)
     private int motohours;
+    
+    @Column(nullable = false)
+    private EntitiesUtils.VehicleStatus status;
 
     public VehicleInfo(Double fuel, Double odometr, int motohours) {
         this.fuel = fuel;
