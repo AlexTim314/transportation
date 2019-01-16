@@ -7,13 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 
 /**
  *
@@ -31,21 +30,23 @@ public class Vehicle implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
     @Column(nullable = false)
     private String number;
 
-    @NonNull
     @Column(nullable = false)
     private Double fuel;
 
-    @NonNull
     @Column(nullable = false)
     private Double odometr;
 
-    @NonNull
     @Column(nullable = false)
     private int motohours;
+    
+    @Column(nullable = false)
+    private VehicleStatus status;
+    
+    @Column(nullable = false)
+    private Boolean vacant;
 
     @ManyToOne
     private VehicleModel model;
@@ -53,15 +54,19 @@ public class Vehicle implements Serializable {
     @ManyToOne
     private TransportDep transportDep;
 
-    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleModel model, TransportDep transportDep) {
+    @Column(length = 1024)
+    private String note;
+
+    public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {
         this.number = number;
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
+        this.status = status;
+        this.vacant = vacant;
         this.model = model;
         this.transportDep = transportDep;
+        this.note = note;
     }
     
-    
-
 }
