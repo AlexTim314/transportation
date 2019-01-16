@@ -151,6 +151,9 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         self.addRowHandlers = function (vehType) {
             self.vehicleType = vehType;
             self.fetchVehicleModelsByType(vehType);
+           
+            
         };
+        
 
     }]);
