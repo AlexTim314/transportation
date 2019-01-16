@@ -7,11 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,27 +24,28 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {"model", "transportDep"})
 @ToString(exclude = {"model", "transportDep"})
 @Entity
+@Table(name = "vehicle")
 public class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
-    @NonNull
-    @Column(nullable = false)
+    @Column(name = "number", nullable = false, unique = true, length = 16)
     private String number;
 
-    @NonNull
-    @Column(nullable = false)
-    private Double fuel;
+    @Column(name = "fuel", nullable = false)
+    private double fuel;
 
-    @NonNull
-    @Column(nullable = false)
-    private Double odometr;
+    @Column(name = "odometr", nullable = false)
+    private double odometr;
 
-    @NonNull
-    @Column(nullable = false)
+    @Column(name = "motohours", nullable = false)
     private int motohours;
+
+    @Column(name = "note")
+    private String note;
 
     @ManyToOne
     private VehicleModel model;
@@ -61,7 +61,5 @@ public class Vehicle implements Serializable {
         this.model = model;
         this.transportDep = transportDep;
     }
-    
-    
 
 }

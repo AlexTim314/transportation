@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.ivc.transportation.utils.EntitiesUtils.VehicleSpecialization;
@@ -21,25 +21,26 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleSpecialization;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode
+@ToString
 @Entity
+@Table(name = "vehicle_type")
 public class VehicleType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @NonNull
-    @Column(length = 1024)
-    private String type;
+    @Column(name = "type_name", length = 64)
+    private String typeName;
 
-    @NonNull
+    @Column(name = "specialization")
     private VehicleSpecialization specialization;
 
-    public VehicleType(String type, VehicleSpecialization specialization) {
-        this.type = type;
+    public VehicleType(String typeName, VehicleSpecialization specialization) {
+        this.typeName = typeName;
         this.specialization = specialization;
     }
-    
+
 }
