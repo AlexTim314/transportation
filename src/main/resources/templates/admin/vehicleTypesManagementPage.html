@@ -5,7 +5,7 @@
         <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
-        <title>VeghicleTypes</title>
+        <title>Типы транспортных средств</title>
 
         <script src="js/lib/angular.min.js" ></script>
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
@@ -42,10 +42,10 @@
                                         <div class="col-md-7">
                                             <select name="type-vehicle" ng-model="ctrl.vehicleType.specialization">
                                                 <option>---Выберите---</option>
-                                                <option value="Пассажирский">Пассажирский</option>
-                                                <option value="Легковой">Легковой</option>
-                                                <option value="Грузовой">Грузовой</option>
-                                                <option value="Спецтехника">Спецтехника</option>
+                                                <option value="пассажирский">Пассажирский</option>
+                                                <option value="легковой">Легковой</option>
+                                                <option value="грузовой">Грузовой</option>
+                                                <option value="спецтехника">Спецтехника</option>
                                             </select>
 
                                         </div>
@@ -56,7 +56,7 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="type">Тип автотранспорта</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleType.type" id="type" class="form-control input-sm" placeholder="Введите тип авто" required ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" required ng-minlength="3"/>
                                         </div>
                                     </div>
                                 </div>
@@ -102,11 +102,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="vehicleType in ctrl.vehicleTypes| filter:searchVehicleType" ng-click="ctrl.addRowHandlers(vehicleType)" style = "cursor: pointer" onmouseover = "this.style.background = 'silver'" onmouseout="this.style.background = ''">
-
+                                    <tr ng-repeat="vehicleType in ctrl.vehicleTypes| filter:searchVehicleType" ng-click="ctrl.addRowHandlers(vehicleType)" style = "cursor: pointer">
                                         <td>{{vehicleType.id}}</td>
                                         <td>{{vehicleType.specialization}}</td>
-                                        <td>{{vehicleType.type}}</td>
+                                        <td>{{vehicleType.typeName}}</td>
                                         <td><button type="button" ng-click="ctrl.editVehicleType(vehicleType)" class="btn btn-success">Изменить</button>
                                             <button type="button" ng-click="ctrl.deleteVehicleType(vehicleType)" class="btn btn-danger custom-width">Удалить</button></td>
                                     </tr>
