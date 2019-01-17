@@ -21,8 +21,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"place"})
-@ToString(exclude = {"place"})
+@EqualsAndHashCode(exclude = {"place", "template"})
+@ToString(exclude = {"place", "template"})
 @Entity
 @Table(name = "route_task")
 public class RouteTask implements Serializable {
@@ -40,5 +40,8 @@ public class RouteTask implements Serializable {
 
     @ManyToOne
     private Place place;
+
+    @ManyToOne
+    private RouteTemplate template;
 
 }

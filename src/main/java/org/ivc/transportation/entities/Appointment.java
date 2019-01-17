@@ -42,7 +42,7 @@ public class Appointment implements Serializable {
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;
 
-    @Column(name = "note", length = 512)    
+    @Column(name = "note", length = 255)    
     private String note;
 
     @ManyToOne

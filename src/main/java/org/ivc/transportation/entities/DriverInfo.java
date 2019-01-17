@@ -1,6 +1,7 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,8 +24,8 @@ import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode(exclude = {"driver"})
+@ToString(exclude = {"driver"})
 @Entity
 @Table(name = "driver_info")
 public class DriverInfo implements Serializable {
@@ -34,13 +35,15 @@ public class DriverInfo implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "modification_date", nullable = false)
+    private LocalDateTime modificationDate;
+
     @Column(name = "status", nullable = false)
     private DriverStatus status;
 
     @Column(name = "note", length = 255)
     private String note;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Driver driver;
 
+    @ManyToOne
+    private Driver driver;
 }

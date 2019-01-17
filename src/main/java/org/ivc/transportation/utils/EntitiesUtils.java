@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.utils;
 
 /**
@@ -12,36 +7,45 @@ package org.ivc.transportation.utils;
 public class EntitiesUtils {
 
     public static enum VehicleSpecialization {
-        Пассажирский,
-        Легковой,
-        Грузовой,
-        Спецтехника;
+        пассажирский,
+        легковой,
+        грузовой,
+        спецтехника;
     }
 
     public static enum VehicleStatus {
-        Исправно,
-        Неисправно,
-        Неработоспособно,
-        Ремонт,
-        Списано,
-        Другое;
+        исправно,
+        неисправно,
+        неработоспособно,
+        ремонт,
+        списано,
+        другое;
     }
 
     public static enum DriverStatus {
-        Работоспособен,
-        Отпуск,
-        Больничный,
-        Отгул,
-        Уволен,
-        Другое;
+        работоспособен,
+        отпуск,
+        больничный,
+        отгул,
+        уволен,
+        другое;
+    }
+
+    public static enum RecordStatus {
+        CREATED,
+        IN_PROGRESS,
+        READY,
+        COMPLETED,
+        CANCELED;
     }
 
     public static enum AppointmentStatus {
-        appointment_status_created,
-        appointment_status_inprogress,
-        appointment_status_completed,
-        appointment_status_canceled
+        создано,
+        выполняется,
+        завершено,
+        отменено;
     }
+
 
     /**
      * Перечисление используемое при заполнении путевого листа. Именованные

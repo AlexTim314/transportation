@@ -23,6 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(exclude = {"vehicleType"})
 @EqualsAndHashCode(exclude = {"vehicleType"})
+@Entity
 @Table(name = "vehicle_model")
 public class VehicleModel implements Serializable {
 
