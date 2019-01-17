@@ -36,7 +36,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
 
         self.fetchAllVehicleTypes();
         self.fetchAllVehicleModels();
-        
+
         self.fetchVehicleModelsByType = function (vehicleType) {
             VehicleTypesManagementService.fetchVehicleModelsByType(vehicleType)
                     .then(
@@ -64,7 +64,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
             vehicleModel.vehicleType = self.vehicleType;
             VehicleTypesManagementService.createVehicleModel(vehicleModel)
                     .then(
-                            self.fetchVehicleModelsByType(self.vehicleType),
+                            self.fetchAllVehicleModels,
                             function (errResponse) {
                                 console.error('Error while creating VehicleModel.');
                             }
@@ -84,7 +84,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         self.updateVehicleModel = function (vehicleModel) {
             VehicleTypesManagementService.updateVehicleModel(vehicleModel)
                     .then(
-                            self.fetchVehicleModelsByType(self.vehicleType),
+                            self.fetchAllVehicleModels,
                             function (errResponse) {
                                 console.error('Error while updating VehicleModel.');
                             }
@@ -104,7 +104,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         self.deleteVehicleModel = function (vehicleModel) {
             VehicleTypesManagementService.deleteVehicleModel(vehicleModel)
                     .then(
-                            self.fetchVehicleModelsByType(self.vehicleType),
+                            self.fetchAllVehicleModels,
                             function (errResponse) {
                                 console.error('Error while deleting VehicleModel.');
                             }
@@ -133,7 +133,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
             self.vehicleType.id = vehicleType.id;
             self.vehicleType.specialization = vehicleType.specialization;
             self.vehicleType.type = vehicleType.type;
-
+            myFormVehicleModel.$pristine = true;
         };
 
         self.editVehicleModel = function (vehicleModel) {
@@ -150,15 +150,11 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         self.resetVehicleModel = function () {
             self.vehicleModel = {id: null, modelName: '', vehicleType: {type: ""}};
         };
-        
+
         //Функция передачи объекта по клику на строку таблицы
-        self.addRowHandlers = function (vehType) {
-            self.fetchVehicleModelsByType(vehType);
+        self.setType = function (vehType) {
             self.vehicleType = vehType;
-            
-           
-            
         };
-        
+
 
     }]);
