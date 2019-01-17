@@ -23,8 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"creator", "appointments"})
-@ToString(exclude = {"creator", "appointments"})
+@EqualsAndHashCode(exclude = {"creator", "appointments", "records"})
+@ToString(exclude = {"creator", "appointments", "records"})
 @Entity
 @Table(name = "appointment_group")
 public class AppointmentGroup implements Serializable {
@@ -39,4 +39,7 @@ public class AppointmentGroup implements Serializable {
 
     @OneToMany
     private List<Appointment> appointments;
+    
+    @OneToMany
+    private List<Record> records;
 }
