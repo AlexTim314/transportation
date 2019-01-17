@@ -15,25 +15,30 @@ public class PageController {
     public String usersManagementPage() {
         return "admin/usersManagementPage";
     }
-    
+
     @RequestMapping(value = "/departmentsManagement", method = RequestMethod.GET)
     public String departmentsManagementPage() {
         return "admin/departmentsManagementPage";
     }
-    
+
     @RequestMapping(value = "/transportDepsManagement", method = RequestMethod.GET)
     public String transportDepsManagementPage() {
         return "admin/transportDepsManagementPage";
     }
-    
+
     @RequestMapping(value = "/placesManagement", method = RequestMethod.GET)
     public String placesManagementPage() {
         return "admin/placesManagementPage";
     }
-    
+
     @RequestMapping(value = "/vehicleTypesManagement", method = RequestMethod.GET)
     public String vehicleTypesManagementPage() {
         return "admin/vehicleTypesManagementPage";
     }
-    
+
+    @RequestMapping(value = "/claims", method = RequestMethod.GET)
+    public String managerPage() {
+        return "manager/managerPage";
+    }
+
 }
