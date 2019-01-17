@@ -72,8 +72,8 @@
 
                                     <div class="row">
                                         <div class="form-actions floatRight">
-                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDepartment(ctrl.department)">{{ctrl.department.id===null?'Добавить':'Изменить'}}</button> 
-                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDepartment(ctrl.department)" ng-disabled="myForm.$pristine">{{ctrl.department.id===null?'Добавить':'Изменить'}}</button> 
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                         </div>
                                     </div>
                                 </form>
