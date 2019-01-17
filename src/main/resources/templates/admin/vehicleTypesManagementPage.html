@@ -40,8 +40,8 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="specialization">Специализация автотранспорта</label>
                                         <div class="col-md-7">
-                                            <select name="type-vehicle" ng-model="ctrl.vehicleType.specialization">
-                                                <option>---Выберите---</option>
+                                            <select name="type-vehicle" ng-model="ctrl.vehicleType.specialization" required>
+                                                <option disabled>---Выберите---</option>
                                                 <option value="пассажирский">Пассажирский</option>
                                                 <option value="легковой">Легковой</option>
                                                 <option value="грузовой">Грузовой</option>
@@ -56,14 +56,14 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="type">Тип автотранспорта</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" required ng-minlength="3"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleType(ctrl.vehicleType)" ng-disabled="myFormVehicleType.$pristine">{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}</button> 
+                                        <input type="submit" class="btn btn-sm btn-info" ng-disabled="myFormVehicleType.$pristine" value="{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}">
                                         <button type="button" ng-click="ctrl.resetVehicleType()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
@@ -131,14 +131,14 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="modelName">Название модели авто</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleModel.modelName" id="modelName" class="form-control input-sm" placeholder="Введите модель авто" required ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleModel.modelName" id="modelName" class="form-control input-sm" placeholder="Введите модель авто" required ng-minlength="2"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleModel(ctrl.vehicleModel)" ng-disabled="myFormVehicleModel.$pristine">{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}</button> 
+                                        <input type="submit" class="btn btn-sm btn-info" ng-disabled="myFormVehicleModel.$pristine" value="{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}">
                                         <button type="button" ng-click="ctrl.resetVehicleModel()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
