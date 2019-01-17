@@ -56,15 +56,15 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="type">Тип автотранспорта</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" required ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" ng-minlength="3"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleType(ctrl.vehicleType)">{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}</button> 
-                                        <button type="button" ng-click="ctrl.resetVehicleType()" class="btn btn-warning btn-sm" ng-disabled="myFormVehicleType.$pristine">Сбросить форму</button>
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleType(ctrl.vehicleType)" ng-disabled="myFormVehicleType.$pristine">{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}</button> 
+                                        <button type="button" ng-click="ctrl.resetVehicleType()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
                             </form>
@@ -97,12 +97,12 @@
                                     <tr>
                                         <th>Код</th>
                                         <th>Специализация</th>
-                                        <th>Тип авто</th>
+                                        <th>Тип автотранспорта</th>
                                         <th style="width: 200px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="vehicleType in ctrl.vehicleTypes| filter:searchVehicleType" ng-click="ctrl.addRowHandlers(vehicleType)" style = "cursor: pointer">
+                                    <tr ng-repeat="vehicleType in ctrl.vehicleTypes| filter:searchVehicleType" ng-click="ctrl.setVehicleType(vehicleType)" style = "cursor: pointer">
                                         <td>{{vehicleType.id}}</td>
                                         <td>{{vehicleType.specialization}}</td>
                                         <td>{{vehicleType.typeName}}</td>
@@ -138,8 +138,8 @@
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleModel(ctrl.vehicleModel)">{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}</button> 
-                                        <button type="button" ng-click="ctrl.resetVehicleModel()" class="btn btn-warning btn-sm" ng-disabled="myFormVehicleModel.$pristine">Сбросить форму</button>
+                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleModel(ctrl.vehicleModel)" ng-disabled="myFormVehicleModel.$pristine">{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}</button> 
+                                        <button type="button" ng-click="ctrl.resetVehicleModel()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
                             </form>
@@ -171,15 +171,19 @@
                                 <thead>
                                     <tr>
                                         <th>Код</th>
+                                        <th>Тип автотранспорта</th>
                                         <th>Название модели</th>
+                                        <th>Тип автотранспорта</th>
                                         <th style="width: 200px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="vehicleModel in ctrl.vehicleModels| filter:searchVehicleModel">
+                                    <tr ng-repeat="vehicleModel in ctrl.vehicleModels| filter: {vehicleType: ctrl.vehicleType}:searchVehicleModel">
 
                                         <td>{{vehicleModel.id}}</td>
+                                        <td>{{vehicleModel.vehicleType.type}}</td>
                                         <td>{{vehicleModel.modelName}}</td>
+                                        <td>{{vehicleModel.vehicleType.typeName}}</td>
                                         <td><button type="button" ng-click="ctrl.editVehicleModel(vehicleModel)" class="btn btn-success">Изменить</button>
                                             <button type="button" ng-click="ctrl.deleteVehicleModel(vehicleModel)" class="btn btn-danger custom-width">Удалить</button></td>
                                     </tr>

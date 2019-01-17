@@ -32,7 +32,7 @@ public class VehicleModel implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "model_name", length = 64)
+    @Column(name = "model_name", length = 64, nullable = false)
     private String modelName;
 
     @ManyToOne
