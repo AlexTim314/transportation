@@ -46,7 +46,7 @@ public class VehicleInfo implements Serializable {
     @Column(name = "motohours", nullable = false)
     private int motohours;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private VehicleStatus status;
 
     @Column(name = "note", length = 255)
@@ -55,12 +55,14 @@ public class VehicleInfo implements Serializable {
     @ManyToOne
     private Vehicle vehicle;
 
-    public VehicleInfo(Double fuel, Double odometr, int motohours, VehicleStatus status, String note) {
+    public VehicleInfo(LocalDateTime modificationDate, double fuel, double odometr, int motohours, VehicleStatus status, String note, Vehicle vehicle) {
+        this.modificationDate = modificationDate;
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
         this.status = status;
         this.note = note;
+        this.vehicle = vehicle;
     }
 
 }

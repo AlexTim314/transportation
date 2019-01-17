@@ -32,10 +32,10 @@ public class VehicleType implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "type_name", length = 64)
+    @Column(name = "type_name", length = 64, nullable = false)
     private String typeName;
 
-    @Column(name = "specialization")
+    @Column(name = "specialization", nullable = false)
     private VehicleSpecialization specialization;
 
     public VehicleType(String typeName, VehicleSpecialization specialization) {

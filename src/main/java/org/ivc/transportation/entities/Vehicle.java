@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 public class Vehicle implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -45,12 +46,13 @@ public class Vehicle implements Serializable {
     @Column(name = "motohours", nullable = false)
     private int motohours;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private VehicleStatus status;
 
     @Column(name = "note", length = 255)
     private String note;
 
+    @Transient
     @Column(name = "vacant", nullable = false)
     private boolean vacant;
 
