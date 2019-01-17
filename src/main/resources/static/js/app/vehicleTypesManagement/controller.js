@@ -152,7 +152,7 @@ App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManag
         };
         
         //Функция передачи объекта по клику на строку таблицы
-        self.addRowHandlers = function (vehType) {
+        self.setVehicleType = function (vehType) {
             self.vehicleType = vehType;
             self.fetchVehicleModelsByType();
 
