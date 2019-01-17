@@ -8,12 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.utils.EntitiesUtils;
+import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 
 /**
  *
@@ -25,18 +26,21 @@ import org.ivc.transportation.utils.EntitiesUtils;
 @EqualsAndHashCode(exclude = {})
 @ToString(exclude = {})
 @Entity
+@Table(name = "driver_info")
 public class DriverInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    
-    @Column(nullable = false)
-    private EntitiesUtils.DriverStatus status;
-        
-    @Column(length = 255, nullable = true)    
+
+    @Column(name = "status", nullable = false)
+    private DriverStatus status;
+
+    @Column(name = "note", length = 255)
     private String note;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private Driver driver;
+
 }

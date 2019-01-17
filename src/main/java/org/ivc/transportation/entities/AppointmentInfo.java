@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,21 +23,23 @@ import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode(exclude = {"appointment"})
+@ToString(exclude = {"appointment"})
 @Entity
+@Table(name = "appointment_info")
 public class AppointmentInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private AppointmentStatus status;
     
-    @Column(length = 254, nullable = true)    
+    @Column(name = "note", length = 255)    
     private String note;
     
     @ManyToOne
-    private Appointment Appointment;
+    private Appointment appointment;
 }

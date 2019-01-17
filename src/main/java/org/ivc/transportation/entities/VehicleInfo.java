@@ -1,17 +1,20 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.utils.EntitiesUtils;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 
 /**
  *
@@ -20,36 +23,46 @@ import org.ivc.transportation.utils.EntitiesUtils;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode(exclude = {"vehicle"})
+@ToString(exclude = {"vehicle"})
 @Entity
+@Table(name = "vehicle_info")
 public class VehicleInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
-    private Double fuel;
+    @Column(name = "modification_date", nullable = false)
+    private LocalDateTime modificationDate;
 
-    @Column(nullable = false)
-    private Double odometr;
+    @Column(name = "fuel", nullable = false)
+    private double fuel;
 
-    @Column(nullable = false)
+    @Column(name = "odometr", nullable = false)
+    private double odometr;
+
+    @Column(name = "motohours", nullable = false)
     private int motohours;
 
-    @Column(nullable = false)
-    private EntitiesUtils.VehicleStatus status;
+    @Column(name = "status", nullable = false)
+    private VehicleStatus status;
 
-    @Column(length = 1024)
+    @Column(name = "note", length = 255)
     private String note;
 
-    public VehicleInfo(Double fuel, Double odometr, int motohours, EntitiesUtils.VehicleStatus status, String note) {
+    @ManyToOne
+    private Vehicle vehicle;
+
+    public VehicleInfo(LocalDateTime modificationDate, double fuel, double odometr, int motohours, VehicleStatus status, String note, Vehicle vehicle) {
+        this.modificationDate = modificationDate;
         this.fuel = fuel;
         this.odometr = odometr;
         this.motohours = motohours;
         this.status = status;
         this.note = note;
+        this.vehicle = vehicle;
     }
 
 }
