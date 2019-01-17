@@ -171,6 +171,7 @@
                                 <thead>
                                     <tr>
                                         <th>Код</th>
+                                        <th>Тип автотранспорта</th>
                                         <th>Название модели</th>
                                         <th style="width: 200px;"></th>
                                     </tr>
@@ -179,6 +180,7 @@
                                     <tr ng-repeat="vehicleModel in ctrl.vehicleModels| filter:searchVehicleModel">
 
                                         <td>{{vehicleModel.id}}</td>
+                                        <td>{{vehicleModel.vehicleType.type}}</td>
                                         <td>{{vehicleModel.modelName}}</td>
                                         <td><button type="button" ng-click="ctrl.editVehicleModel(vehicleModel)" class="btn btn-success">Изменить</button>
                                             <button type="button" ng-click="ctrl.deleteVehicleModel(vehicleModel)" class="btn btn-danger custom-width">Удалить</button></td>
