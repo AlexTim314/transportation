@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,6 +68,7 @@ public class Driver implements Serializable {
     @Column(name = "note", length = 255)
     private String note;
 
+    @Transient
     @Column(name = "vacant", nullable = false)
     private boolean vacant;
 
