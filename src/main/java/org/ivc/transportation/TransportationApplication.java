@@ -60,8 +60,6 @@ public class TransportationApplication {
 
         userRepository.save(admin);
         userRepository.save(user);
-        
-        
 
     }
 
