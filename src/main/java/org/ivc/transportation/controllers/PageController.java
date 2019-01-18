@@ -38,7 +38,7 @@ public class PageController {
 
     @RequestMapping(value = "/claims", method = RequestMethod.GET)
     public String managerPage() {
-        return "manager/managerPage";
+        return "user/claimsPage";
     }
 
 }
