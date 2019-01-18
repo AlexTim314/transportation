@@ -16,7 +16,7 @@
         <script src="js/app/claims/controller.js"></script>
 
     </head>
-    <body ng-app="Transportation" ng-controller="ClaimController as ctrl">
+    <body ng-app="Transportation" ng-controller="ClaimsController as ctrl">
         <div class="wrapper">
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
@@ -79,20 +79,19 @@
 
                             <div class=" left-block">
                                 <label for="type">Тип транспорта</label>
-                                <select name="type">
-                                    <option value="1">Пассажирский</option>
-                                    <option value="2">Легковой</option>
-                                    <option value="3">Грузовой</option>
-                                    <option value="4">Спецтехника</option>
+                                <select name="type" ng-model="searchType">
+                                    <option value="пассажирский">Пассажирский</option>
+                                    <option value="легковой">Легковой</option>
+                                    <option value="грузовой">Грузовой</option>
+                                    <option value="спецтехника">Спецтехника</option>
                                 </select>
                             </div>
 
 
                             <div class="right-block">
                                 <label for="criterion">Вид техники</label>
-                                <select name="criterion">
-                                    <option value="1">Самосвал</option>
-                                    <option value="2">Бульдозер</option>
+                                <select name="criterion" ng-options="vt as vt.type for vt in ctrl.vehicleType| filter:searchType track by vt.id"   ng-model="ctrl.claim.vehicleType">
+
                                 </select>	
                             </div>
 
@@ -102,7 +101,7 @@
 
                         <div class="form-item check-hidden">
                             <label for="purpose">Цель</label>
-                            <textarea name="purpose"   rows="10" ng-></textarea>
+                            <textarea name="purpose"   rows="10"></textarea>
                         </div>
                         <div class="form-item clearfix" >
                             <label for="carBoss">Старший</label>
@@ -231,7 +230,7 @@
                     <!--Text header -->
 
                     <h1>Структурное подразделение</h1>
-                    <h3>{{ctrl.claim.department.name}}</h3>
+                    <h3>{{ctrl.claim.department.shortname}}</h3>
                     <nav class="nav-horizontal">
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)" >Подача заявок</div>
                         <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)" >Статус заявок</div>
@@ -368,7 +367,7 @@
                                                 <th>Дата возвращения</th>
                                                 <th>Время возвращения</th>
                                             </tr>
-                                            <tr ng-repeat="record in ctrl.records | filter:search">
+                                            <tr ng-repeat="record in ctrl.claim.records | filter:search">
                                                 <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
                                                 <td>{{record.entranceDate| date:'HH:mm'}}</td>
                                                 <td>{{record.startDate| date:'HH:mm'}}</td>

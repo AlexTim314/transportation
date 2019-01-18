@@ -13,7 +13,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             fetchClaims: function () {
                 return $http.get('/transportation/user/claims')
                         .then(
-                                function (response) {
+                                function (response) {console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -67,7 +67,20 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                             return $q.reject(errResponse);
                         }
                 );
-            }
+            },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
         };
     }]);

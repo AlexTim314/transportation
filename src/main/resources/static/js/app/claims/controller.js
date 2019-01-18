@@ -65,6 +65,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+        
+        self.fetchVehicleTypes = function(){
+            ClaimsService.fetchVehicleTypes()
+                .then(
+                            function (d) {
+                                self.vehicleTypes = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching VehicleTypes');
+                            }
+                    );
+        }
 
 //        self.submit = function () {
 //            if (self.department.id === null) {
