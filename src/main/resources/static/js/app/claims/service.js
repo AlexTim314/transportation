@@ -80,7 +80,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                     return $q.reject(errResponse);
                                 }
                         );
-            },
+            }
 
         };
     }]);

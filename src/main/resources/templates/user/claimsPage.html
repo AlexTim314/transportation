@@ -328,7 +328,7 @@
                                         <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                                     </th>
                                 </tr>
-                                <tr class="activeRow" ng-repeat="claim in ctrl.claims | filter:search">
+                                <tr class="activeRow" ng-repeat="claim in ctrl.claims">
                                     <td >
                                         <i class="fas  fa-2x fa-caret-right"></i>
 
@@ -367,7 +367,7 @@
                                                 <th>Дата возвращения</th>
                                                 <th>Время возвращения</th>
                                             </tr>
-                                            <tr ng-repeat="record in ctrl.claim.records | filter:search">
+                                            <tr ng-repeat="record in ctrl.claim.records">
                                                 <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
                                                 <td>{{record.entranceDate| date:'HH:mm'}}</td>
                                                 <td>{{record.startDate| date:'HH:mm'}}</td>
