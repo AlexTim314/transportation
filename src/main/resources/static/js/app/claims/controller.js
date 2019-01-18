@@ -3,60 +3,68 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim ={id: null, };
+        self.claim = {id: null, templateName: '', specialization: '', carBoss: '', purpose: '', creationDate: '', affirmationDate: '', actual: '', department: {shortname: ''}, vehicleType: {typeName: ''}, creator: {fullName: ''}, affirmator: {fullName: ''}, records: []};
+        self.record = {id: null, entranceDate: '', startDate: '', endDate: '', status: '', note: '', appointmentGroup: {}};
+        self.vehicleType = {id: null, typeName: '', specialization: ''};
+        self.creator = {id: null, username: '', fullName: '', department: {shortname: ''}};
+        self.affirmator = {id: null, username: '', fullName: '', department: {shortname: ''}};
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         self.departments = [];
+        self.claims = [];
+        self.records = [];
+        self.vehicleTypes = [];
 
-//        self.fetchAllDepartments = function () {
-//            DepartmentsManagementService.fetchAllDepartments()
-//                    .then(
-//                            function (d) {
-//                                self.departments = d;
-//                                console.log(d);
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while fetching Departments');
-//                            }
-//                    );
-//        };
-//
-//
-//        self.fetchAllDepartments();
-//
-//
-//        self.createDepartment = function (department) {
-//            DepartmentsManagementService.createDepartment(department)
-//                    .then(
-//                            function (d) {
-//                                self.departments.push(d);
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while creating Department.');
-//                            }
-//                    );
-//        };
-//
-//        self.updateDepartment = function (department) {
-//            DepartmentsManagementService.updateDepartment(department)
-//                    .then(
-//                            
-//                                self.fetchAllDepartments,
-//                            
-//                            function (errResponse) {
-//                                console.error('Error while updating Department.');
-//                            }
-//                    );
-//        };
-//
-//        self.deleteDepartment = function (department) {
-//            DepartmentsManagementService.deleteDepartment(department)
-//                    .then(
-//                            self.fetchAllDepartments,
-//                            function (errResponse) {
-//                                console.error('Error while deleting Department.');
-//                            }
-//                    );
-//        };
+
+        self.fetchClaims = function () {
+            ClaimsService.fetchClaims()
+                    .then(
+                            function (d) {
+                                self.claims = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Claims');
+                            }
+                    );
+        };
+
+
+        self.fetchClaims();
+
+
+        self.createClaim = function (claim) {
+            ClaimsService.createClaim(claim)
+                    .then(
+                            function (d) {
+                                self.claims.push(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Claim.');
+                            }
+                    );
+        };
+
+        self.updateClaim = function (claim) {
+            ClaimsService.updateClaim(claim)
+                    .then(
+                            
+                                self.fetchClaims,
+                            
+                            function (errResponse) {
+                                console.error('Error while updating Claim.');
+                            }
+                    );
+        };
+
+        self.deleteClaim = function (claim) {
+            ClaimsService.deleteClaim(claim)
+                    .then(
+                            self.fetchClaims,
+                            function (errResponse) {
+                                console.error('Error while deleting Claim.');
+                            }
+                    );
+        };
 
 //        self.submit = function () {
 //            if (self.department.id === null) {

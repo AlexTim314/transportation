@@ -12,9 +12,11 @@
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
+        <script src="js/app/claims/service.js"></script>
+        <script src="js/app/claims/controller.js"></script>
 
     </head>
-    <body ng-app="Transportation" >
+    <body ng-app="Transportation" ng-controller="ClaimController as ctrl">
         <div class="wrapper">
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
@@ -86,7 +88,7 @@
                             </div>
 
 
-                            <div class="right-block" >
+                            <div class="right-block">
                                 <label for="criterion">Вид техники</label>
                                 <select name="criterion">
                                     <option value="1">Самосвал</option>
@@ -100,7 +102,7 @@
 
                         <div class="form-item check-hidden">
                             <label for="purpose">Цель</label>
-                            <textarea name="purpose"   rows="10"></textarea>
+                            <textarea name="purpose"   rows="10" ng-></textarea>
                         </div>
                         <div class="form-item clearfix" >
                             <label for="carBoss">Старший</label>
@@ -221,7 +223,7 @@
             </div>
 
 
-            <div class="main clearfix" ng-controller="ClaimController as ctrl" >
+            <div class="main clearfix" >
                 <div class="header clearfix">
                     <!--Logo -->
                     <div class="logo">
@@ -327,7 +329,7 @@
                                         <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                                     </th>
                                 </tr>
-                                <tr class="activeRow">
+                                <tr class="activeRow" ng-repeat="claim in ctrl.claims | filter:search">
                                     <td >
                                         <i class="fas  fa-2x fa-caret-right"></i>
 
@@ -338,12 +340,12 @@
                                             <span class="checkmark"></span>
                                         </label>	
                                     </td>
-                                    <td class="counter_record">№103 22.12.2018
-                                        <span title="Число записей">1</span>
+                                    <td class="counter_record">№{{claim.id}}
+                                        <span title="Число записей"></span>
                                     </td>
-                                    <td>Пассажирский</td>
-                                    <td>Автобус</td>
-                                    <td>Иванов И.И.</td>
+                                    <td>{{claim.vehicleType.specialization}}</td>
+                                    <td>{{claim.vehicleType.typeName}}</td>
+                                    <td>{{claim.carBoss}}</td>
                                     <td>
                                         <span class="route-tag td-relative" title="Перевозка пассажиров" >Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
                                     </td>
@@ -366,17 +368,17 @@
                                                 <th>Дата возвращения</th>
                                                 <th>Время возвращения</th>
                                             </tr>
-                                            <tr>
-                                                <td>{{record.type}}</td>
-                                                <td>{{record.datetime}}</td>
-                                                <td>{{record.timeDelivery}}</td>
-                                                <td>{{record.carBoss}}</td>
-                                                <td>{{record.carBoss}}</td>
+                                            <tr ng-repeat="record in ctrl.records | filter:search">
+                                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                                                <td>{{record.startDate| date:'HH:mm'}}</td>
+                                                <td>{{record.entranceDate| date:'dd.MM.yyyy'}}</td>
+                                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
                                             </tr>                                            
                                         </table>
                                     </td>
                                 </tr>
-                                <tr class="activeRow">
+<!--                                <tr class="activeRow">
                                     <td >
                                         <i class="fas  fa-2x fa-caret-right"></i>
 
@@ -403,8 +405,8 @@
                                         <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
                                     </td>				  				
 
-                                </tr>
-                                <tr class="hiddenRow collapseRow">
+                                </tr>-->
+<!--                                <tr class="hiddenRow collapseRow">
                                     <td colspan="8">
 
                                         <table class="table-claim">
@@ -422,7 +424,7 @@
                                             </tr>
                                         </table>
                                     </td>
-                                </tr>
+                                </tr>-->
 
                             </table>
                         </div>	
