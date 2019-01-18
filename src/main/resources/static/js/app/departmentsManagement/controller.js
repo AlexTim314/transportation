@@ -26,7 +26,6 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         self.createDepartment = function (department) {
             DepartmentsManagementService.createDepartment(department)
                     .then(  
-                            
                             self.fetchAllDepartments,
                             function (errResponse) {
                                 console.error('Error while creating Department.');

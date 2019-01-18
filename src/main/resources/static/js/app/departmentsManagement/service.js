@@ -28,6 +28,7 @@ App.factory('DepartmentsManagementService', ['$http', '$q', '$document', functio
                         .then(
                                 function (response) {
                                     return response.data;
+                                    
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating department');
