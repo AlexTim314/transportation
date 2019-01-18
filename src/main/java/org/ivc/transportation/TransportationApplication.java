@@ -5,12 +5,14 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.CommonService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class TransportationApplication {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-    
+
     @Autowired
     private CommonService commonService;
 
@@ -60,7 +62,6 @@ public class TransportationApplication {
 
         userRepository.save(admin);
         userRepository.save(user);
-
     }
 
     public static void main(String[] args) {

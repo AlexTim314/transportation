@@ -6,6 +6,8 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.util.List;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
@@ -29,13 +31,13 @@ public class ClaimService {
     UserRepository userRepository;
 
     @Autowired
-    DepartmentRepository DepartmentRepository;
+    DepartmentRepository departmentRepository;
 
     @Autowired
-    ClaimRepository ClaimRepository;
+    ClaimRepository claimRepository;
 
     @Autowired
-    RecordRepository RecordRepository;
+    RecordRepository recordRepository;
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
@@ -48,8 +50,18 @@ public class ClaimService {
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
-            
+            return claimRepository.findByDepartmentAndAffirmationDateIsNull(department);
         }
         return null;
+    }
+    
+    public Claim saveClaim(Principal principal, Claim claim) {
+        claim.setDepartment(getDepartment(principal));
+        return claimRepository.save(claim);
+    }
+    
+    public void deleteClaim(Claim claim) {
+        if (claim.getAffirmationDate() == null)
+            claimRepository.delete(claim);
     }
 }
