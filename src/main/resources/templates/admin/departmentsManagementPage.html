@@ -103,7 +103,7 @@
                                     <thead>
                                         <tr>
                                             <th>Код</th>
-                                            <th>Полное название</th>
+                                            <th ng-click="reverse =!reverse; predicate ='fullname'">Полное название</th>
                                             <th>Сокращённое название</th>
                                             <th>Адрес</th>
                                             <th>Телефон</th>
@@ -111,7 +111,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="department in ctrl.departments| filter:search">
+                                        <tr ng-repeat="department in ctrl.departments| filter:search | orderBy:predicate:reverse">
                                              
                                             <td>{{department.id}}</td>
                                             <td>{{department.fullname}}</td>
