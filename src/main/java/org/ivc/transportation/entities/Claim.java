@@ -72,4 +72,16 @@ public class Claim implements Serializable {
     @OneToMany
     private List<RouteTask> route;
 
+    public Claim(VehicleSpecialization specialization, String carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
+        this.specialization = specialization;
+        this.carBoss = carBoss;
+        this.purpose = purpose;
+        this.creationDate = creationDate;
+        this.department = department;
+        this.vehicleType = vehicleType;
+        this.creator = creator;
+    }
+    
+    
+
 }

@@ -33,6 +33,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
@@ -66,7 +67,7 @@ public class WaybillFileDownloadController {
                     + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
         }
         if (appointment == null) { unexpectedNull("Назначение"); }
-        if (appointment.getStatus() != AppointmentStatus.завершено) {
+        if (appointment.getStatus() != AppointmentStatus.READY) {
 
             String message = "Error2. Распоряжение не утверждено. Для печати "
                     + "путевого листа, прежде требуется согласовать и "
@@ -98,7 +99,8 @@ public class WaybillFileDownloadController {
         Driver driver = appointment.getDriver();
         if (driver == null) { unexpectedNull("Водитель"); }
         //TODO: добавить обработку случая, когда  Записей больше 1
-        Record record = dispatcherService.findRecordsByAppointment(appointment).get(0);
+        Record record = dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
+        Claim claim = dispatcherService.findClaimByRecord(record);
         LocalDateTime dateTime = appointment.getAppDateTime();
 
         try {
@@ -133,8 +135,8 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(dateTime.getYear());
                                 break;
                              case организация:
-                                c.setCellValue(record.getClaim().getDepartment().getName()
-                                        + " " + record.getClaim().getDepartment().getAddres());
+                                c.setCellValue(claim.getDepartment().getFullname()
+                                        + " " + claim.getDepartment().getAddress());
                                 break;
                            /* 
                                 case адрес_телефон:
@@ -187,7 +189,7 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(vehicle.getFuel());
                                 break;
                             case заказчик:
-                                c.setCellValue(record.getClaim().getDepartment().getShortName() + " " + record.getCarBoss());
+                                c.setCellValue(claim.getDepartment().getShortname()+ " " + claim.getCarBoss());
                                 break;
                         }
 
