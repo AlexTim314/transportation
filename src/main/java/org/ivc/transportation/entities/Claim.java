@@ -55,6 +55,9 @@ public class Claim implements Serializable {
     private LocalDateTime affirmationDate;
 
     @ManyToOne
+    private Department department;
+
+    @ManyToOne
     private VehicleType vehicleType;
 
     @ManyToOne

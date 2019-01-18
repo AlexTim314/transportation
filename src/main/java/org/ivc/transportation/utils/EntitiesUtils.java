@@ -40,12 +40,11 @@ public class EntitiesUtils {
     }
 
     public static enum AppointmentStatus {
-        создано,
-        выполняется,
-        завершено,
-        отменено;
+        IN_PROGRESS,
+        READY,
+        COMPLETED,
+        CANCELED;
     }
-
 
     /**
      * Перечисление используемое при заполнении путевого листа. Именованные
