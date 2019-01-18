@@ -47,7 +47,7 @@
                                         <div class="form-group col-md-12">
                                             <label class="col-md-2 control-lable" for="shortname">Короткое название подразделения</label>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model="ctrl.department.shortname" id="shortname" class="form-control input-sm" placeholder="Введите сокращенное навание подразделения" required ng-minlength="3"/>
+                                                <input type="text" ng-model="ctrl.department.shortname" id="shortname" class="form-control input-sm" placeholder="Введите сокращенное навание подразделения" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@
                                         <div class="form-group col-md-12">
                                             <label class="col-md-2 control-lable" for="address">Адрес</label>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model="ctrl.department.address" id="address" class="form-control input-sm" placeholder="Введите адрес подразделения" required ng-minlength="3"/>
+                                                <input type="text" ng-model="ctrl.department.address" id="address" class="form-control input-sm" placeholder="Введите адрес подразделения"/>
                                             </div>
                                         </div>
                                     </div>
@@ -65,15 +65,15 @@
                                         <div class="form-group col-md-12">
                                             <label class="col-md-2 control-lable" for="phone">Телефон</label>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model="ctrl.department.phone" id="phone" class="form-control input-sm" placeholder="Введите телефон подразделения" required ng-minlength="3"/>
+                                                <input type="text" ng-model="ctrl.department.phone" id="phone" class="form-control input-sm" placeholder="Введите телефон подразделения"/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="form-actions floatRight">
-                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createDepartment(ctrl.department)">{{ctrl.department.id===null?'Добавить':'Изменить'}}</button> 
-                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                            <input type="submit" class="btn btn-sm btn-info" ng-disabled="myForm.$pristine" value="{{ctrl.department.id===null?'Добавить':'Изменить'}}"> 
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                         </div>
                                     </div>
                                 </form>

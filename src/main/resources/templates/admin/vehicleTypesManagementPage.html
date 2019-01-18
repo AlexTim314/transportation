@@ -12,12 +12,13 @@
         <script src="js/app/app.js"></script>
         <script src="js/app/vehicleTypesManagement/service.js"></script>
         <script src="js/app/vehicleTypesManagement/controller.js"></script>
-
+        
         <link href="css/lib/bootstrap.css" rel="stylesheet"/>
         <link href="css/lib/app.css" rel="stylesheet"/>
-        <script>
-
-        </script>
+        <style>
+            #tb tr:hover {background:#E2EEFF;}
+            #tb .activeRow, #tb .activeRow:hover {background:#6598C7; color:#fff;}
+        </style>
     </head>
 
     <body ng-app="Transportation" ng-controller="VehicleTypesManagementController as ctrl">
@@ -40,8 +41,8 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="specialization">Специализация автотранспорта</label>
                                         <div class="col-md-7">
-                                            <select name="type-vehicle" ng-model="ctrl.vehicleType.specialization">
-                                                <option>---Выберите---</option>
+                                            <select name="type-vehicle" ng-model="ctrl.vehicleType.specialization" required>
+                                                <option disabled>---Выберите---</option>
                                                 <option value="пассажирский">Пассажирский</option>
                                                 <option value="легковой">Легковой</option>
                                                 <option value="грузовой">Грузовой</option>
@@ -56,14 +57,14 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="type">Тип автотранспорта</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleType.typeName" id="type" class="form-control input-sm" placeholder="Введите тип авто" required ng-minlength="3"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleType(ctrl.vehicleType)" ng-disabled="myFormVehicleType.$pristine">{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}</button> 
+                                        <input type="submit" class="btn btn-sm btn-info" ng-disabled="myFormVehicleType.$pristine" value="{{ctrl.vehicleType.id===null?'Добавить':'Изменить'}}">
                                         <button type="button" ng-click="ctrl.resetVehicleType()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
@@ -71,9 +72,6 @@
                         </div>
                     </div>	
                 </div>
-
-
-
 
 
                 <div class="panel panel-default">
@@ -92,7 +90,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="table-responsive" style="max-height: 40vh; min-height: 40vh; overflow-y: auto;">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="tb">
                                 <thead>
                                     <tr>
                                         <th>Код</th>
@@ -111,6 +109,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <script src="js/lib/paintSelectedRow.js"></script> 
                         </div>
                     </div>
                 </div>
@@ -131,14 +130,14 @@
                                     <div class="form-group col-md-12">
                                         <label class="col-md-2 control-lable" for="modelName">Название модели авто</label>
                                         <div class="col-md-7">
-                                            <input type="text" ng-model="ctrl.vehicleModel.modelName" id="modelName" class="form-control input-sm" placeholder="Введите модель авто" required ng-minlength="3"/>
+                                            <input type="text" ng-model="ctrl.vehicleModel.modelName" id="modelName" class="form-control input-sm" placeholder="Введите модель авто" required ng-minlength="2"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-actions floatRight">
-                                        <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createVehicleModel(ctrl.vehicleModel)" ng-disabled="myFormVehicleModel.$pristine">{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}</button> 
+                                        <input type="submit" class="btn btn-sm btn-info" ng-disabled="myFormVehicleModel.$pristine" value="{{ctrl.vehicleModel.id===null?'Добавить':'Изменить'}}">
                                         <button type="button" ng-click="ctrl.resetVehicleModel()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                     </div>
                                 </div>
@@ -171,7 +170,6 @@
                                 <thead>
                                     <tr>
                                         <th>Код</th>
-                                        <th>Тип автотранспорта</th>
                                         <th>Название модели</th>
                                         <th>Тип автотранспорта</th>
                                         <th style="width: 200px;"></th>
@@ -181,7 +179,6 @@
                                     <tr ng-repeat="vehicleModel in ctrl.vehicleModels| filter:searchVehicleModel">
 
                                         <td>{{vehicleModel.id}}</td>
-                                        <td>{{vehicleModel.vehicleType.type}}</td>
                                         <td>{{vehicleModel.modelName}}</td>
                                         <td>{{vehicleModel.vehicleType.typeName}}</td>
                                         <td><button type="button" ng-click="ctrl.editVehicleModel(vehicleModel)" class="btn btn-success">Изменить</button>

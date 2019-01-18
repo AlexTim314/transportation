@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -24,8 +23,8 @@ import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"driver", "vehicle", "transportDep", "vehicleModel"})
-@ToString(exclude = {"driver", "vehicle", "transportDep", "vehicleModel"})
+@EqualsAndHashCode(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
+@ToString(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
 @Entity
 @Table(name = "appointment")
 public class Appointment implements Serializable {
@@ -33,7 +32,7 @@ public class Appointment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;   
+    private Long id;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime appDateTime;
@@ -41,7 +40,7 @@ public class Appointment implements Serializable {
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;
 
-    @Column(name = "note", length = 255)    
+    @Column(name = "note", length = 255)
     private String note;
 
     @ManyToOne
@@ -50,16 +49,16 @@ public class Appointment implements Serializable {
     @ManyToOne
     private Vehicle vehicle;
 
-    @NonNull
+    @ManyToOne
+    private Mechanic mechanic;
+
     @ManyToOne
     private TransportDep transportDep;
-    
-    @NonNull
+
     @ManyToOne
     private VehicleModel vehicleModel;
 
-    /*
-    @OneToOne(fetch = FetchType.EAGER)
-    private Waybill waybill;
-    */    
+    @ManyToOne
+    private AppointmentGroup appointmentGroup;
+
 }

@@ -33,7 +33,7 @@
                                         <div class="form-group col-md-12">
                                             <label class="col-md-2 control-lable" for="name">Название путевой точки</label>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model="ctrl.place.name" id="name" class="form-control input-sm" placeholder="Название путевой точки"/>
+                                                <input type="text" ng-model="ctrl.place.name" id="name" class="form-control input-sm" placeholder="Название путевой точки" required ng-minlength="3"/>
                                             </div>
                                         </div>
                                     </div>
@@ -49,8 +49,8 @@
 
                                     <div class="row">
                                         <div class="form-actions floatRight">
-                                            <button type="button" class="btn btn-sm btn-info" ng-click="ctrl.createPlace(ctrl.place)">{{ctrl.place.id===null?'Добавить':'Изменить'}}</button> 
-                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Сбросить форму</button>
+                                            <input type="submit" class="btn btn-sm btn-info" ng-disabled="myForm.$pristine" value="{{ctrl.place.id===null?'Добавить':'Изменить'}}">
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm">Сбросить форму</button>
                                         </div>
                                     </div>
                                 </form>

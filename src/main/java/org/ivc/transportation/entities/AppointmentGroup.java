@@ -1,14 +1,12 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,8 +21,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"creator", "appointments", "records"})
-@ToString(exclude = {"creator", "appointments", "records"})
+@EqualsAndHashCode(exclude = {"creator"})
+@ToString(exclude = {"creator"})
 @Entity
 @Table(name = "appointment_group")
 public class AppointmentGroup implements Serializable {
@@ -37,9 +35,4 @@ public class AppointmentGroup implements Serializable {
     @ManyToOne
     private AppUser creator;
 
-    @OneToMany
-    private List<Appointment> appointments;
-    
-    @OneToMany
-    private List<Record> records;
 }

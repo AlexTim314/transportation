@@ -1,6 +1,5 @@
 package org.ivc.transportation.entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 
 /**
  *
@@ -29,8 +26,8 @@ import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 @EqualsAndHashCode(exclude = {"transportDep"})
 @ToString(exclude = {"transportDep"})
 @Entity
-@Table(name = "driver")
-public class Driver implements Serializable {
+@Table(name = "mechanic")
+public class Mechanic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,35 +53,9 @@ public class Driver implements Serializable {
     @Column(name = "phone", length = 16)
     private String phone;
 
-    @Column(name = "driver_class", length = 64)
-    private String driverClass;
-
-    @Column(name = "driver_license", length = 64)
-    private String driverLicense;
-
-    @Column(name = "status", nullable = false)
-    private DriverStatus status;
-
-    @Column(name = "note", length = 255)
-    private String note;
-
-    @Transient
-    @Column(name = "vacant", nullable = false)
-    private boolean vacant;
+    @Column(name = "workmanship", length = 64)
+    private String workmanship;
 
     @ManyToOne
     private TransportDep transportDep;
-
-    public Driver(String firstname, String name, String surname, Date birthday, String address, String phone, String note, TransportDep transportDep) {
-        this.firstname = firstname;
-        this.surname = surname;
-        this.birthday = birthday;
-        this.address = address;
-        this.phone = phone;
-        this.vacant = Boolean.TRUE;
-        this.name = name;
-        this.note = note;
-        this.transportDep = transportDep;
-    }
-
 }
