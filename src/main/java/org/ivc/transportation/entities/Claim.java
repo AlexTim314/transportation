@@ -53,6 +53,9 @@ public class Claim implements Serializable {
 
     @Column(name = "affirmation_date")
     private LocalDateTime affirmationDate;
+    
+    @Column(name = "actual", nullable = false)
+    private boolean actual;
 
     @ManyToOne
     private Department department;
