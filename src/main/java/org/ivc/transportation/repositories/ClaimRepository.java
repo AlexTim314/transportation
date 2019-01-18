@@ -10,5 +10,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("claimRepository")
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
+    
+    findByDepartmentAndAffirmationDate
 
 }
