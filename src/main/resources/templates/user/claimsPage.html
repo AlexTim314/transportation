@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Подача заявок на автотранспорт</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+
+    </head>
+    <body ng-app="Transportation" >
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+            <!--Record Form --> 
+            <div class="formRecord" id="formRecord-id">
+                <i class="fas fa-times i-close" onclick="formRecord_close()"></i>
+                <label for="type-claim">Тип заявки</label>
+                <select name="type-claim">
+                    <option value="1">Еженедельная</option>
+                    <option value="2">Дополнительная</option>
+                </select>
+                <input type="file" name="post-file" multiple accept="image/*">		
+                <button class="btn delete">Создать</button>
+            </div>
+            <div class="dialog-window" id="dialog-window">
+                <i class="fas fa-times i-close " onclick="formClose('dialog-window')"></i>
+                <p>Вы уверены, что хотите удалить?</p>
+                <div class="btn edit">Отмена</div>
+                <div class="btn delete"><i class="fas  fa-trash-alt"></i>Удалить</div>
+
+            </div>
+            <!----------------------------------------------ADD-FORM------------------->
+            <div class="menu-new-claim" id="form-add">
+                <i class="fas fa-times" onclick="menu_close()"></i>
+                <form action="#" method="POST">
+                    <section class="section-type">
+                        <div class="form-item">
+                            <div class="check-item" > 
+                                <label class="custom-checkbox">
+                                    по требованию
+                                    <input type="checkbox" id="check-hidden1" onclick="checkHidden()">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>	
+                        </div>
+                        <div class="form-item clearfix" >
+
+                            <div class=" left-block">
+                                <label for="type">Тип транспорта</label>
+                                <select name="type">
+                                    <option value="1">Пассажирский</option>
+                                    <option value="2">Легковой</option>
+                                    <option value="3">Грузовой</option>
+                                    <option value="4">Спецтехника</option>
+                                </select>
+                            </div>
+
+
+                            <div class="right-block" >
+                                <label for="criterion">Вид техники</label>
+                                <select name="criterion">
+                                    <option value="1">Самосвал</option>
+                                    <option value="2">Бульдозер</option>
+                                </select>	
+                            </div>
+
+                        </div> 
+
+
+
+                        <div class="form-item check-hidden">
+                            <label for="purpose">Цель</label>
+                            <textarea name="purpose"   rows="10"></textarea>
+                        </div>
+                        <div class="form-item clearfix" >
+                            <label for="carBoss">Старший</label>
+                            <input name="carBoss" ></input>
+                        </div>	
+                        <div class="form-item check-hidden clearfix">
+
+                            <div class="left-block-route">
+                                <label for="route">Маршрут</label>
+                                <select name="route" ng-model="routeTag.routeText">
+                                    <option >Пл.10</option>
+                                    <option >Пл.18</option>
+                                    <option >Пл.23</option>
+                                </select> 
+                            </div>
+                            <div class="right-block-route">
+                                <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                            </div>
+                        </div>	
+                    </section>
+                    <section>	 
+                        <div class="form-item clearfix" >
+                            <div class="form-item-date ">
+                                <label for="date-begin">Дата:</label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" >на неделю
+                                    <span class="checkmark"></span>
+                                </label>
+
+                                <div class="inp-btn clearfix">
+                                    <input type="date"  name="date-begin" required>
+                                    <span title="Добавить дату" class="fas fa-lg fa-plus-circle" ></span>
+                                </div>							 		
+                            </div>
+
+
+
+                            <div class="right-block ">
+                                <label for="time-begin">Время подачи</label>
+                                <input type="time"  name="time-begin" required>
+
+
+                                <label for="time-begin">Время выезда</label>
+                                <input type="time"  name="time-begin" required>
+
+                                <div class="check-hidden">
+                                    <label for="time-end">Время возвращения</label>
+                                    <input type="time"  name="time-end" required>
+                                </div>
+                                <div class="check-hidden">
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')">другой день
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
+                                </div>
+
+                            </div>
+                            <div class="left-block-tag">
+                                <div class="route-tag">22.12.2018
+                                    <span class="fas fa-times " ></span>
+                                </div>
+                                <div class="route-tag">22.12.2018
+                                    <span class="fas fa-times " ></span>
+                                </div>
+                                <div class="route-tag">22.12.2018
+                                    <span class="fas fa-times " ></span>
+                                </div>
+                                <div class="route-tag">22.12.2018</div>
+
+                            </div>
+                        </div> 					
+
+                    </section>
+
+
+                    <div class="form-item">
+                        <button class="btn submit" id="btn-add-edit"></button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="new-claim-task" id="formTask">
+                <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
+                <div class="form-item">
+                    <label for="type">Место</label>
+                    <select name="type">
+                        <option value="1">Не выбрано</option>
+                    </select>
+                </div>	
+                <div class="form-item" style="margin-bottom:20px;"> 
+                    <div class="left-block">
+                        <label for="work">Работы</label>
+                        <input type="text" name="work">
+                    </div>
+                    <div class="right-block" style="margin-top:10px;">	
+                        <div class="btn edit"><i class="fas fa-plus"></i>Добавить</div>
+                    </div>
+                </div>
+                <div class="small-height-wrapper">	
+                    <table class="table-task" >
+                        <tr>
+                            <th>Место</th>
+                            <th>Проводимые работы</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>Пл.31</td>
+                            <td>Крановые работы</td>
+                            <td><i class="fas fa-times"></i></td>	 					
+                        </tr>	 				
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="main clearfix" ng-controller="ClaimController as ctrl" >
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
+
+                    <h1>Структурное подразделение</h1>
+                    <h3>{{ctrl.claim.department.name}}</h3>
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)" >Подача заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)" >Статус заявок</div>
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 4)" >Шаблоны заявок</div>
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)" >Маршруты</div>			
+                    </nav>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                </div>
+                <!--Sidebar-->
+                <div class="sidebar clearfix" id="sidenav-id">
+
+                    <div class="thin-strip">
+                        <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
+                    </div>
+                    <!--Menu -->
+                    <div class="menu">                        
+                        <li class="menu-item" id="new">
+                            <div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
+                            <div class="filter">
+                                <div class="filter-container tab1 tab2" >
+
+                                    <p>Фильтрация</p>
+                                    <div class="filter-type"><i class="fas fa-car"></i></div>
+                                    <div class="filter-type"><i class="fas fa-bus-alt"></i></div>
+                                    <div class="filter-type"><i class="fas fa-truck"></i></div>
+                                    <div class="filter-type"><i class="fas fa-tractor"></i></div>
+                                </div>
+                                <div class="filter-container tab1 tab2">
+                                    <label for="route-filter">Маршрут</label>
+                                    <select name="route-filter">
+                                        <option value="1">Пл.10-Пл.23</option>
+                                    </select>
+                                </div>
+                                <div class="filter-container tab1 tab2" id="f-empls" >
+                                    <label for="declarer-filter">Вид техники</label>
+                                    <select name="declarer-filter">
+                                        <option value="1"></option>
+                                    </select>
+                                </div>
+                                <div class="filter-container tab1 tab2">
+                                    <label for="date-filter">Дата выезда</label>
+                                    <input type="date" name="date-filter">
+                                    <!-- </select> -->
+                                </div>
+                                <div class="filter-container  tab2" id="f-trnsp" style="display:none;">
+                                    <label for="transport-filter">Название транспорта</label>
+                                    <select name="transport-filter">
+                                        <option value="1">ПАЗ</option>
+                                        <option value="2">ГАЗ 66</option>
+                                    </select>
+                                </div>
+                                <div class="filter-container  tab2" id="f-sts" style="display:none;">
+                                    <label for="status-filter">Статус заявки</label>
+                                    <select name="status-filter">
+                                        <option value="1"><i class="fas fa-ban"></i>Отмена</option>
+                                        <option value="2"><i class="fas fa-ban"></i>Ожидается</option>
+                                        <option value="2"><i class="fas fa-ban"></i>Готово</option>
+                                    </select>
+                                </div>
+                                <div class="filter-container">
+                                    <button class="btn apply ">Применить</button>	
+                                </div>
+
+                            </div>
+                        </li>		
+                    </div>
+
+
+                </div>
+                <div id="claim-create" class="tabcontent">
+                    <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
+                        <div class="table-header clearfix">
+                            <input type="search">
+                        </div>
+                        <div class="height-wrapper"> 
+                            <table class="table-record" id="tbl1">
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox" >
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </th>
+                                    <th>Заявка</th>		
+                                    <th>Тип транспорта</th>
+                                    <th>Вид техники</th>
+                                    <th>Старший</th>
+                                    <th>Маршрут</th>
+                                    <th>
+                                        <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
+                                        <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>
+                                        <i title="Утвердить" class="fas fa-clipboard-check fa-lg" onclick=""></i>
+                                        <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
+                                    </th>
+                                </tr>
+                                <tr class="activeRow">
+                                    <td >
+                                        <i class="fas  fa-2x fa-caret-right"></i>
+
+                                    </td>
+                                    <td>
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox" >
+                                            <span class="checkmark"></span>
+                                        </label>	
+                                    </td>
+                                    <td class="counter_record">№103 22.12.2018
+                                        <span title="Число записей">1</span>
+                                    </td>
+                                    <td>Пассажирский</td>
+                                    <td>Автобус</td>
+                                    <td>Иванов И.И.</td>
+                                    <td>
+                                        <span class="route-tag td-relative" title="Перевозка пассажиров" >Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
+                                    </td>
+                                    <td >
+                                        <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                                        <!--<i title="Сохранить" class="fas fa-lg fa-save"></i>-->
+                                        <i title="Сохранить как шаблон" class="fas fa-lg fa-save"></i>
+                                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  
+                                    </td>				  				
+
+                                </tr>
+                                <tr class="hiddenRow collapseRow">
+                                    <td colspan="8">
+
+                                        <table class="table-claim">
+                                            <tr>	
+                                                <th>Дата выезда</th>
+                                                <th>Время подачи</th>
+                                                <th>Время выезда</th>
+                                                <th>Дата возвращения</th>
+                                                <th>Время возвращения</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{record.type}}</td>
+                                                <td>{{record.datetime}}</td>
+                                                <td>{{record.timeDelivery}}</td>
+                                                <td>{{record.carBoss}}</td>
+                                                <td>{{record.carBoss}}</td>
+                                            </tr>                                            
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="activeRow">
+                                    <td >
+                                        <i class="fas  fa-2x fa-caret-right"></i>
+
+                                    </td>
+                                    <td>
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox" >
+                                            <span class="checkmark"></span>
+                                        </label>	
+                                    </td>
+                                    <td class="counter_record">№103 22.12.2018
+                                        <span title="Число записей">1</span>
+                                    </td>
+                                    <td>{{record}}</td>
+                                    <td>{{record.datetime}}</td>
+                                    <td></td>
+                                    <td>
+                                        <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>  			
+                                    </td>
+                                    <td >
+                                        <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                                        <i title="Сохранить" class="fas fa-lg fa-save"  onclick="edit_open()"></i>
+                                        <i title="Сохранить шаблон" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>
+                                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
+                                    </td>				  				
+
+                                </tr>
+                                <tr class="hiddenRow collapseRow">
+                                    <td colspan="8">
+
+                                        <table class="table-claim">
+                                            <tr>	
+                                                <th>Дата выезда</th>
+                                                <th>Время подачи</th>
+                                                <th>Время выезда</th>
+                                                <th>Время возвращения</th>				  				
+                                            </tr>
+                                            <tr>
+                                                <td>{{record.type}}</td>
+                                                <td>{{record.datetime}}</td>
+                                                <td>{{record.timeDelivery}}</td>
+                                                <td>{{record.carBoss}}</td>           
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>	
+
+                    </div>
+
+                    <!--Подробнее-->
+                    <div class="more-info" id="more-id">
+                        <div>Дополнительная информация
+                            <i class="fas fa-times" onclick="more_close()"></i>
+                        </div>
+                        <ul>
+                            <li><label>Тип транспорта:<span>Грузовой</span></label></li>
+                            <li><label>Дата выезда:<span>12.08.2018</span></label></li>
+                            <li><label>Время выезда:<span>08:00</span></label></li>
+                            <li><label>Маршрут:<span>Пл.10-Пл.23</span></label></li>
+                            <li><label>Ответственный:<span>Сидоров С.С.</span></label></li>
+                            <li><label>Масса груза:<span>1000 кг.</span></label></li>
+                            <li><label>Количество мест:<span>4 чел.</span></label></li>
+                        </ul>
+                    </div>	
+
+
+                    <div class="tab-list2" id="tab-list2">
+                        <div style="overflow-x:auto;">
+
+
+                            <div class="table-header clearfix">
+                                <div class="fast-filter clearfix">
+                                    <span class="filter-elem edit">Все</span>
+                                    <span class="filter-elem edit">Сегодня</span>
+                                    <span class="filter-elem edit">За неделю</span>
+                                </div>
+                                <input type="search">
+                            </div>
+                            <div class="height-wrapper"> 
+                                <table class="table-record" id="tbl2">
+                                    <tr>
+                                        <th></th>
+                                        <th>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" >
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </th>
+                                        <th>Заявка</th>		
+                                        <th>Тип транспорта</th>
+                                        <th>Вид техники</th>
+                                        <th>Старший</th>
+                                        <th>Маршрут</th>
+                                        <th>
+                                            <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
+                                            <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
+                                            <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>  			
+                                        </th>
+                                    </tr>
+
+                                    <tr class="activeRow">
+                                        <td >
+                                            <i class="fas  fa-2x fa-caret-right"></i>
+
+                                        </td>
+                                        <td>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" >
+                                                <span class="checkmark"></span>
+                                            </label>	
+                                        </td>
+                                        <td class="counter_record">№103 22.12.2018
+                                            <span title="Число записей">1</span>
+                                        </td>
+                                        <td>{{record}}</td>
+                                        <td>{{record.datetime}}</td>
+                                        <td></td>
+                                        <td>
+                                            <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>  			
+                                        </td>
+                                        <td style="position: relative;">	  						
+                                            <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>
+                                            <div class="record-status">
+                                                <div>Готово: 1</div>
+                                                <div>Не готово: 3</div>
+
+                                            </div>  
+                                        </td>				  				
+
+                                    </tr>
+                                    <tr class="hiddenRow collapseRow">
+                                        <td colspan="8">
+
+                                            <table class="table-claim">
+                                                <tr>	
+                                                    <th>Дата выезда</th>
+                                                    <th>Время подачи</th>
+                                                    <th>Время выезда</th>
+                                                    <th>Время возвращения</th>
+                                                    <th>Марка транспорта</th>
+                                                    <th>Номер транспорта</th>
+                                                    <th>Водитель</th>
+                                                    <th>Статус</th>				  				
+                                                </tr>
+                                                <tr>
+                                                    <td>{{record.type}}</td>
+                                                    <td>{{record.datetime}}</td>
+                                                    <td>{{record.timeDelivery}}</td>
+                                                    <td>{{record.carBoss}}</td>  
+                                                    <td>{{record.datetime}}
+                                                        {{record.datetime}}
+                                                    </td>
+                                                    <td>{{record.timeDelivery}}
+                                                        {{record.timeDelivery}}
+                                                    </td>
+                                                    <td class="td-relative">
+                                                        <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
+                                                        Серикбай С.С.
+                                                    </td>
+                                                    <td>
+                                                        <span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
+                                                    </td>           
+                                                </tr>
+                                                <tr>
+                                                    <td>{{record.type}}</td>
+                                                    <td>{{record.datetime}}</td>
+                                                    <td>{{record.timeDelivery}}</td>
+                                                    <td>{{record.carBoss}}</td>  
+                                                    <td>{{record.datetime}}</td>
+                                                    <td>{{record.timeDelivery}}</td>
+                                                    <td class="td-relative">
+                                                    </td>
+                                                    <td>
+                                                        <span class="claim-status"><i class="fas fa-clock"></i>В обработке</span>
+                                                    </td>           
+                                                </tr>
+                                                <tr>
+                                                    <td>{{record.type}}</td>
+                                                    <td>{{record.datetime}}</td>
+                                                    <td>{{record.timeDelivery}}</td>
+                                                    <td>{{record.carBoss}}</td>  
+                                                    <td>{{record.datetime}}</td>
+                                                    <td>{{record.timeDelivery}}</td>
+                                                    <td class="td-relative">
+                                                    </td>
+                                                    <td>
+                                                        <span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отменено</span>
+                                                    </td>           
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                            </div>
+                        </div>	
+                    </div>
+                    <div class="tab-list3" id="tab-list3">
+                        <p>таб 3</p>
+                    </div>	
+                    <div class="tab-list4" id="tab-list4">
+                        <div style="overflow-x:auto;">
+                            <div class="table-header table-header-plan clearfix">
+                                <input type="search" placeholder="Поиск">	
+                            </div>
+                            <div class="height-wrapper">    	
+                                <table class="table-transport ">
+                                    <tr>
+                                        <th style="width:10%;">Номер</th>
+                                        <th style="width:20%;">Название</th>
+                                        <th style="width:60%;">Маршрут</th>
+                                        <th style="width:10%;"></th> 			  					  	
+                                    </tr>
+                                    <tr>	
+                                        <td>1</td>
+                                        <td>На пл.1</td>
+                                        <td>Пл.10 - Пл.23 - КАЗ - Пл.18 - Пл.1</td>		
+                                        <td>
+                                            <i class="fas fa-lg fa-edit" onclick="formEditOpen('formRoute')"></i>
+                                            <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>	
+                                        </td>
+
+                                    </tr>
+
+
+                                </table>
+                            </div>
+                            <div class="assert-block clearfix">
+                                <button class="btn edit assert" onclick="formOpen('formRoute')"><i class="fa  fa-plus"></i>Добавить</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>
