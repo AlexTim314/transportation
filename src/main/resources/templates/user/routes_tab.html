@@ -1,0 +1,35 @@
+<div class="tab-list4" id="tab-list4" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск">	
+        </div>
+        <div class="height-wrapper">    	
+            <table class="table-transport ">
+                <tr>
+                    <th style="width:10%;">Номер</th>
+                    <th style="width:20%;">Название</th>
+                    <th style="width:60%;">Маршрут</th>
+                    <th style="width:10%;"></th> 			  					  	
+                </tr>
+                <tr>	
+                    <td>1</td>
+                    <td>На пл.1</td>
+                    <td>Пл.10 - Пл.23 - КАЗ - Пл.18 - Пл.1</td>		
+                    <td>
+                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formRoute')"></i>
+                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>	
+                    </td>
+
+                </tr>
+
+
+            </table>
+        </div>
+        <div class="assert-block clearfix">
+            <button class="btn edit assert" onclick="formOpen('formRoute')"><i class="fa  fa-plus"></i>Добавить</button>
+
+        </div>
+
+    </div>
+
+</div>
