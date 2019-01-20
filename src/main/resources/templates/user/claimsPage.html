@@ -12,9 +12,11 @@
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
+        <script src="js/app/claims/service.js"></script>
+        <script src="js/app/claims/controller.js"></script>
 
     </head>
-    <body ng-app="Transportation" >
+    <body ng-app="Transportation" ng-controller="ClaimsController as ctrl">
         <div class="wrapper">
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
@@ -47,7 +49,7 @@
             <th:block th:include="user/add_claim_form"></th:block>  
             <th:block th:include="user/route_tasks_form"></th:block>  
 
-            <div class="main clearfix" ng-controller="ClaimController as ctrl" >
+            <div class="main clearfix" >
                 <div class="header clearfix">
                     <!--Logo -->
                     <div class="logo">
@@ -55,7 +57,7 @@
                     <!--Text header -->
 
                     <h1>Структурное подразделение</h1>
-                    <h3>{{ctrl.claim.department.name}}</h3>
+                    <h3>{{ctrl.claim.department.shortname}}</h3>
                     <nav class="nav-horizontal">
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)" >Подача заявок</div>
                         <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)" >Статус заявок</div>

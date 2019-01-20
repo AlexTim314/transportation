@@ -1,6 +1,7 @@
+
 'use strict';
 
-App.factory('DepartmentsManagementService', ['$http', '$q', '$document', function ($http, $q, $document) {
+App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $document) {
 
         self.csrfHeaderName = $document[0].querySelector("meta[name='_csrf_header']").getAttribute('content');
         self.csrf = $document[0].querySelector("meta[name='_csrf']").getAttribute('content');
@@ -9,63 +10,76 @@ App.factory('DepartmentsManagementService', ['$http', '$q', '$document', functio
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchAllDepartments: function () {
-                return $http.get('/transportation/management/departments')
+            fetchClaims: function () {
+                return $http.get('/transportation/user/claims')
                         .then(
-                                function (response) {
+                                function (response) {console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching departments');
+                                    console.error('Error while fetching claims');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
 
-            createDepartment: function (department) {
-                return $http.post('/transportation/management/department_create',
-                        JSON.stringify(department), {headers: self.headers})
+            createClaim: function (claim) {
+                return $http.post('/transportation/user/claim_create',
+                        JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
                                     
                                 },
                                 function (errResponse) {
-                                    console.error('Error while creating department');
+                                    console.error('Error while creating claim');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
 
-            updateDepartment: function (department) {
-                return $http.put('/transportation/management/department_update',
-                        JSON.stringify(department), {headers: self.headers})
+            updateClaim: function (claim) {
+                return $http.put('/transportation/user/claim_update',
+                        JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while updating department');
+                                    console.error('Error while updating claim');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
 
-            deleteDepartment: function (department) {
-                console.log(department);
+            deleteClaim: function (claim) {
+                console.log(claim);
                 return $http({method: 'DELETE',
-                    url: '/transportation/management/department_delete',
-                    data: JSON.stringify(department),
+                    url: '/transportation/user/claim_delete',
+                    data: JSON.stringify(claim),
                     headers: self.headers
                 }).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while deleting department');
+                            console.error('Error while deleting claim');
                             return $q.reject(errResponse);
                         }
                 );
+            },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
             }
 
         };
