@@ -31,11 +31,6 @@ public class ClaimController {
         return claimService.findNewClaimsByDepartment(principal);
     }
 
-    @GetMapping("/user/places")
-    public List<Place> getAllPlaces(Principal principal) {
-        return claimService.findAllPlaces(principal);
-    }
-
     @GetMapping("/user/routeTemplates")
     public List<RouteTemplate> getRouteTemplates(Principal principal) {
         return claimService.findRouteTemplates(principal);

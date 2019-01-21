@@ -44,9 +44,6 @@ public class ClaimService {
     RecordRepository recordRepository;
 
     @Autowired
-    PlaceRepository placeRepository;
-
-    @Autowired
     RouteTemplateRepository routeTemplateRepository;
 
     private Department getDepartment(Principal principal) {
@@ -74,10 +71,6 @@ public class ClaimService {
         if (claim.getAffirmationDate() == null) {
             claimRepository.delete(claim);
         }
-    }
-
-    public List<Place> findAllPlaces(Principal principal) {
-            return placeRepository.findAll();
     }
 
     public List<RouteTemplate> findRouteTemplates(Principal principal) {

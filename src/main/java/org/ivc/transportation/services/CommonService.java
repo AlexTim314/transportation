@@ -2,9 +2,11 @@ package org.ivc.transportation.services;
 
 import java.util.List;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.repositories.PlaceRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.VehicleTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class CommonService {
     @Autowired
     private VehicleTypeRepository vehicleTypeRepository;
     
+    @Autowired
+    private PlaceRepository placeRepository;
+
     public List<Department> findAllDepartments(){
         return departmentRepository.findAll();
     }
@@ -40,6 +45,10 @@ public class CommonService {
         return vehicleTypeRepository.findAll();
     }
     
+    public List<Place> findAllPlaces() {
+        return placeRepository.findAll();
+    }
+
     public Department getDepartmentByName(String shortname) {
         return departmentRepository.findByShortname(shortname);
     }
