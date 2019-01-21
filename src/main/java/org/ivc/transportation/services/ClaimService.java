@@ -6,6 +6,7 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
@@ -72,6 +73,7 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
+        claim.setCreationDate(LocalDateTime.now());
         claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));
         return claimRepository.save(claim);
