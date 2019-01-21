@@ -390,6 +390,14 @@ i{
 	float: right;
 	padding: 1% 1%;
 }
+.section-template{
+	margin-top:10px;
+	display: none;
+}
+.right-block-tempate{
+	width: 47%;
+	float: right;
+}
 .form-item .right-block{
 	width: 47%;
 	float: right;
@@ -425,7 +433,13 @@ i{
 	padding: 2px;
 	border-radius: 3px;
 	color:white;
-	z-index: 2;
+	z-index: 1000;
+}
+.subcell{
+	display: block;
+	width: 100%;
+	border-top:1px solid #333;
+	padding:px;
 }
 .menu-new-claim input,select,textarea{
 	width: 100%;
@@ -470,7 +484,7 @@ i{
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
 }
 .new-claim-task .form-item:nth-child(2) {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 .new-claim-task .i-close{
 	float: right;
@@ -900,7 +914,7 @@ input[type="search"]:hover{
 	display: flex;
 	flex-direction: column;
 	color: white;
-	font-size: 0.7em;
+	font-size: 0.6em;
 	margin: 0;
 }
 .record-status div:first-child{
@@ -911,6 +925,10 @@ input[type="search"]:hover{
 }
 .record-status div:nth-child(2){
 	background: var(--main-gradient-color1);
+	padding: 3px;
+}
+.record-status div:nth-child(3){
+	background: #ff8989;
 	padding: 3px;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
@@ -934,10 +952,10 @@ input[type="search"]:hover{
   top:5px;
   right: 5px;
 }
-.fa-save:hover{
+/*.fa-save:hover{
   cursor: pointer;
   color:rgba(255,255,255,1);
-}
+}*/
 .cell-item:before{
 	content:"";
 	position: absolute;
@@ -967,6 +985,12 @@ background: none;
 }
 .table-record .hiddenRow:hover{
 	/*background: #747474;*/
+}
+.table-record td i:hover{
+	color:white;
+}
+.table-record th i:hover{
+	color:var(--edit-btn-color1);
 }
 .height-wrapper{
 
@@ -1070,10 +1094,10 @@ background: none;
 
 }
 .table-claim th:nth-child(1){
-	width: 2%;
+	width: 10%;
 }	
 .table-claim th:nth-child(2){
-	width: 3%;
+	width: 10%;
 }
 .table-claim th:nth-child(3){
 	width: 10%;
@@ -1088,7 +1112,7 @@ background: none;
 	width: 10%;
 }
 .table-claim th:nth-child(7){
-	width: 10%;
+	width: 15%;
 }
 .table-claim th:nth-child(8){
 	width: 15%;
@@ -1096,13 +1120,10 @@ background: none;
 }
 .table-claim th:nth-child(9){
 	width: 10%;
-	min-width: 120px;
+
 
 }
-.table-claim th:nth-child(10){
-	width: 10%;
-	min-width: 120px;
-}
+
 
 .table-claim select{
 	border:none;
@@ -1132,7 +1153,13 @@ background: none;
 .table-claim tr .delete{
 	left: 2%;
 }
-/*.table-claim td:first-child:before{
+.claim-trash{
+	color:#333;
+}
+.claim-trash:hover{
+	
+}
+.table-claim td:first-child:before{
 	content: "";
 	position: absolute;
 	top:50%;
@@ -1146,7 +1173,7 @@ background: none;
 }
 .table-claim tr:hover td:first-child:before{
 	opacity: 1;
-}*/
+}
 .table-claim tr:hover td{
 	cursor: pointer;
 }
@@ -1232,8 +1259,12 @@ td{
  	border-bottom: 1px solid #b9d6e5;	
 	overflow: hidden;
 }
-.table-transport i:hover{
-	color:white;
+.table-transport th i:hover{
+	color:var(--edit-btn-color1);
+	cursor: pointer;
+}
+.table-transport td i:hover{
+	color:var(--main-gradient-color1);
 	cursor: pointer;
 }
 .table-transport{
@@ -1317,6 +1348,27 @@ td{
     border: 1px solid #40c0a9;
 
 } 
+.dialog-window input {
+    width: 100%;
+   	padding-top:5px; 
+	padding-bottom:5px;
+	padding-left: 5px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+	border-radius:3px;
+	color: #bbb;
+  	text-shadow: 1px 1px 1px black;
+  	background: rgba(0, 0, 0, 0.25);
+    border: 0;
+    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+}
+.dialog-window label{
+	color:white;
+	font-size: 1em;
+}
 .dialog-window{
 	display: none;
 	position: absolute;

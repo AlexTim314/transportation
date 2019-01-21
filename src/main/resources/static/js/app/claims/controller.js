@@ -135,6 +135,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.addRTask = function (routeTask) {
+            routeTask.id = null;
             self.claim.routeTasks.push(routeTask);
         };
 

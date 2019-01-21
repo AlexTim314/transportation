@@ -3,10 +3,10 @@
 
 
         <div class="table-header clearfix">
-            <div class="fast-filter clearfix">
-                <span class="filter-elem edit">Все</span>
+            <div class="fast-filter clearfix">                                    
                 <span class="filter-elem edit">Сегодня</span>
                 <span class="filter-elem edit">За неделю</span>
+                <span class="filter-elem edit">Все</span>
             </div>
             <input type="search">
         </div>
@@ -25,10 +25,7 @@
                     <th>Вид техники</th>
                     <th>Старший</th>
                     <th>Маршрут</th>
-                    <th>
-                        <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
-                        <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
-                        <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>  			
+                    <th> 			
                     </th>
                 </tr>
 
@@ -57,7 +54,7 @@
                         <div class="record-status">
                             <div>Готово: 1</div>
                             <div>Не готово: 3</div>
-
+                            <div>Отменено: 1</div>
                         </div>  
                     </td>				  				
 
@@ -74,26 +71,26 @@
                                 <th>Марка транспорта</th>
                                 <th>Номер транспорта</th>
                                 <th>Водитель</th>
-                                <th>Статус</th>				  				
+                                <th>Статус</th>	
+                                <th></th>			  				
                             </tr>
                             <tr>
-                                <td>{{record.type}}</td>
+                                <td>22.12.2018</td>
                                 <td>{{record.datetime}}</td>
                                 <td>{{record.timeDelivery}}</td>
                                 <td>{{record.carBoss}}</td>  
                                 <td>{{record.datetime}}
-                                    {{record.datetime}}
+
                                 </td>
-                                <td>{{record.timeDelivery}}
-                                    {{record.timeDelivery}}
-                                </td>
+                                <td>{{record.timeDelivery}}                                  </td>
                                 <td class="td-relative">
                                     <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
                                     Серикбай С.С.
                                 </td>
                                 <td>
                                     <span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
-                                </td>           
+                                </td> 
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
                             </tr>
                             <tr>
                                 <td>{{record.type}}</td>
@@ -106,7 +103,8 @@
                                 </td>
                                 <td>
                                     <span class="claim-status"><i class="fas fa-clock"></i>В обработке</span>
-                                </td>           
+                                </td> 
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
                             </tr>
                             <tr>
                                 <td>{{record.type}}</td>
@@ -119,7 +117,8 @@
                                 </td>
                                 <td>
                                     <span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отменено</span>
-                                </td>           
+                                </td>
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>           
                             </tr>
                         </table>
                     </td>

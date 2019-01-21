@@ -1,6 +1,32 @@
 <div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
     <i class="fas fa-times" onclick="menu_close()"></i>
     <form>
+        <!-- Для создания по шаблону -->
+        <section  class="section-template">
+            <div class="form-item clearfix" >
+
+                <div class="left-block">
+                    <label>Название шаблона</label>
+                    <select name="type" style="margin-top:0;">
+                        <option value="1">Не выбрано</option>
+                    </select>
+                </div>
+
+
+                <div class="right-block-tempate" >
+                    <label>Дата</label>
+                    <input type="date"></input>
+                </div>
+
+            </div> 
+        </section>
+        <section  class="section-template">
+            <div class="form-item clearfix" >
+                <label>Название шаблона</label>
+                <input type="text"></input>
+            </div> 
+        </section>
+        
         <section class="section-type">
             <div class="form-item">
                 <div class="check-item" > 

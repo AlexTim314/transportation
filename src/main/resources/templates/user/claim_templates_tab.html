@@ -1,3 +1,122 @@
 <div class="tab-list3" id="tab-list3" xmlns:th="http://www.thymeleaf.org">
-    <p>таб 3</p>
+    <div class="table-header clearfix">
+        <input type="search">
+    </div>
+    <div class="height-wrapper"> 
+        <table class="table-record" id="tbl3">
+            <tr>
+                <th></th>
+                <th>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                    </label>
+                </th>
+                <th>Название шаблона</th>     
+                <th>Тип транспорта</th>
+                <th>Вид техники</th>
+                <th>Старший</th>
+                <th>Маршрут</th>
+                <th>
+                    <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" onclick="templateAddOpen()"></i>
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
+                </th>
+            </tr>
+            <tr class="activeRow">
+                <td >
+                    <i class="fas  fa-2x fa-caret-right"></i>
+
+                </td>
+                <td>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                    </label>    
+                </td>
+                <td>№103 22.12.2018
+
+                </td>
+                <td>Пассажирский</td>
+                <td>Автобус</td>
+                <td>Иванов И.И.</td>
+                <td>
+                    <span class="route-tag td-relative" title="Перевозка пассажиров" >Пл.10</span><span class="route-tag td-relative " tooltip="Перевозка пассажиров">Пл.23</span>           
+                </td>
+                <td >
+                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  
+                </td>                               
+
+            </tr>
+            <tr class="hiddenRow collapseRow">
+                <td colspan="8">
+
+                    <table class="table-claim">
+                        <tr>    
+                            <th style="width: 25%;">Дата выезда</th>
+                            <th style="width: 25%;">Время подачи</th>
+                            <th style="width: 25%;">Время выезда</th>
+                            <th style="width: 25%;">Время возвращения</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>22.12.2018</td>
+                            <td>{{record.datetime}}</td>
+                            <td>{{record.timeDelivery}}</td>
+                            <td>{{record.timeDelivery}}</td>
+                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить"></i></td> 
+                        </tr>                                            
+                    </table>
+                </td>
+            </tr>
+            <tr class="activeRow">
+                <td >
+                    <i class="fas  fa-2x fa-caret-right"></i>
+
+                </td>
+                <td>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" >
+                        <span class="checkmark"></span>
+                    </label>    
+                </td>
+                <td>№103 22.12.2018
+
+                </td>
+                <td>{{record}}</td>
+                <td>{{record.datetime}}</td>
+                <td></td>
+                <td>
+                    <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>            
+                </td>
+                <td >
+                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
+                </td>                               
+
+            </tr>
+            <tr class="hiddenRow collapseRow">
+                <td colspan="8">
+
+                    <table class="table-claim">
+                        <tr>    
+                            <th>Дата выезда</th>
+                            <th>Время подачи</th>
+                            <th>Время выезда</th>
+                            <th>Время возвращения</th>  
+                            <th></th>                           
+                        </tr>
+                        <tr>
+                            <td>{{record.type}}</td>
+                            <td>{{record.datetime}}</td>
+                            <td>{{record.timeDelivery}}</td>
+                            <td>{{record.carBoss}}</td> 
+                            <td><i class="fas fa-lg fa-trash-alt claim-trash"></i></td>          
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+    </div>
 </div>

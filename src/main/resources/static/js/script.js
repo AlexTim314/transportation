@@ -3,10 +3,15 @@ menu_open=function() {
  str.style.display="block";
  var str1 = document.getElementById("btn-add-edit");
  str1.innerHTML="Добавить";
+ var sec=document.getElementsByClassName('section-template');
+  sec[0].style.display = "none";
+var sec=document.getElementsByClassName('section-template');
+  sec[1].style.display = "none";
 }
 menu_close=function() {
  var str = document.getElementById("form-add");
  str.style.display="none";
+ formClose('formTask');
 }
 more_open=function() {
  var str = document.getElementById("more-id");
@@ -22,6 +27,10 @@ edit_open=function() {
  str.style.display="block";
  var str1 = document.getElementById("btn-add-edit");
  str1.innerHTML="Изменить";
+  var sec=document.getElementsByClassName('section-template');
+  sec[0].style.display = "none";
+   var sec=document.getElementsByClassName('section-template');
+  sec[1].style.display = "none";
 }
 
 formRecord_close=function(){
@@ -53,6 +62,16 @@ formEditOpen=function(name){
     var str = document.getElementById(name);
     str.style.display="block";
     str.getElementsByTagName('button')[1].innerHTML="Изменить";
+}
+templateOpen=function(){
+  menu_open();
+  var sec=document.getElementsByClassName('section-template');
+  sec[0].style.display = "block";
+}
+templateAddOpen=function(){
+  menu_open();
+  var sec=document.getElementsByClassName('section-template');
+  sec[1].style.display = "block";
 }
 open_tab1=function(tabName,btnName,iEnd){
    for (var i = 1; i<=iEnd; i++) {
@@ -217,10 +236,60 @@ for (i = 1; i < elements1.length; i++) {
   elements1[i].addEventListener("click", function() {
   
     var panel1 = this.nextElementSibling;
+      var i_item=this.getElementsByTagName('i');
+    if (i_item[0].classList.contains("fa-caret-right")){
+      i_item[0].classList.remove("fa-caret-right");
+      i_item[0].classList.add("fa-caret-down");
+    }
+    else{
+      i_item[0].classList.remove("fa-caret-down");
+      i_item[0].classList.add("fa-caret-right");
+    }
     if (panel1.classList.contains("hiddenRow")){
        panel1.classList.toggle("collapseRow");
       this.classList.toggle("activeRow");   
       } 
    
   });
+}
+var tab2 = document.getElementById("tbl3");
+var elements2 = tab2.getElementsByTagName('tr');
+var i;
+
+for (i = 1; i < elements2.length; i++) {
+  elements2[i].addEventListener("click", function() {
+  
+    var panel2 = this.nextElementSibling;
+      var i_item=this.getElementsByTagName('i');
+    if (i_item[0].classList.contains("fa-caret-right")){
+      i_item[0].classList.remove("fa-caret-right");
+      i_item[0].classList.add("fa-caret-down");
+    }
+    else{
+      i_item[0].classList.remove("fa-caret-down");
+      i_item[0].classList.add("fa-caret-right");
+    }
+    if (panel2.classList.contains("hiddenRow")){
+       panel2.classList.toggle("collapseRow");
+      this.classList.toggle("activeRow");   
+      } 
+   
+  });
+}
+
+fasttab=function(){
+  var fast_element=getElementsByClassName('fast-filter');
+  var elements=fast_element.getElementsByClassName('filter-elem');
+  for (i = 0; i < elements.length; i++){
+    elements[i].addEventListener("click", function() {
+  
+    var panel1 = this.nextElementSibling;
+    if (panel1.classList.contains("hiddenRow")){
+       panel1.classList.toggle("collapseRow");
+      this.classList.toggle("activeRow");   
+      } 
+   
+  });
+
+  }
 }
