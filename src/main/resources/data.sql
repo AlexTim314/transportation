@@ -1,5 +1,4 @@
 -- Used by Spring Remember Me API.  
-
 CREATE TABLE IF NOT EXISTS Persistent_Logins (
     username varchar(64) not null,
     series varchar(64) not null,
@@ -104,11 +103,36 @@ insert into Vehicle_Type(type_name, specialization) values('Микроавтоб
 insert into Vehicle_Type(type_name, specialization) values('Внедорожник', 1);
 insert into Vehicle_Type(type_name, specialization) values('Представительский', 1);
 insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
-insert into Vehicle_Type(type_name, specialization) values('Бортовой', 2);
-insert into Vehicle_Type(type_name, specialization) values('Прицеп', 2);
+insert into Vehicle_Type(type_name, specialization) values('Грузовая газель', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330202', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3302', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330232', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33021', (select id from Vehicle_Type where type_name='Грузовая газель'));
+insert into Vehicle_Type(type_name, specialization) values('Грузовая газель (для перевозки опасных грузов)', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33021', (select id from Vehicle_Type where type_name='Грузовая газель (для перевозки опасных грузов)'));
+insert into Vehicle_Type(type_name, specialization) values('Грузовой', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-53', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33090', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-5301 АО', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-534330', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('Амур-48442В', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-4320', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-375', (select id from Vehicle_Type where type_name='Грузовой'));
 insert into Vehicle_Type(type_name, specialization) values('Самосвал', 2);
-insert into Vehicle_Type(type_name, specialization) values('Тягач с прицепом', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-4502', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-450650', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-3518', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-5551', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-6520', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Type(type_name, specialization) values('Длинномер', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-630300 2121 (с тентом)', (select id from Vehicle_Type where type_name='Длинномер'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-441510', (select id from Vehicle_Type where type_name='Длинномер'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('DAEWOOSUPER', (select id from Vehicle_Type where type_name='Длинномер'));
+insert into Vehicle_Type(type_name, specialization) values('Ассенизаторская машина', 3);
+insert into Vehicle_Type(type_name, specialization) values('Мусоровоз', 3);
+insert into Vehicle_Type(type_name, specialization) values('Автозаправщик', 3);
 insert into Vehicle_Type(type_name, specialization) values('Автокран', 3);
-insert into Vehicle_Type(type_name, specialization) values('Автогидроподъемник', 3);
-insert into Vehicle_Type(type_name, specialization) values('Бульдозер', 3);
+insert into Vehicle_Type(type_name, specialization) values('Гидроподъемник', 3);
+insert into Vehicle_Type(type_name, specialization) values('Водовоз', 3);
+insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);
 
