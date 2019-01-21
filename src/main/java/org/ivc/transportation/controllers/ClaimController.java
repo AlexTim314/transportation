@@ -38,7 +38,7 @@ public class ClaimController {
 
     @GetMapping("/user/carBosses")
     public List<CarBoss> getCarBosses(Principal principal) {
-        return claimService.findCarBosses(principal);
+        return claimService.findCarBossesByDepartment(principal);
     }
 
     @PostMapping("/user/claim_create")

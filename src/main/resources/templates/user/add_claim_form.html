@@ -27,6 +27,7 @@
                 <div class="right-block" >
                     <label for="criterion">Вид техники</label>
                     <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType" required>
+                        <option value="">нет</option>
                     </select>	
                 </div>
 
@@ -38,14 +39,16 @@
             </div>
             <div class="form-item clearfix" >
                 <label for="carBoss">Старший</label>
-                <input name="carBoss" ng-model="ctrl.claim.carBoss" required></input>
+                <select name="carBoss" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
+                </select>	
             </div>	
 
             <div class="form-item check-hidden clearfix">
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-options="rt.routeTasks as rt.name for rt in ctrl.routeTemplates track by rt.orderNum" ng-model="ctrl.claim.routeTasks">
+                    <select name="route" ng-options="route as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
+                        <option value="">новый</option>
                     </select> 
                 </div>
                 <div class="right-block-route">
@@ -58,13 +61,13 @@
                 <div class="form-item-date ">
                     <label for="date-begin">Дата:</label>
                     <label class="custom-checkbox">
-                        <input type="checkbox" >на неделю
+                        <input type="checkbox" ng-model = "ctrl.onWeek">на неделю
                         <span class="checkmark"></span>
                     </label>
 
                     <div class="inp-btn clearfix">
-                        <input type="date"  name="date-begin" ng-model="ctrl.claim.creationDate" required>
-                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle" ></span>
+                        <input type="date"  name="date-begin" ng-model="ctrl.record.startDate" required >
+                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle" ng-click = "ctrl.addRec()"></span>
                     </div>							 		
                 </div>
 
@@ -90,8 +93,8 @@
 
                 </div>
                 <div class="left-block-tag">
-                    <div class="route-tag">22.12.2018
-                        <span class="fas fa-times " ></span>
+                    <div class="route-tag" ng-repeat="rec in ctrl.claim.records| orderBy:'startDate'">{{rec.startDate| date:'dd.MM.yyyy'}}
+                        <span class="fas fa-times " ng-click = "ctrl.removeRec(rec)"></span>
                     </div>
                 </div>
             </div> 					
@@ -100,7 +103,7 @@
 
 
         <div class="form-item">
-            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim(ctrl.claim,ctrl.record)"></button>
+            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim(ctrl.claim)"></button>
         </div>
 
     </form>

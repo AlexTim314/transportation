@@ -3,21 +3,22 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim = {id: null, templateName: '', specialization: '', carBoss: null, purpose: '', creationDate: '', affirmationDate: '', actual: true, vehicleType: {typeName: ''}, records: [], routeTasks: []};
-        self.record = {id: null, entranceDate: '', startDate: '', endDate: '', status: '', note: '', appointmentGroup: {}};
-        self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
+        self.claim = {id: null, templateName: null, specialization: '', carBoss: null, purpose: '', creationDate: '', affirmationDate: null, actual: true, vehicleType: {typeName: ''}, records: [], routeTasks: []};
+
         self.routeTemplate = {id: null, name: '', department: {}, routeTasks: []};
+
         self.routeTask = {id: null, workName: '', orderNum: '', place: {name: ''}, routeTemplate: {name: ''}};
+
         self.place = {id: null, name: '', address: ''};
-        self.departments = [];
+
         self.claims = [];
-        self.records = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
-        self.routeTasks = [];
         self.places = [];
+        self.bosses = [];
 
+        self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
+        self.onWeek = false;
 
         self.fetchClaims = function () {
             ClaimsService.fetchClaims()
@@ -31,7 +32,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
                     .then(
@@ -45,7 +46,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.fetchRouteTemplates = function () {
             ClaimsService.fetchRouteTemplates()
                     .then(
@@ -59,7 +60,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.fetchPlaces = function () {
             ClaimsService.fetchPlaces()
                     .then(
@@ -73,29 +74,29 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
-        self.fetchRouteTasks = function () {
-            ClaimsService.fetchRouteTasks()
+
+        self.fetchBosses = function () {
+            ClaimsService.fetchBosses()
                     .then(
                             function (d) {
-                                self.routeTasks = d;
-                                console.log('RouteTasks =>');
+                                self.bosses = d;
+                                console.log('Bosses =>');
                                 console.log(d);
                             },
                             function (errResponse) {
-                                console.error('Error while fetching RouteTasks');
+                                console.error('Error while fetching Bosses');
                             }
                     );
         };
-
 
         self.fetchClaims();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
         self.fetchPlaces();
+        self.fetchBosses();
 
 
-        self.createClaim = function (claim,record) {
+        self.createClaim = function (claim) {
             ClaimsService.createClaim(claim)
                     .then(
                             function (d) {
@@ -103,19 +104,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
-                            }
-                    );
-        };
-        
-        self.createRecord = function (record) {
-            ClaimsService.createRecord(record)
-                    .then(
-                            function (d) {
-                                self.records.push(d);
-                                
-                            },
-                            function (errResponse) {
-                                console.error('Error while creating Record.');
                             }
                     );
         };
@@ -140,28 +128,53 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.carBossToString = function (boss) {
+            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+            return result;
+        };
 
+        self.addRec = function () {
+            var d = self.record.startDate;
+            if (self.onWeek) {
+                for (var i = 0; i < 7; i++) {
+                    var rec = {id: null};
+                    rec.startDate = new Date(d);
+                    rec.startDate.setDate(rec.startDate.getDate() + i);
 
-//        self.submit = function () {
-//            if (self.department.id === null) {
-//                self.createDepartment(self.department);
-//            } else {
-//                self.updateDepartment(self.department);
-//            }
-//            self.reset();
-//        };
-//
-//        self.editDepartment = function (department) {
-//            self.department.id = department.id;
-//            self.department.fullname = department.fullname;
-//            self.department.shortname = department.shortname;
-//            self.department.address = department.address;
-//            self.department.phone = department.phone;
-//        };
-//
-//        self.reset = function () {
-//            self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
-//        };
+                    rec.endDate = new Date(d);
+                    rec.endDate.setDate(rec.endDate.getDate() + i);
+
+                    rec.entranceDate = new Date(d);
+                    rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
+
+                    self.claim.records.push(rec);
+
+                    console.log(rec);
+                }
+            } else {
+                var rec = {id: null};
+                rec.startDate = new Date(d);
+                rec.endDate = new Date(d);
+                rec.entranceDate = new Date(d);
+                self.claim.records.push(rec);
+            }
+        };
+
+        self.removeRec = function (rec) {
+            //удалить запись
+            var k = -1;
+            for (var i = 0; i < self.claim.records.length; i++) {
+//                if(rec.startDate === self.claim.records[i].startDate){
+//                    k = i;
+//                    break;
+//                }
+                if (rec === self.claim.records[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.records.splice(k, 1);
+        };
 
     }]);
 

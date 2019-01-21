@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.security.Principal;
@@ -67,7 +62,7 @@ public class ClaimService {
         return null;
     }
 
-    public List<CarBoss> findCarBosses(Principal principal) {
+    public List<CarBoss> findCarBossesByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
             return carBossRepository.findByDepartment(department);

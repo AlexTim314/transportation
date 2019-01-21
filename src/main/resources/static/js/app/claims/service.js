@@ -23,6 +23,62 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchRouteTemplates: function () {
+                return $http.get('/transportation/user/routeTemplates')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchPlaces: function () {
+                return $http.get('/transportation/places')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching places');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchBosses: function () {
+                return $http.get('/transportation/user/carBosses')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             createClaim: function (claim) {
                 return $http.post('/transportation/user/claim_create',
@@ -82,62 +138,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                             return $q.reject(errResponse);
                         }
                 );
-            },
-
-            fetchVehicleTypes: function () {
-                return $http.get('/transportation/vehicleTypes')
-                        .then(
-                                function (response) {
-                                    console.log(response.data)
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching vehicleTypes');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            fetchRouteTemplates: function () {
-                return $http.get('/transportation/user/routeTemplates')
-                        .then(
-                                function (response) {
-                                    console.log(response.data)
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching routeTemplates');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            fetchPlaces: function () {
-                return $http.get('/transportation/places')
-                        .then(
-                                function (response) {
-                                    console.log(response.data)
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching places');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            fetchRouteTasks: function () {
-                return $http.get('/transportation/user/routeTasks')
-                        .then(
-                                function (response) {
-                                    console.log(response.data)
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching routeTasks');
-                                    return $q.reject(errResponse);
-                                }
-                        );
             }
 
         };
