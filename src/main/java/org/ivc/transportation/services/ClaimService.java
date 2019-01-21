@@ -9,13 +9,13 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.RouteTemplate;
+import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
-import org.ivc.transportation.repositories.PlaceRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTemplateRepository;
 import org.ivc.transportation.repositories.UserRepository;
@@ -48,6 +48,9 @@ public class ClaimService {
     @Autowired
     RouteTemplateRepository routeTemplateRepository;
 
+    @Autowired
+    CarBossRepository carBossRepository;
+
     private Department getDepartment(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -60,6 +63,22 @@ public class ClaimService {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return userRepository.findByUsername(loginedUser.getUsername());
+        }
+        return null;
+    }
+
+    public List<CarBoss> findCarBosses(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return carBossRepository.findByDepartment(department);
+        }
+        return null;
+    }
+
+    public List<RouteTemplate> findRouteTemplates(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return routeTemplateRepository.findByDepartmentOrDepartmentIsNull(department);
         }
         return null;
     }
@@ -83,14 +102,6 @@ public class ClaimService {
         if (claim.getAffirmationDate() == null) {
             claimRepository.delete(claim);
         }
-    }
-
-    public List<RouteTemplate> findRouteTemplates(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return routeTemplateRepository.findByDepartment(department);
-        }
-        return null;
     }
 
 }

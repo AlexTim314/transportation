@@ -2,6 +2,7 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.services.ClaimService;
@@ -33,6 +34,11 @@ public class ClaimController {
     @GetMapping("/user/routeTemplates")
     public List<RouteTemplate> getRouteTemplates(Principal principal) {
         return claimService.findRouteTemplates(principal);
+    }
+
+    @GetMapping("/user/carBosses")
+    public List<CarBoss> getCarBosses(Principal principal) {
+        return claimService.findCarBosses(principal);
     }
 
     @PostMapping("/user/claim_create")

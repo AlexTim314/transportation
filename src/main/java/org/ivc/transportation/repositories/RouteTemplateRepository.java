@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository("routeTemplateRepository")
 public interface RouteTemplateRepository extends JpaRepository<RouteTemplate, Long> {
     
-    List<RouteTemplate> findByDepartment(Department department);
+    List<RouteTemplate> findByDepartmentOrDepartmentIsNull(Department department);
 
 }
