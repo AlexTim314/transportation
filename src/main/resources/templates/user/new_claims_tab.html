@@ -25,7 +25,7 @@
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow">
+            <tr class="activeRow" ng-repeat="claim in ctrl.claims">
                 <td >
                     <i class="fas  fa-2x fa-caret-right"></i>
 
@@ -36,14 +36,14 @@
                         <span class="checkmark"></span>
                     </label>	
                 </td>
-                <td class="counter_record">№103 22.12.2018
+                <td class="counter_record">№{{claim.id}}
                     <span title="Число записей">1</span>
                 </td>
-                <td>Пассажирский</td>
-                <td>Автобус</td>
-                <td>Иванов И.И.</td>
+                <td>{{claim.specialization}}</td>
+                <td>{{claim.vehicleType.typeName}}</td>
+                <td>{{claim.carBoss}}</td>
                 <td>
-                    <span class="route-tag td-relative" title="Перевозка пассажиров" >Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
+                    <span class="route-tag td-relative" title="Перевозка пассажиров">Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
                 </td>
                 <td >
                     <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
@@ -65,16 +65,16 @@
                             <th>Время возвращения</th>
                         </tr>
                         <tr>
-                            <td>{{record.type}}</td>
-                            <td>{{record.datetime}}</td>
-                            <td>{{record.timeDelivery}}</td>
-                            <td>{{record.carBoss}}</td>
-                            <td>{{record.carBoss}}</td>
+                            <td>{{ctrl.record.startDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{ctrl.record.entranceDate| date:'HH:mm'}}</td>
+                            <td>{{ctrl.record.startDate| date:'HH:mm'}}</td>
+                            <td>{{ctrl.record.endDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{ctrl.record.endDate| date:'HH:mm'}}</td>
                         </tr>                                            
                     </table>
                 </td>
             </tr>
-            <tr class="activeRow">
+<!--            <tr class="activeRow">
                 <td >
                     <i class="fas  fa-2x fa-caret-right"></i>
 
@@ -101,8 +101,8 @@
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
                 </td>				  				
 
-            </tr>
-            <tr class="hiddenRow collapseRow">
+            </tr>-->
+<!--            <tr class="hiddenRow collapseRow">
                 <td colspan="8">
 
                     <table class="table-claim">
@@ -120,7 +120,7 @@
                         </tr>
                     </table>
                 </td>
-            </tr>
+            </tr>-->
 
         </table>
     </div>	

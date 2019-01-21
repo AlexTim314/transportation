@@ -3,13 +3,11 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim = {id: null, templateName: '', specialization: '', carBoss: '', purpose: '', creationDate: '', affirmationDate: '', actual: '', department: {shortname: ''}, vehicleType: {typeName: ''}, creator: {fullName: ''}, affirmator: {fullName: ''}, records: []};
+        self.claim = {id: null, templateName: '', specialization: '', carBoss: null, purpose: '', creationDate: '', affirmationDate: '', actual: true, vehicleType: {typeName: ''}, records: [], routeTasks: []};
         self.record = {id: null, entranceDate: '', startDate: '', endDate: '', status: '', note: '', appointmentGroup: {}};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.creator = {id: null, username: '', fullName: '', department: {shortname: ''}};
-        self.affirmator = {id: null, username: '', fullName: '', department: {shortname: ''}};
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
-        self.routeTemplate = {id: null, name: '', department: {shortname: ''}};
+        self.routeTemplate = {id: null, name: '', department: {}, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: {name: ''}, routeTemplate: {name: ''}};
         self.place = {id: null, name: '', address: ''};
         self.departments = [];
@@ -39,7 +37,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.vehicleTypes = d;
-                                console.log('vehicleTypes = ' + d);
+                                console.log('vehicleTypes =>');
+                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
@@ -52,7 +51,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
-                                console.log('routeTemplates = ' + d);
+                                console.log('routeTemplates =>');
+                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -65,7 +65,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.places = d;
-                                console.log('Places = ' + d);
+                                console.log('Places =>');
+                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Places');
@@ -78,7 +79,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTasks = d;
-                                console.log('RouteTasks = ' + d);
+                                console.log('RouteTasks =>');
+                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTasks');
@@ -93,7 +95,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchPlaces();
 
 
-        self.createClaim = function (claim) {
+        self.createClaim = function (claim,record) {
             ClaimsService.createClaim(claim)
                     .then(
                             function (d) {
@@ -101,6 +103,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
+                            }
+                    );
+        };
+        
+        self.createRecord = function (record) {
+            ClaimsService.createRecord(record)
+                    .then(
+                            function (d) {
+                                self.records.push(d);
+                                
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Record.');
                             }
                     );
         };
