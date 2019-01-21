@@ -99,7 +99,28 @@ CREATE TABLE IF NOT EXISTS Vehicle_Type (
 );
 
 insert into Vehicle_Type(type_name, specialization) values('Автобус', 0);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32050R', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32053', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-320530', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32050S', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32054', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-4234', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-4254', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЛАЗ-695Д', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЛИАЗ-52564-0000010-01', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-231062', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ О350', (select id from Vehicle_Type where type_name='Автобус'));
 insert into Vehicle_Type(type_name, specialization) values('Микроавтобус', 0);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-2206', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220602', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220694', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220695', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-32213', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-322132', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI STAREX', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('IVECO 2227UR', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ 223237', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-320401-01', (select id from Vehicle_Type where type_name='Микроавтобус'));
 insert into Vehicle_Type(type_name, specialization) values('Внедорожник', 1);
 insert into Vehicle_Type(type_name, specialization) values('Представительский', 1);
 insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
