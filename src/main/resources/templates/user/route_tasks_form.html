@@ -2,16 +2,16 @@
     <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
     <div class="form-item">
         <label for="type">Место</label>
-        <select name="type" ng-options="p as p.name + (p.address!==null ? ' (' + p.address + ')':'') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.place">
+        <select name="type" ng-options="p as p.name + (p.address!==null ? ' (' + p.address + ')':'') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.claim.routeTask.place">
         </select>
     </div>	
     <div class="form-item" style="margin-bottom:20px;"> 
         <div class="left-block">
             <label for="work">Работы</label>
-            <textarea name="work"></textarea>
+            <textarea name="work" ng-model="ctrl.claim.routeTask.workName"></textarea>
         </div>
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit"><i class="fas fa-plus"></i>Добавить</div>
+            <div class="btn edit" ng-click="ctrl.addRTask(ctrl.claim.routeTask)"><i class="fas fa-plus"></i>Добавить</div>
         </div>
     </div>
     <div class="small-height-wrapper">	
@@ -21,10 +21,10 @@
                 <th>Проводимые работы</th>
                 <th></th>
             </tr>
-            <tr>
-                <td>Пл.31</td>
-                <td>Крановые работы</td>
-                <td><i class="fas fa-times"></i></td>	 					
+            <tr ng-repeat="routeTask in ctrl.claim.routeTasks| orderBy orderNum">
+                <td>{{routeTask.place.name}}</td>
+                <td>{{routeTask.workName}}</td>
+                <td><i class="fas fa-times" ng-click="removeRTask(routeTask)"></i></td>	 					
             </tr>	 				
         </table>
     </div>

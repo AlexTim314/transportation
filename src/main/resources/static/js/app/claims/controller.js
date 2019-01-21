@@ -4,19 +4,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
         self.claim = {id: null, templateName: null, specialization: '', carBoss: null, purpose: '', creationDate: '', affirmationDate: null, actual: true, vehicleType: {typeName: ''}, records: [], routeTasks: []};
-
-        self.routeTemplate = {id: null, name: '', department: {}, routeTasks: []};
-
-        self.routeTask = {id: null, workName: '', orderNum: '', place: {name: ''}, routeTemplate: {name: ''}};
-
+        self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
+        self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
-
         self.claims = [];
+        self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
         self.places = [];
         self.bosses = [];
-
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
 
@@ -97,6 +93,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
 
         self.createClaim = function (claim) {
+            console.log(claim);
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                self.claim.routeTasks[i].id = null;
+            }
+            console.log(claim);
             ClaimsService.createClaim(claim)
                     .then(
                             function (d) {
@@ -133,6 +134,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
 
+        self.addRTask = function (routeTask) {
+            self.claim.routeTasks.push(routeTask);
+        };
+
         self.addRec = function () {
             var d = self.record.startDate;
             if (self.onWeek) {
@@ -160,6 +165,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
+        self.removeRTask = function (routeTask) {
+            var k = -1;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (routeTask === self.claim.routeTasks[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.routeTasks.splice(k, 1);
+        };
+
         self.removeRec = function (rec) {
             //удалить запись
             var k = -1;
@@ -175,6 +191,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.claim.records.splice(k, 1);
         };
+
+
 
     }]);
 

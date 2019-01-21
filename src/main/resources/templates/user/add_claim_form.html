@@ -47,7 +47,7 @@
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-options="route as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
+                    <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
                         <option value="">новый</option>
                     </select> 
                 </div>
