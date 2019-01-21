@@ -1,0 +1,35 @@
+<form class="formTransport" id="formRoute" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formRoute')"></i>
+    <div class="container">
+        <div  id="route1">
+            <label for="name"><b>Название Маршрута</b></label>
+            <input type="text" name="name"> 
+            <label for="point_begin"><b>Выберите Пункт</b></label>
+
+            <div class="list-point" >
+                <ul>
+                    <li>Пл.18 <i class="fa  fa-plus" ></i></li>
+                    <li>Пл.10 <i class="fa  fa-plus"></i></li>
+                    <li>КАЗ <i class="fa  fa-plus"></i></li>
+                    <li>Пл.112 <i class="fa  fa-plus"></i></li>
+                </ul>
+
+            </div>
+            <label for="point_begin"><b>Маршрут</b></label>
+            <div class="ready-route">
+                <span class="tag-route">Пл.10</span>
+                <span class="tag-route">КАЗ</span>
+                <span class="tag-route">Пл.18</span>
+            </div>
+        </div>
+        <div  id="route2" style="display: none;">    
+            <label for="point"><b>Название Пункта</b></label>
+            <input type="text" name="point">    
+        </div>
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete">Отмена</button>
+        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+
+    </div>
+</form>
