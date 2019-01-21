@@ -1,6 +1,6 @@
 <div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
     <i class="fas fa-times" onclick="menu_close()"></i>
-    <form action="#" method="POST">
+    <form>
         <section class="section-type">
             <div class="form-item">
                 <div class="check-item" > 
@@ -15,7 +15,7 @@
 
                 <div class=" left-block">
                     <label for="type">Тип транспорта</label>
-                    <select name="type" ng-model="vehSpec" required>
+                    <select name="type" ng-model="ctrl.claim.specialization" required>
                         <option value="пассажирский">Пассажирский</option>
                         <option value="легковой">Легковой</option>
                         <option value="грузовой">Грузовой</option>
@@ -26,7 +26,7 @@
 
                 <div class="right-block" >
                     <label for="criterion">Вид техники</label>
-                    <select name="criterion" ng-options="vt as vt.specialization for vt in ctrl.vehicleTypes| filter:vehSpec track by vt.id"   ng-model="ctrl.claim.vehicleType" required>
+                    <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType" required>
                     </select>	
                 </div>
 
@@ -45,7 +45,7 @@
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-options="rt as rt.name for rt in ctrl.routeTemplates" ng-model="ctrl.claim.">
+                    <select name="route" ng-options="rt.routeTasks as rt.name for rt in ctrl.routeTemplates track by rt.orderNum" ng-model="ctrl.claim.routeTasks">
                     </select> 
                 </div>
                 <div class="right-block-route">
@@ -63,22 +63,22 @@
                     </label>
 
                     <div class="inp-btn clearfix">
-                        <input type="date"  name="date-begin" required>
+                        <input type="date"  name="date-begin" ng-model="ctrl.claim.creationDate" required>
                         <span title="Добавить дату" class="fas fa-lg fa-plus-circle" ></span>
                     </div>							 		
                 </div>
 
                 <div class="right-block ">
                     <label for="time-begin">Время подачи</label>
-                    <input type="time"  name="time-begin" required>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" required>
 
 
                     <label for="time-begin">Время выезда</label>
-                    <input type="time"  name="time-begin" required>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" required>
 
                     <div class="check-hidden">
                         <label for="time-end">Время возвращения</label>
-                        <input type="time"  name="time-end" required>
+                        <input type="time"  name="time-end" ng-model="ctrl.record.endDate" required>
                     </div>
                     <div class="check-hidden">
                         <label class="custom-checkbox">
@@ -93,14 +93,6 @@
                     <div class="route-tag">22.12.2018
                         <span class="fas fa-times " ></span>
                     </div>
-                    <div class="route-tag">22.12.2018
-                        <span class="fas fa-times " ></span>
-                    </div>
-                    <div class="route-tag">22.12.2018
-                        <span class="fas fa-times " ></span>
-                    </div>
-                    <div class="route-tag">22.12.2018</div>
-
                 </div>
             </div> 					
 
@@ -108,7 +100,7 @@
 
 
         <div class="form-item">
-            <button class="btn submit" id="btn-add-edit"></button>
+            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim(ctrl.claim,ctrl.record)"></button>
         </div>
 
     </form>
