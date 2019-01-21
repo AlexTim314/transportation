@@ -40,5 +40,10 @@ public class PageController {
     public String managerPage() {
         return "user/claimsPage";
     }
+    
+    @RequestMapping(value = "/planner", method = RequestMethod.GET)
+    public String plannerPage() {
+        return "planner/plannerPage";
+    }
 
 }

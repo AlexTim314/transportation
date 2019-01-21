@@ -1,0 +1,120 @@
+<div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times" onclick="menu_close()"></i>
+    <form action="#" method="POST">
+        <section class="section-type">
+            <div class="form-item">
+                <div class="check-item" > 
+                    <label class="custom-checkbox">
+                        по требованию
+                        <input type="checkbox" id="check-hidden1" onclick="checkHidden()">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>	
+            </div>
+            <div class="form-item clearfix" >
+
+                <div class=" left-block">
+                    <label for="type">Тип транспорта</label>
+                    <select name="type">
+                        <option value="1">Пассажирский</option>
+                        <option value="2">Легковой</option>
+                        <option value="3">Грузовой</option>
+                        <option value="4">Спецтехника</option>
+                    </select>
+                </div>
+
+
+                <div class="right-block" >
+                    <label for="criterion">Вид техники</label>
+                    <select name="criterion">
+                        <option value="1">Самосвал</option>
+                        <option value="2">Бульдозер</option>
+                    </select>	
+                </div>
+
+            </div> 
+
+            <div class="form-item check-hidden">
+                <label for="purpose">Цель</label>
+                <textarea name="purpose"   rows="10"></textarea>
+            </div>
+            <div class="form-item clearfix" >
+                <label for="carBoss">Старший</label>
+                <input name="carBoss" ></input>
+            </div>	
+
+            <div class="form-item check-hidden clearfix">
+
+                <div class="left-block-route">
+                    <label for="route">Маршрут</label>
+                    <select name="route" ng-model="routeTag.routeText">
+                        <option >Пл.10</option>
+                        <option >Пл.18</option>
+                        <option >Пл.23</option>
+                    </select> 
+                </div>
+                <div class="right-block-route">
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                </div>
+            </div>	
+        </section>
+        <section>	 
+            <div class="form-item clearfix" >
+                <div class="form-item-date ">
+                    <label for="date-begin">Дата:</label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" >на неделю
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <div class="inp-btn clearfix">
+                        <input type="date"  name="date-begin" required>
+                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle" ></span>
+                    </div>							 		
+                </div>
+
+                <div class="right-block ">
+                    <label for="time-begin">Время подачи</label>
+                    <input type="time"  name="time-begin" required>
+
+
+                    <label for="time-begin">Время выезда</label>
+                    <input type="time"  name="time-begin" required>
+
+                    <div class="check-hidden">
+                        <label for="time-end">Время возвращения</label>
+                        <input type="time"  name="time-end" required>
+                    </div>
+                    <div class="check-hidden">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')">другой день
+                            <span class="checkmark"></span>
+                        </label>
+                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
+                    </div>
+
+                </div>
+                <div class="left-block-tag">
+                    <div class="route-tag">22.12.2018
+                        <span class="fas fa-times " ></span>
+                    </div>
+                    <div class="route-tag">22.12.2018
+                        <span class="fas fa-times " ></span>
+                    </div>
+                    <div class="route-tag">22.12.2018
+                        <span class="fas fa-times " ></span>
+                    </div>
+                    <div class="route-tag">22.12.2018</div>
+
+                </div>
+            </div> 					
+
+        </section>
+
+
+        <div class="form-item">
+            <button class="btn submit" id="btn-add-edit"></button>
+        </div>
+
+    </form>
+</div>
