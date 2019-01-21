@@ -7,6 +7,27 @@ CREATE TABLE IF NOT EXISTS Persistent_Logins (
     PRIMARY KEY (series)   
 );
 
+CREATE TABLE IF NOT EXISTS Place (
+    id bigint NOT NULL DEFAULT nextval('place_id_seq'::regclass),
+    name varchar(255),
+    address varchar(255),
+    PRIMARY KEY (id)
+);
+
+insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
+insert into Place(name, address) values('Пл. 18', 'ИП-1');
+insert into Place(name, address) values('Пл. 44', 'ИП-2');
+insert into Place(name, address) values('Пл. 97', 'ИП-3');
+insert into Place(name, address) values('Пл. 23', 'ИП-5');
+insert into Place(name, address) values('Пл. 1', 'СК17П32');
+insert into Place(name, address) values('Пл. 31', null);
+insert into Place(name, address) values('Пл. 81', null);
+insert into Place(name, address) values('Пл. 200', null);
+insert into Place(name, address) values('Пл. 43', null);
+insert into Place(name, address) values('Пл. 45', null);
+insert into Place(name, address) values('Пл. 71', null);
+insert into Place(name, address) values('Пл. 72', null);
+
 CREATE TABLE IF NOT EXISTS Department (
     id bigint NOT NULL DEFAULT nextval('department_id_seq'::regclass),
     shortname varchar(64) not null,
@@ -33,6 +54,22 @@ insert into Department (shortname, fullname, address, phone) values('ЦИ-1', '�
 insert into Department (shortname, fullname, address, phone) values('ЦИ-2', 'Центр испытаний-2', null, null);
 insert into Department (shortname, fullname, address, phone) values('ЦИ-3', 'Центр испытаний-3', null, null);
 insert into Department (shortname, fullname, address, phone) values('ЦИП ИК', 'Центр испытаний и применения измерительного комплекса', null, null);
+    insert into Route_Template(name, department_id) values('ИП-1 пл. 18 (Ежедневно)', (select id from Department where shortname='ЦИП ИК'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начало движения', 0, (select id from Place where name='Пл. 10'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 18 (50 человек)', 1, (select id from Place where name='Пл. 18'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 10 (50 человек)', 0, (select id from Place where name='Пл. 10'));
+    insert into Route_Template(name, department_id) values('ИП-2 пл. 44 (Ежедневно)', (select id from Department where shortname='ЦИП ИК'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начало движения', 0, (select id from Place where name='Пл. 10'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 44 (50 человек)', 1, (select id from Place where name='Пл. 44'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 10 (50 человек)', 0, (select id from Place where name='Пл. 10'));
+    insert into Route_Template(name, department_id) values('ИП-3 пл. 97 (Ежедневно)', (select id from Department where shortname='ЦИП ИК'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начало движения', 0, (select id from Place where name='Пл. 10'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 97 (50 человек)', 1, (select id from Place where name='Пл. 97'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 10 (50 человек)', 0, (select id from Place where name='Пл. 10'));
+    insert into Route_Template(name, department_id) values('ИП-5 пл. 23 (Ежедневно)', (select id from Department where shortname='ЦИП ИК'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начало движения', 0, (select id from Place where name='Пл. 10'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 23 (50 человек)', 1, (select id from Place where name='Пл. 23'));
+        insert into Route_Task(work_name, order_num, place_id) values('Доставка на пл. 10 (50 человек)', 0, (select id from Place where name='Пл. 10'));
 insert into Department (shortname, fullname, address, phone) values('ЦОКИ РКТ', 'Центр организации и контроля испытаний ракетно-космической техники', null, null);
 insert into Department (shortname, fullname, address, phone) values('ЭУ', 'Энергоуправление', null, null);
 insert into Department (address, fullname, phone, shortname) values (null,'Авиапредприятие "Аэропорт "Крайний',null,'Аэропорт "Крайний"');
@@ -69,27 +106,6 @@ insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 6','Отдел транспортных средств №6',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 7','Отдел транспортных средств №7',null,null);
 insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 8','Отдел транспортных средств №8',null,null);
-
-CREATE TABLE IF NOT EXISTS Place (
-    id bigint NOT NULL DEFAULT nextval('place_id_seq'::regclass),
-    name varchar(255),
-    address varchar(255),
-    PRIMARY KEY (id)
-);
-
-insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
-insert into Place(name, address) values('Пл. 18', 'ИП-1');
-insert into Place(name, address) values('Пл. 44', 'ИП-2');
-insert into Place(name, address) values('Пл. 97', 'ИП-3');
-insert into Place(name, address) values('Пл. 23', 'ИП-5');
-insert into Place(name, address) values('Пл. 1', 'СК17П32');
-insert into Place(name, address) values('Пл. 31', null);
-insert into Place(name, address) values('Пл. 81', null);
-insert into Place(name, address) values('Пл. 200', null);
-insert into Place(name, address) values('Пл. 43', null);
-insert into Place(name, address) values('Пл. 45', null);
-insert into Place(name, address) values('Пл. 71', null);
-insert into Place(name, address) values('Пл. 72', null);
 
 CREATE TABLE IF NOT EXISTS Vehicle_Type (
     id bigint NOT NULL DEFAULT nextval('vehicle_type_id_seq'::regclass),
