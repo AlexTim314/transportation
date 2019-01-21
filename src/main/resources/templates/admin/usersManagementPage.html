@@ -35,7 +35,7 @@
             <tr>
                 <td>Подразделение:</td>
                 <td>
-                    <select ng-options="dep as dep.name for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
+                    <select ng-options="dep as dep.shortname for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
                         <option value="">нет</option>
                     </select>
                 </td>
@@ -43,7 +43,7 @@
             <tr>
                 <td>Транспортный отдел:</td>
                 <td>
-                    <select ng-options="td as td.name for td in ctrl.transportDeps track by td.id" ng-model="ctrl.user.transportDep">
+                    <select ng-options="td as td.shortname for td in ctrl.transportDeps track by td.id" ng-model="ctrl.user.transportDep">
                         <option value="">нет</option>
                     </select>
                 </td>
@@ -90,8 +90,8 @@
         <tr ng-repeat="user in ctrl.users| filter: search">
             <td> {{user.username}}</td>
             <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
-            <td> {{user.department.name}}</td>
-            <td> {{user.transportDep.name}}</td>
+            <td> {{user.department.shortname}}</td>
+            <td> {{user.transportDep.shortname}}</td>
             <td ><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
             <td>
                 <button ng-click="ctrl.editUser(user)" class="edit-button">изменить</button>

@@ -38,7 +38,12 @@ public class PageController {
 
     @RequestMapping(value = "/claims", method = RequestMethod.GET)
     public String managerPage() {
-        return "manager/managerPage";
+        return "user/claimsPage";
+    }
+    
+    @RequestMapping(value = "/planner", method = RequestMethod.GET)
+    public String plannerPage() {
+        return "planner/plannerPage";
     }
 
 }

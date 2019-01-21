@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Подача заявок на автотранспорт</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+        <script src="js/app/claims/service.js"></script>
+        <script src="js/app/claims/controller.js"></script>
+
+    </head>
+    <body ng-app="Transportation" ng-controller="ClaimsController as ctrl">
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+
+            <th:block th:include="user/delete_confirm_dialog"></th:block> 
+            <!----------------------------------------------ADD-FORM------------------->
+            <th:block th:include="user/add_claim_form"></th:block>  
+            <th:block th:include="user/route_tasks_form"></th:block>  
+
+            <div class="main clearfix" >
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
+
+                    <h1>Структурное подразделение</h1>
+                    <h3>{{ctrl.claim.department.shortname}}</h3>
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)" >Подача заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)" >Статус заявок</div>
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 4)" >Шаблоны заявок</div>
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)" >Маршруты</div>			
+                    </nav>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                </div>
+                <!--Sidebar-->
+                <th:block th:include="user/slidebar"></th:block>  
+
+                <div id="claim-create" class="tabcontent">
+                    <!--Подробнее-->
+                    <th:block th:include="user/info_form"></th:block>  
+
+                    <th:block th:include="user/new_claims_tab"></th:block>  
+
+                    <th:block th:include="user/affirmed_claims_tab"></th:block>  
+
+                    <th:block th:include="user/claim_templates_tab"></th:block>  
+
+                    <th:block th:include="user/routes_tab"></th:block>  
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>

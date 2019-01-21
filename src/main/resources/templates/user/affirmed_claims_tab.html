@@ -1,0 +1,132 @@
+<div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+
+
+        <div class="table-header clearfix">
+            <div class="fast-filter clearfix">
+                <span class="filter-elem edit">Все</span>
+                <span class="filter-elem edit">Сегодня</span>
+                <span class="filter-elem edit">За неделю</span>
+            </div>
+            <input type="search">
+        </div>
+        <div class="height-wrapper"> 
+            <table class="table-record" id="tbl2">
+                <tr>
+                    <th></th>
+                    <th>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th>Заявка</th>		
+                    <th>Тип транспорта</th>
+                    <th>Вид техники</th>
+                    <th>Старший</th>
+                    <th>Маршрут</th>
+                    <th>
+                        <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
+                        <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
+                        <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>  			
+                    </th>
+                </tr>
+
+                <tr class="activeRow">
+                    <td >
+                        <i class="fas  fa-2x fa-caret-right"></i>
+
+                    </td>
+                    <td>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>	
+                    </td>
+                    <td class="counter_record">№103 22.12.2018
+                        <span title="Число записей">1</span>
+                    </td>
+                    <td>{{record}}</td>
+                    <td>{{record.datetime}}</td>
+                    <td></td>
+                    <td>
+                        <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>  			
+                    </td>
+                    <td style="position: relative;">	  						
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>
+                        <div class="record-status">
+                            <div>Готово: 1</div>
+                            <div>Не готово: 3</div>
+
+                        </div>  
+                    </td>				  				
+
+                </tr>
+                <tr class="hiddenRow collapseRow">
+                    <td colspan="8">
+
+                        <table class="table-claim">
+                            <tr>	
+                                <th>Дата выезда</th>
+                                <th>Время подачи</th>
+                                <th>Время выезда</th>
+                                <th>Время возвращения</th>
+                                <th>Марка транспорта</th>
+                                <th>Номер транспорта</th>
+                                <th>Водитель</th>
+                                <th>Статус</th>				  				
+                            </tr>
+                            <tr>
+                                <td>{{record.type}}</td>
+                                <td>{{record.datetime}}</td>
+                                <td>{{record.timeDelivery}}</td>
+                                <td>{{record.carBoss}}</td>  
+                                <td>{{record.datetime}}
+                                    {{record.datetime}}
+                                </td>
+                                <td>{{record.timeDelivery}}
+                                    {{record.timeDelivery}}
+                                </td>
+                                <td class="td-relative">
+                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
+                                    Серикбай С.С.
+                                </td>
+                                <td>
+                                    <span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
+                                </td>           
+                            </tr>
+                            <tr>
+                                <td>{{record.type}}</td>
+                                <td>{{record.datetime}}</td>
+                                <td>{{record.timeDelivery}}</td>
+                                <td>{{record.carBoss}}</td>  
+                                <td>{{record.datetime}}</td>
+                                <td>{{record.timeDelivery}}</td>
+                                <td class="td-relative">
+                                </td>
+                                <td>
+                                    <span class="claim-status"><i class="fas fa-clock"></i>В обработке</span>
+                                </td>           
+                            </tr>
+                            <tr>
+                                <td>{{record.type}}</td>
+                                <td>{{record.datetime}}</td>
+                                <td>{{record.timeDelivery}}</td>
+                                <td>{{record.carBoss}}</td>  
+                                <td>{{record.datetime}}</td>
+                                <td>{{record.timeDelivery}}</td>
+                                <td class="td-relative">
+                                </td>
+                                <td>
+                                    <span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отменено</span>
+                                </td>           
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>	
+</div>

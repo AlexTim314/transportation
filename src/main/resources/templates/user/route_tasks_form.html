@@ -1,0 +1,35 @@
+<div class="new-claim-task" id="formTask" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
+    <div class="form-item">
+        <label for="type">Место</label>
+        <select name="type">
+            <option value="1">Не выбрано</option>
+        </select>
+    </div>	
+    <div class="form-item" style="margin-bottom:20px;"> 
+        <div class="left-block">
+            <label for="work">Работы</label>
+            <textarea name="work"></textarea>
+        </div>
+        <div class="right-block" style="margin-top:10px;">	
+            <div class="btn edit"><i class="fas fa-plus"></i>Добавить</div>
+        </div>
+    </div>
+    <div class="small-height-wrapper">	
+        <table class="table-task" >
+            <tr>
+                <th>Место</th>
+                <th>Проводимые работы</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Пл.31</td>
+                <td>Крановые работы</td>
+                <td><i class="fas fa-times"></i></td>	 					
+            </tr>	 				
+        </table>
+    </div>
+    <div class="right-block" style="margin-top:10px;">	
+        <div class="btn edit"><i class="fas fa-save"></i>Сохранить</div>
+    </div>
+</div>

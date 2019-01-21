@@ -41,6 +41,7 @@ import org.ivc.transportation.exceptions.NullPrincipalException;
 import org.ivc.transportation.exceptions.UnexpectedNullException;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils.*;
+import org.ivc.transportation.utils.MediaTypeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -258,23 +259,7 @@ public class WaybillFileDownloadController {
              + "\". В случае повторения ошибки обратитесь к администратору.");
     }
 
-    class MediaTypeUtils {
-
-        // abc.zip
-        // abc.pdf,..
-        public MediaType getMediaTypeForFileName(ServletContext servletContext, String fileName) {
-            // application/pdf
-            // application/xml
-            // image/gif, ...
-            String mineType = servletContext.getMimeType(fileName);
-            try {
-                MediaType mediaType = MediaType.parseMediaType(mineType);
-                return mediaType;
-            } catch (Exception e) {
-                return MediaType.APPLICATION_OCTET_STREAM;
-            }
-        }
-    }
+  
 
     private Cell getCell(Workbook workbook, Name name) {
         AreaReference aref = new AreaReference(name.getRefersToFormula(), SpreadsheetVersion.EXCEL2007);

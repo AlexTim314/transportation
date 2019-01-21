@@ -26,7 +26,9 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         self.createDepartment = function (department) {
             DepartmentsManagementService.createDepartment(department)
                     .then(
-                            self.fetchAllDepartments,
+                            function (d) {
+                                self.departments.push(d);
+                            },
                             function (errResponse) {
                                 console.error('Error while creating Department.');
                             }
@@ -36,7 +38,9 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         self.updateDepartment = function (department) {
             DepartmentsManagementService.updateDepartment(department)
                     .then(
-                            self.fetchAllDepartments,
+                            
+                                self.fetchAllDepartments,
+                            
                             function (errResponse) {
                                 console.error('Error while updating Department.');
                             }
