@@ -7,6 +7,7 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Place;
@@ -54,6 +55,14 @@ public class ClaimService {
         return null;
     }
 
+    private AppUser getUser(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername());
+        }
+        return null;
+    }
+
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
@@ -63,6 +72,7 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
+        claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));
         return claimRepository.save(claim);
     }
