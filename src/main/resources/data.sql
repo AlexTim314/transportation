@@ -16,41 +16,41 @@ CREATE TABLE IF NOT EXISTS Department (
     PRIMARY KEY (id)
 );
 
-insert into Department (shortname, fullname, address, phone) values('РЎР»СѓР¶Р±Р° СЌРєСЃРїР»СѓР°С‚Р°С†РёРё Р РљРў', 'РЎР»СѓР¶Р±Р° СЌРєСЃРїР»СѓР°С‚Р°С†РёРё СЂР°РєРµС‚РЅРѕ-РєРѕСЃРјРёС‡РµСЃРєРѕР№ С‚РµС…РЅРёРєРё', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЎРњРћ', 'РЎР»СѓР¶Р±Р° РјРµРґРёС†РёРЅСЃРєРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРїСЂР°РІР»РµРЅРёРµ', 'РЈРїСЂР°РІР»РµРЅРёРµ', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈР’РџРћ', 'РЈРїСЂР°РІР»РµРЅРёРµ РІРµРґРѕРјСЃС‚РІРµРЅРЅРѕР№ РїРѕР¶Р°СЂРЅРѕР№ РѕС…СЂР°РЅС‹', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРїСЂР°РІР»РµРЅРёРµ РґРµР»Р°РјРё', 'РЈРїСЂР°РІР»РµРЅРёРµ РґРµР»Р°РјРё', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРљРћР Р', 'РЈРїСЂР°РІР»РµРЅРёРµ РєРѕРјРїР»РµРєСЃРЅРѕР№ РѕС†РµРЅРєРё СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РёСЃРїС‹С‚Р°РЅРёР№', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРћР—Р”', 'РЈРїСЂР°РІР»РµРЅРёРµ РѕР±РµСЃРїРµС‡РµРЅРёСЏ Р·Р°РєСѓРїРѕС‡РЅРѕР№ РґРµСЏС‚РµР»СЊРЅРѕСЃС‚Рё', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРћРљ Р РљРў', 'РЈРїСЂР°РІР»РµРЅРёРµ РѕР±РµСЃРїРµС‡РµРЅРёСЏ РєР°С‡РµСЃС‚РІР° СЂР°РєРµС‚РЅРѕ-РєРѕСЃРјРёС‡РµСЃРєРѕР№ С‚РµС…РЅРёРєРё', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈР Рџ', 'РЈРїСЂР°РІР»РµРЅРёРµ РїРѕ СЂР°Р±РѕС‚Рµ СЃ РїРµСЂСЃРѕРЅР°Р»РѕРј', null, null);
-insert into Department (shortname, fullname, address, phone) values('РЈРџРћ', 'РЈРїСЂР°РІР»РµРЅРёРµ РїСЂР°РІРѕРІРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¤Р­РЎ', 'Р¤РёРЅР°РЅСЃРѕРІРѕ-СЌРєРѕРЅРѕРјРёС‡РµСЃРєР°СЏ СЃР»СѓР¶Р±Р°', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦Р РљР—', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№ РєРѕРјРїР»РµРєСЃРѕРІ Р·Р°РїСЂР°РІРєРё', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦Р РўРљ', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№ С‚РµС…РЅРёС‡РµСЃРєРёС… РєРѕРјРїР»РµРєСЃРѕРІ', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦Р-1', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№-1', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦Р-2', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№-2', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦Р-3', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№-3', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦РРџ РРљ', 'Р¦РµРЅС‚СЂ РёСЃРїС‹С‚Р°РЅРёР№ Рё РїСЂРёРјРµРЅРµРЅРёСЏ РёР·РјРµСЂРёС‚РµР»СЊРЅРѕРіРѕ РєРѕРјРїР»РµРєСЃР°', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р¦РћРљР Р РљРў', 'Р¦РµРЅС‚СЂ РѕСЂРіР°РЅРёР·Р°С†РёРё Рё РєРѕРЅС‚СЂРѕР»СЏ РёСЃРїС‹С‚Р°РЅРёР№ СЂР°РєРµС‚РЅРѕ-РєРѕСЃРјРёС‡РµСЃРєРѕР№ С‚РµС…РЅРёРєРё', null, null);
-insert into Department (shortname, fullname, address, phone) values('Р­РЈ', 'Р­РЅРµСЂРіРѕСѓРїСЂР°РІР»РµРЅРёРµ', null, null);
-insert into Department (address, fullname, phone, shortname) values (null,'РђРІРёР°РїСЂРµРґРїСЂРёСЏС‚РёРµ "РђСЌСЂРѕРїРѕСЂС‚ "РљСЂР°Р№РЅРёР№',null,'РђСЌСЂРѕРїРѕСЂС‚ "РљСЂР°Р№РЅРёР№"');
-insert into Department (address, fullname, phone, shortname) values (null,'Р“РѕСЃС‚РёРЅРёС‡РЅС‹Р№ РєРѕРјРїР»РµРєСЃ',null,'Р“РѕСЃС‚РёРЅРёС‡РЅС‹Р№ РєРѕРјРїР»РµРєСЃ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ "РђСЌСЂРѕРґСЂРѕРј Р®Р±РёР»РµР№РЅС‹Р№"',null,'РљРђР®');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ Р°РІС‚РѕС‚СЂР°РЅСЃРїРѕСЂС‚РЅРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ',null,'РљРђРўРћ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ Р“РµРѕС„РёР·РёС‡РµСЃРєРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ',null,'РљР“Р¤Рћ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ Р¶РµР»РµР·РЅРѕРґРѕСЂРѕР¶РЅРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ',null,'РљР–Р”Рћ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ С‚РµС…РЅРёС‡РµСЃРєРѕРіРѕ Рё РјР°С‚РµСЂРёР°Р»СЊРЅРѕРіРѕ РѕР±РµСЃРїРµС‡РµРЅРёСЏ',null,'РљРўРњРћ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ СЌРєСЃРїР»СѓР°С‚Р°С†РёРё Р·РґР°РЅРёР№ Рё СЃРѕРѕСЂСѓР¶РµРЅРёР№',null,'РљР­Р—РЎ');
-insert into Department (address, fullname, phone, shortname) values (null,'РљРѕРјРїР»РµРєСЃ СЌРєСЃРїР»СѓР°С‚Р°С†РёРё СЃРµС‚РµР№ СЃРІСЏР·Рё Рё С‚РµР»РµРєРѕРјРјСѓРЅРёРєР°С†РёР№',null,'РљР­РЎРЎРў');
-insert into Department (address, fullname, phone, shortname) values (null,'РћС‚РґРµР» РєР°РїРёС‚Р°Р»СЊРЅРѕРіРѕ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР°',null,'РћРљРЎ');
-insert into Department (address, fullname, phone, shortname) values (null,'РћРїРµСЂР°С‚РёРІРЅРѕРµ СѓРїСЂР°РІР»РµРЅРёРµ',null,'РћРїРµСЂР°С‚РёРІРЅРѕРµ СѓРїСЂР°РІР»РµРЅРёРµ');
-insert into Department (address, fullname, phone, shortname) values (null,'РћС‚РґРµР» РѕСЂРіР°РЅРёР·Р°С†РёРѕРЅРЅРѕРіРѕ СЂР°Р·РІРёС‚РёСЏ',null,'РћС‚РґРµР» РѕСЂРіР°РЅРёР·Р°С†РёРѕРЅРЅРѕРіРѕ СЂР°Р·РІРёС‚РёСЏ');
-insert into Department (address, fullname, phone, shortname) values (null,'РћС‚РґРµР» СЌРєРѕРЅРѕРјРёС‡РµСЃРєРѕР№ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё Рё РїСЂРѕС‚РёРІРѕРґРµР№СЃС‚РІРёСЏ РєРѕСЂСЂСѓРїС†РёРё',null,'РћС‚РґРµР» Р­Р‘ Рё РџРљ');
-insert into Department (address, fullname, phone, shortname) values (null,'РЎРµРєС‚РѕСЂ РїРѕ РѕСЂРіР°РЅРёР·Р°С†РёРё СЂР°Р±РѕС‚ РІ Р“РљР¦',null,'РЎРµРєС‚РѕСЂ РїРѕ РѕСЂРіР°РЅРёР·Р°С†РёРё СЂР°Р±РѕС‚ РІ Р“РљР¦');
-insert into Department (address, fullname, phone, shortname) values (null,'РЎР»СѓР¶Р±Р° Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё',null,'РЎР»СѓР¶Р±Р° Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё');
-insert into Department (address, fullname, phone, shortname) values (null,'РЎР»СѓР¶Р±Р° РѕС…СЂР°РЅС‹ С‚СЂСѓРґР° Рё РїСЂРѕРёР·РІРѕРґСЃС‚РІРµРЅРЅРѕРіРѕ РєРѕРЅС‚СЂРѕР»СЏ',null,'РЎР»СѓР¶Р±Р° РћРўРџРљ');
+insert into Department (shortname, fullname, address, phone) values('Служба эксплуатации РКТ', 'Служба эксплуатации ракетно-космической техники', null, null);
+insert into Department (shortname, fullname, address, phone) values('СМО', 'Служба медицинского обеспечения', null, null);
+insert into Department (shortname, fullname, address, phone) values('Управление', 'Управление', null, null);
+insert into Department (shortname, fullname, address, phone) values('УВПО', 'Управление ведомственной пожарной охраны', null, null);
+insert into Department (shortname, fullname, address, phone) values('Управление делами', 'Управление делами', null, null);
+insert into Department (shortname, fullname, address, phone) values('УКОРИ', 'Управление комплексной оценки результатов испытаний', null, null);
+insert into Department (shortname, fullname, address, phone) values('УОЗД', 'Управление обеспечения закупочной деятельности', null, null);
+insert into Department (shortname, fullname, address, phone) values('УОК РКТ', 'Управление обеспечения качества ракетно-космической техники', null, null);
+insert into Department (shortname, fullname, address, phone) values('УРП', 'Управление по работе с персоналом', null, null);
+insert into Department (shortname, fullname, address, phone) values('УПО', 'Управление правового обеспечения', null, null);
+insert into Department (shortname, fullname, address, phone) values('ФЭС', 'Финансово-экономическая служба', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИ КЗ', 'Центр испытаний комплексов заправки', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИ ТК', 'Центр испытаний технических комплексов', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИ-1', 'Центр испытаний-1', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИ-2', 'Центр испытаний-2', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИ-3', 'Центр испытаний-3', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦИП ИК', 'Центр испытаний и применения измерительного комплекса', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЦОКИ РКТ', 'Центр организации и контроля испытаний ракетно-космической техники', null, null);
+insert into Department (shortname, fullname, address, phone) values('ЭУ', 'Энергоуправление', null, null);
+insert into Department (address, fullname, phone, shortname) values (null,'Авиапредприятие "Аэропорт "Крайний',null,'Аэропорт "Крайний"');
+insert into Department (address, fullname, phone, shortname) values (null,'Гостиничный комплекс',null,'Гостиничный комплекс');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс "Аэродром Юбилейный"',null,'КАЮ');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс автотранспортного обеспечения',null,'КАТО');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс Геофизического обеспечения',null,'КГФО');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс железнодорожного обеспечения',null,'КЖДО');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс технического и материального обеспечения',null,'КТМО');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс эксплуатации зданий и сооружений',null,'КЭЗС');
+insert into Department (address, fullname, phone, shortname) values (null,'Комплекс эксплуатации сетей связи и телекоммуникаций',null,'КЭССТ');
+insert into Department (address, fullname, phone, shortname) values (null,'Отдел капитального строительства',null,'ОКС');
+insert into Department (address, fullname, phone, shortname) values (null,'Оперативное управление',null,'Оперативное управление');
+insert into Department (address, fullname, phone, shortname) values (null,'Отдел организационного развития',null,'Отдел организационного развития');
+insert into Department (address, fullname, phone, shortname) values (null,'Отдел экономической безопасности и противодействия коррупции',null,'Отдел ЭБ и ПК');
+insert into Department (address, fullname, phone, shortname) values (null,'Сектор по организации работ в ГКЦ',null,'Сектор по организации работ в ГКЦ');
+insert into Department (address, fullname, phone, shortname) values (null,'Служба безопасности',null,'Служба безопасности');
+insert into Department (address, fullname, phone, shortname) values (null,'Служба охраны труда и производственного контроля',null,'Служба ОТПК');
 
 CREATE TABLE IF NOT EXISTS Transport_dep (
     id bigint NOT NULL DEFAULT nextval('transport_dep_id_seq'::regclass),
@@ -61,14 +61,14 @@ CREATE TABLE IF NOT EXISTS Transport_dep (
     PRIMARY KEY (id)
 );
 
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 1','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–1',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 2','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–2',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 3','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–3',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 4','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–4',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 5','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–5',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 6','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–6',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 7','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–7',null,null);
-insert into Transport_dep (shortname, fullname, address, phone) values ('РћРўРЎ 8','РћС‚РґРµР» С‚СЂР°РЅСЃРїРѕСЂС‚РЅС‹С… СЃСЂРµРґСЃС‚РІ в„–8',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 1','Отдел транспортных средств №1',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 2','Отдел транспортных средств №2',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 3','Отдел транспортных средств №3',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 4','Отдел транспортных средств №4',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 5','Отдел транспортных средств №5',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 6','Отдел транспортных средств №6',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 7','Отдел транспортных средств №7',null,null);
+insert into Transport_dep (shortname, fullname, address, phone) values ('ОТС 8','Отдел транспортных средств №8',null,null);
 
 CREATE TABLE IF NOT EXISTS Place (
     id bigint NOT NULL DEFAULT nextval('place_id_seq'::regclass),
@@ -77,19 +77,19 @@ CREATE TABLE IF NOT EXISTS Place (
     PRIMARY KEY (id)
 );
 
-insert into Place(name, address) values('РџР». 10', 'СѓР». РўРёС‚РѕРІР° Р“.РЎ., Рґ. 7');
-insert into Place(name, address) values('РџР». 18', 'РРџ-1');
-insert into Place(name, address) values('РџР». 44', 'РРџ-2');
-insert into Place(name, address) values('РџР». 97', 'РРџ-3');
-insert into Place(name, address) values('РџР». 23', 'РРџ-5');
-insert into Place(name, address) values('РџР». 1', 'РЎРљ17Рџ32');
-insert into Place(name, address) values('РџР». 31', null);
-insert into Place(name, address) values('РџР». 81', null);
-insert into Place(name, address) values('РџР». 200', null);
-insert into Place(name, address) values('РџР». 43', null);
-insert into Place(name, address) values('РџР». 45', null);
-insert into Place(name, address) values('РџР». 71', null);
-insert into Place(name, address) values('РџР». 72', null);
+insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
+insert into Place(name, address) values('Пл. 18', 'ИП-1');
+insert into Place(name, address) values('Пл. 44', 'ИП-2');
+insert into Place(name, address) values('Пл. 97', 'ИП-3');
+insert into Place(name, address) values('Пл. 23', 'ИП-5');
+insert into Place(name, address) values('Пл. 1', 'СК17П32');
+insert into Place(name, address) values('Пл. 31', null);
+insert into Place(name, address) values('Пл. 81', null);
+insert into Place(name, address) values('Пл. 200', null);
+insert into Place(name, address) values('Пл. 43', null);
+insert into Place(name, address) values('Пл. 45', null);
+insert into Place(name, address) values('Пл. 71', null);
+insert into Place(name, address) values('Пл. 72', null);
 
 CREATE TABLE IF NOT EXISTS Vehicle_Type (
     id bigint NOT NULL DEFAULT nextval('vehicle_type_id_seq'::regclass),
@@ -98,16 +98,40 @@ CREATE TABLE IF NOT EXISTS Vehicle_Type (
     PRIMARY KEY (id)
 );
 
-insert into Vehicle_Type(type_name, specialization) values('РђРІС‚РѕР±СѓСЃ', 0);
-insert into Vehicle_Type(type_name, specialization) values('РњРёРєСЂРѕР°РІС‚РѕР±СѓСЃ', 0);
-insert into Vehicle_Type(type_name, specialization) values('Р’РЅРµРґРѕСЂРѕР¶РЅРёРє', 1);
-insert into Vehicle_Type(type_name, specialization) values('РџСЂРµРґСЃС‚Р°РІРёС‚РµР»СЊСЃРєРёР№', 1);
-insert into Vehicle_Type(type_name, specialization) values('Р“РѕСЂРѕРґСЃРєРѕР№', 1);
-insert into Vehicle_Type(type_name, specialization) values('Р‘РѕСЂС‚РѕРІРѕР№', 2);
-insert into Vehicle_Type(type_name, specialization) values('РџСЂРёС†РµРї', 2);
-insert into Vehicle_Type(type_name, specialization) values('РЎР°РјРѕСЃРІР°Р»', 2);
-insert into Vehicle_Type(type_name, specialization) values('РўСЏРіР°С‡ СЃ РїСЂРёС†РµРїРѕРј', 2);
-insert into Vehicle_Type(type_name, specialization) values('РђРІС‚РѕРєСЂР°РЅ', 3);
-insert into Vehicle_Type(type_name, specialization) values('РђРІС‚РѕРіРёРґСЂРѕРїРѕРґСЉРµРјРЅРёРє', 3);
-insert into Vehicle_Type(type_name, specialization) values('Р‘СѓР»СЊРґРѕР·РµСЂ', 3);
-
+insert into Vehicle_Type(type_name, specialization) values('Автобус', 0);
+insert into Vehicle_Type(type_name, specialization) values('Микроавтобус', 0);
+insert into Vehicle_Type(type_name, specialization) values('Внедорожник', 1);
+insert into Vehicle_Type(type_name, specialization) values('Представительский', 1);
+insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
+insert into Vehicle_Type(type_name, specialization) values('Грузовая газель', 2);
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330202', (select id from Vehicle_Type where type_name='Грузовая газель'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3302', (select id from Vehicle_Type where type_name='Грузовая газель'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330232', (select id from Vehicle_Type where type_name='Грузовая газель'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33021', (select id from Vehicle_Type where type_name='Грузовая газель'));
+insert into Vehicle_Type(type_name, specialization) values('Грузовая газель (для перевозки опасных грузов)', 2);
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33021', (select id from Vehicle_Type where type_name='Грузовая газель (для перевозки опасных грузов)'));
+insert into Vehicle_Type(type_name, specialization) values('Грузовой', 2);
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-53', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33090', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-5301 АО', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-534330', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('Амур-48442В', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-4320', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-375', (select id from Vehicle_Type where type_name='Грузовой'));
+insert into Vehicle_Type(type_name, specialization) values('Самосвал', 2);
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-4502', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-450650', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-3518', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-5551', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-6520', (select id from Vehicle_Type where type_name='Самосвал'));
+insert into Vehicle_Type(type_name, specialization) values('Длинномер', 2);
+insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-630300 2121 (с тентом)', (select id from Vehicle_Type where type_name='Длинномер'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-441510', (select id from Vehicle_Type where type_name='Длинномер'));
+insert into Vehicle_Model(model_name, vehicle_type_id) values('DAEWOOSUPER', (select id from Vehicle_Type where type_name='Длинномер'));
+insert into Vehicle_Type(type_name, specialization) values('Ассенизаторская машина', 3);
+insert into Vehicle_Type(type_name, specialization) values('Мусоровоз', 3);
+insert into Vehicle_Type(type_name, specialization) values('Автозаправщик', 3);
+insert into Vehicle_Type(type_name, specialization) values('Автокран', 3);
+insert into Vehicle_Type(type_name, specialization) values('Гидроподъемник', 3);
+insert into Vehicle_Type(type_name, specialization) values('Водовоз', 3);
+insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);

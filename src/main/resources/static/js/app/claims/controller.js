@@ -9,10 +9,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.creator = {id: null, username: '', fullName: '', department: {shortname: ''}};
         self.affirmator = {id: null, username: '', fullName: '', department: {shortname: ''}};
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
+        self.routeTemplate = {id: null, name: '', department: {shortname: ''}};
+        self.routeTask = {id: null, workName: '', orderNum: '', place: {name: ''}, routeTemplate: {name: ''}};
+        self.place = {id: null, name: '', address: ''};
         self.departments = [];
         self.claims = [];
         self.records = [];
         self.vehicleTypes = [];
+        self.routeTemplates = [];
+        self.routeTasks = [];
+        self.places = [];
 
 
         self.fetchClaims = function () {
@@ -27,15 +33,55 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        self.fetchVehicleTypes = function(){
+        
+        self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
-                .then(
+                    .then(
                             function (d) {
                                 self.vehicleTypes = d;
-                                console.log(d);
+                                console.log('vehicleTypes = ' + d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
+                            }
+                    );
+        };
+        
+        self.fetchRouteTemplates = function () {
+            ClaimsService.fetchRouteTemplates()
+                    .then(
+                            function (d) {
+                                self.routeTemplates = d;
+                                console.log('routeTemplates = ' + d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTemplates');
+                            }
+                    );
+        };
+        
+        self.fetchPlaces = function () {
+            ClaimsService.fetchPlaces()
+                    .then(
+                            function (d) {
+                                self.places = d;
+                                console.log('Places = ' + d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Places');
+                            }
+                    );
+        };
+        
+        self.fetchRouteTasks = function () {
+            ClaimsService.fetchRouteTasks()
+                    .then(
+                            function (d) {
+                                self.routeTasks = d;
+                                console.log('RouteTasks = ' + d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTasks');
                             }
                     );
         };
@@ -43,6 +89,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.fetchClaims();
         self.fetchVehicleTypes();
+        self.fetchRouteTemplates();
+        self.fetchPlaces();
 
 
         self.createClaim = function (claim) {
@@ -60,9 +108,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.updateClaim = function (claim) {
             ClaimsService.updateClaim(claim)
                     .then(
-                            
-                                self.fetchClaims,
-                            
+                            self.fetchClaims,
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
@@ -78,8 +124,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
-        
+
+
 
 //        self.submit = function () {
 //            if (self.department.id === null) {

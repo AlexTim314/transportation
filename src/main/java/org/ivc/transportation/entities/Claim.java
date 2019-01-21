@@ -2,7 +2,7 @@ package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -70,9 +70,9 @@ public class Claim implements Serializable {
     private AppUser affirmator;
 
     @OneToMany
-    private List<Record> records;
+    private Set<Record> records;
 
     @OneToMany
-    private List<RouteTask> route;
+    private Set<RouteTask> routeTasks;
 
 }

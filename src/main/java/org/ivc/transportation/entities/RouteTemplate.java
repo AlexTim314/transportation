@@ -1,12 +1,14 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,8 +23,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"department"})
-@ToString(exclude = {"department"})
+@EqualsAndHashCode(exclude = {"department", "routeTasks"})
+@ToString(exclude = {"department", "routeTasks"})
 @Entity
 @Table(name = "route_template")
 public class RouteTemplate implements Serializable {
@@ -37,5 +39,8 @@ public class RouteTemplate implements Serializable {
 
     @ManyToOne
     private Department department;
+    
+    @OneToMany
+    private Set<RouteTask> routeTasks;
 
 }
