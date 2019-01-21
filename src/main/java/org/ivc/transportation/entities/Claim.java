@@ -25,8 +25,8 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleSpecialization;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"vehicleType", "creator", "affirmator", "records", "route"})
-@ToString(exclude = {"vehicleType", "creator", "affirmator", "records", "route"})
+@EqualsAndHashCode(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
+@ToString(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
 @Entity
 @Table(name = "claim")
 public class Claim implements Serializable {
@@ -42,9 +42,6 @@ public class Claim implements Serializable {
     @Column(name = "specialization")
     private VehicleSpecialization specialization;
 
-    @Column(name = "car_boss", nullable = false, length = 64)
-    private String carBoss;
-
     @Column(name = "purpose", length = 255)
     private String purpose;
 
@@ -53,7 +50,7 @@ public class Claim implements Serializable {
 
     @Column(name = "affirmation_date")
     private LocalDateTime affirmationDate;
-    
+
     @Column(name = "actual", nullable = false)
     private boolean actual;
 
@@ -62,6 +59,9 @@ public class Claim implements Serializable {
 
     @ManyToOne
     private VehicleType vehicleType;
+
+    @ManyToOne
+    private CarBoss carBoss;
 
     @ManyToOne
     private AppUser creator;
