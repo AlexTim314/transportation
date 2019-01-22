@@ -36,6 +36,11 @@ public class PageController {
         return "admin/vehicleTypesManagementPage";
     }
 
+    @RequestMapping(value = "/fuelsManagement", method = RequestMethod.GET)
+    public String fuelsManagementPage() {
+        return "admin/fuelsManagementPage";
+    }
+
     @RequestMapping(value = "/claims", method = RequestMethod.GET)
     public String managerPage() {
         return "user/claimsPage";
