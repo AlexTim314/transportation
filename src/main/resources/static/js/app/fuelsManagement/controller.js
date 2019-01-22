@@ -1,160 +1,79 @@
 'use strict';
 
-App.controller('VehicleTypesManagementController', ['$scope', 'VehicleTypesManagementService',
-    function ($scope, VehicleTypesManagementService) {
+App.controller('FuelsManagementController', ['$scope', 'FuelsManagementService',
+    function ($scope, FuelsManagementService) {
         var self = this;
-        self.vehicleType = {id: null, type: '', specialization: ''};
-        self.vehicleModel = {id: null, modelName: '', vehicleType: {type: ""}};
-        self.vehicleTypes = [];
-        self.vehicleModels = [];
+        self.fuel = {id: null, mark: '', fuelType: ''};
+        self.fuels = [];
 
-        self.fetchAllVehicleTypes = function () {
-            VehicleTypesManagementService.fetchAllVehicleTypes()
+        self.fetchAllFuels = function () {
+            FuelsManagementService.fetchAllFuels()
                     .then(
                             function (d) {
-                                self.vehicleTypes = d;
+                                self.fuels = d;
                                 console.log(d);
                             },
                             function (errResponse) {
-                                console.error('Error while fetching VehicleTypes');
+                                console.error('Error while fetching Fuels');
                             }
                     );
         };
 
-        self.fetchAllVehicleModels = function () {
-            VehicleTypesManagementService.fetchAllVehicleModels()
+        self.fetchAllFuels();
+
+        self.createFuel = function (fuel) {
+            FuelsManagementService.createFuel(fuel)
                     .then(
-                            function (d) {
-                                self.vehicleModels = d;
-                                console.log(d);
-                            },
+                            self.fetchAllFuels,
                             function (errResponse) {
-                                console.error('Error while fetching VehicleModels');
+                                console.error('Error while creating Fuel.');
                             }
                     );
         };
 
-        self.fetchAllVehicleTypes();
-        self.fetchAllVehicleModels();
-
-        self.fetchVehicleModelsByType = function () {
-            VehicleTypesManagementService.fetchVehicleModelsByType(self.vehicleType)
+        self.updateFuel = function (fuel) {
+            FuelsManagementService.updateFuel(fuel)
                     .then(
-                            function (d) {
-                                self.vehicleModels = d;
-                                console.log(d);
-                            },
+                            self.fetchAllFuels,
                             function (errResponse) {
-                                console.error('Error while fetching VehicleModels by Type');
+                                console.error('Error while updating Fuel.');
                             }
                     );
         };
 
-        self.createVehicleType = function (vehicleType) {
-            VehicleTypesManagementService.createVehicleType(vehicleType)
+        self.deleteFuel = function (fuel) {
+            FuelsManagementService.deleteFuel(fuel)
                     .then(
-                            self.fetchAllVehicleTypes,
+                            self.fetchAllFuels,
                             function (errResponse) {
-                                console.error('Error while creating VehicleType.');
+                                console.error('Error while deleting Fuel.');
                             }
                     );
         };
 
-        self.createVehicleModel = function (vehicleModel) {
-            vehicleModel.vehicleType = self.vehicleType;
-            VehicleTypesManagementService.createVehicleModel(vehicleModel)
-                    .then(
-                            self.fetchVehicleModelsByType,
-                            function (errResponse) {
-                                console.error('Error while creating VehicleModel.');
-                            }
-                    );
-        };
-
-        self.updateVehicleType = function (vehicleType) {
-            VehicleTypesManagementService.updateVehicleType(vehicleType)
-                    .then(
-                            self.fetchAllVehicleTypes,
-                            function (errResponse) {
-                                console.error('Error while updating VehicleType.');
-                            }
-                    );
-        };
-
-        self.updateVehicleModel = function (vehicleModel) {
-            VehicleTypesManagementService.updateVehicleModel(vehicleModel)
-                    .then(
-                            self.fetchVehicleModelsByType,
-                            function (errResponse) {
-                                console.error('Error while updating VehicleModel.');
-                            }
-                    );
-        };
-
-        self.deleteVehicleType = function (vehicleType) {
-            VehicleTypesManagementService.deleteVehicleType(vehicleType)
-                    .then(
-                            self.fetchAllVehicleTypes,
-                            function (errResponse) {
-                                console.error('Error while deleting VehicleType.');
-                            }
-                    );
-        };
-
-        self.deleteVehicleModel = function (vehicleModel) {
-            VehicleTypesManagementService.deleteVehicleModel(vehicleModel)
-                    .then(
-                            self.fetchVehicleModelsByType,
-                            function (errResponse) {
-                                console.error('Error while deleting VehicleModel.');
-                            }
-                    );
-        };
-
-        self.submitVehicleType = function () {
-            if (self.vehicleType.id === null) {
-                self.createVehicleType(self.vehicleType);
+        self.submitFuel = function () {
+            if (self.fuel.id === null) {
+                self.createFuel(self.fuel);
             } else {
-                self.updateVehicleType(self.vehicleType);
+                self.updateFuel(self.fuel);
             }
-            self.resetVehicleType();
+            self.resetFuel();
         };
 
-        self.submitVehicleModel = function () {
-            if (self.vehicleModel.id === null) {
-                self.createVehicleModel(self.vehicleModel);
-            } else {
-                self.updateVehicleModel(self.vehicleModel);
-            }
-            self.resetVehicleModel();
+        self.editFuel = function (fuel) {
+            self.fuel.id = fuel.id;
+            self.fuel.fuelType = fuel.fuelType;
+            self.fuel.mark = fuel.mark;
         };
 
-        self.editVehicleType = function (vehicleType) {
-            self.vehicleType.id = vehicleType.id;
-            self.vehicleType.specialization = vehicleType.specialization;
-            self.vehicleType.type = vehicleType.type;
-            myFormVehicleModel.$pristine = true;
-        };
-
-        self.editVehicleModel = function (vehicleModel) {
-            self.vehicleModel.id = vehicleModel.id;
-            self.vehicleModel.modelName = vehicleModel.modelName;
-            self.vehicleModel.vehicleType = vehicleModel.vehicleType;
-
-        };
-
-        self.resetVehicleType = function () {
-            self.vehicleType = {id: null, type: '', specialization: ''};
-        };
-
-        self.resetVehicleModel = function () {
-            self.vehicleModel = {id: null, modelName: '', vehicleType: {type: ""}};
+        self.resetFuel = function () {
+            self.fuel = {id: null, mark: '', fuelType: ''};
         };
 
         //Функция передачи объекта по клику на строку таблицы
-        self.setVehicleType = function (vehType) {
-            self.vehicleType = vehType;
-            self.fetchVehicleModelsByType();
+        self.setFuel = function (vehMark) {
+            self.fuel = vehMark;
+            self.fetchVehicleModelsByMark();
         };
 
 
