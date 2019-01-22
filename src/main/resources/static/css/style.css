@@ -639,6 +639,9 @@ i{
 .tab-list4{
 	display: none;
 }
+.tab-list5{
+	display: none;
+}
 .tabcontent{
 	margin-top:10px;
 	display:block;
@@ -711,6 +714,9 @@ i{
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
     overflow-y:scroll;	
+}
+.list-point i:hover{
+    color:#333;
 }
 .ready-route{
 

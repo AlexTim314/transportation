@@ -12,21 +12,21 @@
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit" ng-click="ctrl.addRTask(ctrl.routeTask)"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>Добавить</div>
+            <div class="btn edit" ng-click="ctrl.addRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>Добавить</div>
         </div>
     </div>
     <div class="small-height-wrapper">	
         <table class="table-task" >
             <tr>
                 <th>Место</th>
-                <th>Проводимые работы</th>
+                <th>Задание</th>
                 <th></th>
             </tr>
             <tr ng-repeat="routeTask in ctrl.claim.routeTasks| orderBy: 'orderNum'">
                 <td>{{routeTask.place.name}}</td>
                 <td>{{routeTask.workName}}</td>
                 <td>
-                    <i class="fas fa-times" ng-click="removeRTask(routeTask)"></i>
+                    <i class="fas fa-times" ng-click="ctrl.removeRTask(routeTask)"></i>
                     <i class="fas fa-edit"></i>
                 </td>	 					
             </tr>	 				
@@ -34,7 +34,7 @@
     </div>
     <div class="form-item">
         <div class="right-block">	
-            <div class="btn edit"><i class="fas fa-save"></i>Сохранить</div>
+            <div class="btn edit" onclick="formClose('formTask')"><i class="fas fa-save"></i>Сохранить</div>
         </div>    
     </div>
 </div>
