@@ -15,7 +15,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.bosses = [];
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
-        self.taskNum;
+        var taskNum;
 
 
         self.fetchClaims = function () {
@@ -89,7 +89,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-                self.taskNum = 0;
+                taskNum = 0;
             }
             menu_close();
             ClaimsService.createClaim(self.claim)
@@ -129,10 +129,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
 
-        self.addRTask = function (routeTask) {
-            routeTask.id = null;
-            routeTask.orderNum = inc(self.taskNum);
-            self.claim.routeTasks.push(routeTask);
+        self.addRTask = function () {
+            var rt = {id: null};
+            rt.orderNum = rt.length;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+            console.log(rt);
+
+            self.claim.routeTasks.push(rt);
         };
 
         self.frmtDate = function (date, time) {
