@@ -45,6 +45,13 @@ public class EntitiesUtils {
         COMPLETED,
         CANCELED;
     }
+    
+    public static enum FuelType {
+        BENZINE,
+        DIESEL,
+        GAS,
+        KEROSENE;
+    }
 
     /**
      * Перечисление используемое при заполнении путевого листа. Именованные
@@ -72,7 +79,6 @@ public class EntitiesUtils {
         принял,
         сдал,
         заказчик;
-
     }
 
 }
