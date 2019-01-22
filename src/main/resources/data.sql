@@ -14,19 +14,76 @@ CREATE TABLE IF NOT EXISTS Place (
     PRIMARY KEY (id)
 );
 
-insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
-insert into Place(name, address) values('Пл. 18', 'ИП-1');
-insert into Place(name, address) values('Пл. 44', 'ИП-2');
-insert into Place(name, address) values('Пл. 97', 'ИП-3');
-insert into Place(name, address) values('Пл. 23', 'ИП-5');
+insert into Place(name, address) values('Аэропорт "Крайний"', null);
+insert into Place(name, address) values('Полигон ТБО', null);
+insert into Place(name, address) values('КАЗ', null);
+
+insert into Place(name, address) values('Ж/д ст. Разъезд', null);
+insert into Place(name, address) values('Ж/д ст. Восточная', null);
+insert into Place(name, address) values('Ж/д ст. Северная', null);
+insert into Place(name, address) values('Ж/д ст. Западная', null);
+insert into Place(name, address) values('Ж/д ст. Жигули', null);
+
+insert into Place(name, address) values('КПП-1', null);
+insert into Place(name, address) values('КПП-3', null);
+insert into Place(name, address) values('КПП-5', null);
+insert into Place(name, address) values('КПП-7', null);
+
 insert into Place(name, address) values('Пл. 1', 'СК17П32');
+insert into Place(name, address) values('Пл. 2', null);
+insert into Place(name, address) values('Пл. 2А', null);
+insert into Place(name, address) values('Пл. 2Б', null);
+insert into Place(name, address) values('Пл. 2 (пер.)', null);
+insert into Place(name, address) values('Пл. 3Б', null);
+insert into Place(name, address) values('Пл. 3Р', null);
+insert into Place(name, address) values('Пл. 5', null);
+insert into Place(name, address) values('Пл. 6', null);
+insert into Place(name, address) values('Пл. 9', null);
+insert into Place(name, address) values('Пл. 9 (АЗП)', null);
+insert into Place(name, address) values('Пл. 10', 'ул. Титова Г.С., д. 7');
+insert into Place(name, address) values('Пл. 15', null);
+insert into Place(name, address) values('Пл. 15А', null);
+insert into Place(name, address) values('Пл. 15Г', null);
+insert into Place(name, address) values('Пл. 17 МЖГ', null);
+insert into Place(name, address) values('Пл. 18', 'ИП-1');
+insert into Place(name, address) values('Пл. 23', 'ИП-5');
 insert into Place(name, address) values('Пл. 31', null);
-insert into Place(name, address) values('Пл. 81', null);
-insert into Place(name, address) values('Пл. 200', null);
+insert into Place(name, address) values('Пл. 32', null);
 insert into Place(name, address) values('Пл. 43', null);
+insert into Place(name, address) values('Пл. 44', 'ИП-2');
 insert into Place(name, address) values('Пл. 45', null);
 insert into Place(name, address) values('Пл. 71', null);
 insert into Place(name, address) values('Пл. 72', null);
+insert into Place(name, address) values('Пл. 75', null);
+insert into Place(name, address) values('Пл. 81', null);
+insert into Place(name, address) values('Пл. 90', null);
+insert into Place(name, address) values('Пл. 91', null);
+insert into Place(name, address) values('Пл. 91А', null);
+insert into Place(name, address) values('Пл. 92', null);
+insert into Place(name, address) values('Пл. 92А 50', null);
+insert into Place(name, address) values('Пл. 95', null);
+insert into Place(name, address) values('Пл. 97', 'ИП-3');
+insert into Place(name, address) values('Пл. 109', null);
+insert into Place(name, address) values('Пл. 110', null);
+insert into Place(name, address) values('Пл. 110А', null);
+insert into Place(name, address) values('Пл. 111', null);
+insert into Place(name, address) values('Пл. 111 (прямая)', null);
+insert into Place(name, address) values('Пл. 111 (объездная)', null);
+insert into Place(name, address) values('Пл. 112', null);
+insert into Place(name, address) values('Пл. 113', null);
+insert into Place(name, address) values('Пл. 113Г', null);
+insert into Place(name, address) values('Пл. 114А', null);
+insert into Place(name, address) values('Пл. 114Б', null);
+insert into Place(name, address) values('Пл. 175', null);
+insert into Place(name, address) values('Пл. 200', null);
+insert into Place(name, address) values('Пл. 250', null);
+insert into Place(name, address) values('Пл. 250А', null);
+insert into Place(name, address) values('Пл. 251', null);
+insert into Place(name, address) values('Пл. 254', null);
+insert into Place(name, address) values('Пл. 257А', null);
+insert into Place(name, address) values('Пл. 504', null);
+insert into Place(name, address) values('Пл. 504-3К', null);
+
 
 CREATE TABLE IF NOT EXISTS Department (
     id bigint NOT NULL DEFAULT nextval('department_id_seq'::regclass),
