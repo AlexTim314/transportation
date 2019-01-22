@@ -3,6 +3,7 @@
     <div class="form-item">
         <label for="type">Место</label>
         <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.routeTask.place">
+        <option value="" disabled selected><--Выберите место--></option>
         </select>
     </div>	
     <div class="form-item" style="margin-bottom:20px;"> 
@@ -11,7 +12,7 @@
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit" ng-click="ctrl.addRTask(ctrl.routeTask)"><i class="fas fa-plus-circle"></i>Добавить</div>
+            <div class="btn edit" ng-click="ctrl.addRTask(ctrl.routeTask)"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>Добавить</div>
         </div>
     </div>
     <div class="small-height-wrapper">	
@@ -21,7 +22,7 @@
                 <th>Проводимые работы</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="routeTask in ctrl.claim.routeTasks| orderBy: orderNum">
+            <tr ng-repeat="routeTask in ctrl.claim.routeTasks| orderBy: 'orderNum'">
                 <td>{{routeTask.place.name}}</td>
                 <td>{{routeTask.workName}}</td>
                 <td>

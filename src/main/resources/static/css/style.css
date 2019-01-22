@@ -2084,6 +2084,13 @@ span.psw {
 .test{
 	padding: 10% 10%;
 }
+.inp-btn span:hover{
+    cursor:pointer;
+    color:#00a2d3;
+}
+.table-task i{
+    color:#333;
+}
 /*.beaty-form-btn{
 	display: none;
 	position: absolute;
