@@ -3,20 +3,16 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim = {id: null, templateName: null, specialization: '', carBoss: null, purpose: '', creationDate: '', affirmationDate: null, actual: true, vehicleType: {typeName: ''}, records: [], routeTasks: []};
-
-        self.routeTemplate = {id: null, name: '', department: {}, routeTasks: []};
-
-        self.routeTask = {id: null, workName: '', orderNum: '', place: {name: ''}, routeTemplate: {name: ''}};
-
+        self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
+        self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
-
         self.claims = [];
+        self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
         self.places = [];
         self.bosses = [];
-
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
 
@@ -96,11 +92,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchBosses();
 
 
-        self.createClaim = function (claim) {
-            ClaimsService.createClaim(claim)
+        self.createClaim = function () {            
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                self.claim.routeTasks[i].id = null;
+            }
+            menu_close();            
+            ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
                                 self.claims.push(d);
+                                self.prepareClaim();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -133,6 +134,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
 
+        self.addRTask = function (routeTask) {
+            routeTask.id = null;
+            self.claim.routeTasks.push(routeTask);
+        };
+
         self.addRec = function () {
             var d = self.record.startDate;
             if (self.onWeek) {
@@ -160,6 +166,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
+        self.removeRTask = function (routeTask) {
+            var k = -1;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (routeTask === self.claim.routeTasks[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.routeTasks.splice(k, 1);
+        };
+
         self.removeRec = function (rec) {
             //удалить запись
             var k = -1;
@@ -174,6 +191,41 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             }
             self.claim.records.splice(k, 1);
+        };
+
+        self.rowClick = function (clm) {
+            ///self.claim = clm;
+            if (clm.isVisible === undefined) {
+                clm.isVisible = true;
+            } else {
+                clm.isVisible = !clm.isVisible;
+            }
+
+//            if (clm.records === undefined) {
+//                self.fetchAllRecords(clm);
+//            }
+        };
+        
+        self.prepareClaim = function () {
+            var result = {
+                
+            };
+            
+            self.claim = {
+                id: null, 
+                templateName: null, 
+                specialization: null, 
+                carBoss: null, 
+                purpose: null, 
+                creationDate: null, 
+                affirmationDate: null, 
+                actual: true, 
+                vehicleType: null, 
+                records: [], 
+                routeTasks: []
+            };
+            console.log(result);
+            return result;
         };
 
     }]);

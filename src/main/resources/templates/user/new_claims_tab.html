@@ -25,23 +25,23 @@
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow" ng-repeat="claim in ctrl.claims">
-                <td>
-                    <i class="fas  fa-2x fa-caret-right"></i>
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.claims">
+                <td ng-click="ctrl.rowClick(claim)">
+                    <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>
-                <td>
+                <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
                         <input type="checkbox" >
                         <span class="checkmark"></span>
                     </label>	
                 </td>
-                <td class="counter_record">№{{claim.id}} {{claim.creationDate|'dd.MM.yyyy'}}
-                    <span title="Число записей">1</span>
+                <td class="counter_record" ng-click="ctrl.rowClick(claim)">№{{claim.id}} {{claim.creationDate| date:'dd.MM.yyyy'}} 
+                    <span title="Число записей">{{claim.records.length}}</span>
                 </td>
-                <td>{{claim.specialization}}</td>
-                <td>{{claim.vehicleType.typeName}}</td>
-                <td>{{claim.carBoss}}</td>
-                <td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
+                <td ng-click="ctrl.rowClick(claim)">
                     <span class="route-tag td-relative" title="Перевозка пассажиров">Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
                 </td>
                 <td >
@@ -52,7 +52,7 @@
                 </td>				  				
 
             </tr>
-            <tr class="hiddenRow collapseRow">
+            <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
                 <td colspan="8">
 
                     <table class="table-claim">
@@ -64,12 +64,12 @@
                             <th style="width:20%;">Время возвращения</th>
                             <th style="width:20%;"></th>
                         </tr>
-                        <tr>
-                            <td>{{ctrl.record.startDate| date:'dd.MM.yyyy'}}</td>
-                            <td>{{ctrl.record.entranceDate| date:'HH:mm'}}</td>
-                            <td>{{ctrl.record.startDate| date:'HH:mm'}}</td>
-                            <td>{{ctrl.record.endDate| date:'dd.MM.yyyy'}}</td>
-                            <td>{{ctrl.record.endDate| date:'HH:mm'}}</td>
+                        <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
+                            <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                            <td>{{record.startDate| date:'HH:mm'}}</td>
+                            <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{record.endDate| date:'HH:mm'}}</td>
                             <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить"></i></td>
                         </tr>                                            
                     </table>
