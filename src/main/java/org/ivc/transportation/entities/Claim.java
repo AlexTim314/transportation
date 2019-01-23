@@ -76,7 +76,7 @@ public class Claim implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<RouteTask> routeTasks;
 
-    public Claim(VehicleSpecialization specialization, String carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
+    public Claim(VehicleSpecialization specialization, CarBoss carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
         this.specialization = specialization;
         this.carBoss = carBoss;
         this.purpose = purpose;
