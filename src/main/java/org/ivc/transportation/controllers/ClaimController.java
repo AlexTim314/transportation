@@ -73,5 +73,21 @@ public class ClaimController {
     public List<CarBoss> getCarBosses(Principal principal) {
         return claimService.findCarBossesByDepartment(principal);
     }
+    
+    @PostMapping("/user/carBoss_create")
+    public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @PutMapping("/user/carBoss_update")
+    public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @DeleteMapping("/user/carBoss_delete")
+    public ResponseEntity<String> deleteCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        claimService.deleteCarBoss(carBoss);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
