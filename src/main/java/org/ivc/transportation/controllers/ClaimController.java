@@ -32,16 +32,6 @@ public class ClaimController {
         return claimService.findNewClaimsByDepartment(principal);
     }
 
-    @GetMapping("/user/routeTemplates")
-    public List<RouteTemplate> getRouteTemplates(Principal principal) {
-        return claimService.findRouteTemplates(principal);
-    }
-
-    @GetMapping("/user/carBosses")
-    public List<CarBoss> getCarBosses(Principal principal) {
-        return claimService.findCarBossesByDepartment(principal);
-    }
-
     @PostMapping("/user/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return claimService.saveClaim(principal, claim);
@@ -57,4 +47,31 @@ public class ClaimController {
         claimService.deleteClaim(claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    @GetMapping("/user/routeTemplates")
+    public List<RouteTemplate> getRouteTemplates(Principal principal) {
+        return claimService.findRouteTemplates(principal);
+    }
+    
+    @PostMapping("/user/routeTemplate_create")
+    public RouteTemplate createRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @PutMapping("/user/routeTemplate_update")
+    public RouteTemplate updateRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @DeleteMapping("/user/routeTemplate_delete")
+    public ResponseEntity<String> deleteRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        claimService.deleteRouteTemplate(routeTemplate);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/user/carBosses")
+    public List<CarBoss> getCarBosses(Principal principal) {
+        return claimService.findCarBossesByDepartment(principal);
+    }
+
 }

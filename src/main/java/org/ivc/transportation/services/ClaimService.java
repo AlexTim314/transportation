@@ -78,6 +78,14 @@ public class ClaimService {
         return null;
     }
 
+    public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
+        return routeTemplateRepository.save(routeTemplate);
+    }
+
+    public void deleteRouteTemplate(RouteTemplate routeTemplate) {
+        routeTemplateRepository.delete(routeTemplate);
+    }
+
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
