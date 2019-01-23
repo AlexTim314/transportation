@@ -54,8 +54,8 @@ public class TransportationApplication {
         transportDepRepository.save(transportDep1);
         transportDepRepository.save(transportDep2);
 
-        Department dep1 = commonService.getDepartmentByName("ЦИП ИК");
-        Department dep2 = commonService.getDepartmentByName("Отдел организационного развития");
+        Department dep1 = commonService.findDepartmentByName("ЦИП ИК");
+        Department dep2 = commonService.findDepartmentByName("Отдел организационного развития");
 
         AppUser admin = new AppUser("admin", "Тимошенко Александр Александрович", PASSWORD, true, dep1, transportDep1, new HashSet<>(Arrays.asList(adminRole)));
         AppUser user = new AppUser("user", "Соколов Вячеслав Владимирович", PASSWORD, true, dep2, transportDep2, new HashSet<>(Arrays.asList(userRole)));
