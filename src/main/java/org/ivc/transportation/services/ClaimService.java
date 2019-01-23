@@ -3,10 +3,12 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
@@ -69,7 +71,7 @@ public class ClaimService {
         }
         return null;
     }
-    
+
     public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
         return carBossRepository.save(carBoss);
     }
@@ -103,9 +105,15 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
-        claim.setCreationDate(LocalDateTime.now());
-        claim.setCreator(getUser(principal));
-        claim.setDepartment(getDepartment(principal));
+        if (claim.getId() == null) {
+            claim.setCreationDate(LocalDateTime.now());
+            claim.setCreator(getUser(principal));
+            claim.setDepartment(getDepartment(principal));
+        } else {
+            Claim clm = claimRepository.findById(claim.getId()).get();
+            Set<Record> rds = clm.getRecords();
+            rds.forEach(recordRepository::delete);
+        }
         return claimRepository.save(claim);
     }
 
