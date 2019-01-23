@@ -71,8 +71,8 @@ public class ClaimController {
     }
 
     @DeleteMapping("/user/claim_delete")
-    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Claim claim) {
-        claimService.deleteClaim(claim);
+    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Long[] dc) {
+        claimService.deleteClaims(dc);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

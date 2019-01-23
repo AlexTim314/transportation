@@ -140,6 +140,12 @@ public class ClaimService {
         }
     }
 
+    public void deleteClaims(Long[] cl) {
+        for (int i = 0; i < cl.length; i++) {
+            claimRepository.deleteById(cl[i]);
+        }
+    }
+
     public void deleteRecord(Long clmId, Long recId) {
         Claim claim = claimRepository.findById(clmId).get();
         Record record = recordRepository.findById(recId).get();
