@@ -10,8 +10,8 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchClaims: function () {
-                return $http.get('/transportation/user/claims')
+            fetchNewClaims: function () {
+                return $http.get('/transportation/user/newClaims')
                         .then(
                                 function (response) {
                                     console.log(response.data)
@@ -137,11 +137,10 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         );
             },
 
-            deleteClaim: function (claim) {
-                console.log(claim);
+            deleteClaim: function (dc) {
                 return $http({method: 'DELETE',
                     url: '/transportation/user/claim_delete',
-                    data: JSON.stringify(claim),
+                    data: JSON.stringify([dc]),
                     headers: self.headers
                 }).then(
                         function (response) {

@@ -22,43 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableTransactionManagement
 public class TransportationApplication {
 
-    private static final String PASSWORD = "$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu";
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private TransportDepRepository transportDepRepository;
-
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
-    @Autowired
-    private CommonService commonService;
-
     @PostConstruct
     @Transactional
     public void init() {
-        AppRole adminRole = new AppRole("ROLE_ADMIN");
-        AppRole userRole = new AppRole("ROLE_USER");
-
-        TransportDep transportDep1 = new TransportDep("Транспортный отдел №4", "ул. Лейтенанта Шмидта, 1", "18-275");
-        TransportDep transportDep2 = new TransportDep("Транспортный отдел №5", "пл.9", "16-386");
-
-        transportDepRepository.save(transportDep1);
-        transportDepRepository.save(transportDep2);
-
-        Department dep1 = commonService.findDepartmentByName("ЦИП ИК");
-        Department dep2 = commonService.findDepartmentByName("Отдел организационного развития");
-
-        AppUser admin = new AppUser("admin", "Тимошенко Александр Александрович", PASSWORD, true, dep1, transportDep1, new HashSet<>(Arrays.asList(adminRole)));
-        AppUser user = new AppUser("user", "Соколов Вячеслав Владимирович", PASSWORD, true, dep2, transportDep2, new HashSet<>(Arrays.asList(userRole)));
-
-        userRepository.save(admin);
-        userRepository.save(user);
+        //
     }
 
     public static void main(String[] args) {
