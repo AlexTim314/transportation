@@ -159,7 +159,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
             //  }
-            formClose('dialog-window');
+            formClose('del-claim-confirm');
         };
 
         self.deleteRecord = function (claim, record) {
