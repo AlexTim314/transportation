@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -99,15 +100,30 @@ public class ClaimService {
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNull(department);
+            return claimRepository.findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findClaimTemplatesByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndTemplateNameIsNotNull(department);
         }
         return null;
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
-        claim.setCreationDate(LocalDateTime.now());
-        claim.setCreator(getUser(principal));
-        claim.setDepartment(getDepartment(principal));
+        if (claim.getId() == null) {
+            claim.setCreationDate(LocalDateTime.now());
+            claim.setCreator(getUser(principal));
+            claim.setDepartment(getDepartment(principal));
+        } else {
+            claimRepository.findById(claim.getId())
+                    .get()
+                    .getRecords()
+                    .forEach(recordRepository::delete);
+        }
         return claimRepository.save(claim);
     }
 
