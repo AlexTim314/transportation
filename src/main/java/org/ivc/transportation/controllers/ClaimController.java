@@ -56,4 +56,5 @@ public class ClaimController {
         claimService.deleteClaim(claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
 }
