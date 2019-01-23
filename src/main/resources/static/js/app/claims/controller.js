@@ -15,6 +15,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.bosses = [];
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
+        var taskNum;
+
 
         self.fetchClaims = function () {
             ClaimsService.fetchClaims()
@@ -34,8 +36,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.vehicleTypes = d;
-                                console.log('vehicleTypes =>');
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
@@ -48,8 +48,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
-                                console.log('routeTemplates =>');
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -62,8 +60,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.places = d;
-                                console.log('Places =>');
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Places');
@@ -76,8 +72,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.bosses = d;
-                                console.log('Bosses =>');
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Bosses');
@@ -92,11 +86,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchBosses();
 
 
-        self.createClaim = function () {            
+        self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
+                taskNum = 0;
             }
-            menu_close();            
+            menu_close();
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
@@ -134,34 +129,41 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
 
-        self.addRTask = function (routeTask) {
-            routeTask.id = null;
-            self.claim.routeTasks.push(routeTask);
+        self.addRTask = function () {
+            var rt = {id: null};
+            rt.orderNum = rt.length;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+            console.log(rt);
+
+            self.claim.routeTasks.push(rt);
+        };
+
+        self.frmtDate = function (date, time) {
+            var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
+            return result;
         };
 
         self.addRec = function () {
-            var d = self.record.startDate;
+            var sd = new Date(self.record.startDate);
             if (self.onWeek) {
-                for (var i = 0; i < 7; i++) {
+                for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = new Date(d);
+                    rec.startDate = new Date(sd);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
-
-                    rec.endDate = new Date(d);
+                    rec.endDate = self.frmtDate(sd, self.record.endDate);
                     rec.endDate.setDate(rec.endDate.getDate() + i);
-
-                    rec.entranceDate = new Date(d);
+                    rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
-
                     self.claim.records.push(rec);
-
                     console.log(rec);
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = new Date(d);
-                rec.endDate = new Date(d);
-                rec.entranceDate = new Date(d);
+                rec.startDate = new Date(sd);
+                rec.endDate = self.frmtDate(sd, self.record.endDate);
+                rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 self.claim.records.push(rec);
             }
         };
@@ -181,10 +183,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             //удалить запись
             var k = -1;
             for (var i = 0; i < self.claim.records.length; i++) {
-//                if(rec.startDate === self.claim.records[i].startDate){
-//                    k = i;
-//                    break;
-//                }
                 if (rec === self.claim.records[i]) {
                     k = i;
                     break;
@@ -194,37 +192,30 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.rowClick = function (clm) {
-            ///self.claim = clm;
             if (clm.isVisible === undefined) {
                 clm.isVisible = true;
             } else {
                 clm.isVisible = !clm.isVisible;
             }
-
-//            if (clm.records === undefined) {
-//                self.fetchAllRecords(clm);
-//            }
         };
-        
+
         self.prepareClaim = function () {
             var result = {
-                
             };
-            
+
             self.claim = {
-                id: null, 
-                templateName: null, 
-                specialization: null, 
-                carBoss: null, 
-                purpose: null, 
-                creationDate: null, 
-                affirmationDate: null, 
-                actual: true, 
-                vehicleType: null, 
-                records: [], 
+                id: null,
+                templateName: null,
+                specialization: null,
+                carBoss: null,
+                purpose: null,
+                creationDate: null,
+                affirmationDate: null,
+                actual: true,
+                vehicleType: null,
+                records: [],
                 routeTasks: []
             };
-            console.log(result);
             return result;
         };
 

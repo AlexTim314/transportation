@@ -3,6 +3,7 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,13 +38,13 @@ public class Record implements Serializable {
     private Long id;
 
     @Column(name = "entrance_date", nullable = false)
-    private LocalDateTime entranceDate;
+    private ZonedDateTime entranceDate;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private ZonedDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private ZonedDateTime endDate;
 
     @Column(name = "status")
     private RecordStatus status;
