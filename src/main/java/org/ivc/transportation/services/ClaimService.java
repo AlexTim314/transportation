@@ -99,7 +99,15 @@ public class ClaimService {
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNull(department);
+            return claimRepository.findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findClaimTemplatesByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndTemplateNameIsNotNull(department);
         }
         return null;
     }

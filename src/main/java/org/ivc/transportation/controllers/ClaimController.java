@@ -27,10 +27,14 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
     
-    @GetMapping("/user/claims")
-    public List<Claim> getAllClaims(Principal principal) {
-        System.out.println("getAllClaims");
+    @GetMapping("/user/newClaims")
+    public List<Claim> getNewClaims(Principal principal) {
         return claimService.findNewClaimsByDepartment(principal);
+    }
+    
+@GetMapping("/user/claimTemplates")
+    public List<Claim> getClaimTemplates(Principal principal) {
+        return claimService.findClaimTemplatesByDepartment(principal);
     }
     
     @GetMapping("/user/routeTemplates")

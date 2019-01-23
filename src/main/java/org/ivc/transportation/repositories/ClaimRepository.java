@@ -15,5 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
     
     Claim findByRecords(Record record);
-    List<Claim> findByDepartmentAndAffirmationDateIsNull(Department department); 
+    List<Claim> findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(Department department);
+    List<Claim> findByDepartmentAndTemplateNameIsNotNull(Department department); 
 }
