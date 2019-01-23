@@ -7,7 +7,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
-        self.claims = [];
+        self.newClaims = [];
         self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
@@ -20,12 +20,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         var taskNum;
 
 
-        self.fetchClaims = function () {
-            ClaimsService.fetchClaims()
+        self.fetchNewClaims = function () {
+            ClaimsService.fetchNewClaims()
                     .then(
                             function (d) {
-                                self.claims = d;
-                               
+                                self.newClaims = d;
+                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Claims');
@@ -93,7 +93,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.fetchClaims();
+        self.fetchNewClaims();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
         self.fetchPlaces();
@@ -109,7 +109,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                                self.claims.push(d);
+
+                                self.newClaims.push(d);
                                 self.resetClaimForm();
                             },
                             function (errResponse) {
@@ -121,7 +122,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.updateClaim = function (claim) {
             ClaimsService.updateClaim(claim)
                     .then(
-                            self.fetchClaims,
+                            self.fetchNewClaims,
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
@@ -130,8 +131,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.confirmClaims = function () {
             var confirmedClaims = [];
-            for (var ind in self.claims) {
-                var c = self.claims[ind];
+            for (var ind in self.newClaims) {
+                var c = self.newClaims[ind];
                 if (c.affirmation) {
                     confirmedClaims.push(c);
                     console.log(c);
@@ -143,23 +144,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.deleteClaim = function () {
-            
-           // if (self.isDelete) {
-                var dc = [];
-                for (var i = 0; i < self.claims.length; i++) {
-                    if (self.claims.checked) {
-                        dc[i] = self.claims[i].id;
-                        console.log(self.claims[i].id);
-                    }
+            // if (self.isDelete) {
+            var delIds = [];
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].checked) {
+                    delIds.push(self.newClaims[i].id);
                 }
-                ClaimsService.deleteClaim(dc)
-                        .then(
-                                self.fetchClaims,
-                                function (errResponse) {
-                                    console.error('Error while deleting Claim.');
-                                }
-                        );
-          //  }
+            }
+            ClaimsService.deleteClaim(delIds)
+                    .then(
+                            self.fetchNewClaims,
+                            function (errResponse) {
+                                console.error('Error while deleting Claim.');
+                            }
+                    );
+            //  }
             formClose('dialog-window');
         };
 

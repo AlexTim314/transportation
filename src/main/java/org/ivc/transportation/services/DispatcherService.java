@@ -12,11 +12,15 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author alextim
  */
+@Service
+@Transactional
 public class DispatcherService {
     
     @Autowired

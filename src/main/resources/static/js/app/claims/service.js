@@ -10,7 +10,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchClaims: function () {
+            fetchNewClaims: function () {
                 return $http.get('/transportation/user/newClaims')
                         .then(
                                 function (response) {

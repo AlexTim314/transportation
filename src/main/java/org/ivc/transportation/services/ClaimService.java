@@ -3,8 +3,6 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;

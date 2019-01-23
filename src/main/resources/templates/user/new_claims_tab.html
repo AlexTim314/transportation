@@ -9,7 +9,7 @@
                 <th></th>
                 <th>
                     <label class="custom-checkbox">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="all">
                         <span class="checkmark"></span>
                     </label>
                 </th>
@@ -25,13 +25,13 @@
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow" ng-repeat-start="claim in ctrl.claims">
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims">
                 <td ng-click="ctrl.rowClick(claim)">
                     <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
-                        <input type="checkbox" ng-bind="claim.checked">
+                        <input type="checkbox" ng-model="claim.checked" ng-checked="all">
                         <span class="checkmark"></span>
                     </label>	
                 </td>
