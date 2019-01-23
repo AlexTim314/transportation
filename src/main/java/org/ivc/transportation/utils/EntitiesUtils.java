@@ -47,10 +47,10 @@ public class EntitiesUtils {
     }
     
     public static enum FuelType {
-        BENZINE,
-        DIESEL,
-        GAS,
-        KEROSENE;
+        Бензин,
+        Дизель,
+        Газ,
+        Керосин;
     }
 
     /**
