@@ -7,6 +7,7 @@ import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
@@ -97,6 +98,14 @@ public class ClaimService {
         if (claim.getAffirmationDate() == null) {
             claimRepository.delete(claim);
         }
+    }
+
+    public void deleteRecord(Long clmId, Long recId) {
+        Claim claim = claimRepository.findById(clmId).get();
+        Record record = recordRepository.findById(recId).get();
+        claim.getRecords().remove(record);
+        claimRepository.save(claim);
+        recordRepository.delete(record);
     }
 
 }

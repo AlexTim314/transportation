@@ -70,7 +70,7 @@
                             <td>{{record.startDate| date:'HH:mm'}}</td>
                             <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
                             <td>{{record.endDate| date:'HH:mm'}}</td>
-                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить"></i></td>
+                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim,record)"></i></td>
                         </tr>                                            
                     </table>
                 </td>

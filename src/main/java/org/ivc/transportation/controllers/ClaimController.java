@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,38 +23,44 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ClaimController {
-
+    
     @Autowired
     private ClaimService claimService;
-
+    
     @GetMapping("/user/claims")
     public List<Claim> getAllClaims(Principal principal) {
         return claimService.findNewClaimsByDepartment(principal);
     }
-
+    
     @GetMapping("/user/routeTemplates")
     public List<RouteTemplate> getRouteTemplates(Principal principal) {
         return claimService.findRouteTemplates(principal);
     }
-
+    
     @GetMapping("/user/carBosses")
     public List<CarBoss> getCarBosses(Principal principal) {
         return claimService.findCarBossesByDepartment(principal);
     }
-
+    
     @PostMapping("/user/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return claimService.saveClaim(principal, claim);
     }
-
+    
     @PutMapping("/user/claim_update")
     public Claim updateClaim(Principal principal, @RequestBody Claim claim) {
         return claimService.saveClaim(principal, claim);
     }
-
+    
     @DeleteMapping("/user/claim_delete")
     public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Claim claim) {
         claimService.deleteClaim(claim);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/user/record_delete")
+    public ResponseEntity<String> deleteRecord(Principal principal, @RequestBody List<Long> ids) { 
+        claimService.deleteRecord(ids.get(0), ids.get(1));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
