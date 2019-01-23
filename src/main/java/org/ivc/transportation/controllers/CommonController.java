@@ -1,5 +1,6 @@
 package org.ivc.transportation.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Place;
@@ -23,6 +24,11 @@ public class CommonController {
     @GetMapping("/departments")
     public List<Department> getDepartments() {
         return commonService.findAllDepartments();
+    }
+
+    @GetMapping("/department")
+    public Department getDepartment(Principal principal) {
+        return commonService.findDepartmentByUser(principal);
     }
 
     @GetMapping("/transportDeps")

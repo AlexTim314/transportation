@@ -43,10 +43,10 @@
                                         <div class="col-md-7">
                                             <select name="type-fuel" ng-model="ctrl.fuel.type" required>
                                                 <option disabled>---Выберите---</option>
-                                                <option value="BENZINE">Безин</option>
-                                                <option value="DIESEL">Дизельное топливо</option>
-                                                <option value="GAS">Газ</option>
-                                                <option value="KEROSENE">Керосин</option>
+                                                <option value="Бензин">Безин</option>
+                                                <option value="Дизель">Дизельное топливо</option>
+                                                <option value="Газ">Газ</option>
+                                                <option value="Керосин">Керосин</option>
                                             </select>
 
                                         </div>
@@ -100,7 +100,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="fuel in ctrl.fuels| filter:searchFuel" ng-click="ctrl.setFuel(fuel)" style = "cursor: pointer">
+                                    <tr ng-repeat="fuel in ctrl.fuels| filter:searchFuel" style = "cursor: pointer">
                                         <td>{{fuel.id}}</td>
                                         <td>{{fuel.type}}</td>
                                         <td>{{fuel.mark}}</td>
@@ -109,7 +109,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <script src="js/lib/paintSelectedRow.js"></script> 
                         </div>
                     </div>
                 </div>

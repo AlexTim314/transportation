@@ -5,16 +5,13 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
-import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.CommonService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -54,8 +51,8 @@ public class TransportationApplication {
         transportDepRepository.save(transportDep1);
         transportDepRepository.save(transportDep2);
 
-        Department dep1 = commonService.getDepartmentByName("ЦИП ИК");
-        Department dep2 = commonService.getDepartmentByName("Отдел организационного развития");
+        Department dep1 = commonService.findDepartmentByName("ЦИП ИК");
+        Department dep2 = commonService.findDepartmentByName("Отдел организационного развития");
 
         AppUser admin = new AppUser("admin", "Тимошенко Александр Александрович", PASSWORD, true, dep1, transportDep1, new HashSet<>(Arrays.asList(adminRole)));
         AppUser user = new AppUser("user", "Соколов Вячеслав Владимирович", PASSWORD, true, dep2, transportDep2, new HashSet<>(Arrays.asList(userRole)));

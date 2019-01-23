@@ -77,7 +77,7 @@
                     <label for="route">Маршрут</label>
                     <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
 <!--                        <option value="" disabled selected><--Выберите маршрут</option>-->
-                        <option value="">Новый</option>
+                        <option>Свой маршрут</option>
                     </select> 
                 </div>
                 <div class="right-block-route">
@@ -114,7 +114,7 @@
                     </div>
                     <div class="check-hidden">
                         <label class="custom-checkbox">
-                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')">другой день
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="ctrl.isOtherDay">другой день
                             <span class="checkmark"></span>
                         </label>
                         <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
