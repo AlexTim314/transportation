@@ -26,7 +26,7 @@
                 <input type="text"></input>
             </div> 
         </section>
-        
+
         <section class="section-type">
             <div class="form-item">
                 <div class="check-item" > 
@@ -67,7 +67,7 @@
             <div class="form-item clearfix" >
                 <label for="carBoss">Старший</label>
                 <select name="carBoss" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
-                <option value="" disabled selected><--Выберите старшего--></option>
+                    <option value="" disabled selected><--Выберите старшего--></option>
                 </select>	
             </div>	
 
@@ -76,7 +76,7 @@
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
                     <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
-<!--                        <option value="" disabled selected><--Выберите маршрут</option>-->
+                        <!--                        <option value="" disabled selected><--Выберите маршрут</option>-->
                         <option>Свой маршрут</option>
                     </select> 
                 </div>
