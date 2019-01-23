@@ -90,6 +90,7 @@ insert into Place(name, address) values('Пл. 254', null);
 insert into Place(name, address) values('Пл. 257А', null);
 insert into Place(name, address) values('Пл. 504', null);
 insert into Place(name, address) values('Пл. 504-3К', null);
+insert into Place(name, address) values('По указанию', null);
 
 
 CREATE TABLE IF NOT EXISTS Department (
@@ -145,6 +146,11 @@ insert into Department (shortname, fullname, address, phone) values('ЦИП ИК
         insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров - 50 чел.', 1, (select id from Place where name='Пл. 23'));
         insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
         insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров - 50 чел.', 2, (select id from Place where name='Пл. 10'));
+        insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
+    insert into Route_Template(name, department_id) values('По указанию', currval('department_id_seq'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начальная точка', 0, (select id from Place where name='Пл. 10'));
+        insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
+        insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров', 1, (select id from Place where name='По указанию'));
         insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
 insert into Department (shortname, fullname, address, phone) values('ЦОКИ РКТ', 'Центр организации и контроля испытаний ракетно-космической техники', null, null);
 insert into Department (shortname, fullname, address, phone) values('ЭУ', 'Энергоуправление', null, null);
