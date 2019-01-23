@@ -110,9 +110,10 @@ public class ClaimService {
             claim.setCreator(getUser(principal));
             claim.setDepartment(getDepartment(principal));
         } else {
-            Claim clm = claimRepository.findById(claim.getId()).get();
-            Set<Record> rds = clm.getRecords();
-            rds.forEach(recordRepository::delete);
+            claimRepository.findById(claim.getId())
+                    .get()
+                    .getRecords()
+                    .forEach(recordRepository::delete);
         }
         return claimRepository.save(claim);
     }
