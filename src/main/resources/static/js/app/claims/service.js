@@ -23,7 +23,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
-            
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
@@ -75,6 +75,20 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchDepartment: function () {
+                return $http.get('/transportation/user/department')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching department');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -135,6 +149,22 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         },
                         function (errResponse) {
                             console.error('Error while deleting claim');
+                            return $q.reject(errResponse);
+                        }
+                );
+            },
+
+            deleteRecord: function (clmId, recId) {
+                return $http({method: 'DELETE',
+                    url: '/transportation/user/record_delete',
+                    data: JSON.stringify([clmId, recId]),
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting record');
                             return $q.reject(errResponse);
                         }
                 );

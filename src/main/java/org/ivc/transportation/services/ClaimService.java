@@ -123,4 +123,12 @@ public class ClaimService {
         }
     }
 
+    public void deleteRecord(Long clmId, Long recId) {
+        Claim claim = claimRepository.findById(clmId).get();
+        Record record = recordRepository.findById(recId).get();
+        claim.getRecords().remove(record);
+        claimRepository.save(claim);
+        recordRepository.delete(record);
+    }
+
 }

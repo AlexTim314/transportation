@@ -15,6 +15,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.bosses = [];
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
+        self.isOtherDay = false;
         var taskNum;
 
 
@@ -79,6 +80,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.fetchDepartment = function () {
+            ClaimsService.fetchDepartment()
+                    .then(
+                            function (d) {
+                                self.department = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Department');
+                            }
+                    );
+        };
+
         self.fetchClaims();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
@@ -96,7 +109,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.claims.push(d);
-                                self.prepareClaim();
+                                self.resetClaimForm();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -124,6 +137,26 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.deleteRecord = function (claim, record) {
+            var recId = record.id;
+            ClaimsService.deleteRecord(claim.id, recId)
+                    .then(
+                            function (d) {
+                                var k = -1;
+                                for (var i = 0; i < claim.records.length; i++) {
+                                    if (recId === claim.records[i].id) {
+                                        k = i;
+                                        break;
+                                    }
+                                }
+                                claim.records.splice(k, 1);
+                            },
+                            function (errResponse) {
+                                console.error('Error while deleting Record.');
+                            }
+                    );
+        };
+
         self.carBossToString = function (boss) {
             var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
             return result;
@@ -147,13 +180,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRec = function () {
             var sd = new Date(self.record.startDate);
+            var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
                     rec.startDate = new Date(sd);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.record.endDate);
-                    rec.endDate.setDate(rec.endDate.getDate() + i);
+                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     self.claim.records.push(rec);
@@ -163,6 +197,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 var rec = {id: null};
                 rec.startDate = new Date(sd);
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
+                rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 self.claim.records.push(rec);
             }
@@ -199,10 +234,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.prepareClaim = function () {
-            var result = {
-            };
-
+        self.resetClaimForm = function () {
+            self.isOtherDay = false;
             self.claim = {
                 id: null,
                 templateName: null,
@@ -216,7 +249,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
-            return result;
         };
 
     }]);
