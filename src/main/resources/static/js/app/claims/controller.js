@@ -25,7 +25,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.claims = d;
-                                console.log(d);
+                               
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Claims');

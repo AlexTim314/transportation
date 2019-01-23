@@ -133,9 +133,9 @@ public class ClaimService {
         }
     }
 
-    public void deleteClaims(Long[] cl) {
-        for (int i = 0; i < cl.length; i++) {
-            claimRepository.deleteById(cl[i]);
+    public void deleteClaims(List<Long> cl) {
+        for (int i = 0; i < cl.size(); i++) {
+            claimRepository.deleteById(cl.get(i));
         }
     }
 
