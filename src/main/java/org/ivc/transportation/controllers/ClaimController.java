@@ -1,6 +1,10 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * affirmationdate not null, actual is true, and date
  *
  * @author nodata
  */
@@ -25,6 +30,15 @@ public class ClaimController {
 
     @Autowired
     private ClaimService claimService;
+
+    @GetMapping("/user/affirmedClaimsTomorrow")
+    public List<Claim> getAffirmedClaims(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd= ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+        System.out.println(dStart);
+        System.out.println(dEnd);
+        return claimService.findAffirmedClaimsByDepartment(principal, dStart, dEnd);
+    }
 
     @GetMapping("/user/newClaims")
     public List<Claim> getNewClaims(Principal principal) {
