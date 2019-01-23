@@ -70,6 +70,14 @@ public class ClaimService {
         }
         return null;
     }
+    
+    public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
+        return carBossRepository.save(carBoss);
+    }
+
+    public void deleteCarBoss(CarBoss carBoss) {
+        carBossRepository.delete(carBoss);
+    }
 
     public List<RouteTemplate> findRouteTemplates(Principal principal) {
         Department department = getDepartment(principal);
@@ -77,6 +85,14 @@ public class ClaimService {
             return routeTemplateRepository.findByDepartmentOrDepartmentIsNull(department);
         }
         return null;
+    }
+
+    public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
+        return routeTemplateRepository.save(routeTemplate);
+    }
+
+    public void deleteRouteTemplate(RouteTemplate routeTemplate) {
+        routeTemplateRepository.delete(routeTemplate);
     }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {

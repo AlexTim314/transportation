@@ -29,6 +29,7 @@ public class ClaimController {
     
     @GetMapping("/user/claims")
     public List<Claim> getAllClaims(Principal principal) {
+        System.out.println("getAllClaims");
         return claimService.findNewClaimsByDepartment(principal);
     }
     
@@ -63,4 +64,37 @@ public class ClaimController {
         claimService.deleteRecord(ids.get(0), ids.get(1));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    @PostMapping("/user/routeTemplate_create")
+    public RouteTemplate createRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @PutMapping("/user/routeTemplate_update")
+    public RouteTemplate updateRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @DeleteMapping("/user/routeTemplate_delete")
+    public ResponseEntity<String> deleteRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        claimService.deleteRouteTemplate(routeTemplate);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/user/carBoss_create")
+    public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @PutMapping("/user/carBoss_update")
+    public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @DeleteMapping("/user/carBoss_delete")
+    public ResponseEntity<String> deleteCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        claimService.deleteCarBoss(carBoss);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

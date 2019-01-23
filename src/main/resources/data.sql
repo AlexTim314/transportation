@@ -14,8 +14,11 @@ CREATE TABLE IF NOT EXISTS Place (
     PRIMARY KEY (id)
 );
 
-insert into Fuel(mark, type) values('аи', 0);
-insert into Fuel(mark, type) values('дт', 1);
+insert into Fuel(mark, type) values('АИ-80', 0);
+insert into Fuel(mark, type) values('АИ-92', 0);
+insert into Fuel(mark, type) values('АИ-95', 0);
+insert into Fuel(mark, type) values('ДТЛ', 1);
+insert into Fuel(mark, type) values('ДТЗ', 1);
 
 
 insert into Place(name, address) values('Аэропорт "Крайний"', null);
