@@ -42,7 +42,7 @@
                 <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
                 <td ng-click="ctrl.rowClick(claim)">
-                    <span class="route-tag td-relative" title="Перевозка пассажиров">Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
+                    <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>
                 <td >
                     <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
