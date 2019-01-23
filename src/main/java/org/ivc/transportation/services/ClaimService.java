@@ -3,6 +3,7 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -70,7 +71,7 @@ public class ClaimService {
         }
         return null;
     }
-    
+
     public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
         return carBossRepository.save(carBoss);
     }
@@ -113,6 +114,12 @@ public class ClaimService {
     public void deleteClaim(Claim claim) {
         if (claim.getAffirmationDate() == null) {
             claimRepository.delete(claim);
+        }
+    }
+
+    public void deleteClaims(Long[] cl) {
+        for (int i = 0; i < cl.length; i++) {
+            claimRepository.deleteById(cl[i]);
         }
     }
 

@@ -16,6 +16,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
         self.isOtherDay = false;
+        self.isDelete = false;
         var taskNum;
 
 
@@ -127,14 +128,39 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.deleteClaim = function (claim) {
-            ClaimsService.deleteClaim(claim)
-                    .then(
-                            self.fetchClaims,
-                            function (errResponse) {
-                                console.error('Error while deleting Claim.');
-                            }
-                    );
+        self.confirmClaims = function () {
+            var confirmedClaims = [];
+            for (var ind in self.claims) {
+                var c = self.claims[ind];
+                if (c.affirmation) {
+                    confirmedClaims.push(c);
+                    console.log(c);
+                }
+            }
+            for (var i = 0; i < confirmedClaims.length; i++) {
+                self.updateClaim(confirmedClaims[i]);
+            }
+        };
+
+        self.deleteClaim = function () {
+            
+           // if (self.isDelete) {
+                var dc = [];
+                for (var i = 0; i < self.claims.length; i++) {
+                    if (self.claims.checked) {
+                        dc[i] = self.claims[i].id;
+                        console.log(self.claims[i].id);
+                    }
+                }
+                ClaimsService.deleteClaim(dc)
+                        .then(
+                                self.fetchClaims,
+                                function (errResponse) {
+                                    console.error('Error while deleting Claim.');
+                                }
+                        );
+          //  }
+            formClose('dialog-window');
         };
 
         self.deleteRecord = function (claim, record) {
@@ -168,7 +194,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
-            console.log(rt);
 
             self.claim.routeTasks.push(rt);
         };
@@ -191,7 +216,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     self.claim.records.push(rec);
-                    console.log(rec);
                 }
             } else {
                 var rec = {id: null};
@@ -249,6 +273,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
+        };
+
+        self.setClaimForTemp = function (claim) {
+            self.claim = claim;
+            self.claim.id = null;
+            for (var i = 0; i < self.claim.records.length; i++) {
+                self.claim.records[i].id = null;
+            }
+            formOpen('dialog-save');
         };
 
     }]);
