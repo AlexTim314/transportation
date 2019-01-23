@@ -1,10 +1,9 @@
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,24 +22,26 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"place"})
-@ToString(exclude = {"place"})
+@EqualsAndHashCode(exclude = {"fuel", "vehicle"})
+@ToString(exclude = {"fuel", "vehicle"})
 @Entity
-@Table(name = "route_task")
-public class RouteTask implements Serializable {
+@Table(name = "refueling")
+public class Refueling implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "work_name", length = 255)
-    private String workName;
+    @Column(name = "refueling_date", nullable = false)
+    private ZonedDateTime refuelingDate;
 
-    @Column(name = "order_num")
-    private int orderNum;
+    @Column(name = "volume")
+    private double volume;
 
     @ManyToOne
-    private Place place;
+    private Fuel fuel;
 
+    @ManyToOne
+    private Vehicle vehicle;
 }

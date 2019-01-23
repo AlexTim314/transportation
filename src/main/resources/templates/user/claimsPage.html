@@ -45,9 +45,15 @@
             </form>
 
             <th:block th:include="user/delete_confirm_dialog"></th:block> 
-            <!----------------------------------------------ADD-FORM------------------->
-            <th:block th:include="user/add_claim_form"></th:block>  
+            <th:block th:include="user/save_template_dialog"></th:block> 
+            <!----------------------------------------------ADD-FORMS------------------->
+            <th:block th:include="user/add_claim_form"></th:block> 
+            
             <th:block th:include="user/route_tasks_form"></th:block>  
+
+            <th:block th:include="user/add_route_form"></th:block>  
+            
+            <th:block th:include="user/add_car_boss_form"></th:block>  
 
             <div class="main clearfix" >
                 <div class="header clearfix">
@@ -59,10 +65,11 @@
                     <h1>Структурное подразделение</h1>
                     <h3>{{ctrl.claim.department.shortname}}</h3>
                     <nav class="nav-horizontal">
-                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)" >Подача заявок</div>
-                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)" >Статус заявок</div>
-                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 4)" >Шаблоны заявок</div>
-                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)" >Маршруты</div>			
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)" >Подача заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 5)" >Статус заявок</div>
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 5)" >Шаблоны заявок</div>
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 5)" >Маршруты</div>	
+                        <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5 )" >Старший</div>  
                     </nav>
 
                     <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
@@ -80,7 +87,9 @@
 
                     <th:block th:include="user/claim_templates_tab"></th:block>  
 
-                    <th:block th:include="user/routes_tab"></th:block>  
+                    <th:block th:include="user/routes_tab"></th:block> 
+                    
+                    <th:block th:include="user/car_bosses_tab"></th:block> 
                 </div>
             </div>
         </div>

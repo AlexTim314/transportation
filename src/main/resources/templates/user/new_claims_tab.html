@@ -20,104 +20,58 @@
                 <th>Маршрут</th>
                 <th>
                     <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
-                    <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>
+                    <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
                     <i title="Утвердить" class="fas fa-clipboard-check fa-lg" onclick=""></i>
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow">
-                <td >
-                    <i class="fas  fa-2x fa-caret-right"></i>
-
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.claims">
+                <td ng-click="ctrl.rowClick(claim)">
+                    <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>
-                <td>
+                <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
                         <input type="checkbox" >
                         <span class="checkmark"></span>
                     </label>	
                 </td>
-                <td class="counter_record">№103 22.12.2018
-                    <span title="Число записей">1</span>
+                <td class="counter_record" ng-click="ctrl.rowClick(claim)">№{{claim.id}} {{claim.creationDate| date:'dd.MM.yyyy'}} 
+                    <span title="Число записей">{{claim.records.length}}</span>
                 </td>
-                <td>Пассажирский</td>
-                <td>Автобус</td>
-                <td>Иванов И.И.</td>
-                <td>
-                    <span class="route-tag td-relative" title="Перевозка пассажиров" >Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
+                <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
+                <td ng-click="ctrl.rowClick(claim)">
+                    <span class="route-tag td-relative" title="Перевозка пассажиров">Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
                 </td>
                 <td >
                     <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
                     <!--<i title="Сохранить" class="fas fa-lg fa-save"></i>-->
-                    <i title="Сохранить как шаблон" class="fas fa-lg fa-save"></i>
+                    <i title="Сохранить как шаблон" class="fas fa-lg fa-save" onclick="formOpen('dialog-save')"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  
                 </td>				  				
 
             </tr>
-            <tr class="hiddenRow collapseRow">
+            <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
                 <td colspan="8">
 
                     <table class="table-claim">
                         <tr>	
-                            <th>Дата выезда</th>
-                            <th>Время подачи</th>
-                            <th>Время выезда</th>
-                            <th>Дата возвращения</th>
-                            <th>Время возвращения</th>
+                            <th style="width:20%;">Дата выезда</th>
+                            <th style="width:20%;">Время подачи</th>
+                            <th style="width:20%;">Время выезда</th>
+                            <th style="width:20%;">Дата возвращения</th>
+                            <th style="width:20%;">Время возвращения</th>
+                            <th style="width:20%;"></th>
                         </tr>
-                        <tr>
-                            <td>{{record.type}}</td>
-                            <td>{{record.datetime}}</td>
-                            <td>{{record.timeDelivery}}</td>
-                            <td>{{record.carBoss}}</td>
-                            <td>{{record.carBoss}}</td>
+                        <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
+                            <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                            <td>{{record.startDate| date:'HH:mm'}}</td>
+                            <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
+                            <td>{{record.endDate| date:'HH:mm'}}</td>
+                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить"></i></td>
                         </tr>                                            
-                    </table>
-                </td>
-            </tr>
-            <tr class="activeRow">
-                <td >
-                    <i class="fas  fa-2x fa-caret-right"></i>
-
-                </td>
-                <td>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" >
-                        <span class="checkmark"></span>
-                    </label>	
-                </td>
-                <td class="counter_record">№103 22.12.2018
-                    <span title="Число записей">1</span>
-                </td>
-                <td>{{record}}</td>
-                <td>{{record.datetime}}</td>
-                <td></td>
-                <td>
-                    <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>  			
-                </td>
-                <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
-                    <i title="Сохранить" class="fas fa-lg fa-save"  onclick="edit_open()"></i>
-                    <i title="Сохранить шаблон" class="fas fa-lg fa-file-export" onclick="edit_open()"></i>
-                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
-                </td>				  				
-
-            </tr>
-            <tr class="hiddenRow collapseRow">
-                <td colspan="8">
-
-                    <table class="table-claim">
-                        <tr>	
-                            <th>Дата выезда</th>
-                            <th>Время подачи</th>
-                            <th>Время выезда</th>
-                            <th>Время возвращения</th>				  				
-                        </tr>
-                        <tr>
-                            <td>{{record.type}}</td>
-                            <td>{{record.datetime}}</td>
-                            <td>{{record.timeDelivery}}</td>
-                            <td>{{record.carBoss}}</td>           
-                        </tr>
                     </table>
                 </td>
             </tr>

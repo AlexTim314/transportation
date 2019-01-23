@@ -3,16 +3,19 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim = {id: null, templateName: '', specialization: '', carBoss: '', purpose: '', creationDate: '', affirmationDate: '', actual: '', department: {shortname: ''}, vehicleType: {typeName: ''}, creator: {fullName: ''}, affirmator: {fullName: ''}, records: []};
-        self.record = {id: null, entranceDate: '', startDate: '', endDate: '', status: '', note: '', appointmentGroup: {}};
-        self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.creator = {id: null, username: '', fullName: '', department: {shortname: ''}};
-        self.affirmator = {id: null, username: '', fullName: '', department: {shortname: ''}};
-        self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
-        self.departments = [];
+        self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
+        self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+        self.place = {id: null, name: '', address: ''};
         self.claims = [];
-        self.records = [];
+        self.routeTasks = [];
         self.vehicleTypes = [];
+        self.routeTemplates = [];
+        self.places = [];
+        self.bosses = [];
+        self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
+        self.onWeek = false;
+        var taskNum;
 
 
         self.fetchClaims = function () {
@@ -27,12 +30,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        self.fetchVehicleTypes = function(){
+
+        self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
-                .then(
+                    .then(
                             function (d) {
                                 self.vehicleTypes = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
@@ -40,16 +43,60 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.fetchRouteTemplates = function () {
+            ClaimsService.fetchRouteTemplates()
+                    .then(
+                            function (d) {
+                                self.routeTemplates = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTemplates');
+                            }
+                    );
+        };
+
+        self.fetchPlaces = function () {
+            ClaimsService.fetchPlaces()
+                    .then(
+                            function (d) {
+                                self.places = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Places');
+                            }
+                    );
+        };
+
+        self.fetchBosses = function () {
+            ClaimsService.fetchBosses()
+                    .then(
+                            function (d) {
+                                self.bosses = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Bosses');
+                            }
+                    );
+        };
 
         self.fetchClaims();
         self.fetchVehicleTypes();
+        self.fetchRouteTemplates();
+        self.fetchPlaces();
+        self.fetchBosses();
 
 
-        self.createClaim = function (claim) {
-            ClaimsService.createClaim(claim)
+        self.createClaim = function () {
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                self.claim.routeTasks[i].id = null;
+                taskNum = 0;
+            }
+            menu_close();
+            ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
                                 self.claims.push(d);
+                                self.prepareClaim();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -60,9 +107,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.updateClaim = function (claim) {
             ClaimsService.updateClaim(claim)
                     .then(
-                            
-                                self.fetchClaims,
-                            
+                            self.fetchClaims,
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
@@ -78,29 +123,101 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
-        
 
-//        self.submit = function () {
-//            if (self.department.id === null) {
-//                self.createDepartment(self.department);
-//            } else {
-//                self.updateDepartment(self.department);
-//            }
-//            self.reset();
-//        };
-//
-//        self.editDepartment = function (department) {
-//            self.department.id = department.id;
-//            self.department.fullname = department.fullname;
-//            self.department.shortname = department.shortname;
-//            self.department.address = department.address;
-//            self.department.phone = department.phone;
-//        };
-//
-//        self.reset = function () {
-//            self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
-//        };
+        self.carBossToString = function (boss) {
+            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+            return result;
+        };
+
+        self.addRTask = function () {
+            var rt = {id: null};
+            rt.orderNum = rt.length;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+            console.log(rt);
+
+            self.claim.routeTasks.push(rt);
+        };
+
+        self.frmtDate = function (date, time) {
+            var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
+            return result;
+        };
+
+        self.addRec = function () {
+            var sd = new Date(self.record.startDate);
+            if (self.onWeek) {
+                for (var i = 0; i < 5; i++) {
+                    var rec = {id: null};
+                    rec.startDate = new Date(sd);
+                    rec.startDate.setDate(rec.startDate.getDate() + i);
+                    rec.endDate = self.frmtDate(sd, self.record.endDate);
+                    rec.endDate.setDate(rec.endDate.getDate() + i);
+                    rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                    rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
+                    self.claim.records.push(rec);
+                    console.log(rec);
+                }
+            } else {
+                var rec = {id: null};
+                rec.startDate = new Date(sd);
+                rec.endDate = self.frmtDate(sd, self.record.endDate);
+                rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                self.claim.records.push(rec);
+            }
+        };
+
+        self.removeRTask = function (routeTask) {
+            var k = -1;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (routeTask === self.claim.routeTasks[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.routeTasks.splice(k, 1);
+        };
+
+        self.removeRec = function (rec) {
+            //удалить запись
+            var k = -1;
+            for (var i = 0; i < self.claim.records.length; i++) {
+                if (rec === self.claim.records[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.records.splice(k, 1);
+        };
+
+        self.rowClick = function (clm) {
+            if (clm.isVisible === undefined) {
+                clm.isVisible = true;
+            } else {
+                clm.isVisible = !clm.isVisible;
+            }
+        };
+
+        self.prepareClaim = function () {
+            var result = {
+            };
+
+            self.claim = {
+                id: null,
+                templateName: null,
+                specialization: null,
+                carBoss: null,
+                purpose: null,
+                creationDate: null,
+                affirmationDate: null,
+                actual: true,
+                vehicleType: null,
+                records: [],
+                routeTasks: []
+            };
+            return result;
+        };
 
     }]);
 

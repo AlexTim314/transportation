@@ -1,11 +1,17 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,8 +29,8 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"model", "transportDep"})
-@ToString(exclude = {"model", "transportDep"})
+@EqualsAndHashCode(exclude = {"model", "transportDep", "fuels"})
+@ToString(exclude = {"model", "transportDep", "fuels"})
 @Entity
 @Table(name = "vehicle")
 public class Vehicle implements Serializable {
@@ -61,6 +67,10 @@ public class Vehicle implements Serializable {
 
     @ManyToOne
     private TransportDep transportDep;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "vehicle_fuel", joinColumns = @JoinColumn(name = "vehicler_id"), inverseJoinColumns = @JoinColumn(name = "fuel_id"))
+    private Set<Fuel> fuels;
 
     public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {
         this.number = number;

@@ -2,7 +2,8 @@ package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,8 +26,8 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleSpecialization;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"vehicleType", "creator", "affirmator", "records", "route"})
-@ToString(exclude = {"vehicleType", "creator", "affirmator", "records", "route"})
+@EqualsAndHashCode(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
+@ToString(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
 @Entity
 @Table(name = "claim")
 public class Claim implements Serializable {
@@ -42,9 +43,6 @@ public class Claim implements Serializable {
     @Column(name = "specialization")
     private VehicleSpecialization specialization;
 
-    @Column(name = "car_boss", nullable = false, length = 64)
-    private String carBoss;
-
     @Column(name = "purpose", length = 255)
     private String purpose;
 
@@ -53,7 +51,7 @@ public class Claim implements Serializable {
 
     @Column(name = "affirmation_date")
     private LocalDateTime affirmationDate;
-    
+
     @Column(name = "actual", nullable = false)
     private boolean actual;
 
@@ -64,16 +62,19 @@ public class Claim implements Serializable {
     private VehicleType vehicleType;
 
     @ManyToOne
+    private CarBoss carBoss;
+
+    @ManyToOne
     private AppUser creator;
 
     @ManyToOne
     private AppUser affirmator;
 
-    @OneToMany
-    private List<Record> records;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Record> records;
 
-    @OneToMany
-    private List<RouteTask> route;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<RouteTask> routeTasks;
 
     public Claim(VehicleSpecialization specialization, String carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
         this.specialization = specialization;

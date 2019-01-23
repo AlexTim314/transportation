@@ -13,11 +13,68 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             fetchClaims: function () {
                 return $http.get('/transportation/user/claims')
                         .then(
-                                function (response) {console.log(response.data)
+                                function (response) {
+                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching claims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchRouteTemplates: function () {
+                return $http.get('/transportation/user/routeTemplates')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchPlaces: function () {
+                return $http.get('/transportation/places')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching places');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchBosses: function () {
+                return $http.get('/transportation/user/carBosses')
+                        .then(
+                                function (response) {
+                                    console.log(response.data)
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching bosses');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -29,7 +86,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating claim');
@@ -38,6 +95,20 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         );
             },
 
+            createRecord: function (record) {
+                return $http.post('/transportation/user/record_create',
+                        JSON.stringify(record), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating record');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             updateClaim: function (claim) {
                 return $http.put('/transportation/user/claim_update',
                         JSON.stringify(claim), {headers: self.headers})
@@ -67,19 +138,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                             return $q.reject(errResponse);
                         }
                 );
-            },
-            
-            fetchVehicleTypes: function () {
-                return $http.get('/transportation/vehicleTypes')
-                        .then(
-                                function (response) {console.log(response.data)
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching vehicleTypes');
-                                    return $q.reject(errResponse);
-                                }
-                        );
             }
 
         };

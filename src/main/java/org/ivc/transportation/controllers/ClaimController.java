@@ -2,7 +2,9 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,16 @@ public class ClaimController {
     public List<Claim> getAllClaims(Principal principal) {
         System.out.println("getAllClaims");
         return claimService.findNewClaimsByDepartment(principal);
+    }
+
+    @GetMapping("/user/routeTemplates")
+    public List<RouteTemplate> getRouteTemplates(Principal principal) {
+        return claimService.findRouteTemplates(principal);
+    }
+
+    @GetMapping("/user/carBosses")
+    public List<CarBoss> getCarBosses(Principal principal) {
+        return claimService.findCarBossesByDepartment(principal);
     }
 
     @PostMapping("/user/claim_create")
