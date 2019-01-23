@@ -26,10 +26,14 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
 
-    @GetMapping("/user/claims")
-    public List<Claim> getAllClaims(Principal principal) {
-        System.out.println("getAllClaims");
+    @GetMapping("/user/newClaims")
+    public List<Claim> getNewClaims(Principal principal) {
         return claimService.findNewClaimsByDepartment(principal);
+    }
+
+    @GetMapping("/user/claimTemplates")
+    public List<Claim> getClaimTemplates(Principal principal) {
+        return claimService.findClaimTemplatesByDepartment(principal);
     }
 
     @GetMapping("/user/routeTemplates")
@@ -53,8 +57,47 @@ public class ClaimController {
     }
 
     @DeleteMapping("/user/claim_delete")
-    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Claim claim) {
-        claimService.deleteClaim(claim);
+    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Long[] dc) {
+        claimService.deleteClaims(dc);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/user/record_delete")
+    public ResponseEntity<String> deleteRecord(Principal principal, @RequestBody List<Long> ids) {
+        claimService.deleteRecord(ids.get(0), ids.get(1));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/user/routeTemplate_create")
+    public RouteTemplate createRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @PutMapping("/user/routeTemplate_update")
+    public RouteTemplate updateRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        return claimService.saveRouteTemplate(principal, routeTemplate);
+    }
+
+    @DeleteMapping("/user/routeTemplate_delete")
+    public ResponseEntity<String> deleteRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        claimService.deleteRouteTemplate(routeTemplate);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/user/carBoss_create")
+    public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @PutMapping("/user/carBoss_update")
+    public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return claimService.saveCarBoss(principal, carBoss);
+    }
+
+    @DeleteMapping("/user/carBoss_delete")
+    public ResponseEntity<String> deleteCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        claimService.deleteCarBoss(carBoss);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

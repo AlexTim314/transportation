@@ -1,5 +1,6 @@
 package org.ivc.transportation.services;
 
+import java.security.Principal;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Place;
@@ -8,8 +9,11 @@ import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.PlaceRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
+import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +37,9 @@ public class CommonService {
     @Autowired
     private PlaceRepository placeRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<Department> findAllDepartments(){
         return departmentRepository.findAll();
     }
@@ -49,8 +56,16 @@ public class CommonService {
         return placeRepository.findAll();
     }
 
-    public Department getDepartmentByName(String shortname) {
+    public Department findDepartmentByName(String shortname) {
         return departmentRepository.findByShortname(shortname);
     }
     
+    public Department findDepartmentByUser(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+        }
+        return null;
+    }
+
 }

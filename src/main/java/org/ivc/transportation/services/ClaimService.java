@@ -7,6 +7,7 @@ import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
@@ -70,6 +71,14 @@ public class ClaimService {
         return null;
     }
 
+    public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
+        return carBossRepository.save(carBoss);
+    }
+
+    public void deleteCarBoss(CarBoss carBoss) {
+        carBossRepository.delete(carBoss);
+    }
+
     public List<RouteTemplate> findRouteTemplates(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
@@ -78,18 +87,41 @@ public class ClaimService {
         return null;
     }
 
+    public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
+        return routeTemplateRepository.save(routeTemplate);
+    }
+
+    public void deleteRouteTemplate(RouteTemplate routeTemplate) {
+        routeTemplateRepository.delete(routeTemplate);
+    }
+
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
         if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNull(department);
+            return claimRepository.findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findClaimTemplatesByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndTemplateNameIsNotNull(department);
         }
         return null;
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
-        claim.setCreationDate(LocalDateTime.now());
-        claim.setCreator(getUser(principal));
-        claim.setDepartment(getDepartment(principal));
+        if (claim.getId() == null) {
+            claim.setCreationDate(LocalDateTime.now());
+            claim.setCreator(getUser(principal));
+            claim.setDepartment(getDepartment(principal));
+        } else {
+            claimRepository.findById(claim.getId())
+                    .get()
+                    .getRecords()
+                    .forEach(recordRepository::delete);
+        }
         return claimRepository.save(claim);
     }
 
@@ -97,6 +129,20 @@ public class ClaimService {
         if (claim.getAffirmationDate() == null) {
             claimRepository.delete(claim);
         }
+    }
+
+    public void deleteClaims(Long[] cl) {
+        for (int i = 0; i < cl.length; i++) {
+            claimRepository.deleteById(cl[i]);
+        }
+    }
+
+    public void deleteRecord(Long clmId, Long recId) {
+        Claim claim = claimRepository.findById(clmId).get();
+        Record record = recordRepository.findById(recId).get();
+        claim.getRecords().remove(record);
+        claimRepository.save(claim);
+        recordRepository.delete(record);
     }
 
 }

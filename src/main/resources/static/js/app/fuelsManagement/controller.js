@@ -62,12 +62,12 @@ App.controller('FuelsManagementController', ['$scope', 'FuelsManagementService',
 
         self.editFuel = function (fuel) {
             self.fuel.id = fuel.id;
-            self.fuel.fuelType = fuel.fuelType;
+            self.fuel.type = fuel.type;
             self.fuel.mark = fuel.mark;
         };
 
         self.resetFuel = function () {
-            self.fuel = {id: null, mark: '', fuelType: ''};
+            self.fuel = {id: null, mark: '', type: ''};
         };
 
         //Функция передачи объекта по клику на строку таблицы
