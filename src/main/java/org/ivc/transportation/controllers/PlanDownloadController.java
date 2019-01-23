@@ -101,8 +101,8 @@ public class PlanDownloadController {
 
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
-        textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT);
-        textToParagraph(cell.addParagraph(), LocalDate.now().toString(), 12, ParagraphAlignment.LEFT);
+        textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО
+        textToParagraph(cell.addParagraph(), LocalDate.now().toString(), 12, ParagraphAlignment.LEFT); //TODO: формат 25 января 2019
 
         //END------------------ Шапка
         //---------------- Заполнение файла
@@ -180,12 +180,70 @@ public class PlanDownloadController {
 
             rowDataList.add(rowData);
         }
+        
+        //-----------тестовые данные для проверки отображения
+        RowData rd = new RowData();
+        rd.carBoss = "КарБосс К.Б.";
+        rd.departmentName = "ЦИ-1";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "4";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+        
+        rowDataList.add(rd);
+        
+        rd = new RowData();
+        rd.carBoss = "КарБосс К.Б.";
+        rd.departmentName = "ЦИ-1";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "4";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+        
+        rowDataList.add(rd);
+        
+        rd = new RowData();
+        rd.carBoss = "КарБосс К.Б.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "4";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+        
+        rowDataList.add(rd);
+        
+        rd = new RowData();
+        rd.carBoss = "LikeABoss L.B.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "4";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+        
+        rowDataList.add(rd);
+                
+                
+        
+        //end-----------тестовые данные для проверки
 
         rowDataList.sort((r1, r2) -> {
             return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы сначала те, что должны быть первыми, потом алфавитный
         });
 
         String currentDepName = "";
+        int number = 1;
         for (RowData rowData : rowDataList) {
             if (!currentDepName.equalsIgnoreCase(rowData.departmentName)) {
                 currentDepName = rowData.departmentName.toUpperCase();
@@ -202,23 +260,23 @@ public class PlanDownloadController {
             isBold = true;
             fontSize = 8;            
             ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
-            textToParagraph(row.getCell(0).getParagraphs().get(0), " №", //TODO: нумерацию
+            textToParagraph(row.getCell(0).getParagraphs().get(0), Integer.toString(number++),
                     "Times New Roman", fontSize, isBold, parAligCenter);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.vehicleModelName,
+            textToParagraph(row.getCell(1).getParagraphs().get(0), rowData.vehicleModelName,
                     "Times New Roman", fontSize, isBold, parAligLeft);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.vehicleNumber,
+            textToParagraph(row.getCell(2).getParagraphs().get(0), rowData.vehicleNumber,
                     "Times New Roman", fontSize, isBold, parAligCenter);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.transportDepNumber,
+            textToParagraph(row.getCell(3).getParagraphs().get(0), rowData.transportDepNumber,
                     "Times New Roman", fontSize, isBold, parAligCenter);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.purposes,
+            textToParagraph(row.getCell(4).getParagraphs().get(0), rowData.purposes,
                     "Times New Roman", fontSize, false, parAligLeft);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.carBoss,
+            textToParagraph(row.getCell(5).getParagraphs().get(0), rowData.carBoss,
                     "Times New Roman", fontSize, false, parAligLeft);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.route,
+            textToParagraph(row.getCell(6).getParagraphs().get(0), rowData.route,
                     "Times New Roman", 7, false, parAligCenter);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.time,
+            textToParagraph(row.getCell(7).getParagraphs().get(0), rowData.time,
                     "Times New Roman", fontSize, isBold, parAligCenter);
-            textToParagraph(row.addNewTableCell().getParagraphs().get(0), rowData.driver,
+            textToParagraph(row.getCell(8).getParagraphs().get(0), rowData.driver,
                     "Times New Roman", fontSize, false, parAligLeft);
         }
 
