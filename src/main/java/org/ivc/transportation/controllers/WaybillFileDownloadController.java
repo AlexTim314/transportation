@@ -33,6 +33,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
@@ -53,13 +54,13 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author alextim
  */
 public class WaybillFileDownloadController {
-    
+
     @Autowired
     private DispatcherService dispatcherService;
-    
+
     @Autowired
     private ServletContext servletContext;
-    
+
     @PostMapping("/waybilldownload")
     public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
 
@@ -67,7 +68,9 @@ public class WaybillFileDownloadController {
             throw new NullPrincipalException("Неавторизованный доступ к данной странице закрыт. "
                     + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
         }
-        if (appointment == null) { unexpectedNull("Назначение"); }
+        if (appointment == null) {
+            unexpectedNull("Назначение");
+        }
         if (appointment.getStatus() != AppointmentStatus.READY) {
 
             String message = "Error2. Распоряжение не утверждено. Для печати "
@@ -80,7 +83,7 @@ public class WaybillFileDownloadController {
         VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
         switch (specialization) {
             case пассажирский:
-            case легковой:                
+            case легковой:
                 excelFilePath = "Waybill6.xls";
                 break;
             case грузовой:
@@ -94,11 +97,15 @@ public class WaybillFileDownloadController {
          
         Waybill waybill = appointment.getWaybill();
         if (waybill == null) { unexpectedNull("Путевой лист"); }
-        */
+         */
         Vehicle vehicle = appointment.getVehicle();
-        if (vehicle == null) { unexpectedNull("Транспортное средство"); }
+        if (vehicle == null) {
+            unexpectedNull("Транспортное средство");
+        }
         Driver driver = appointment.getDriver();
-        if (driver == null) { unexpectedNull("Водитель"); }
+        if (driver == null) {
+            unexpectedNull("Водитель");
+        }
         //TODO: добавить обработку случая, когда  Записей больше 1
         Record record = dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
         Claim claim = dispatcherService.findClaimByRecord(record);
@@ -108,7 +115,7 @@ public class WaybillFileDownloadController {
             Workbook workbook;
             try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
                 workbook = WorkbookFactory.create(inputStream);
-                
+
                 List<? extends Name> allNames = workbook.getAllNames();
                 List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
 
@@ -135,11 +142,11 @@ public class WaybillFileDownloadController {
                             case год:
                                 c.setCellValue(dateTime.getYear());
                                 break;
-                             case организация:
+                            case организация:
                                 c.setCellValue(claim.getDepartment().getFullname()
                                         + " " + claim.getDepartment().getAddress());
                                 break;
-                           /* 
+                            /* 
                                 case адрес_телефон:
                                 c.setCellValue();
                                 break;*/
@@ -177,20 +184,17 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(vehicle.getOdometr());
                                 break;
                             case принял:
-                                c.setCellValue(driver.getFirstname() + " "
-                                        + driver.getName().charAt(0) + "."
-                                        + driver.getSurname().charAt(0) + ".");
+                                c.setCellValue(getDriverNameWithInitials(driver));
                                 break;
                             case сдал:
-                                c.setCellValue(driver.getFirstname() + " "
-                                        + driver.getName().charAt(0) + "."
-                                        + driver.getSurname().charAt(0) + ".");
+                                c.setCellValue(getDriverNameWithInitials(driver));
                                 break;
                             case остаток_горючего_при_выезде:
                                 c.setCellValue(vehicle.getFuel());
                                 break;
                             case заказчик:
-                                c.setCellValue(claim.getDepartment().getShortname()+ " " + claim.getCarBoss());
+                                c.setCellValue(claim.getDepartment().getShortname() + " " 
+                                        + getCarBossNameWithInitials(claim.getCarBoss()));
                                 break;
                         }
 
@@ -209,14 +213,12 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
-            
-           // workbook.createSheet("доплер");
 
+            // workbook.createSheet("доплер");
             //String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
             String fileName = "DownloadWaybill.xls";
             File file = File.createTempFile("waybill", specialization.name());
 
-           
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             workbook.close();
@@ -231,15 +233,15 @@ public class WaybillFileDownloadController {
 
                 try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
                     BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-                    
+
                     byte[] buffer = new byte[1024];
                     int bytesRead = 0;
                     while ((bytesRead = inStream.read(buffer)) != -1) {
-                        
-                        System.out.println("Waybill downloading..(" + bytesRead +"bytes)");
+
+                        System.out.println("Waybill downloading..(" + bytesRead + "bytes)");
                         outStream.write(buffer, 0, bytesRead);
                     }
-                    
+
                     outStream.flush();
                 }
 
@@ -254,12 +256,10 @@ public class WaybillFileDownloadController {
     }
 
     private void unexpectedNull(String message) {
-     throw new UnexpectedNullException("Внимание! Не обнаружены данные"
-             + " необходимые для выполнения операции. Отсутствует значение для поля \"" + message 
-             + "\". В случае повторения ошибки обратитесь к администратору.");
+        throw new UnexpectedNullException("Внимание! Не обнаружены данные"
+                + " необходимые для выполнения операции. Отсутствует значение для поля \"" + message
+                + "\". В случае повторения ошибки обратитесь к администратору.");
     }
-
-  
 
     private Cell getCell(Workbook workbook, Name name) {
         AreaReference aref = new AreaReference(name.getRefersToFormula(), SpreadsheetVersion.EXCEL2007);
@@ -270,5 +270,17 @@ public class WaybillFileDownloadController {
         Row r = s.getRow(cellRef.getRow());
         return r.getCell(cellRef.getCol());
     }
-    
+
+    public static String getDriverNameWithInitials(Driver driver) {
+        return driver.getFirstname() + " "
+                + driver.getName().charAt(0) + "."
+                + driver.getSurname().charAt(0) + ".";
+    }
+
+    public static String getCarBossNameWithInitials(CarBoss carBoss) {
+        return carBoss.getFirstname() + " "
+                + carBoss.getName().charAt(0) + "."
+                + carBoss.getSurname().charAt(0) + ".";
+    }
+
 }

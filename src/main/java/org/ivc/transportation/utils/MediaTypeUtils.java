@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 import org.springframework.http.MediaType;
 
 /**
- *
+ * Для определения типа файла по его имени. Используется при отправке путевых листов и плана.
  * @author alextim
  */
 public class MediaTypeUtils {

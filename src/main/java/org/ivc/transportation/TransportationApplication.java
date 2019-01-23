@@ -5,23 +5,23 @@ import java.util.HashSet;
 import javax.annotation.PostConstruct;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RoleRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
-import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.services.CommonService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
+//@ComponentScan({"org.ivc.transportation.services"})
 @EnableTransactionManagement
 public class TransportationApplication {
 
