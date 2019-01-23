@@ -9,7 +9,7 @@
                 <th></th>
                 <th>
                     <label class="custom-checkbox">
-                        <input type="checkbox" ng-model="all">
+                        <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAll()">
                         <span class="checkmark"></span>
                     </label>
                 </th>
@@ -31,7 +31,7 @@
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
-                        <input type="checkbox" ng-model="claim.checked" ng-checked="all">
+                        <input type="checkbox" ng-model="claim.checked">
                         <span class="checkmark"></span>
                     </label>	
                 </td>

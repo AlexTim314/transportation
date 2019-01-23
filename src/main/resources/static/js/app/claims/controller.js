@@ -283,5 +283,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             formOpen('dialog-save');
         };
 
+        self.checkAll = function () {
+            for (var i = 0; i < self.newClaims.length; i++) {
+                self.newClaims[i].checked = self.all;
+            }
+        };
+
     }]);
 
