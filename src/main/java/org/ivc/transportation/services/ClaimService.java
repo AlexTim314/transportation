@@ -2,8 +2,8 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Set;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -108,6 +108,14 @@ public class ClaimService {
         Department department = getDepartment(principal);
         if (department != null) {
             return claimRepository.findByDepartmentAndTemplateNameIsNotNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findAffirmedClaimsByDepartment(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
         }
         return null;
     }
