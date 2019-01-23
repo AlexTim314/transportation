@@ -301,3 +301,48 @@ insert into Vehicle_Type(type_name, specialization) values('Водовоз', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МДК-433362', (select id from Vehicle_Type where type_name='Водовоз'));
 insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE-325 J', (select id from Vehicle_Type where type_name='Экскаватор'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'user',
+    'Соколов Вячеслав Владимирович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_USER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'admin',
+    'Тимошенко Александр Александрович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_ADMIN');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'manager',
+    'Соколов',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_MANAGER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'planner',
+    'Вячеслав',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_PLANNER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'dispatcher',
+    'Владимирович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_DISPATCHER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));

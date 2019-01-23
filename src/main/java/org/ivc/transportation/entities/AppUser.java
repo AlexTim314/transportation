@@ -53,11 +53,11 @@ public class AppUser {
     @Transient
     private boolean selected;
 
-    public AppUser(String username, String fullName, String password, boolean enabled, Department department, TransportDep transportDep, Set<AppRole> roles) {
+    public AppUser(String username, String fullName, String password, Department department, TransportDep transportDep, Set<AppRole> roles) {
         this.username = username;
         this.fullName = fullName;
         this.password = password;
-        this.enabled = enabled;
+        this.enabled = true;
         this.department = department;
         this.transportDep = transportDep;
         this.roles = roles;
