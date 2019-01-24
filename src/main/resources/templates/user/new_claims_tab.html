@@ -1,5 +1,5 @@
 <div class="clearfix" style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
-    
+
     <div class="table-header clearfix">
         <input type="search">
     </div>
@@ -9,7 +9,7 @@
                 <th></th>
                 <th>
                     <label class="custom-checkbox">
-                        <input type="checkbox">
+                        <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAll()">
                         <span class="checkmark"></span>
                     </label>
                 </th>
@@ -22,7 +22,7 @@
                     <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
                     <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
                     <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.confirmClaims()"></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
                 </th>
             </tr>
             <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims">
@@ -31,7 +31,7 @@
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
-                        <input type="checkbox"  ng-model="claim.checked">
+                        <input type="checkbox" ng-model="claim.checked">
                         <span class="checkmark"></span>
                     </label>	
                 </td>
@@ -40,7 +40,7 @@
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss.firstname}} {{claim.carBoss.name}} {{claim.carBoss.surname}}</td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>
@@ -70,7 +70,7 @@
                             <td>{{record.startDate| date:'HH:mm'}}</td>
                             <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
                             <td>{{record.endDate| date:'HH:mm'}}</td>
-                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim,record)"></i></td>
+                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td>
                         </tr>                                            
                     </table>
                 </td>

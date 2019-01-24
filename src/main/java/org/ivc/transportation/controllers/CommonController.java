@@ -41,7 +41,7 @@ public class CommonController {
         return commonService.findAllVehicleTypes();
     }
 
-    @GetMapping("places")
+    @GetMapping("/places")
     public List<Place> getAllPlaces() {
         return commonService.findAllPlaces();
     }

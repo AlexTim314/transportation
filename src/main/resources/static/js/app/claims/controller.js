@@ -109,8 +109,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                                self.newClaims.push(d);
-                                self.resetClaimForm();
+                               // if (self.claim.templateName !== null) {
+                              //      self.fetchNewClaims;
+                               // } else {
+                                    self.newClaims.push(d);
+                                    self.resetClaimForm();
+                                //}
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -142,24 +146,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.deleteClaim = function () {           
-           // if (self.isDelete) {
-                var dc = [];
-                for (var i = 0; i < self.newClaims.length; i++) {
-                    if (self.newClaims.checked) {
-                        dc[i] = self.newClaims[i].id;
-                        console.log(self.newClaims[i].id);
-                    }
+        self.deleteClaim = function () {
+            // if (self.isDelete) {
+            var delIds = [];
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].checked) {
+                    delIds.push(self.newClaims[i].id);
                 }
-                ClaimsService.deleteClaim(dc)
-                        .then(
-                                self.fetchClaims,
-                                function (errResponse) {
-                                    console.error('Error while deleting Claim.');
-                                }
-                        );
-          //  }
-            formClose('dialog-window');
+            }
+            ClaimsService.deleteClaim(delIds)
+                    .then(
+                            self.fetchNewClaims,
+                            function (errResponse) {
+                                console.error('Error while deleting Claim.');
+                            }
+                    );
+            //  }
+            formClose('del-claim-confirm');
         };
 
         self.deleteRecord = function (claim, record) {
@@ -189,7 +192,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = rt.length;
+            rt.orderNum = self.claim.routeTasks.length+1;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
@@ -281,6 +284,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claim.records[i].id = null;
             }
             formOpen('dialog-save');
+        };
+
+        self.checkAll = function () {
+            for (var i = 0; i < self.newClaims.length; i++) {
+                self.newClaims[i].checked = self.all;
+            }
         };
 
     }]);

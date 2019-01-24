@@ -2,6 +2,7 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
@@ -111,6 +112,22 @@ public class ClaimService {
         return null;
     }
 
+    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
+        }
+        return null;
+    }
+
+    public List<Claim> findAffirmedClaimsByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department);
+        }
+        return null;
+    }
+
     public Claim saveClaim(Principal principal, Claim claim) {
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
@@ -131,9 +148,9 @@ public class ClaimService {
         }
     }
 
-    public void deleteClaims(Long[] cl) {
-        for (int i = 0; i < cl.length; i++) {
-            claimRepository.deleteById(cl[i]);
+    public void deleteClaims(List<Long> cl) {
+        for (int i = 0; i < cl.size(); i++) {
+            claimRepository.deleteById(cl.get(i));
         }
     }
 

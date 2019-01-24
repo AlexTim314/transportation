@@ -1,6 +1,10 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 
  *
  * @author nodata
  */
@@ -25,6 +30,29 @@ public class ClaimController {
 
     @Autowired
     private ClaimService claimService;
+
+    @GetMapping("/user/affirmedClaims/Tomorrow")
+    public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+//        System.out.println(dStart);
+//        System.out.println(dEnd);
+        return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+    }
+
+    @GetMapping("/user/affirmedClaims/Week")
+    public List<Claim> getAffirmedClaimsWeek(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+//        System.out.println(dStart);
+//        System.out.println(dEnd);
+        return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+    }
+
+    @GetMapping("/user/affirmedClaims")
+    public List<Claim> getAffirmedClaimsAll(Principal principal) {
+        return claimService.findAffirmedClaimsByDepartment(principal);
+    }
 
     @GetMapping("/user/newClaims")
     public List<Claim> getNewClaims(Principal principal) {
@@ -57,7 +85,7 @@ public class ClaimController {
     }
 
     @DeleteMapping("/user/claim_delete")
-    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody Long[] dc) {
+    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody List<Long> dc) {
         claimService.deleteClaims(dc);
         return new ResponseEntity<>(HttpStatus.OK);
     }

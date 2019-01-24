@@ -1,7 +1,7 @@
 <div class="tab-list5"  id="tab-list5" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
         <div class="table-header table-header-plan clearfix">
-            <input type="search" placeholder="Поиск">
+            <input type="search" placeholder="Поиск" ng-model="search">
         </div>
 
         <div class="height-wrapper">
@@ -15,24 +15,21 @@
                     <th>Должность</th>
                     <th>Номер мобильного</th>
                     <th>Адрес</th>
-                    <th> <i title="Добавить старшего" class="fas fa-lg fa-plus-circle" onclick="formOpen('formCarBoss')"></i></th>                                   
+                    <th> <i title="Добавить старшего" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th>                                   
                 </tr>
-                <tr>    
-                    <td>Султанов</td>
-                    <td>Султан</td>
-                    <td>Султанович</td>
-                    <td>12.09.1987</td>
-                    <td>долбаёб 1 категории</td>
-                    <td>87773332211</td>
-                    <td>Титова 7</td>          
+                <tr ng-repeat="b in ctrl.carBosses| orderBy: 'fullname' |filter : search">    
+                    <td>{{b.firstname}}</td>
+                    <td>{{b.name}}</td>
+                    <td>{{b.surname}}</td>
+                    <td>{{b.birthday| date:'dd.MM.yyyy'}}</td>
+                    <td>{{b.post}}</td>
+                    <td>{{b.phone}}</td>
+                    <td>{{b.address}}</td>          
                     <td>
-                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formCarBoss')"></i>
-                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>  
+                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(b)"></i>
+                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(b)"></i>  
                     </td>
-
                 </tr>
-
-
             </table>
         </div>  
 
