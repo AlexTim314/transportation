@@ -44,6 +44,9 @@ public class ClaimService {
     RecordRepository recordRepository;
 
     @Autowired
+    RouteTaskRepository routeTaskRepository;
+
+    @Autowired
     RouteTemplateRepository routeTemplateRepository;
 
     @Autowired
@@ -93,6 +96,12 @@ public class ClaimService {
     }
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
+        if (routeTemplate.getId() != null) {
+            routeTemplateRepository.findById(routeTemplate.getId())
+                    .get()
+                    .getRouteTasks()
+                    .forEach(routeTaskRepository::delete);
+        }
         return routeTemplateRepository.save(routeTemplate);
     }
 
