@@ -1,0 +1,35 @@
+<form class="formTransport" id="formRouteTemplate" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formRouteTemplate')"></i>
+    <div class="container">
+        <div  id="route1">
+            <label for="name"><b>Название Маршрута</b></label>
+            <input type="text" name="name" ng-model="ctrl.routeTemplate.name"> 
+
+            <label for="workName"><b>Задание</b></label>
+            <textarea name="workName" ng-model="ctrl.workName"></textarea> 
+
+            <div class="form-item" style="margin-left: 0px; margin-bottom: 0px; margin-right: 0px; width: 100%;">
+                <div class="left-block" style="margin-top: 10px; margin-bottom: 0px;">
+                    <label for="point_begin"><b>Выберите Пункт</b></label>
+                </div>
+                <div class="right-block" style="margin-bottom: 0px; margin-right: 0px;">
+                    <input type="search" placeholder="Поиск" name="pl_search" ng-model="plSearch">
+                </div> 
+            </div>
+            <div class="list-point" >
+                <ul>
+                    <li ng-repeat="p in ctrl.places|filter:plSearch">{{p.name + (p.address !== null ? ' (' + p.address + ')' : '')}}<i class="fa  fa-plus" ng-click="ctrl.addTask(p)"></i></li>
+                </ul>
+            </div>
+            <label for="point_begin"><b>Маршрут</b></label>
+            <div class="ready-route">
+                <span class="tag-route" title="{{tsk.workName}}" ng-repeat="tsk in ctrl.routeTemplate.routeTasks">{{tsk.place.name}} <i class="fa fa-times" ng-click="ctrl.removeTask(tsk)"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete" ng-click = "ctrl.resetForm()">Отмена</button>
+        <button type="button" class="btn edit" ng-click = "ctrl.createRouteTemplate()"><i class="far  fa-save"></i>{{ctrl.routeTemplate.id === null? 'Добавить' : 'Изменить'}}</button>
+    </div>
+</form>

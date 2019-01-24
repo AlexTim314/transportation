@@ -53,7 +53,7 @@
 
                 <div class="right-block" >
                     <label for="criterion">Вид техники</label>
-                    <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType" required>
+                    <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType">
                         <option value="" disabled selected><--Выберите тип--></option>
                     </select>	
                 </div>
