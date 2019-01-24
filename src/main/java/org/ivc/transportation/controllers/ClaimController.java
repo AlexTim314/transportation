@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * affirmationdate not null, actual is true, and date
+ * 
  *
  * @author nodata
  */
@@ -31,13 +31,27 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
 
-    @GetMapping("/user/affirmedClaimsTomorrow")
-    public List<Claim> getAffirmedClaims(Principal principal) {
+    @GetMapping("/user/affirmedClaims/Tomorrow")
+    public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd= ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
-        System.out.println(dStart);
-        System.out.println(dEnd);
-        return claimService.findAffirmedClaimsByDepartment(principal, dStart, dEnd);
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+//        System.out.println(dStart);
+//        System.out.println(dEnd);
+        return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+    }
+
+    @GetMapping("/user/affirmedClaims/Week")
+    public List<Claim> getAffirmedClaimsWeek(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+//        System.out.println(dStart);
+//        System.out.println(dEnd);
+        return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+    }
+
+    @GetMapping("/user/affirmedClaims")
+    public List<Claim> getAffirmedClaimsAll(Principal principal) {
+        return claimService.findAffirmedClaimsByDepartment(principal);
     }
 
     @GetMapping("/user/newClaims")

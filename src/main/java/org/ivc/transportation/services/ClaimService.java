@@ -112,10 +112,18 @@ public class ClaimService {
         return null;
     }
 
-    public List<Claim> findAffirmedClaimsByDepartment(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
         Department department = getDepartment(principal);
         if (department != null) {
             return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
+        }
+        return null;
+    }
+
+    public List<Claim> findAffirmedClaimsByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department);
         }
         return null;
     }
