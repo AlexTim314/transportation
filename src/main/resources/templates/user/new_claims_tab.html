@@ -40,7 +40,7 @@
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss.firstname}} {{claim.carBoss.name}} {{claim.carBoss.surname}}</td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>

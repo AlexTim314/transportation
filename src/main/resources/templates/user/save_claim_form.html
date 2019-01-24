@@ -23,7 +23,7 @@
         <section  class="section-template">
             <div class="form-item clearfix" >
                 <label>Название шаблона</label>
-                <input type="text"></input>
+                <input type="text" ng-model="ctrl.claim.templateName"></input>
             </div> 
         </section>
 
@@ -133,6 +133,7 @@
 
         <div class="form-item">
             <button class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim()"></button>
+<!--            <input type="submit" class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim()">-->
         </div>
 
     </form>
