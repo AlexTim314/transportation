@@ -103,18 +103,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-                taskNum = 0;
             }
             menu_close();
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                               // if (self.claim.templateName !== null) {
-                              //      self.fetchNewClaims;
-                               // } else {
+                                if (self.claim.templateName === null) {
                                     self.newClaims.push(d);
-                                    self.resetClaimForm();
-                                //}
+                                }
+                                self.resetClaimForm();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -123,6 +120,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.updateClaim = function (claim) {
+            for (var i = 0; i <claim.records.length; i++) {
+                claim.records[i].id = null;
+            }
+            menu_close();
             ClaimsService.updateClaim(claim)
                     .then(
                             self.fetchNewClaims,
@@ -147,7 +148,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.deleteClaim = function () {
-            // if (self.isDelete) {
             var delIds = [];
             for (var i = 0; i < self.newClaims.length; i++) {
                 if (self.newClaims[i].checked) {
@@ -161,7 +161,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while deleting Claim.');
                             }
                     );
-            //  }
             formClose('del-claim-confirm');
         };
 
@@ -192,7 +191,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = self.claim.routeTasks.length+1;
+            rt.orderNum = self.claim.routeTasks.length + 1;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
@@ -275,6 +274,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
+            
+            self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
         };
 
         self.setClaimForTemp = function (claim) {
@@ -290,6 +291,39 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             for (var i = 0; i < self.newClaims.length; i++) {
                 self.newClaims[i].checked = self.all;
             }
+        };
+
+        self.tryToUpdateClaim = function (claim) {
+            self.claim.id = claim.id;
+            self.claim.actual = claim.actual;
+            self.claim.carBoss = claim.carBoss;
+            self.claim.purpose = claim.purpose;
+            self.claim.records = claim.records;
+            self.claim.routeTasks = claim.routeTasks;
+            self.claim.specialization = claim.specialization;
+            self.claim.templateName = claim.templateName;
+            self.claim.vehicleType = claim.vehicleType;
+            self.claim.affirmationDate = claim.affirmationDate;
+            self.claim.creationDate = new Date(claim.creationDate);
+            self.record.startDate = new Date(claim.records[0].startDate);
+            self.record.entranceDate = new Date(claim.records[0].entranceDate);
+            self.record.endDate = new Date(claim.records[0].endDate);
+            console.log(claim.records[0]);
+            console.log(self.record);
+            edit_open();
+        };
+
+        self.submitClaim = function () {
+            if (self.claim.id === null) {
+                self.createClaim(self.claim);
+            } else {
+                self.updateClaim(self.claim);
+            }
+            self.resetClaimForm();
+        };
+
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
     }]);
