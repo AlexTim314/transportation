@@ -109,9 +109,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-
-                                self.newClaims.push(d);
-                                self.resetClaimForm();
+                               // if (self.claim.templateName !== null) {
+                              //      self.fetchNewClaims;
+                               // } else {
+                                    self.newClaims.push(d);
+                                    self.resetClaimForm();
+                                //}
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -189,7 +192,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = rt.length;
+            rt.orderNum = self.claim.routeTasks.length+1;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;

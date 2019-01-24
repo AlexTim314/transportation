@@ -3,7 +3,7 @@
 
     <label>Название шаблона</label>
     <input type="text" ng-model="ctrl.claim.templateName"></input>                            
-    <div class="btn delete" style="cursor: pointer;">Отмена</div>
-    <div class="btn edit" ng-click="ctrl.createClaim()" style=" cursor: pointer;"><i class="fas  fa-save"></i>Сохранить</div>
+    <div class="btn delete" style="cursor: pointer;" onclick="formClose('dialog-save')">Отмена</div>
+    <div class="btn edit" ng-click="ctrl.createClaim()" style=" cursor: pointer;" onclick="formClose('dialog-save')"><i class="fas  fa-save"></i>Сохранить</div>
 
 </div>
