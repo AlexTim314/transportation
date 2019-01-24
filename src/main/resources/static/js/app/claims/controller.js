@@ -109,9 +109,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-
-                                self.newClaims.push(d);
-                                self.resetClaimForm();
+                                if (self.claim.templateName !== null) {
+                                    self.fetchNewClaims;
+                                } else {
+                                    self.newClaims.push(d);
+                                    self.resetClaimForm();
+                                }
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
