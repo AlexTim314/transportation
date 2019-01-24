@@ -346,3 +346,19 @@ insert into app_user(username, full_name, encrypted_password, enabled, departmen
     (select id from transport_dep where shortname='ОТС 1'));
 insert into app_role(role_name) values('ROLE_DISPATCHER');
 insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into car_boss(firstname, name, surname, birthday, address, phone, post, department_id) values(
+    'Яковлев', 'Василий', 'Семёнович',
+    null,
+    null,
+    null,
+    'Начальник центра',
+    (select id from department where shortname='ЦИП ИК'));
+
+insert into car_boss(firstname, name, surname, birthday, address, phone, post, department_id) values(
+    'Бекеев', 'Александр', 'Константинович',
+    null,
+    null,
+    null,
+    'Главный инженер',
+    (select id from department where shortname='ЦИП ИК'));
