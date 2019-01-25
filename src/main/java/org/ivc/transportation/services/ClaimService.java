@@ -6,17 +6,13 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.RouteTemplate;
-import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
-import org.ivc.transportation.repositories.RouteTemplateRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -46,67 +42,6 @@ public class ClaimService {
 
     @Autowired
     RouteTaskRepository routeTaskRepository;
-
-    @Autowired
-    RouteTemplateRepository routeTemplateRepository;
-
-    @Autowired
-    CarBossRepository carBossRepository;
-    
-
-    private Department getDepartment(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
-        }
-        return null;
-    }
-
-    private AppUser getUser(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername());
-        }
-        return null;
-    }
-
-    public List<CarBoss> findCarBossesByDepartment(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return carBossRepository.findByDepartment(department);
-        }
-        return null;
-    }
-
-    public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
-        return carBossRepository.save(carBoss);
-    }
-
-    public void deleteCarBoss(CarBoss carBoss) {
-        carBossRepository.delete(carBoss);
-    }
-
-    public List<RouteTemplate> findRouteTemplates(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return routeTemplateRepository.findByDepartmentOrDepartmentIsNull(department);
-        }
-        return null;
-    }
-
-    public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
-        if (routeTemplate.getId() != null) {
-            routeTemplateRepository.findById(routeTemplate.getId())
-                    .get()
-                    .getRouteTasks()
-                    .forEach(routeTaskRepository::delete);
-        }
-        return routeTemplateRepository.save(routeTemplate);
-    }
-
-    public void deleteRouteTemplate(RouteTemplate routeTemplate) {
-        routeTemplateRepository.delete(routeTemplate);
-    }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
@@ -145,12 +80,12 @@ public class ClaimService {
             claim.setCreationDate(LocalDateTime.now());
         } else {
             recordRepository.deleteByIdIn(
-                claimRepository.findById(claim.getId()).get().getRecords()
-                .stream().map(u -> u.getId()).collect(Collectors.toList())
+                    claimRepository.findById(claim.getId()).get().getRecords()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
             );
             routeTaskRepository.deleteByIdIn(
-                claimRepository.findById(claim.getId()).get().getRouteTasks()
-                .stream().map(u -> u.getId()).collect(Collectors.toList())
+                    claimRepository.findById(claim.getId()).get().getRouteTasks()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
             );
         }
         claim.setCreator(getUser(principal));
@@ -159,13 +94,11 @@ public class ClaimService {
     }
 
     public void deleteClaim(Claim claim) {
-        if (claim.getAffirmationDate() == null) {
-            claimRepository.delete(claim);
-        }
+        claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());
     }
 
     public void deleteClaims(List<Long> claimIds) {
-        claimRepository.deleteByIdIn(claimIds);
+        claimRepository.deleteByIdInAndAffirmationDateIsNull(claimIds);
     }
 
     public void deleteRecord(Long clmId, Long recId) {
@@ -174,6 +107,22 @@ public class ClaimService {
         claim.getRecords().remove(record);
         claimRepository.save(claim);
         recordRepository.delete(record);
+    }
+
+    private Department getDepartment(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+        }
+        return null;
+    }
+
+    private AppUser getUser(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername());
+        }
+        return null;
     }
 
 }

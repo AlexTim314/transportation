@@ -1,43 +1,37 @@
 <div class="tab-list4" id="tab-list4" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
         <div class="table-header table-header-plan clearfix">
-            <input type="search" placeholder="Поиск">	
+            <input type="search" placeholder="Поиск" ng-model="search">	
         </div>
         <div class="height-wrapper">    	
             <table class="table-transport ">
                 <tr>
                     <th style="width:10%;">
                         <label class="custom-checkbox">
-                            <input type="checkbox" >
+                            <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAll()">
                             <span class="checkmark"></span>
                         </label> 
                     </th>
                     <th style="width:20%;">Название</th>
                     <th style="width:60%;">Маршрут</th>
                     <th style="width:10%;">
-                        <i title="Добавить маршрут" class="fas fa-lg fa-plus-circle" onclick="formOpen('formRoute')"></i>
-                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i></th> 			  					  	
+                        <i title="Добавить маршрут" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i>
+                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete()"></i></th> 			  					  	
                 </tr>
-                <tr>	
+                <tr ng-repeat="tmpl in ctrl.routeTemplates| orderBy:'name'| filter: search">	
                     <td>
                         <label class="custom-checkbox">
-                            <input type="checkbox" >
+                            <input type="checkbox" ng-model="tmpl.checked">
                             <span class="checkmark"></span>
                         </label> 
                     </td>
-                    <td>На пл.1</td>
+                    <td>{{tmpl.name}}</td>
                     <td>
-                        <span class="route-tag">Пл.10</span>
-                        <span class="route-tag">Пл.23</span>
-                        <span class="route-tag">КАЗ</span>
-                        <span class="route-tag">Пл.18</span>
-                        <span class="route-tag">Пл.1</span>	
+                        <span class="route-tag" title="{{tsk.workName}}" ng-repeat="tsk in tmpl.routeTasks">{{tsk.place.name}}</span>
                     <td>
-                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formRoute')" title="Изменить"></i>	
+                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(tmpl)" title="Изменить"></i>	
                     </td>
-
                 </tr>
-
 
             </table>
         </div>
