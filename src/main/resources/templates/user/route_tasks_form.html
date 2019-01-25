@@ -12,7 +12,7 @@
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit" ng-click="ctrl.addRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>Добавить</div>
+            <div class="btn edit" ng-click="ctrl.submitRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>{{ctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
         </div>
     </div>
     <div class="small-height-wrapper">	

@@ -6,6 +6,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+        self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.newClaims = [];
         self.routeTasks = [];
@@ -120,10 +121,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.updateClaim = function (claim) {
-            for (var i = 0; i <claim.records.length; i++) {
+            for (var i = 0; i < claim.records.length; i++) {
                 claim.records[i].id = null;
             }
-            for (var i = 0; i <claim.routeTasks.length; i++) {
+            for (var i = 0; i < claim.routeTasks.length; i++) {
                 claim.routeTasks[i].id = null;
             }
             menu_close();
@@ -194,7 +195,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = self.claim.routeTasks.length + 1;
+            rt.orderNum = self.claim.routeTasks.length;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
@@ -277,8 +278,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
-            
+
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
+        };
+
+        self.resetRTaskForm = function () {
+            self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         };
 
         self.setClaimForTemp = function (claim) {
@@ -315,17 +320,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             console.log(self.record);
             edit_open();
         };
-        
+
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
             self.routeTask.workName = routeTask.workName;
             self.routeTask.place = routeTask.place;
             self.routeTask.routeTemplate = routeTask.routeTemplate;
+            self.temporaryRTask = routeTask;
         };
-        
+
         self.updateRTask = function () {
-            self.removeRTask(self.routeTask);
+            self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
             rt.orderNum = self.routeTask.orderNum;
             rt.workName = self.routeTask.workName;
@@ -334,15 +340,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
             self.claim.routeTasks.push(rt);
         };
-        
-//        self.submitRTask = function () {
-//            if (self.routeTask.id === null) {
-//                self.
-//            } else {
-//                self.
-//            }
-//            self.resetClaimForm();
-//        };
+
+        self.submitRTask = function () {
+            if (self.routeTask.id === null && self.routeTask.orderNum === '') {
+                self.addRTask();
+            } else {
+                self.updateRTask();
+            }
+            self.resetRTaskForm();
+        };
 
         self.submitClaim = function () {
             if (self.claim.id === null) {
@@ -352,8 +358,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
-        
-        
+
+
 
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
