@@ -14,5 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface RouteTemplateRepository extends JpaRepository<RouteTemplate, Long> {
     
     List<RouteTemplate> findByDepartmentOrDepartmentIsNull(Department department);
+    void deleteByIdIn(List<Long> routeTemplateIds);
 
 }

@@ -51,12 +51,4 @@ public class CarBossService {
         return null;
     }
 
-    private AppUser getUser(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername());
-        }
-        return null;
-    }
-
 }

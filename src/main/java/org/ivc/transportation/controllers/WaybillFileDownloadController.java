@@ -107,7 +107,7 @@ public class WaybillFileDownloadController {
             unexpectedNull("Водитель");
         }
         //TODO: добавить обработку случая, когда  Записей больше 1
-        Record record = dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
+        Record record = null;//dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
         Claim claim = dispatcherService.findClaimByRecord(record);
         LocalDateTime dateTime = appointment.getAppDateTime();
 
@@ -193,7 +193,7 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(vehicle.getFuel());
                                 break;
                             case заказчик:
-                                c.setCellValue(claim.getDepartment().getShortname() + " " 
+                                c.setCellValue(claim.getDepartment().getShortname() + " "
                                         + getCarBossNameWithInitials(claim.getCarBoss()));
                                 break;
                         }

@@ -2,9 +2,12 @@
     <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
     <div class="form-item">
         <label for="type">Место</label>
-        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.routeTask.place">
-        <option value="" disabled selected><--Выберите место--></option>
-        </select>
+        <input list="places-list" ng-model="pFilt">
+        <datalist id="places-list">
+            <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "ctrl.routeTask.place">
+                <option value="" disabled selected><--Выберите место--></option>
+            </select>
+        </datalist>
     </div>	
     <div class="form-item" style="margin-bottom:20px;"> 
 
@@ -12,7 +15,7 @@
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit" ng-click="ctrl.addRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>Добавить</div>
+            <div class="btn edit" ng-click="ctrl.submitRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>{{ctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
         </div>
     </div>
     <div class="small-height-wrapper">	
@@ -27,7 +30,7 @@
                 <td>{{routeTask.workName}}</td>
                 <td>
                     <i class="fas fa-times" ng-click="ctrl.removeRTask(routeTask)"></i>
-                    <i class="fas fa-edit"></i>
+                    <i class="fas fa-edit" ng-click="ctrl.tryToUpdateRTask(routeTask)"></i>
                 </td>	 					
             </tr>	 				
         </table>

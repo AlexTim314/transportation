@@ -166,7 +166,7 @@ public class PlanDownloadController {
         List<RowData> rowDataList = new LinkedList<>();
         for (Appointment a : appointments) {
             RowData rowData = new RowData();
-            Record record = dispatcherService.findRecordsByAppointmentGroup(a.getAppointmentGroup()).get(0);
+            Record record = null;//dispatcherService.findRecordsByAppointmentGroup(a.getAppointmentGroup()).get(0);
             Claim claim = dispatcherService.findClaimByRecord(record);
 
             rowData.carBoss = claim.getCarBoss().getFirstname();
