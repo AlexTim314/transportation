@@ -22,6 +22,19 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
+            
+            fetchСlaimTemplates: function () {
+                return $http.get('/transportation/user/claimTemplates')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching claimTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')

@@ -8,6 +8,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.newClaims = [];
+        self.claimTemplates = [];
         self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
@@ -32,6 +33,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+        
+        self.fetchClaimTemplates = function () {
+            ClaimsService.fetchСlaimTemplates()
+                    .then(
+                            function (d) {
+                                self.claimTemplates = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching ClaimTemplates');
+                            }
+                    );
+        };        
 
         self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
@@ -94,6 +108,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.fetchNewClaims();
+        self.fetchClaimTemplates();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
         self.fetchPlaces();
