@@ -14,5 +14,6 @@ import org.springframework.stereotype.Repository;
 public interface RecordRepository extends JpaRepository<Record, Long> {
     
     List<Record> findRecordsByAppointmentGroup(AppointmentGroup appointmentGroup);
+    void deleteByIdIn(List<Long> recordIds);
 
 }

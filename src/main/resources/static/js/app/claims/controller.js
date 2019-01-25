@@ -123,6 +123,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             for (var i = 0; i <claim.records.length; i++) {
                 claim.records[i].id = null;
             }
+            for (var i = 0; i <claim.routeTasks.length; i++) {
+                claim.routeTasks[i].id = null;
+            }
             menu_close();
             ClaimsService.updateClaim(claim)
                     .then(
@@ -312,6 +315,34 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             console.log(self.record);
             edit_open();
         };
+        
+        self.tryToUpdateRTask = function (routeTask) {
+            self.routeTask.id = routeTask.id;
+            self.routeTask.orderNum = routeTask.orderNum;
+            self.routeTask.workName = routeTask.workName;
+            self.routeTask.place = routeTask.place;
+            self.routeTask.routeTemplate = routeTask.routeTemplate;
+        };
+        
+        self.updateRTask = function () {
+            self.removeRTask(self.routeTask);
+            var rt = {id: null};
+            rt.orderNum = self.routeTask.orderNum;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+
+            self.claim.routeTasks.push(rt);
+        };
+        
+//        self.submitRTask = function () {
+//            if (self.routeTask.id === null) {
+//                self.
+//            } else {
+//                self.
+//            }
+//            self.resetClaimForm();
+//        };
 
         self.submitClaim = function () {
             if (self.claim.id === null) {
@@ -321,6 +352,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
+        
+        
 
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -51,6 +52,7 @@ public class ClaimService {
 
     @Autowired
     CarBossRepository carBossRepository;
+    
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
@@ -140,18 +142,18 @@ public class ClaimService {
 
     public Claim saveClaim(Principal principal, Claim claim) {
         if (claim.getId() == null) {
-            claim.setCreationDate(LocalDateTime.now());              
+            claim.setCreationDate(LocalDateTime.now());
         } else {
-            claimRepository.findById(claim.getId())
-                    .get()
-                    .getRecords()
-                    .forEach(recordRepository::delete);
-            claimRepository.findById(claim.getId())
-                    .get()
-                    .getRouteTasks()
-                    .forEach(routeTaskRepository::delete);
+            recordRepository.deleteByIdIn(
+                claimRepository.findById(claim.getId()).get().getRecords()
+                .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
+            routeTaskRepository.deleteByIdIn(
+                claimRepository.findById(claim.getId()).get().getRouteTasks()
+                .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
         }
-        claim.setCreator(getUser(principal)); 
+        claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));
         return claimRepository.save(claim);
     }
@@ -162,10 +164,8 @@ public class ClaimService {
         }
     }
 
-    public void deleteClaims(List<Long> cl) {
-        for (int i = 0; i < cl.size(); i++) {
-            claimRepository.deleteById(cl.get(i));
-        }
+    public void deleteClaims(List<Long> claimIds) {
+        claimRepository.deleteByIdIn(claimIds);
     }
 
     public void deleteRecord(Long clmId, Long recId) {
