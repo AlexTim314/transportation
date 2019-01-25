@@ -52,8 +52,6 @@ public class ClaimService {
     @Autowired
     CarBossRepository carBossRepository;
     
-    @Autowired
-    RouteTaskRepository routeTaskRepository;
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
