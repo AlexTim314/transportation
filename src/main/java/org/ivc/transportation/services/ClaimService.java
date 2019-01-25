@@ -52,7 +52,6 @@ public class ClaimService {
 
     @Autowired
     CarBossRepository carBossRepository;
-    
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
@@ -96,16 +95,20 @@ public class ClaimService {
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
         if (routeTemplate.getId() != null) {
-            routeTemplateRepository.findById(routeTemplate.getId())
-                    .get()
-                    .getRouteTasks()
-                    .forEach(routeTaskRepository::delete);
+            routeTaskRepository.deleteByIdIn(
+                    routeTemplateRepository.findById(routeTemplate.getId()).get().getRouteTasks()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
         }
         return routeTemplateRepository.save(routeTemplate);
     }
 
     public void deleteRouteTemplate(RouteTemplate routeTemplate) {
         routeTemplateRepository.delete(routeTemplate);
+    }
+
+    public void deleteRouteTemplates(List<Long> routeTemplateIds) {
+        routeTemplateRepository.deleteByIdIn(routeTemplateIds);
     }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
@@ -145,12 +148,12 @@ public class ClaimService {
             claim.setCreationDate(LocalDateTime.now());
         } else {
             recordRepository.deleteByIdIn(
-                claimRepository.findById(claim.getId()).get().getRecords()
-                .stream().map(u -> u.getId()).collect(Collectors.toList())
+                    claimRepository.findById(claim.getId()).get().getRecords()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
             );
             routeTaskRepository.deleteByIdIn(
-                claimRepository.findById(claim.getId()).get().getRouteTasks()
-                .stream().map(u -> u.getId()).collect(Collectors.toList())
+                    claimRepository.findById(claim.getId()).get().getRouteTasks()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
             );
         }
         claim.setCreator(getUser(principal));
@@ -159,13 +162,11 @@ public class ClaimService {
     }
 
     public void deleteClaim(Claim claim) {
-        if (claim.getAffirmationDate() == null) {
-            claimRepository.delete(claim);
-        }
+        claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());
     }
 
     public void deleteClaims(List<Long> claimIds) {
-        claimRepository.deleteByIdIn(claimIds);
+        claimRepository.deleteByIdInAndAffirmationDateIsNull(claimIds);
     }
 
     public void deleteRecord(Long clmId, Long recId) {
