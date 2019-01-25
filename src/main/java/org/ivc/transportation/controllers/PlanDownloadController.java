@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
@@ -42,6 +44,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +55,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Класс для формирования и отправки пользователю файла с планом выхода автомобилей.
+ * Класс для формирования и отправки пользователю файла с планом выхода
+ * автомобилей.
+ *
  * @author alextim
  */
 @Controller
@@ -72,6 +78,8 @@ public class PlanDownloadController {
         System.out.println("plan.docx write");
 
         XWPFDocument document = new XWPFDocument();
+
+        //--- Установка Альбомной ориентации листа
         CTDocument1 doc = document.getDocument();
         CTBody body = doc.getBody();
         CTSectPr section = body.addNewSectPr();
@@ -87,31 +95,39 @@ public class PlanDownloadController {
         pageSize.setW(BigInteger.valueOf(842 * 20));
         pageSize.setH(BigInteger.valueOf(595 * 20));
 
+        //end--- Установка Альбомной ориентации листа
         File file = File.createTempFile("plan", LocalDate.now().toString());
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         //------------------ Шапка
-        XWPFTable table = document.createTable();
-        table.setBottomBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFF00");
+        XWPFTable table = document.createTable(1, 2);
+        table.setBottomBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
+        table.setTopBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
 
         XWPFTableRow row = table.getRow(0);
         XWPFTableCell cell = row.addNewTableCell();
-        cell.setWidth("30");
+        /* CTTcPr ctTcPr = cell.getCTTc().addNewTcPr();
+        CTTblWidth cellWidth = ctTcPr.addNewTcW();
+        cellWidth.setW(BigInteger.valueOf(1440*1/4));*/  // sets width
+        //table.getCTTbl().addNewTblGrid().addNewGridCol().setW(BigInteger.valueOf(*1440));
+        //cell.setWidth("3.00%");
         //XWPFParagraph paragraph = ;//document.createParagraph();
 
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
+        textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО
-        textToParagraph(cell.addParagraph(), LocalDate.now().toString(), 12, ParagraphAlignment.LEFT); //TODO: формат 25 января 2019
+        LocalDate now = LocalDate.now(); //TODO: уточнить, что допустимо время текущего момента, а не брать из заявки, например        
+        textToParagraph(cell.addParagraph(), formateDate(now), 12, ParagraphAlignment.LEFT);        
 
         //END------------------ Шапка
         //---------------- Заполнение файла
         XWPFParagraph paragraph = document.createParagraph();
         paragraph.setSpacingBefore(200);
         textToParagraph(paragraph, "ПЛАН", "Times New Roman", 12, true, ParagraphAlignment.CENTER);
-        //TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
+        String planeDate = formateDate(now.plusDays(1));//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
         textToParagraph(document.createParagraph(), "выхода автомобилей Комплекса автотранспортного обеспечения на "
-                + LocalDate.now().plusDays(1).toString(), "Times New Roman", 12, true, ParagraphAlignment.CENTER);
+                + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
 
         table = document.createTable();
         row = table.getRow(0);
@@ -136,6 +152,8 @@ public class PlanDownloadController {
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Фамилия \n" + "водителя",
                 "Times New Roman", fontSize, isBold, parAligCenter);
+
+        row.getCell(0).setWidth("3.00%");
 
         CTHMerge hMergeRestart = CTHMerge.Factory.newInstance();
         hMergeRestart.setVal(STMerge.RESTART);
@@ -180,7 +198,7 @@ public class PlanDownloadController {
 
             rowDataList.add(rowData);
         }
-        
+
         //-----------тестовые данные для проверки отображения
         RowData rd = new RowData();
         rd.carBoss = "КарБосс К.Б.";
@@ -192,9 +210,9 @@ public class PlanDownloadController {
         rd.transportDepNumber = "4";
         rd.vehicleModelName = "Газ 2121";
         rd.vehicleNumber = "Е777КХ";
-        
+
         rowDataList.add(rd);
-        
+
         rd = new RowData();
         rd.carBoss = "КарБосс К.Б.";
         rd.departmentName = "ЦИ-1";
@@ -205,9 +223,9 @@ public class PlanDownloadController {
         rd.transportDepNumber = "4";
         rd.vehicleModelName = "Газ 2121";
         rd.vehicleNumber = "Е777КХ";
-        
+
         rowDataList.add(rd);
-        
+
         rd = new RowData();
         rd.carBoss = "КарБосс К.Б.";
         rd.departmentName = "ЦИ-2";
@@ -218,9 +236,9 @@ public class PlanDownloadController {
         rd.transportDepNumber = "4";
         rd.vehicleModelName = "Газ 2121";
         rd.vehicleNumber = "Е777КХ";
-        
+
         rowDataList.add(rd);
-        
+
         rd = new RowData();
         rd.carBoss = "LikeABoss L.B.";
         rd.departmentName = "ЦИ-2";
@@ -231,13 +249,10 @@ public class PlanDownloadController {
         rd.transportDepNumber = "4";
         rd.vehicleModelName = "Газ 2121";
         rd.vehicleNumber = "Е777КХ";
-        
-        rowDataList.add(rd);
-                
-                
-        
-        //end-----------тестовые данные для проверки
 
+        rowDataList.add(rd);
+
+        //end-----------тестовые данные для проверки
         rowDataList.sort((r1, r2) -> {
             return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы сначала те, что должны быть первыми, потом алфавитный
         });
@@ -258,7 +273,7 @@ public class PlanDownloadController {
 
             row = table.createRow();
             isBold = true;
-            fontSize = 8;            
+            fontSize = 8;
             ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
             textToParagraph(row.getCell(0).getParagraphs().get(0), Integer.toString(number++),
                     "Times New Roman", fontSize, isBold, parAligCenter);
@@ -288,7 +303,7 @@ public class PlanDownloadController {
         //-------------- отправка файла
         try {
             MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-            String fileName = "plan.docx";
+            String fileName = "plan" + now.toString() + ".docx";
             MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
 
             response.setContentType(mediaType.getType());
@@ -302,7 +317,7 @@ public class PlanDownloadController {
                 int bytesRead = 0;
                 while ((bytesRead = inStream.read(buffer)) != -1) {
 
-                    System.out.println("Waybill downloading..(" + bytesRead + "bytes)");
+                    System.out.println("Plan downloading..(" + bytesRead + "bytes)");
                     outStream.write(buffer, 0, bytesRead);
                 }
 
@@ -313,6 +328,12 @@ public class PlanDownloadController {
             throw new RuntimeException("IOError writing file to output stream");
         }
 
+    }
+
+    private String formateDate(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern("« dd » "
+                + date.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru"))
+                + "  YYYY г."));
     }
 
     private class RowData {
@@ -347,6 +368,5 @@ public class PlanDownloadController {
         run.setFontSize(fontSize);
         run.setText(text);
     }
-
 
 }

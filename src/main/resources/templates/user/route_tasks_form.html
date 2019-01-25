@@ -2,19 +2,21 @@
     <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
     <div class="form-item">
         <label for="type">Место</label>
-
-        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.routeTask.place">
+        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "ctrl.routeTask.place">
             <option value="" disabled selected><--Выберите место--></option>
         </select>
-
     </div>	
     <div class="form-item" style="margin-bottom:20px;"> 
 
         <label for="work">Работы</label>
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
+        <div class="left-block" style="margin-top:10px;">	
+            <div ng-show="ctrl.routeTask.id!=null" class="btn delete" ng-click="ctrl.resetRTaskForm()">Сброс</div>
+        </div>
+        
         <div class="right-block" style="margin-top:10px;">	
-            <div class="btn edit" ng-click="ctrl.submitRTask()"><i class="fas fa-plus-circle" style="cursor:pointer;" ></i>{{ctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
+            <div class="btn edit" ng-click="ctrl.submitRTask()"><i class="{{ctrl.routeTask.id===null?'fas fa-plus-circle':'fas fa-edit'}}" style="cursor:pointer;" ></i>{{ctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
         </div>
     </div>
     <div class="small-height-wrapper">	

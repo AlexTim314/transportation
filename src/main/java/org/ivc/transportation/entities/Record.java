@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.utils.EntitiesUtils.RecordStatus;
 
 /**
  *
@@ -44,12 +43,6 @@ public class Record implements Serializable {
 
     @Column(name = "end_date")
     private ZonedDateTime endDate;
-
-    @Column(name = "status")
-    private RecordStatus status;
-
-    @Column(name = "note", length = 255)
-    private String note;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Appointment> appointments;
