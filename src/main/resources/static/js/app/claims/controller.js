@@ -133,6 +133,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+        
+        self.saveClaimTemplate = function(){
+          if (self.claim.templateName === null) {
+              alert('Имя шаблона не может быть пустым!');
+          } else {
+              self.createClaim(); 
+          }
+        };
 
         self.updateClaim = function (claim) {
             for (var i = 0; i <claim.records.length; i++) {
@@ -305,6 +313,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.checkAll = function () {
             for (var i = 0; i < self.newClaims.length; i++) {
                 self.newClaims[i].checked = self.all;
+            }
+        };
+        
+        self.checkAllTemplates = function () {
+            for (var i = 0; i < self.claimTemplates.length; i++) {
+                self.claimTemplates[i].checked = self.all;
             }
         };
 

@@ -115,6 +115,8 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
+            
+            
 
 //            createRecord: function (record) {
 //                return $http.post('/transportation/user/record_create',
