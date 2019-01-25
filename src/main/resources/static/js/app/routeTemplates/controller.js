@@ -118,6 +118,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
 
         self.prepareRoute = function () {
             for (var i = 0; i < self.routeTemplate.routeTasks.length; i++) {
+                self.routeTemplate.routeTasks[i].id = null;
                 self.routeTemplate.routeTasks[i].orderNum = i;
             }
         };
