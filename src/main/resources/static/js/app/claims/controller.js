@@ -151,14 +151,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.deleteClaim = function () {
+        self.deleteClaims = function () {
             var delIds = [];
             for (var i = 0; i < self.newClaims.length; i++) {
                 if (self.newClaims[i].checked) {
                     delIds.push(self.newClaims[i].id);
                 }
             }
-            ClaimsService.deleteClaim(delIds)
+            ClaimsService.deleteClaims(delIds)
                     .then(
                             self.fetchNewClaims,
                             function (errResponse) {

@@ -93,6 +93,16 @@ public class ClaimService {
         return claimRepository.save(claim);
     }
 
+    public void affirmClaims(Principal principal, List<Long> claimIds) {
+        AppUser affirmator = getUser(principal);
+        claimIds.forEach(id -> {
+            Claim claim = claimRepository.findById(id).get();
+            claim.setAffirmator(affirmator);
+            claim.setAffirmationDate(LocalDateTime.now());
+            claimRepository.save(claim);
+        });
+    }
+
     public void deleteClaim(Claim claim) {
         claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());
     }

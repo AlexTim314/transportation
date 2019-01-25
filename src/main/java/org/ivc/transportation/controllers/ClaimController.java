@@ -72,8 +72,14 @@ public class ClaimController {
         return claimService.saveClaim(principal, claim);
     }
 
+    @PutMapping("/user/claims_affirm")
+    public ResponseEntity<String> affirmClaims(Principal principal, @RequestBody List<Long> claimIds) {
+        claimService.affirmClaims(principal, claimIds);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/user/claims_delete")
-    public ResponseEntity<String> deleteClaim(@RequestBody List<Long> claimIds) {
+    public ResponseEntity<String> deleteClaims(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
     }
