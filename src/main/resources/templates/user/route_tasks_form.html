@@ -2,12 +2,11 @@
     <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
     <div class="form-item">
         <label for="type">Место</label>
-        <input list="places-list" ng-model="pFilt">
-        <datalist id="places-list">
-            <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "ctrl.routeTask.place">
-                <option value="" disabled selected><--Выберите место--></option>
-            </select>
-        </datalist>
+
+        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name' track by p.id" ng-model = "ctrl.routeTask.place">
+            <option value="" disabled selected><--Выберите место--></option>
+        </select>
+
     </div>	
     <div class="form-item" style="margin-bottom:20px;"> 
 
