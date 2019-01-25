@@ -1,7 +1,7 @@
 <div class="clearfix" style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
 
     <div class="table-header clearfix">
-        <input type="search">
+        <input type="search" ng-model="search">
     </div>
     <div class="height-wrapper"> 
         <table class="table-record" id="tbl1">
@@ -21,11 +21,11 @@
                 <th>
                     <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
                     <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
-                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.confirmClaims()"></i>
+                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()"></i>
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims">
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims| filter: search">
                 <td ng-click="ctrl.rowClick(claim)">
                     <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>

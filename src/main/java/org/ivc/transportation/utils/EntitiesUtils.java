@@ -31,14 +31,6 @@ public class EntitiesUtils {
         другое;
     }
 
-    public static enum RecordStatus {
-        CREATED,
-        IN_PROGRESS,
-        READY,
-        COMPLETED,
-        CANCELED;
-    }
-
     public static enum AppointmentStatus {
         IN_PROGRESS,
         READY,

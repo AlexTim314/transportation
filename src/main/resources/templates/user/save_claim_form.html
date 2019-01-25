@@ -1,5 +1,5 @@
 <div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times" onclick="menu_close()"></i>
+    <i class="fas fa-times" ng-click="ctrl.resetClaimForm" onclick="menu_close()"></i>
     <form>
         <!-- Для создания по шаблону -->
         <section  class="section-template">
@@ -123,7 +123,7 @@
                 </div>
                 <div class="left-block-tag">
                     <div class="route-tag" ng-repeat="rec in ctrl.claim.records| orderBy:'startDate'">{{rec.startDate| date:'dd.MM.yyyy'}}
-                        <span class="fas fa-times " ng-click = "ctrl.removeRec(rec)"></span>
+                        <span class="fas fa-times" ng-click = "ctrl.removeRec(rec)"></span>
                     </div>
                 </div>
             </div> 					
@@ -133,8 +133,6 @@
 
         <div class="form-item">
             <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
-<!--            <input type="submit" class="btn submit" id="btn-add-edit" ng-click="ctrl.createClaim()">-->
-
         </div>
 
     </form>
