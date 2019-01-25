@@ -95,10 +95,10 @@ public class ClaimService {
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
         if (routeTemplate.getId() != null) {
-            routeTemplateRepository.findById(routeTemplate.getId())
-                    .get()
-                    .getRouteTasks()
-                    .forEach(routeTaskRepository::delete);
+            routeTaskRepository.deleteByIdIn(
+                routeTemplateRepository.findById(routeTemplate.getId()).get().getRouteTasks()
+                .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
         }
         return routeTemplateRepository.save(routeTemplate);
     }
