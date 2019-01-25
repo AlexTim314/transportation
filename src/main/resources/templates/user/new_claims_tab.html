@@ -45,7 +45,7 @@
                     <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>
                 <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                    <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
                     <!--<i title="Сохранить" class="fas fa-lg fa-save"></i>-->
                     <i title="Сохранить как шаблон" class="fas fa-lg fa-save" ng-click="ctrl.setClaimForTemp(claim)"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  

@@ -14,6 +14,7 @@ import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.RouteTemplateRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class ClaimService {
 
     @Autowired
     RecordRepository recordRepository;
+
+    @Autowired
+    RouteTaskRepository routeTaskRepository;
 
     @Autowired
     RouteTemplateRepository routeTemplateRepository;
@@ -89,6 +93,12 @@ public class ClaimService {
     }
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
+        if (routeTemplate.getId() != null) {
+            routeTemplateRepository.findById(routeTemplate.getId())
+                    .get()
+                    .getRouteTasks()
+                    .forEach(routeTaskRepository::delete);
+        }
         return routeTemplateRepository.save(routeTemplate);
     }
 
@@ -130,15 +140,19 @@ public class ClaimService {
 
     public Claim saveClaim(Principal principal, Claim claim) {
         if (claim.getId() == null) {
-            claim.setCreationDate(LocalDateTime.now());
-            claim.setCreator(getUser(principal));
-            claim.setDepartment(getDepartment(principal));
+            claim.setCreationDate(LocalDateTime.now());              
         } else {
             claimRepository.findById(claim.getId())
                     .get()
                     .getRecords()
                     .forEach(recordRepository::delete);
+            claimRepository.findById(claim.getId())
+                    .get()
+                    .getRouteTasks()
+                    .forEach(routeTaskRepository::delete);
         }
+        claim.setCreator(getUser(principal)); 
+        claim.setDepartment(getDepartment(principal));
         return claimRepository.save(claim);
     }
 
