@@ -9,6 +9,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.newClaims = [];
+        self.claimTemplates = [];
         self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
@@ -33,6 +34,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+        
+        self.fetchClaimTemplates = function () {
+            ClaimsService.fetchСlaimTemplates()
+                    .then(
+                            function (d) {
+                                self.claimTemplates = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching ClaimTemplates');
+                            }
+                    );
+        };        
 
         self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
@@ -95,6 +109,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.fetchNewClaims();
+        self.fetchClaimTemplates();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
         self.fetchPlaces();
@@ -118,6 +133,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while creating Claim.');
                             }
                     );
+        };
+        
+        self.saveClaimTemplate = function(){
+          if (self.claim.templateName === null) {
+              alert('Имя шаблона не может быть пустым!');
+          } else {
+              self.createClaim(); 
+          }
         };
 
         self.updateClaim = function (claim) {
@@ -298,6 +321,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.checkAll = function () {
             for (var i = 0; i < self.newClaims.length; i++) {
                 self.newClaims[i].checked = self.all;
+            }
+        };
+        
+        self.checkAllTemplates = function () {
+            for (var i = 0; i < self.claimTemplates.length; i++) {
+                self.claimTemplates[i].checked = self.all;
             }
         };
 
