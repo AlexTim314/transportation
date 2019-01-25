@@ -52,6 +52,7 @@ public class ClaimService {
 
     @Autowired
     CarBossRepository carBossRepository;
+    
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
