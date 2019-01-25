@@ -4,22 +4,28 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
+        self.record = {id: null, startDate: "", endDate: "", entranceDate: "", appointments: []};
+        self.appointment = {id: null, vehicleModel: {}, vehicle: {}, driver: {}};
+        self.vehicleModel = {id: null, modelName: ''};
+        self.vehicle = {id: null, number: ''};
+        self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.newClaims = [];
+        self.affirmedClaims = [];
         self.claimTemplates = [];
+        self.appointments = [];
         self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
         self.places = [];
         self.bosses = [];
-        self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
         self.isOtherDay = false;
         self.isDelete = false;
-        var taskNum;
 
 
         self.fetchNewClaims = function () {
@@ -30,7 +36,20 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.log(d);
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Claims');
+                                console.error('Error while fetching NewClaims');
+                            }
+                    );
+        };
+        
+        self.fetchAffirmedClaims = function () {
+            ClaimsService.fetchAffirmedClaims()
+                    .then(
+                            function (d) {
+                                self.affirmedClaims = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching AffirmedClaims');
                             }
                     );
         };

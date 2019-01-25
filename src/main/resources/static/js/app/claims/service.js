@@ -23,6 +23,19 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         );
             },
             
+            fetchAffirmedClaims: function () {
+                return $http.get('/transportation/user/affirmedClaims')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching affirmedClaims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchСlaimTemplates: function () {
                 return $http.get('/transportation/user/claimTemplates')
                         .then(

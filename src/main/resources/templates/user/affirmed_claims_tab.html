@@ -8,7 +8,7 @@
                 <span class="filter-elem edit">За неделю</span>
                 <span class="filter-elem edit">Все</span>
             </div>
-            <input type="search">
+            <input type="search" ng-model="searchAffirm">
         </div>
         <div class="height-wrapper"> 
             <table class="table-record" id="tbl2">
@@ -16,7 +16,7 @@
                     <th></th>
                     <th>
                         <label class="custom-checkbox">
-                            <input type="checkbox" >
+                            <input type="checkbox">
                             <span class="checkmark"></span>
                         </label>
                     </th>
@@ -29,37 +29,37 @@
                     </th>
                 </tr>
 
-                <tr class="activeRow">
-                    <td >
-                        <i class="fas  fa-2x fa-caret-right"></i>
+                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| filter: searchAffirm">
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
+                        <i class="{{affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
 
                     </td>
-                    <td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
                         <label class="custom-checkbox">
                             <input type="checkbox" >
                             <span class="checkmark"></span>
                         </label>	
                     </td>
-                    <td class="counter_record">№103 22.12.2018
-                        <span title="Число записей">1</span>
+                    <td class="counter_record" ng-click="ctrl.rowClick(affirmedClaim)">№{{affirmedClaim.id}} {{affirmedClaim.creationDate| date:'dd.MM.yyyy'}} 
+                        <span title="Число записей">{{affirmedClaim.records.length}}</span>
                     </td>
-                    <td>{{record}}</td>
-                    <td>{{record.datetime}}</td>
-                    <td></td>
-                    <td>
-                        <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>  			
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.specialization}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.vehicleType.typeName}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.carBoss.firstname}} {{affirmedClaim.carBoss.name}} {{affirmedClaim.carBoss.surname}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
+                        <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                     </td>
                     <td style="position: relative;">	  						
                         <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>
                         <div class="record-status">
-                            <div>Готово: 1</div>
+                            <div>Готово: 0</div>
                             <div>Не готово: 3</div>
                             <div>Отменено: 1</div>
                         </div>  
                     </td>				  				
 
                 </tr>
-                <tr class="hiddenRow collapseRow">
+                <tr class="hiddenRow" ng-show="affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible" ng-repeat-end>
                     <td colspan="8">
 
                         <table class="table-claim">
@@ -74,51 +74,22 @@
                                 <th>Статус</th>	
                                 <th></th>			  				
                             </tr>
-                            <tr>
-                                <td>22.12.2018</td>
-                                <td>{{record.datetime}}</td>
-                                <td>{{record.timeDelivery}}</td>
-                                <td>{{record.carBoss}}</td>  
-                                <td>{{record.datetime}}
-
-                                </td>
-                                <td>{{record.timeDelivery}}                                  </td>
+                            <tr ng-repeat="record in affirmedClaim.records| orderBy: 'startDate'">
+                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                                <td>{{record.startDate| date:'HH:mm'}}</td>
+                                <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
+                                <td>{{record.appointments[0].vehicleModel.modelName}}</td>
+                                <td>{{record.appointments[0].vehicle.number}}</td>
+                                <td></td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
-                                    Серикбай С.С.
+                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{record.appointments[0].driver.phone}} </span></i>
+                                    {{record.appointments[0].driver.firstname}} {{record.appointments[0].driver.name.length[1]}}.{{record.appointments[0].driver.surname.length[1]}}.
                                 </td>
                                 <td>
                                     <span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
-                            </tr>
-                            <tr>
-                                <td>{{record.type}}</td>
-                                <td>{{record.datetime}}</td>
-                                <td>{{record.timeDelivery}}</td>
-                                <td>{{record.carBoss}}</td>  
-                                <td>{{record.datetime}}</td>
-                                <td>{{record.timeDelivery}}</td>
-                                <td class="td-relative">
-                                </td>
-                                <td>
-                                    <span class="claim-status"><i class="fas fa-clock"></i>В обработке</span>
-                                </td> 
-                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
-                            </tr>
-                            <tr>
-                                <td>{{record.type}}</td>
-                                <td>{{record.datetime}}</td>
-                                <td>{{record.timeDelivery}}</td>
-                                <td>{{record.carBoss}}</td>  
-                                <td>{{record.datetime}}</td>
-                                <td>{{record.timeDelivery}}</td>
-                                <td class="td-relative">
-                                </td>
-                                <td>
-                                    <span class="claim-status cancel-status"><i class="fas fa-ban"></i>Отменено</span>
-                                </td>
-                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>           
                             </tr>
                         </table>
                     </td>
