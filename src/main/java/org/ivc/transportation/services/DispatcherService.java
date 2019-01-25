@@ -5,8 +5,6 @@
  */
 package org.ivc.transportation.services;
 
-import java.util.List;
-import org.ivc.transportation.entities.AppointmentGroup;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.ClaimRepository;
@@ -22,20 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class DispatcherService {
-    
+
     @Autowired
     private RecordRepository recordRepository;
-    
+
     @Autowired
     private ClaimRepository claimRepository;
-    
-    public List<Record> findRecordsByAppointmentGroup(AppointmentGroup appointmentGroup){
-        return recordRepository.findRecordsByAppointmentGroup(appointmentGroup);
-    }
-    
-    public Claim findClaimByRecord(Record record){
+
+    public Claim findClaimByRecord(Record record) {
         return claimRepository.findByRecords(record);
     }
-            
-    
+
 }

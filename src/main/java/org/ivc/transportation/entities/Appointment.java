@@ -23,8 +23,8 @@ import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
-@ToString(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
+@EqualsAndHashCode(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "creator"})
+@ToString(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "creator"})
 @Entity
 @Table(name = "appointment")
 public class Appointment implements Serializable {
@@ -59,6 +59,6 @@ public class Appointment implements Serializable {
     private VehicleModel vehicleModel;
 
     @ManyToOne
-    private AppointmentGroup appointmentGroup;
+    private AppUser creator;
 
 }
