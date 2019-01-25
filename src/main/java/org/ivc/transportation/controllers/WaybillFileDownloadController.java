@@ -109,7 +109,7 @@ public class WaybillFileDownloadController {
         //TODO: добавить обработку случая, когда  Записей больше 1
         Record record = null;//dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
         Claim claim = dispatcherService.findClaimByRecord(record);
-        LocalDateTime dateTime = appointment.getAppDateTime();
+        LocalDateTime dateTime = appointment.getCreationDate();
 
         try {
             Workbook workbook;
