@@ -13,6 +13,8 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
 
         self.routeTemplate = {id: null, name: null, routeTasks: []};
 
+        self.all = false;
+
         var idsArr = [];
 
         self.fetchDepartment = function () {
@@ -87,7 +89,6 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         };
 
         self.deleteRouteTemplates = function () {
-            console.log(idsArr);
             RouteTemplatesService.deleteRouteTemplates(idsArr)
                     .then(
                             function (d) {
@@ -153,8 +154,8 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         self.tryToDelete = function () {
             idsArr = [];
             for (var i = 0; i < self.routeTemplates.length; i++) {
-                if(self.routeTemplates[i].checked){
-                    idsArr.push(self.routeTemplates[i]);
+                if (self.routeTemplates[i].checked) {
+                    idsArr.push(self.routeTemplates[i].id);
                 }
             }
             formOpen('del-route-templ-confirm');
@@ -164,6 +165,12 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
             formClose('formRouteTemplate');
+        };
+
+        self.checkAll = function () {
+            for (var i = 0; i < self.routeTemplates.length; i++) {
+                self.routeTemplates[i].checked = self.all;
+            }
         };
 
     }]);

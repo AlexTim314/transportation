@@ -6,9 +6,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
-import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
+ *
  *
  * @author nodata
  */
@@ -64,16 +62,6 @@ public class ClaimController {
         return claimService.findClaimTemplatesByDepartment(principal);
     }
 
-    @GetMapping("/user/routeTemplates")
-    public List<RouteTemplate> getRouteTemplates(Principal principal) {
-        return claimService.findRouteTemplates(principal);
-    }
-
-    @GetMapping("/user/carBosses")
-    public List<CarBoss> getCarBosses(Principal principal) {
-        return claimService.findCarBossesByDepartment(principal);
-    }
-
     @PostMapping("/user/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return claimService.saveClaim(principal, claim);
@@ -84,47 +72,15 @@ public class ClaimController {
         return claimService.saveClaim(principal, claim);
     }
 
-    @DeleteMapping("/user/claim_delete")
-    public ResponseEntity<String> deleteClaim(Principal principal, @RequestBody List<Long> claimIds) {
+    @DeleteMapping("/user/claims_delete")
+    public ResponseEntity<String> deleteClaim(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/user/record_delete")
-    public ResponseEntity<String> deleteRecord(Principal principal, @RequestBody List<Long> ids) {
+    public ResponseEntity<String> deleteRecord(@RequestBody List<Long> ids) {
         claimService.deleteRecord(ids.get(0), ids.get(1));
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/user/routeTemplate_create")
-    public RouteTemplate createRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
-        return claimService.saveRouteTemplate(principal, routeTemplate);
-    }
-
-    @PutMapping("/user/routeTemplate_update")
-    public RouteTemplate updateRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
-        return claimService.saveRouteTemplate(principal, routeTemplate);
-    }
-
-    @DeleteMapping("/user/routeTemplates_delete")
-    public ResponseEntity<String> deleteRouteTemplates(Principal principal, @RequestBody RouteTemplate routeTemplate) {
-        claimService.deleteRouteTemplate(routeTemplate);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/user/carBoss_create")
-    public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
-        return claimService.saveCarBoss(principal, carBoss);
-    }
-
-    @PutMapping("/user/carBoss_update")
-    public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
-        return claimService.saveCarBoss(principal, carBoss);
-    }
-
-    @DeleteMapping("/user/carBoss_delete")
-    public ResponseEntity<String> deleteCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
-        claimService.deleteCarBoss(carBoss);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
