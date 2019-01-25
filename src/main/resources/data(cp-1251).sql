@@ -14,8 +14,11 @@ CREATE TABLE IF NOT EXISTS Place (
     PRIMARY KEY (id)
 );
 
-insert into Fuel(mark, type) values('аи', 0);
-insert into Fuel(mark, type) values('дт', 1);
+insert into Fuel(mark, type) values('АИ-80', 0);
+insert into Fuel(mark, type) values('АИ-92', 0);
+insert into Fuel(mark, type) values('АИ-95', 0);
+insert into Fuel(mark, type) values('ДТЛ', 1);
+insert into Fuel(mark, type) values('ДТЗ', 1);
 
 
 insert into Place(name, address) values('Аэропорт "Крайний"', null);
@@ -87,6 +90,7 @@ insert into Place(name, address) values('Пл. 254', null);
 insert into Place(name, address) values('Пл. 257А', null);
 insert into Place(name, address) values('Пл. 504', null);
 insert into Place(name, address) values('Пл. 504-3К', null);
+insert into Place(name, address) values('По указанию', null);
 
 
 CREATE TABLE IF NOT EXISTS Department (
@@ -142,6 +146,11 @@ insert into Department (shortname, fullname, address, phone) values('ЦИП ИК', 'Ц
         insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров - 50 чел.', 1, (select id from Place where name='Пл. 23'));
         insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
         insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров - 50 чел.', 2, (select id from Place where name='Пл. 10'));
+        insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
+    insert into Route_Template(name, department_id) values('По указанию', currval('department_id_seq'));
+        insert into Route_Task(work_name, order_num, place_id) values('Начальная точка', 0, (select id from Place where name='Пл. 10'));
+        insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
+        insert into Route_Task(work_name, order_num, place_id) values('Перевозка пассажиров', 1, (select id from Place where name='По указанию'));
         insert into route_template_route_tasks(route_template_id, route_tasks_id) values(currval('route_template_id_seq'), currval('route_task_id_seq'));
 insert into Department (shortname, fullname, address, phone) values('ЦОКИ РКТ', 'Центр организации и контроля испытаний ракетно-космической техники', null, null);
 insert into Department (shortname, fullname, address, phone) values('ЭУ', 'Энергоуправление', null, null);
@@ -292,3 +301,64 @@ insert into Vehicle_Type(type_name, specialization) values('Водовоз', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МДК-433362', (select id from Vehicle_Type where type_name='Водовоз'));
 insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE-325 J', (select id from Vehicle_Type where type_name='Экскаватор'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'user',
+    'Соколов Вячеслав Владимирович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_USER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'admin',
+    'Тимошенко Александр Александрович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_ADMIN');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'manager',
+    'Соколов',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_MANAGER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'planner',
+    'Вячеслав',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_PLANNER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'dispatcher',
+    'Владимирович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 1'));
+insert into app_role(role_name) values('ROLE_DISPATCHER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into car_boss(firstname, name, surname, birthday, address, phone, post, department_id) values(
+    'Яковлев', 'Василий', 'Семёнович',
+    null,
+    null,
+    null,
+    'Начальник центра',
+    (select id from department where shortname='ЦИП ИК'));
+
+insert into car_boss(firstname, name, surname, birthday, address, phone, post, department_id) values(
+    'Бекеев', 'Александр', 'Константинович',
+    null,
+    null,
+    null,
+    'Главный инженер',
+    (select id from department where shortname='ЦИП ИК'));

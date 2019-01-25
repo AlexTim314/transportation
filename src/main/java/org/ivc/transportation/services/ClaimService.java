@@ -140,9 +140,7 @@ public class ClaimService {
 
     public Claim saveClaim(Principal principal, Claim claim) {
         if (claim.getId() == null) {
-            claim.setCreationDate(LocalDateTime.now());
-            claim.setCreator(getUser(principal));
-            claim.setDepartment(getDepartment(principal));
+            claim.setCreationDate(LocalDateTime.now());              
         } else {
             claimRepository.findById(claim.getId())
                     .get()
@@ -153,6 +151,8 @@ public class ClaimService {
                     .getRouteTasks()
                     .forEach(routeTaskRepository::delete);
         }
+        claim.setCreator(getUser(principal)); 
+        claim.setDepartment(getDepartment(principal));
         return claimRepository.save(claim);
     }
 
