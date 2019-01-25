@@ -20,4 +20,5 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     List<Claim> findByDepartmentAndTemplateNameIsNotNull(Department department); 
     List<Claim> findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(Department department, ZonedDateTime startDateStart, ZonedDateTime startDateEnd); 
     List<Claim> findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(Department department); 
+    void deleteByIdIn(List<Long> claimIds);
 }
