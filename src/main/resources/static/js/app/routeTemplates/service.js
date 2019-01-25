@@ -80,17 +80,17 @@ App.factory('RouteTemplatesService', ['$http', '$q', '$document', function ($htt
                         );
             },
 
-            deleteRouteTemplate: function (routeTemplate) {
+            deleteRouteTemplates: function (idsArr) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/user/routeTemplate_delete',
-                    data: JSON.stringify(routeTemplate),
+                    url: '/transportation/user/routeTemplates_delete',
+                    data: JSON.stringify(idsArr),
                     headers: self.headers
                 }).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while deleting routeTemplate');
+                            console.error('Error while deleting routeTemplates');
                             return $q.reject(errResponse);
                         }
                 );

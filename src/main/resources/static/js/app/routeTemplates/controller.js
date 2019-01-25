@@ -13,6 +13,8 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
 
         self.routeTemplate = {id: null, name: null, routeTasks: []};
 
+        var idsArr = [];
+
         self.fetchDepartment = function () {
             RouteTemplatesService.fetchDepartment()
                     .then(
@@ -85,17 +87,17 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         };
 
         self.deleteRouteTemplates = function () {
-//            RouteTemplatesService.deleteRouteTemplate(self.routeTemplate)
-//                    .then(
-//                            function (d) {
-//                                self.routeTemplate = {id: null};
-//                                formClose('del-car-boss-confirm');
-//                                self.fetchRouteTemplates();
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while deleting RouteTemplate.');
-//                            }
-//                    );
+            console.log(idsArr);
+            RouteTemplatesService.deleteRouteTemplates(idsArr)
+                    .then(
+                            function (d) {
+                                formClose('del-route-templ-confirm');
+                                self.fetchRouteTemplates();
+                            },
+                            function (errResponse) {
+                                console.error('Error while deleting RouteTemplates.');
+                            }
+                    );
             formClose('del-route-templ-confirm');
         };
 
@@ -148,8 +150,13 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             formOpen('formRouteTemplate');
         };
 
-        self.tryToDelete = function (routeTemplate) {
-            self.routeTemplate = routeTemplate;
+        self.tryToDelete = function () {
+            idsArr = [];
+            for (var i = 0; i < self.routeTemplates.length; i++) {
+                if(self.routeTemplates[i].checked){
+                    idsArr.push(self.routeTemplates[i]);
+                }
+            }
             formOpen('del-route-templ-confirm');
         };
 

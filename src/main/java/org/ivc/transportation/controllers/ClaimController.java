@@ -106,8 +106,8 @@ public class ClaimController {
         return claimService.saveRouteTemplate(principal, routeTemplate);
     }
 
-    @DeleteMapping("/user/routeTemplate_delete")
-    public ResponseEntity<String> deleteRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+    @DeleteMapping("/user/routeTemplates_delete")
+    public ResponseEntity<String> deleteRouteTemplates(Principal principal, @RequestBody RouteTemplate routeTemplate) {
         claimService.deleteRouteTemplate(routeTemplate);
         return new ResponseEntity<>(HttpStatus.OK);
     }
