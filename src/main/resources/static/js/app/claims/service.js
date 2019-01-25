@@ -118,23 +118,24 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             
             
 
-//            createRecord: function (record) {
-//                return $http.post('/transportation/user/record_create',
-//                        JSON.stringify(record), {headers: self.headers})
-//                        .then(
-//                                function (response) {
-//                                    return response.data;
-//
-//                                },
-//                                function (errResponse) {
-//                                    console.error('Error while creating record');
-//                                    return $q.reject(errResponse);
-//                                }
-//                        );
-//            },
+
             updateClaim: function (claim) {
                 return $http.put('/transportation/user/claim_update',
                         JSON.stringify(claim), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating claim');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            affirmClaims: function (affIds) {
+                return $http.put('/transportation/user/claims_affirm',
+                        JSON.stringify(affIds), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

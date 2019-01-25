@@ -160,18 +160,20 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.confirmClaims = function () {
-            var confirmedClaims = [];
-            for (var ind in self.newClaims) {
-                var c = self.newClaims[ind];
-                if (c.affirmation) {
-                    confirmedClaims.push(c);
-                    console.log(c);
+        self.affirmClaims = function () {
+            var affIds = [];
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].checked) {
+                    affIds.push(self.newClaims[i].id);
                 }
             }
-            for (var i = 0; i < confirmedClaims.length; i++) {
-                self.updateClaim(confirmedClaims[i]);
-            }
+            ClaimsService.affirmClaims(affIds)
+                    .then(
+                            self.fetchNewClaims,
+                            function (errResponse) {
+                                console.error('Error while affirm Claim.');
+                            }
+                    );
         };
 
         self.deleteClaims = function () {
@@ -345,8 +347,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.startDate = new Date(claim.records[0].startDate);
             self.record.entranceDate = new Date(claim.records[0].entranceDate);
             self.record.endDate = new Date(claim.records[0].endDate);
-            console.log(claim.records[0]);
-            console.log(self.record);
             edit_open();
         };
 
