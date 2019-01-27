@@ -1,7 +1,7 @@
 <div class="clearfix" style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
-    
+
     <div class="table-header clearfix">
-        <input type="search">
+        <input type="search" ng-model="search">
     </div>
     <div class="height-wrapper"> 
         <table class="table-record" id="tbl1">
@@ -9,7 +9,7 @@
                 <th></th>
                 <th>
                     <label class="custom-checkbox">
-                        <input type="checkbox" >
+                        <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAll()">
                         <span class="checkmark"></span>
                     </label>
                 </th>
@@ -21,17 +21,17 @@
                 <th>
                     <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" onclick="menu_open()"></i>
                     <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
-                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" onclick=""></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>                                        
+                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()"></i>
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow" ng-repeat-start="claim in ctrl.claims">
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims| filter: search">
                 <td ng-click="ctrl.rowClick(claim)">
                     <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">
                     <label class="custom-checkbox">
-                        <input type="checkbox" >
+                        <input type="checkbox" ng-model="claim.checked">
                         <span class="checkmark"></span>
                     </label>	
                 </td>
@@ -40,14 +40,14 @@
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss}}</td>
+                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss.firstname}} {{claim.carBoss.name}} {{claim.carBoss.surname}}</td>
                 <td ng-click="ctrl.rowClick(claim)">
-                    <span class="route-tag td-relative" title="Перевозка пассажиров">Пл.10</span><span class="route-tag td-relative" tooltip="Перевозка пассажиров">Пл.23</span>  			
+                    <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>
                 <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                    <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
                     <!--<i title="Сохранить" class="fas fa-lg fa-save"></i>-->
-                    <i title="Сохранить как шаблон" class="fas fa-lg fa-save" onclick="formOpen('dialog-save')"></i>
+                    <i title="Сохранить как шаблон" class="fas fa-lg fa-save" ng-click="ctrl.setClaimForTemp(claim)"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  
                 </td>				  				
 
@@ -70,7 +70,7 @@
                             <td>{{record.startDate| date:'HH:mm'}}</td>
                             <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
                             <td>{{record.endDate| date:'HH:mm'}}</td>
-                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить"></i></td>
+                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td>
                         </tr>                                            
                     </table>
                 </td>

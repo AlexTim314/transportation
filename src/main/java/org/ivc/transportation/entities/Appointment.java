@@ -23,8 +23,8 @@ import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
-@ToString(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "appointmentGroup"})
+@EqualsAndHashCode(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "creator"})
+@ToString(exclude = {"driver", "vehicle", "mechanic", "transportDep", "vehicleModel", "creator"})
 @Entity
 @Table(name = "appointment")
 public class Appointment implements Serializable {
@@ -34,8 +34,8 @@ public class Appointment implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date_time", nullable = false)
-    private LocalDateTime appDateTime;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDate;
 
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;
@@ -59,6 +59,6 @@ public class Appointment implements Serializable {
     private VehicleModel vehicleModel;
 
     @ManyToOne
-    private AppointmentGroup appointmentGroup;
+    private AppUser creator;
 
 }

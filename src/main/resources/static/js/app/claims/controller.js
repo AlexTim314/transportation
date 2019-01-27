@@ -4,29 +4,92 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+        self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
-        self.claims = [];
+        self.record = {id: null, startDate: '', endDate: '', entranceDate: '', appointments: []};
+        self.appointment = {id: null, status: '', vehicleModel: {}, vehicle: {}, driver: {}};
+        self.vehicleModel = {id: null, modelName: ''};
+        self.vehicle = {id: null, number: ''};
+        self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
+        self.newClaims = [];
+        self.affirmedClaims = [];
+        self.claimTemplates = [];
+        self.appointments = [];
         self.routeTasks = [];
         self.vehicleTypes = [];
         self.routeTemplates = [];
         self.places = [];
         self.bosses = [];
-        self.record = {id: null, startDate: "", endDate: "", entranceDate: ""};
         self.onWeek = false;
-        var taskNum;
+        self.isOtherDay = false;
+        self.isDelete = false;
 
 
-        self.fetchClaims = function () {
-            ClaimsService.fetchClaims()
+        self.fetchNewClaims = function () {
+            ClaimsService.fetchNewClaims()
                     .then(
                             function (d) {
-                                self.claims = d;
+                                self.newClaims = d;
                                 console.log(d);
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Claims');
+                                console.error('Error while fetching NewClaims');
+                            }
+                    );
+        };
+
+        self.fetchAffirmedClaims = function () {
+            ClaimsService.fetchAffirmedClaims()
+                    .then(
+                            function (d) {
+                                self.affirmedClaims = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching AffirmedClaims');
+                            }
+                    );
+        };
+        
+        self.fetchAffirmedClaimsWeek = function () {
+            self.affirmedClaims = [];
+            ClaimsService.fetchAffirmedClaimsWeek()
+                    .then(
+                            function (d) {
+                                self.affirmedClaims = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Affirmed Claims Week');
+                            }
+                    );
+        };
+        
+        self.fetchAffirmedClaimsTomorrow = function () {
+            ClaimsService.fetchAffirmedClaimsTomorrow()
+                    .then(
+                            function (d) {
+                                self.affirmedClaims = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Affirmed Claims Tomorrow');
+                            }
+                    );
+        };
+
+        self.fetchClaimTemplates = function () {
+            ClaimsService.fetchСlaimTemplates()
+                    .then(
+                            function (d) {
+                                self.claimTemplates = d;
+                                console.log(d);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching ClaimTemplates');
                             }
                     );
         };
@@ -79,7 +142,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.fetchClaims();
+        self.fetchDepartment = function () {
+            ClaimsService.fetchDepartment()
+                    .then(
+                            function (d) {
+                                self.department = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Department');
+                            }
+                    );
+        };
+
+
+        self.fetchNewClaims();
+        self.fetchAffirmedClaims();
+        self.fetchClaimTemplates();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
         self.fetchPlaces();
@@ -89,14 +167,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-                taskNum = 0;
             }
             menu_close();
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                                self.claims.push(d);
-                                self.prepareClaim();
+                                if (self.claim.templateName === null) {
+                                    self.newClaims.push(d);
+                                }
+                                self.resetClaimForm();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -104,22 +183,81 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.saveClaimTemplate = function () {
+            if (self.claim.templateName === null) {
+                alert('Имя шаблона не может быть пустым!');
+            } else {
+                self.createClaim();
+            }
+        };
+
         self.updateClaim = function (claim) {
+            for (var i = 0; i < claim.records.length; i++) {
+                claim.records[i].id = null;
+            }
+            for (var i = 0; i < claim.routeTasks.length; i++) {
+                claim.routeTasks[i].id = null;
+            }
+            menu_close();
             ClaimsService.updateClaim(claim)
                     .then(
-                            self.fetchClaims,
+                            self.fetchNewClaims,
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
                     );
         };
 
-        self.deleteClaim = function (claim) {
-            ClaimsService.deleteClaim(claim)
+        self.affirmClaims = function () {
+            var affIds = [];
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].checked) {
+                    affIds.push(self.newClaims[i].id);
+                }
+            }
+            ClaimsService.affirmClaims(affIds)
                     .then(
-                            self.fetchClaims,
+                            self.fetchNewClaims,
+                            self.fetchAffirmedClaims,
+                            function (errResponse) {
+                                console.error('Error while affirm Claim.');
+                            }
+                    );
+        };
+
+        self.deleteClaims = function () {
+            var delIds = [];
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].checked) {
+                    delIds.push(self.newClaims[i].id);
+                }
+            }
+            ClaimsService.deleteClaims(delIds)
+                    .then(
+                            self.fetchNewClaims,
                             function (errResponse) {
                                 console.error('Error while deleting Claim.');
+                            }
+                    );
+            formClose('del-claim-confirm');
+        };
+
+        self.deleteRecord = function (claim, record) {
+            var recId = record.id;
+            ClaimsService.deleteRecord(claim.id, recId)
+                    .then(
+                            function (d) {
+                                var k = -1;
+                                for (var i = 0; i < claim.records.length; i++) {
+                                    if (recId === claim.records[i].id) {
+                                        k = i;
+                                        break;
+                                    }
+                                }
+                                claim.records.splice(k, 1);
+                            },
+                            function (errResponse) {
+                                console.error('Error while deleting Record.');
                             }
                     );
         };
@@ -131,11 +269,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = rt.length;
+            rt.orderNum = self.claim.routeTasks.length;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
-            console.log(rt);
 
             self.claim.routeTasks.push(rt);
         };
@@ -147,22 +284,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.addRec = function () {
             var sd = new Date(self.record.startDate);
+            var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
                     rec.startDate = new Date(sd);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.record.endDate);
-                    rec.endDate.setDate(rec.endDate.getDate() + i);
+                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     self.claim.records.push(rec);
-                    console.log(rec);
                 }
             } else {
                 var rec = {id: null};
                 rec.startDate = new Date(sd);
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
+                rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 self.claim.records.push(rec);
             }
@@ -199,10 +337,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.prepareClaim = function () {
-            var result = {
-            };
-
+        self.resetClaimForm = function () {
+            self.isOtherDay = false;
             self.claim = {
                 id: null,
                 templateName: null,
@@ -216,7 +352,95 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
-            return result;
+
+            self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
+        };
+
+        self.resetRTaskForm = function () {
+            self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+        };
+
+        self.setClaimForTemp = function (claim) {
+            self.claim = claim;
+            self.claim.id = null;
+            for (var i = 0; i < self.claim.records.length; i++) {
+                self.claim.records[i].id = null;
+            }
+            formOpen('dialog-save');
+        };
+
+        self.checkAll = function () {
+            for (var i = 0; i < self.newClaims.length; i++) {
+                self.newClaims[i].checked = self.all;
+            }
+        };
+
+        self.checkAllTemplates = function () {
+            for (var i = 0; i < self.claimTemplates.length; i++) {
+                self.claimTemplates[i].checked = self.all;
+            }
+        };
+
+        self.tryToUpdateClaim = function (claim) {
+            self.claim.id = claim.id;
+            self.claim.actual = claim.actual;
+            self.claim.carBoss = claim.carBoss;
+            self.claim.purpose = claim.purpose;
+            self.claim.records = claim.records;
+            self.claim.routeTasks = claim.routeTasks;
+            self.claim.specialization = claim.specialization;
+            self.claim.templateName = claim.templateName;
+            self.claim.vehicleType = claim.vehicleType;
+            self.claim.affirmationDate = claim.affirmationDate;
+            self.claim.creationDate = new Date(claim.creationDate);
+            self.record.startDate = new Date(claim.records[0].startDate);
+            self.record.entranceDate = new Date(claim.records[0].entranceDate);
+            self.record.endDate = new Date(claim.records[0].endDate);
+            edit_open();
+        };
+
+        self.tryToUpdateRTask = function (routeTask) {
+            self.routeTask.id = routeTask.id;
+            self.routeTask.orderNum = routeTask.orderNum;
+            self.routeTask.workName = routeTask.workName;
+            self.routeTask.place = routeTask.place;
+            self.routeTask.routeTemplate = routeTask.routeTemplate;
+            self.temporaryRTask = routeTask;
+        };
+
+        self.updateRTask = function () {
+            self.removeRTask(self.temporaryRTask);
+            var rt = {id: null};
+            rt.orderNum = self.routeTask.orderNum;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+
+            self.claim.routeTasks.push(rt);
+        };
+
+        self.submitRTask = function () {
+            if (self.routeTask.id === null && self.routeTask.orderNum === '') {
+                self.addRTask();
+            } else {
+                self.updateRTask();
+            }
+            self.resetRTaskForm();
+        };
+
+        self.submitClaim = function () {
+            if (self.claim.id === null) {
+                self.createClaim(self.claim);
+            } else {
+                self.updateClaim(self.claim);
+            }
+            self.resetClaimForm();
+        };
+
+
+
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
     }]);

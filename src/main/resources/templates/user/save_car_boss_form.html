@@ -1,0 +1,37 @@
+<form class="formTransport" id="formCarBoss" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formCarBoss')"></i>
+    <div class="container">
+        <div>
+            <label for="dsurname">Фамилия</label>
+            <input type="text" name="dsurname" ng-model="ctrl.carBoss.firstname"> 
+        </div>
+        <div>    
+            <label for="dfirstname">Имя</label>
+            <input type="text" name="dfirstname" ng-model="ctrl.carBoss.name">
+        </div>
+        <div>    
+            <label for="dsecondname">Отчество</label>
+            <input type="text" name="dsecondname" ng-model="ctrl.carBoss.surname">
+        </div>
+        <div>    
+            <label for="birthday">Дата рождения</label>
+            <input type="date" name="birthday" ng-model="ctrl.carBoss.birthday">
+        </div>
+        <div>    
+            <label for="number">Должность</label>
+            <input type="text" name="number" ng-model="ctrl.carBoss.post">
+        </div>    
+        <div>
+            <label for="phone">Номер мобильного</label>
+            <input type="text" name="phone" ng-model="ctrl.carBoss.phone">
+        </div>  
+        <div>
+            <label for="address">Адрес</label>
+            <input type="text" name="address" ng-model="ctrl.carBoss.address">
+        </div>      
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete" ng-click="ctrl.resetForm()">Отмена</button>
+        <button type="button" class="btn edit" ng-click="ctrl.createCarBoss()"><i class="far fa-save"></i>{{ctrl.carBoss.id===null?'Сохранить':'Изменить'}}</button>
+    </div>
+</form>

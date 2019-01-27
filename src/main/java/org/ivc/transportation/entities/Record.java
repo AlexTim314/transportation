@@ -1,23 +1,21 @@
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.ivc.transportation.utils.EntitiesUtils.RecordStatus;
 
 /**
  *
@@ -46,13 +44,7 @@ public class Record implements Serializable {
     @Column(name = "end_date")
     private ZonedDateTime endDate;
 
-    @Column(name = "status")
-    private RecordStatus status;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Appointment> appointments;
 
-    @Column(name = "note", length = 255)
-    private String note;
-
-    @ManyToOne
-    private AppointmentGroup appointmentGroup;
-    
 }

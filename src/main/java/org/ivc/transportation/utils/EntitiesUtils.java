@@ -31,14 +31,6 @@ public class EntitiesUtils {
         другое;
     }
 
-    public static enum RecordStatus {
-        CREATED,
-        IN_PROGRESS,
-        READY,
-        COMPLETED,
-        CANCELED;
-    }
-
     public static enum AppointmentStatus {
         IN_PROGRESS,
         READY,
@@ -47,10 +39,10 @@ public class EntitiesUtils {
     }
     
     public static enum FuelType {
-        BENZINE,
-        DIESEL,
-        GAS,
-        KEROSENE;
+        Бензин,
+        Дизель,
+        Газ,
+        Керосин;
     }
 
     /**

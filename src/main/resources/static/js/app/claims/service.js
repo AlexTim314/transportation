@@ -10,11 +10,10 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchClaims: function () {
-                return $http.get('/transportation/user/claims')
+            fetchNewClaims: function () {
+                return $http.get('/transportation/user/newClaims')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -23,12 +22,63 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
-            
+
+            fetchAffirmedClaims: function () {
+                return $http.get('/transportation/user/affirmedClaims')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching affirmedClaims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchAffirmedClaimsTomorrow: function () {
+                return $http.get('/transportation/user/affirmedClaims/Tomorrow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching AffirmedClaimsTomorrow');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchAffirmedClaimsWeek: function () {
+                return $http.get('/transportation/user/affirmedClaims/Week')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching AffirmedClaimsWeek');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchСlaimTemplates: function () {
+                return $http.get('/transportation/user/claimTemplates')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching claimTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -42,7 +92,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                 return $http.get('/transportation/user/routeTemplates')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -56,7 +105,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                 return $http.get('/transportation/places')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -70,11 +118,23 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                 return $http.get('/transportation/user/carBosses')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchDepartment: function () {
+                return $http.get('/transportation/user/department')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching department');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -95,20 +155,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         );
             },
 
-            createRecord: function (record) {
-                return $http.post('/transportation/user/record_create',
-                        JSON.stringify(record), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
-
-                                },
-                                function (errResponse) {
-                                    console.error('Error while creating record');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
             updateClaim: function (claim) {
                 return $http.put('/transportation/user/claim_update',
                         JSON.stringify(claim), {headers: self.headers})
@@ -123,11 +169,24 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         );
             },
 
-            deleteClaim: function (claim) {
-                console.log(claim);
+            affirmClaims: function (affIds) {
+                return $http.put('/transportation/user/claims_affirm',
+                        JSON.stringify(affIds), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating claim');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            deleteClaims: function (dc) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/user/claim_delete',
-                    data: JSON.stringify(claim),
+                    url: '/transportation/user/claims_delete',
+                    data: JSON.stringify(dc),
                     headers: self.headers
                 }).then(
                         function (response) {
@@ -135,6 +194,22 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                         },
                         function (errResponse) {
                             console.error('Error while deleting claim');
+                            return $q.reject(errResponse);
+                        }
+                );
+            },
+
+            deleteRecord: function (clmId, recId) {
+                return $http({method: 'DELETE',
+                    url: '/transportation/user/record_delete',
+                    data: JSON.stringify([clmId, recId]),
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting record');
                             return $q.reject(errResponse);
                         }
                 );

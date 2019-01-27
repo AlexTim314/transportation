@@ -2,17 +2,17 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.entities.RouteTemplate;
-import org.ivc.transportation.repositories.CarBossRepository;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
-import org.ivc.transportation.repositories.RouteTemplateRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,10 +41,83 @@ public class ClaimService {
     RecordRepository recordRepository;
 
     @Autowired
-    RouteTemplateRepository routeTemplateRepository;
+    RouteTaskRepository routeTaskRepository;
 
-    @Autowired
-    CarBossRepository carBossRepository;
+    public List<Claim> findNewClaimsByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findClaimTemplatesByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndTemplateNameIsNotNull(department);
+        }
+        return null;
+    }
+
+    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
+        }
+        return null;
+    }
+
+    public List<Claim> findAffirmedClaimsByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department);
+        }
+        return null;
+    }
+
+    public Claim saveClaim(Principal principal, Claim claim) {
+        if (claim.getId() == null) {
+            claim.setCreationDate(LocalDateTime.now());
+        } else {
+            recordRepository.deleteByIdIn(
+                    claimRepository.findById(claim.getId()).get().getRecords()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
+            routeTaskRepository.deleteByIdIn(
+                    claimRepository.findById(claim.getId()).get().getRouteTasks()
+                            .stream().map(u -> u.getId()).collect(Collectors.toList())
+            );
+        }
+        claim.setCreator(getUser(principal));
+        claim.setDepartment(getDepartment(principal));
+        return claimRepository.save(claim);
+    }
+
+    public void affirmClaims(Principal principal, List<Long> claimIds) {
+        AppUser affirmator = getUser(principal);
+        claimIds.forEach(id -> {
+            Claim claim = claimRepository.findById(id).get();
+            claim.setAffirmator(affirmator);
+            claim.setAffirmationDate(LocalDateTime.now());
+            claimRepository.save(claim);
+        });
+    }
+
+    public void deleteClaim(Claim claim) {
+        claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());
+    }
+
+    public void deleteClaims(List<Long> claimIds) {
+        claimRepository.deleteByIdInAndAffirmationDateIsNull(claimIds);
+    }
+
+    public void deleteRecord(Long clmId, Long recId) {
+        Claim claim = claimRepository.findById(clmId).get();
+        Record record = recordRepository.findById(recId).get();
+        claim.getRecords().remove(record);
+        claimRepository.save(claim);
+        recordRepository.delete(record);
+    }
 
     private Department getDepartment(Principal principal) {
         if (principal != null) {
@@ -60,43 +133,6 @@ public class ClaimService {
             return userRepository.findByUsername(loginedUser.getUsername());
         }
         return null;
-    }
-
-    public List<CarBoss> findCarBossesByDepartment(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return carBossRepository.findByDepartment(department);
-        }
-        return null;
-    }
-
-    public List<RouteTemplate> findRouteTemplates(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return routeTemplateRepository.findByDepartmentOrDepartmentIsNull(department);
-        }
-        return null;
-    }
-
-    public List<Claim> findNewClaimsByDepartment(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNull(department);
-        }
-        return null;
-    }
-
-    public Claim saveClaim(Principal principal, Claim claim) {
-        claim.setCreationDate(LocalDateTime.now());
-        claim.setCreator(getUser(principal));
-        claim.setDepartment(getDepartment(principal));
-        return claimRepository.save(claim);
-    }
-
-    public void deleteClaim(Claim claim) {
-        if (claim.getAffirmationDate() == null) {
-            claimRepository.delete(claim);
-        }
     }
 
 }
