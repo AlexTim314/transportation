@@ -8,7 +8,7 @@
                 <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
                 <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
             </div>
-            <input type="search" ng-model="searchAffirm">
+            <input type="search" placeholder="Поиск" ng-model="searchAffirm">
         </div>
         <div class="height-wrapper"> 
             <table class="table-record" id="tbl2">
@@ -50,7 +50,7 @@
                         <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                     </td>
                     <td style="position: relative;">	  						
-                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoAffClick(affirmedClaim)"></i>
                         <div class="record-status">
                             <div>Готово: 0</div>
                             <div>Не готово: 3</div>

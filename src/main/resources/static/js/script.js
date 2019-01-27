@@ -63,6 +63,15 @@ formEditOpen=function(name){
     str.style.display="block";
     str.getElementsByTagName('button')[1].innerHTML="Изменить";
 }
+selectToggle=function(down){
+   var down1=document.getElementById(down);
+   if (down1.style.display =='block') {
+      down1.style.display = 'none';
+   }
+   else{
+     down1.style.display = 'block';
+   }
+}
 templateOpen=function(){
   menu_open();
   var sec=document.getElementsByClassName('section-template');

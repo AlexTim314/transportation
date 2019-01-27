@@ -14,7 +14,6 @@ App.factory('ClaimsPageService', ['$http', '$q', '$document', function ($http, $
                 return $http.get('/transportation/department')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {

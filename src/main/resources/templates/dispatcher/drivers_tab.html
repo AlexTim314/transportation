@@ -1,0 +1,40 @@
+<div class="tab-list3"  id="tab-list3" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск">
+            <ul >
+                <li>Всего:<span>44</span></li>
+                <li>Готово:<span>33</span></li>
+                <li>Неготово<span>11</span></li>
+            </ul>
+        </div>
+        <div class="height-wrapper">
+
+            <table class="table-transport">
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Номер мобильного</th>
+                    <th>Удостоверение</th>
+                    <th>Статус</th>
+                    <th><i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" onclick="formOpen('formDriver')"></i></th> 			  					  	
+                </tr>
+                <tr>	
+                    <td>Султанов</td>
+                    <td>Султан</td>
+                    <td>Султанович</td>
+                    <td>15.05.1975</td>
+                    <td>87773332211</td>
+                    <td>78822 B,C</td>
+                    <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Свободен</span></td>			
+                    <td>
+                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formDriver')"></i>
+                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>	
+                    </td>
+                </tr>
+            </table>
+        </div>	
+    </div>	
+</div>

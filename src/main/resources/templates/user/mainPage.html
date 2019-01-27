@@ -18,7 +18,7 @@
 
         <script src="js/app/claims/service.js"></script>
         <script src="js/app/claims/controller.js"></script>
-        
+
         <script src="js/app/routeTemplates/service.js"></script>
         <script src="js/app/routeTemplates/controller.js"></script>
 
@@ -79,10 +79,11 @@
                 <th:block th:include="user/slidebar"></th:block>  
 
                 <div id="claim-create" class="tabcontent">
-                    <!--Подробнее-->
-                    <th:block th:include="user/info_form"></th:block>  
+
 
                     <div ng-controller="ClaimsController as ctrl">
+                        <!--Подробнее-->
+                        <th:block th:include="user/info_form"></th:block>  
                         <!-- служебные формы -->
                         <th:block th:include="user/save_claim_form"></th:block>
                         <th:block th:include="user/save_template_dialog"></th:block>
@@ -98,7 +99,7 @@
                     <div ng-controller="RouteTemplatesController as ctrl">
                         <th:block th:include="user/save_route_templ_form"></th:block>  
                         <th:block th:include="user/del_route_templ_confirm"></th:block> 
-                        
+
                         <th:block th:include="user/route_templates_tab"></th:block> 
                     </div>
 

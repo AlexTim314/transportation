@@ -1,0 +1,37 @@
+<div class="tab-list4"  id="tab-list4" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск">
+        </div>
+
+        <div class="height-wrapper">
+
+            <table class="table-transport">
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Адрес</th>
+                    <th>Номер мобильного</th>
+                    <th>Квалификация</th>                                    
+                    <th> <i title="Добавить старшего" class="fas fa-lg fa-plus-circle" onclick="formOpen('formCarBoss')"></i></th>                                   
+                </tr>
+                <tr>    
+                    <td>Султанов</td>
+                    <td>Султан</td>
+                    <td>Султанович</td>
+                    <td>13.07.1971</td>
+                    <td>Титова 7</td> 
+                    <td>87773332211</td>
+                    <td>Механик III разряда</td>
+
+                    <td>
+                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formCarBoss')"></i>
+                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>  
+                    </td>
+                </tr>
+            </table>
+        </div>  
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<form class="formTransport" id="formRoute" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formRoute')"></i>
+    <div class="container">
+        <label class="custom-radio">
+            <input type="radio" name="route" onchange="radioRoute('route2', 'route1')" class="radio1" checked >Маршрут
+            <span class="radiomark"></span>
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="route" onchange="radioRoute('route1', 'route2')" class="radio2" >Пункт
+            <span class="radiomark"></span>
+        </label>
+        <div  id="route1">
+            <label for="name"><b>Название Маршрута</b></label>
+            <input type="text" name="name">	
+            <label for="point_begin"><b>Выберите Пункт</b></label>
+            <div class="custom-select">
+                <i class="fas fa-caret-down"></i>
+                <input type="text" onclick="selectToggle('cst-sel-down')">
+                <div class="list-point list-absolute" id="cst-sel-down" >			    		
+                    <ul>
+                        <li>Пл.18</li>
+                        <li>Пл.10</li>
+                        <li>КАЗ</li>
+                        <li>Пл.112</li>
+                        <li>6</li>
+                        <li>7</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div  id="route2" style="display: none;">    
+            <label for="point"><b>Название Пункта</b></label>
+            <input type="text" name="point">	
+        </div>
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete">Отмена</button>
+        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+    </div>
+</form>

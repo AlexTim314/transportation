@@ -23,11 +23,6 @@ public class MainController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test(Model model) {
-        return "test";
-    }
-
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
@@ -146,14 +141,14 @@ public class MainController {
         return accessDenied(model, principal);
     }
 
-    @RequestMapping(value = "/dispatcher", method = RequestMethod.GET)
-    public String getDispatcherPage(Model model, Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return "dispatcherPage";
-        }
-        return accessDenied(model, principal);
-    }
+//    @RequestMapping(value = "/dispatcher", method = RequestMethod.GET)
+//    public String getDispatcherPage(Model model, Principal principal) {
+//        if (principal != null) {
+//            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//            return "dispatcherPage";
+//        }
+//        return accessDenied(model, principal);
+//    }
 
     @RequestMapping(value = "/plan", method = RequestMethod.GET)
     public String getPlanPage(Model model, Principal principal) {

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Диспетчерское обеспечение</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+
+        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/controller.js"></script>
+
+    </head>
+    <body ng-app="myApp" >
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите Логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите Пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form >
+
+            <th:block th:include="dispatcher/appointment_form"></th:block> 
+
+            <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
+
+            <th:block th:include="dispatcher/save_driver_form"></th:block> 
+
+            <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
+
+            <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
+
+            <th:block th:include="dispatcher/appointment_status_form"></th:block> 
+
+            <th:block th:include="dispatcher/refueling_form"></th:block> 
+
+            <th:block th:include="dispatcher/vehicle_history"></th:block> 
+
+            <!--Подробнее-->
+            <th:block th:include="dispatcher/vehicle_info"></th:block> 
+
+            <!--Подробнее назначени/заявки----- -->
+            <th:block th:include="dispatcher/record_info"></th:block> 
+
+            <!--Подробнее назначени/заявки----- -->
+            <th:block th:include="dispatcher/route_form"></th:block> 
+
+            <th:block th:include="dispatcher/del_confirm_dialog"></th:block> 
+
+            <div class="main clearfix">
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
+
+                    <h1>Комплекс Автотранспортного Обеспечения</h1>
+                    <h3>Отдел транспортных средств</h3>
+
+                    <!--Navigation -->	
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)">Назначения</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 5)">Транспорт</div>		
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 5)">Водители</div>	
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 5)">Механики</div>	
+                        <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)">Маршруты</div>	
+                    </nav>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                </div>
+                <!--Sidebar-->
+                <th:block th:include="dispatcher/slidebar"></th:block> 
+
+                <div id="claim-create" class="tabcontent">
+
+                    <div class="clearfix" style="overflow-x:auto;">
+                        <th:block th:include="dispatcher/appointments_tab"></th:block> 
+
+                        <th:block th:include="dispatcher/vehicles_tab"></th:block> 
+
+                        <th:block th:include="dispatcher/drivers_tab"></th:block> 
+
+                        <th:block th:include="dispatcher/routes_tab"></th:block> 
+
+                        <th:block th:include="dispatcher/mechanics_tab"></th:block> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>

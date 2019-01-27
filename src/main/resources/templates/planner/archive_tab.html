@@ -1,0 +1,94 @@
+<div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header clearfix">
+            <div class="fast-filter clearfix">                                    
+                <span class="filter-elem edit active-color">Завтра</span>
+                <span class="filter-elem edit">За неделю</span>
+                <span class="filter-elem edit">Все</span>
+            </div>
+            <input type="search" placeholder="Поиск">						  		
+            <ul class="plan-info ">
+                <li>Cостояние Плана</li>
+                <li>Завершено</li>
+            </ul>						  		
+            <ul class="plan-date" >
+                <li>Дата планирования</li>
+                <li>22.12.2018
+                    <input type="date" name="date-plan" placeholder="22.12.2018">
+                </li>
+            </ul>
+            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn">Показать</button>		  			                 
+        </div>
+        <div class="height-wrapper"> 
+            <table class="table-record"  id="tbl2" >
+                <tr class="header-level">
+                    <th style="width: 3%;"></th>
+                    <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
+                </tr>
+                <tr ng-repeat="claim in ctrl.claims">                           
+                <tr style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)" class="activeRow">
+                    <td>
+                        <i class="fas  fa-2x fa-caret-right"></i>		
+                    </td>
+                    <td >КЭССТ
+                        <span>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> 3</i>
+
+                        </span>
+                        <div class="record-status" >
+                            <div title="Обработано"><i class="fas fa-check"></i>23</div>
+                            <div title="Не обработано"><i class="fas fa-clock"></i>12</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>3</div>
+                        </div>  
+                    </td>
+                </tr>
+                <tr class="hiddenRow collapseRow">
+                    <td colspan="2">
+                        <table class=" table-claim">
+
+
+                            <tr>		  		   		
+                                <th style="width:5%">Тип транспорта</th>
+                                <th style="width:10%">Вид техники</th>
+                                <th style="width:5%">Дата выезда</th>
+                                <th style="width:5%">Время подачи</th>
+                                <th style="width:20%">Маршрут</th>
+                                <th style="width:10%">Марка</th>
+                                <th style="width:5%">Гос.номер</th>
+                                <th style="width:10%">Водитель</th>
+                                <th style="width:10%">Статус</th>
+                                <th style="width:10%"></th>
+                            </tr>
+                            <tr>
+
+                                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
+                                <td>Микроавтобус</td>
+                                <td>22.12.2018</td>
+                                <td>08:00</td>
+                                <td><span class="route-tag">пл.18</span><span class="route-tag">пл.10</span></td>
+                                <td>IVECO 23</td>
+                                <td>XA234</td>
+                                <td class="td-relative">
+                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
+                                    Султанов E.E</td>
+                                <td>
+                                    <span class="status-info status-ready"><i class="fas fa-flag" onclick="formOpen('more-status-flag')"></i>Готово</span>
+                                </td>
+                                <td>
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim-status')"></i>
+                                </td>
+                            </tr>
+
+
+                        </table>
+
+
+                    </td>
+                </tr>
+
+                </td> 
+                </tr>	                                                
+            </table>
+        </div>  
+    </div>	
+</div>
