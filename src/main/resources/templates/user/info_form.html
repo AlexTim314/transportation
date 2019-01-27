@@ -1,6 +1,49 @@
-<div class="more-info" id="more-id" xmlns:th="http://www.thymeleaf.org">
-    <div>Цель поездки
-        <i class="fas fa-times" onclick="more_close()"></i>
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="more-info" id="more-claim">
+        <div>Дополнительная информация
+            <i class="fas fa-times" onclick="formClose('more-claim')"></i>
+        </div>
+        <fieldset style="min-height: 50px;">
+            <legend>Цель поездки</legend>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis amet explicabo velit earum adipisci, iste quis accusantium, iusto, mollitia eum laborum sit sequi provident harum, aspernatur deserunt. Suscipit, obcaecati, vero!</p>
+        </fieldset>
+        <fieldset>
+            <legend>Добавил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>user</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>Иванов Иван Иванович</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время создания:<span>09:33:05</span></label></li>                   
+            </ul>
+        </fieldset>                        
     </div>
-    <span>ывываываываываыв</span>
-</div>	
+
+    <div class="more-info" id="more-claim-confirm">
+        <div>Дополнительная информация
+            <i class="fas fa-times" onclick="formClose('more-claim-confirm')"></i>
+        </div>
+        <fieldset style="min-height: 50px;">
+            <legend>Цель поездки</legend>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis amet explicabo velit earum adipisci, iste quis accusantium, iusto, mollitia eum laborum sit sequi provident harum, aspernatur deserunt. Suscipit, obcaecati, vero!</p>
+        </fieldset>
+        <fieldset>
+            <legend>Добавил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>user</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>Иванов Иван Иванович</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время создания:<span>09:33:05</span></label></li>             
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>Утвердил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>user</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>Иванов Иван Иванович</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label><b class="fas fa-calendar-alt" ></b> Дата:<span>22.12.2018</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время:<span>09:33:05</span></label></li>               
+            </ul>
+        </fieldset>            
+    </div>    
+</div>

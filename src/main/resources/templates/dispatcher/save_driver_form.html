@@ -1,0 +1,29 @@
+<form action="#" class="formTransport" id="formDriver" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formDriver')"></i>
+    <div class="container">
+        <div>
+            <label for="dsurname">Фамилия</label>
+            <input type="text" name="dsurname" placeholder="Введите Фамилию">	
+        </div>	
+        <div>
+            <label for="dfirstname">Имя</label>
+            <input type="text" name="dfirstname" placeholder="Введите Имя">
+        </div> 
+        <div> 	
+            <label for="dsecondname">Отчество</label>
+            <input type="text" name="dsecondname" placeholder="Введите Отчество">
+        </div>  
+        <div>
+            <label for="number">Номер мобильного</label >
+            <input type="text" name="number" placeholder="Введите Мобильный">
+        </div>	
+        <div>	
+            <label for="license">Удостоверение</label >
+            <input type="text" name="license" placeholder="Введите Удостоверение">
+        </div>	
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete">Отмена</button>
+        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+    </div>
+</form>

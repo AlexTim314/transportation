@@ -14,7 +14,6 @@ App.factory('CarBossesService', ['$http', '$q', '$document', function ($http, $q
                 return $http.get('/transportation/department')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -28,7 +27,6 @@ App.factory('CarBossesService', ['$http', '$q', '$document', function ($http, $q
                 return $http.get('/transportation/user/carBosses')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {

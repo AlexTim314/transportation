@@ -45,10 +45,15 @@ public class PageController {
     public String managerPage() {
         return "user/mainPage";
     }
-    
+
     @RequestMapping(value = "/planner", method = RequestMethod.GET)
     public String plannerPage() {
-        return "planner/plannerPage";
+        return "planner/mainPage";
+    }
+
+    @RequestMapping(value = "/dispatcher", method = RequestMethod.GET)
+    public String dispatcherPage() {
+        return "dispatcher/mainPage";
     }
 
 }

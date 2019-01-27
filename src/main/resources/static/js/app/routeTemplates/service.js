@@ -14,7 +14,6 @@ App.factory('RouteTemplatesService', ['$http', '$q', '$document', function ($htt
                 return $http.get('/transportation/department')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -41,7 +40,6 @@ App.factory('RouteTemplatesService', ['$http', '$q', '$document', function ($htt
                 return $http.get('/transportation/user/routeTemplates')
                         .then(
                                 function (response) {
-                                    console.log(response.data)
                                     return response.data;
                                 },
                                 function (errResponse) {
@@ -57,7 +55,6 @@ App.factory('RouteTemplatesService', ['$http', '$q', '$document', function ($htt
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating routeTemplate');

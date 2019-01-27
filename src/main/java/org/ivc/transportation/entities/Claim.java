@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -71,9 +72,11 @@ public class Claim implements Serializable {
     private AppUser affirmator;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "claim_id")
     private Set<Record> records;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "claim_id")
     private Set<RouteTask> routeTasks;
 
     public Claim(VehicleSpecialization specialization, CarBoss carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
@@ -85,7 +88,5 @@ public class Claim implements Serializable {
         this.vehicleType = vehicleType;
         this.creator = creator;
     }
-    
-    
 
 }

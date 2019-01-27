@@ -33,39 +33,36 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.newClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching NewClaims');
                             }
                     );
         };
-        
+
         self.fetchAffirmedClaims = function () {
             ClaimsService.fetchAffirmedClaims()
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AffirmedClaims');
                             }
                     );
         };
-        
+
         self.fetchClaimTemplates = function () {
             ClaimsService.fetchСlaimTemplates()
                     .then(
                             function (d) {
                                 self.claimTemplates = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching ClaimTemplates');
                             }
                     );
-        };        
+        };
 
         self.fetchVehicleTypes = function () {
             ClaimsService.fetchVehicleTypes()
@@ -153,19 +150,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
-        self.saveClaimTemplate = function(){
-          if (self.claim.templateName === null) {
-              alert('Имя шаблона не может быть пустым!');
-          } else {
-              self.createClaim(); 
-          }
+
+        self.saveClaimTemplate = function () {
+            if (self.claim.templateName === null) {
+                alert('Имя шаблона не может быть пустым!');
+            } else {
+                self.createClaim();
+            }
         };
 
         self.updateClaim = function (claim) {
-            for (var i = 0; i < claim.records.length; i++) {
-                claim.records[i].id = null;
-            }
             for (var i = 0; i < claim.routeTasks.length; i++) {
                 claim.routeTasks[i].id = null;
             }
@@ -344,7 +338,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.newClaims[i].checked = self.all;
             }
         };
-        
+
         self.checkAllTemplates = function () {
             for (var i = 0; i < self.claimTemplates.length; i++) {
                 self.claimTemplates[i].checked = self.all;
@@ -356,7 +350,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
             self.claim.purpose = claim.purpose;
-            self.claim.records = claim.records;
+            self.claim.records = [];
+            for (var i = 0; i < claim.records.length; i++) {
+                var rec = {
+                    id: null,
+                    startDate: claim.records[i].startDate,
+                    entranceDate: claim.records[i].entranceDate,
+                    endDate: claim.records[i].endDate
+                };
+                self.claim.records.push(rec);
+            }
             self.claim.routeTasks = claim.routeTasks;
             self.claim.specialization = claim.specialization;
             self.claim.templateName = claim.templateName;

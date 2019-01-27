@@ -1,0 +1,29 @@
+<div class="tab-list5"  id="tab-list5" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск">	
+        </div>
+        <div class="height-wrapper">    	
+            <table class="table-transport ">
+                <tr>
+                    <th style="width:30%;">Название</th>
+                    <th style="width:60%;">Маршрут</th>
+                    <th style="width:10%;"><i class="fas fa-lg fa-plus-circle" onclick="formEditOpen('formRoute')"></i></th> 			  					  	
+                </tr>
+                <tr>	
+                    <td>На пл.1</td>
+                    <td>
+                        <span class="route-tag">пл.10</span>
+                        <span class="route-tag">Пл.23</span>
+                        <span class="route-tag">КАЗ</span>
+                        <span class="route-tag">Пл.1</span>
+                    </td>		
+                    <td>
+                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formRoute')"></i>
+                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>	
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>	
+</div>
