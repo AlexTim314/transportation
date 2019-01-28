@@ -31,14 +31,6 @@ import org.ivc.transportation.utils.RecordDTO;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"appointmentGroup"})
 @ToString(exclude = {"appointmentGroup"})
-@SqlResultSetMapping(name = "RecordDTOMapping",
-        classes = {
-            @ConstructorResult(targetClass = RecordDTO.class,
-                    columns = {
-                        @ColumnResult(name = "startDate"), @ColumnResult(name = "endDate")
-                    }
-            )}
-)
 @Entity
 @Table(name = "record")
 public class Record implements Serializable {
