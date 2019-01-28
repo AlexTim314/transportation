@@ -3,7 +3,7 @@
 App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
     function ($scope, UsersManagementService) {
         var self = this;
-        self.user = {id: null, username: '', fullName: '', department: null, transportDep: null, roles: []};
+        self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: []};
         self.role = {roleName: null};
         self.department = {name: null};
         self.departments = [];
@@ -121,7 +121,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.reset = function () {
-            self.user = {id: null, username: '', fullName: '', department: null, transportDep: null, roles: []};
+            self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: []};
             self.role = {roleName: null};
         };
 

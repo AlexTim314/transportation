@@ -25,6 +25,10 @@
                 <td><input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.fullName" size="50"/></td>
             </tr>
             <tr ng-view="false">
+                <td>Должность:</td>
+                <td><input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.post" size="16"/></td>
+            </tr>
+            <tr ng-view="false">
                 <td>Имя пользователя:</td>
                 <td><input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.username" size="16"/></td>
             </tr>
@@ -81,6 +85,7 @@
         <tr>
             <th>Имя пользователя</th>
             <th>ФИО</th>
+            <th>Должность</th>
             <th>Подразделение</th>
             <th>Транспортный отдел</th>
             <th>Права доступа</th>
@@ -90,6 +95,7 @@
         <tr ng-repeat="user in ctrl.users| filter: search">
             <td> {{user.username}}</td>
             <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
+            <td> {{user.post}}</td>
             <td> {{user.department.shortname}}</td>
             <td> {{user.transportDep.shortname}}</td>
             <td ><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>

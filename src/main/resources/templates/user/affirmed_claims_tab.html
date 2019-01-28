@@ -4,9 +4,9 @@
 
         <div class="table-header clearfix">
             <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit">Сегодня</span>
-                <span class="filter-elem edit">За неделю</span>
-                <span class="filter-elem edit">Все</span>
+                <span class="filter-elem edit"  ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
+                <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
+                <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
             </div>
             <input type="search" placeholder="Поиск" ng-model="searchAffirm">
         </div>
@@ -50,7 +50,7 @@
                         <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                     </td>
                     <td style="position: relative;">	  						
-                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim-confirm')"></i>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoAffClick(affirmedClaim)"></i>
                         <div class="record-status">
                             <div>Готово: 0</div>
                             <div>Не готово: 3</div>
@@ -87,7 +87,7 @@
                                     {{record.appointments[0].driver.firstname}} {{record.appointments[0].driver.name.length[1]}}.{{record.appointments[0].driver.surname.length[1]}}.
                                 </td>
                                 <td>
-                                    <span class="claim-status done-status"><i class="fas fa-check"></i>Готово</span>
+                                    <span class="claim-status done-status"><i class="fas fa-check"></i>{{record.appointments[0].status}}</span>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
                             </tr>
