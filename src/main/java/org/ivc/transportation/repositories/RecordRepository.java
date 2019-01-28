@@ -15,10 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository("recordRepository")
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    void deleteByIdIn(List<Long> recordIds);
-
     @Modifying
-    @Query(value = "delete r from Record r where r.claim_id = :claim_id", nativeQuery = true)
+    @Query(value = "delete from record where claim_id = :claim_id", nativeQuery = true)
     void deleteByClaimId(@Param("claim_id") Long claimId);
 
 }
