@@ -69,10 +69,16 @@ public class CommonController {
     }
 }
     
+    Claim findByRecordsWithoutRecords(Record record) {
+        Claim cl = cr.findByRecords(record);
+        cl.setRecords(null);
+        return cl;
+    }
+    
     @GetMapping("/test")
     public List<Composite> test() {
         List<Composite> cl = new ArrayList<Composite>();
-        rr.findAll().forEach(u -> cl.add(new Composite(cr.findByRecords(u),u)));
+        rr.findAll().forEach(u -> cl.add(new Composite(findByRecordsWithoutRecords(u),u)));
         return cl;
     }
 
