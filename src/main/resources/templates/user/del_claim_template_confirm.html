@@ -1,0 +1,6 @@
+<div class="dialog-window" id="del-claim-template-confirm" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close " onclick="formClose('del-claim-template-confirm')"></i>
+    <p>Вы уверены, что хотите удалить?</p>
+    <div class="btn edit" onclick="formClose('del-claim-template-confirm')">Отмена</div>
+    <div class="btn delete" ng-click="ctrl.deleteClaimTemplates()"><i class="fas  fa-trash-alt"></i>Удалить</div>
+</div>
