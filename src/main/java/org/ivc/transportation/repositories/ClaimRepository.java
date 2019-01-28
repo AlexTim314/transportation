@@ -36,6 +36,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(Department department);
 
+    
+List<Claim> findByDepartment(Department department);
     void deleteByIdAndAffirmationDateIsNull(Long id);
 
     void deleteByIdInAndAffirmationDateIsNull(List<Long> claimIds);
