@@ -4,9 +4,9 @@
 
         <div class="table-header clearfix">
             <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit"  ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
-                <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
-                <span class="filter-elem edit" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
+                <span class="filter-elem edit {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
+                <span class="filter-elem edit {{ctrl.week?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
+                <span class="filter-elem edit {{ctrl.all?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
             </div>
             <input type="search" placeholder="Поиск" ng-model="searchAffirm">
         </div>
@@ -88,7 +88,7 @@
                                 <td>
                                     <span class="claim-status done-status"><i class="fas fa-check"></i>{{record.appointments[0].status}}</span>
                                 </td> 
-                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить"></i></td>          
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>
                         </table>
                     </td>

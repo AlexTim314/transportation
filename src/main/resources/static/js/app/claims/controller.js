@@ -10,7 +10,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.record = {id: null, startDate: '', endDate: '', entranceDate: '', appointments: []};
-        self.appointment = {id: null, status: '', vehicleModel: {}, vehicle: {}, driver: {}};
+        self.appointment = {id: null, creationDate: '', status: '', vehicleModel: {}, vehicle: {}, driver: {}};
         self.vehicleModel = {id: null, modelName: ''};
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
@@ -27,6 +27,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.onWeek = false;
         self.isOtherDay = false;
         self.isDelete = false;
+        self.today = false;
+        self.week = false;
+        self.all = false;
+        
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -39,6 +43,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaims = function () {
+            self.all = true;
+            self.today = false;
+            self.week = false;
             ClaimsService.fetchAffirmedClaims()
                     .then(
                             function (d) {
@@ -50,6 +57,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaimsWeek = function () {
+            self.all = false;
+            self.today = false;
+            self.week = true;
             self.affirmedClaims = [];
             ClaimsService.fetchAffirmedClaimsWeek()
                     .then(
@@ -63,6 +73,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaimsTomorrow = function () {
+            self.all = false;
+            self.today = true;
+            self.week = false;
             ClaimsService.fetchAffirmedClaimsTomorrow()
                     .then(
                             function (d) {
@@ -147,6 +160,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchRouteTemplates();
         self.fetchPlaces();
         self.fetchBosses();
+
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
@@ -185,6 +199,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+
+        self.updateAffirmClaim = function (affClaim) {
+            ClaimsService.updateClaim(affClaim)
+                    .then(
+                            self.fetchNewClaims,
+                            function (errResponse) {
+                                console.error('Error while updating affClaim.');
+                            }
+                    );
+        };
+
         self.affirmClaims = function () {
             var affIds = [];
             var affClm = [];
@@ -248,6 +273,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+
+        self.cancelAffRecord = function (rec) {
+            var maxDateApp = {};
+            var maxDate = rec.appointments[0].creationDate;
+            for (var i = 0; i < rec.appointments.length; i++) {
+                if (rec.appointments[i].creationDate > maxDate) {
+                    maxDate = rec.appointments[i].creationDate;
+                    maxDateApp = rec.appointments[i];
+                }
+            }
+            maxDateApp.status = 'CANCELED';
+            console.log('Отмененное назначение:');
+            console.log(maxDateApp);
+        };
+
         self.carBossToString = function (boss) {
             var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
             return result;
