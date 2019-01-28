@@ -1,14 +1,19 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Place;
+import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleType;
-import org.ivc.transportation.repositories.DTORepository;
+import org.ivc.transportation.repositories.ClaimRepository;
+import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.services.CommonService;
-import org.ivc.transportation.utils.RecordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +27,12 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
+    
+    @Autowired
+    private RecordRepository rr;
 
     @Autowired
-    private DTORepository repository;
+    private ClaimRepository cr;
 
     @GetMapping("/departments")
     public List<Department> getDepartments() {
@@ -51,9 +59,21 @@ public class CommonController {
         return commonService.findAllPlaces();
     }
 
+    @Data
+    public class Composite {
+    private Claim claim;
+    private Record record;
+    public Composite(Claim claim, Record record) {
+        this.claim = claim;
+        this.record = record;
+    }
+}
+    
     @GetMapping("/test")
-    public List<RecordDTO> test() {
-        return repository.getDTORecords();
+    public List<Composite> test() {
+        List<Composite> cl = new ArrayList<Composite>();
+        rr.findAll().forEach(u -> cl.add(new Composite(cr.findByRecords(u),u)));
+        return cl;
     }
 
 }
