@@ -19,8 +19,8 @@ public class DTORepository {
 
     public List<RecordDTO> getDTORecords() {
         Query query = em.createNativeQuery(
-                "SELECT r.startDate AS startDate r.endDate AS endDate "
-                + "FROM Record",
+                "SELECT r.start_date AS startDate, r.end_date AS endDate "
+                + "FROM Record r",
                 "RecordDTOMapping");
         List<RecordDTO> result = query.getResultList();
         return result;
