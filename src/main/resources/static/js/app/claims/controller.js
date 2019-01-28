@@ -157,6 +157,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             function (d) {
                                 if (self.claim.templateName === null) {
                                     self.newClaims.push(d);
+                                } else {
+                                    self.claimTemplates.push(d);
                                 }
                                 self.resetClaimForm();
                             },
