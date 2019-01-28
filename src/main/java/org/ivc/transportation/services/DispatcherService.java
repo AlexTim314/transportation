@@ -26,8 +26,8 @@ public class DispatcherService {
     public Claim findClaimByRecord(Record record) {
         return claimRepository.findByRecords(record);
     }
-
-    public Record findRecordByAppointment(Appointment appointment) {
+    
+    public Record findRecordByAppointment(Appointment appointment){
         return recordRepository.findRecordByAppointmentId(appointment.getId());
     }
 
