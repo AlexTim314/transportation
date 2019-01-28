@@ -36,6 +36,7 @@ public class RouteTemplateController {
 
     @PutMapping("/user/routeTemplate_update")
     public RouteTemplate updateRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {
+        System.out.println("pu routeTemplate: "+routeTemplate.getId());
         return routeTemplateService.saveRouteTemplate(principal, routeTemplate);
     }
 
