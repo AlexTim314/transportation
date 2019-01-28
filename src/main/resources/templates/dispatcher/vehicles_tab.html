@@ -1,0 +1,50 @@
+<div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск">
+        </div>	
+        <div class="height-wrapper">       
+            <table class="table-transport">
+                <tr>
+                    <th>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th>Тип транспорта</th>
+                    <th>Вид техники</th>
+                    <th>Модель</th>
+                    <th>Гос.номер</th>
+                    <th>Cтатус</th>
+                    <th style="width:15%;">
+                        <i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" onclick="formOpen('formTransport')"></i>
+                        <i title="Изменить транспорт" class="fas fa-lg fa-edit"></i>
+                        <i title="Удалить транспорт"class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" >
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>Пассажирский</td>
+                    <td>Автобус</td>
+                    <td>ПАЗ</td>
+                    <td>XX 515 XA</td>			
+                    <td>
+                        <i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Исправен</span>
+                    </td>
+                    <td>
+                        <i title="История" class="fas fa-lg fa-history" onclick="formOpen('history-transport')"></i>
+                        <i title="Заправить" class="fas fa-lg fa-gas-pump" onclick="formOpen('formRefueling')"></i>
+                        <i title="Текущие Параметры" class="fas fa-cog" onclick="formOpen('formCurrentParametr')"></i>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-transport')" ></i> 
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>	
+</div>

@@ -1,0 +1,49 @@
+<div class="sidebar clearfix" id="sidenav-id" xmlns:th="http://www.thymeleaf.org">
+    <div class="thin-strip">
+        <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
+    </div>
+
+    <div class="menu" id="menu">
+        <li class="menu-item" id="new">
+            <div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
+            <div class="filter ">
+                <div class="filter-container tab1 tab2" >
+
+                    <p>Фильтрация</p>
+                    <div class="filter-type"><i class="fas fa-car"></i></div>
+                    <div class="filter-type"><i class="fas fa-bus-alt"></i></div>
+                    <div class="filter-type"><i class="fas fa-truck"></i></div>
+                    <div class="filter-type"><i class="fas fa-tractor"></i></div>
+                </div>
+                <div class="filter-container tab1 tab2">
+                    <label for="route-filter">Маршрут</label>
+                    <select name="route-filter">
+                        <option value="1">Пл.10-Пл.23</option>
+                    </select>
+                </div>
+                <div class="filter-container tab1 ">
+                    <label for="declarer-filter">ОТС</label>
+                    <select name="declarer-filter">
+                        <option value="1"></option>
+                    </select>
+                </div>
+                <div class="filter-container tab1 tab2">
+                    <label for="mark-filter">Марка</label>
+                    <select name="mark-filter">
+                        <option value="1"></option>
+                    </select>
+                </div>
+                <div class="filter-container tab1 tab2">
+                    <label for="date-filter">Дата выезда</label>
+                    <input type="date" name="date-filter">
+                    </select>
+                </div>
+                <div class="filter-container">
+                    <button class="btn apply ">Применить</button>	
+                </div>
+
+            </div>
+        </li>		
+    </div>
+
+</div>

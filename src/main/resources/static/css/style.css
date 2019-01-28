@@ -578,6 +578,7 @@ i{
 }
 .fast-filter span:hover{
 	cursor:pointer;
+	background:#ff8989;
 }
 .filter-elem{
 	display: block;
@@ -647,7 +648,6 @@ i{
 	display:block;
 	float: right;
 	width:98%;
-
 	height: 90vh;
 	background:#ffffff; 
 	overflow: hidden;
@@ -715,9 +715,6 @@ i{
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
     overflow-y:scroll;	
 }
-.list-point i:hover{
-    color:#333;
-}
 .ready-route{
 
 	border-radius: 3px;
@@ -738,11 +735,20 @@ i{
 	background: var(--edit-btn-color1);
 	border-radius: 3px;
 	font-size: 0.8em;
-	padding:3px;
+	padding:2px;
 	margin:5px; 
 	margin-bottom: 10px;
 	color:white;
 
+}
+.ready-route span i{
+	padding-left: 5px;
+	margin-right: 3px;
+}
+.ready-route span i:hover{
+	color: #333;
+	cursor: pointer;
+	
 }
 .list-point li{
 	padding-top:5px;
@@ -758,6 +764,9 @@ i{
 }
 .list-point li:hover i{
 	display: block;
+}
+.list-point li i:hover{
+	color:#333;
 }
 .list-point li:hover{
 	background: rgba(255,255,255,0.3);
@@ -913,32 +922,22 @@ input[type="search"]:hover{
 	color: white;
 }
 .record-status{
+	width: 6%;
 	position: absolute;
-	top:0;
-	right: 0;
-	width: 25%;
+	top:30%;
+	right: 10px;
 	display: flex;
-	flex-direction: column;
-	color: white;
-	font-size: 0.6em;
+	justify-content: space-between;
+	flex-direction: row;
+	color: #333;
+	font-size: 0.8em;
 	margin: 0;
+	
 }
-.record-status div:first-child{
-	background: var(--edit-btn-color1);
-	padding: 3px;
-	border-top-right-radius: 3px;
-	border-top-left-radius: 3px;
+.record-status div:hover{
+	color:white;
 }
-.record-status div:nth-child(2){
-	background: var(--main-gradient-color1);
-	padding: 3px;
-}
-.record-status div:nth-child(3){
-	background: #ff8989;
-	padding: 3px;
-	border-bottom-right-radius: 3px;
-	border-bottom-left-radius: 3px;
-}
+
 /**************************************************************************8/
              TABLE PLAN
 /***************************************************************************/             
@@ -983,9 +982,11 @@ input[type="search"]:hover{
 }*/
  .hiddenRow {
 /*	background: #747474;*/
-background: none;
+/*	border: 1px solid #333;*/
 	box-shadow: inset 0 0 30px 0 black;	
+
 }
+
 .collapseRow{
 	display: none;
 }
@@ -1060,9 +1061,9 @@ background: none;
 /************************************TABLE-TASK****************************/
 /**************************************************************************/
 .table-claim{
-	width: 95%;
+	width: 97.5%;
 	margin:0;
-	margin-left: 2%;
+	margin-left: 2.5%;
 	border-collapse: collapse;
 	border-radius: 3px;
 }
@@ -1096,8 +1097,6 @@ background: none;
 }
 .table-claim tr th:last-child {
 	border-bottom-right-radius: 3px;
-
-
 }
 .table-claim th:nth-child(1){
 	width: 10%;
@@ -1225,14 +1224,9 @@ background: none;
 	background: grey;
 }
 .table-status  th{
-	/*background: linear-gradient(to top, var(--maing-radient-color1), var(--main-gradient-color2)); 
-	background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
-	background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));*/
 	color:rgba(255,255,255,0.9);
 	background: #484747;
 	font-size:0.9em;
-/*	padding-top: 1%;
-	padding-bottom:1%;*/
 	overflow: hidden;	
 }
 .table-status tr th:fist-child {
@@ -1292,7 +1286,7 @@ td{
 .table-transport  th{
 	background: #484747;
 	color:rgba(255,255,255,0.9);
-	font-size:0.8em;
+	font-size:0.7em;
 	padding-top: 1%;
 	padding-bottom:1%;
 	overflow: hidden;
@@ -1575,21 +1569,18 @@ td{
     color: #333;
     z-index: 3;
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 0.8em;
     background:white;
     box-shadow: 15px 10px 18px #888888;
 }
 .more-info ul{
-	
-	margin-top:20px;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
 }
-.more-info div{
+.more-info div:first-child{
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-	height: 40px;
 	width: 100%;
-	padding-left: 10%;
+	padding-left: 20px;
 	padding-top:10px;
 	padding-bottom: 10px;
 	color:white;
@@ -1597,7 +1588,40 @@ td{
 	background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
 	background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
 }
+.status-info{
+	padding:2px;
+	border-radius: 3px;
+	background: #5f5f5f;
+}
+.status-ready{
+	color:#96ca00;
+}
+.status-not-vacant{
+	color:#ff8989;
+}
+.more-info fieldset{
+	/*background: #5f5f5f;*/
+	width: 90%;
+	margin-left:5%;
+	margin-top:10px;
+	margin-bottom:10px;
+	border-radius: 3px;
+	border: 0;
+    -webkit-box-shadow:  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow:  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);	
+}
+.more-info fieldset p{
+	margin-top:10px;
+	margin-bottom:10px;
+	width: 90%;
+	padding-left: 10%;
+	font-weight: normal;
 
+}
+.more-info legend{
+	padding-left:5px;
+	padding-right:5px;
+}
 .more-info li{
 	margin-top:15px;
 	margin-left:10%;
@@ -1613,7 +1637,23 @@ td{
 .more-info i{
 	cursor: pointer;
 	float:right;
-	margin-right: 5%;
+	margin-right: 10px;
+}
+
+.history-header{
+	margin-left: 5%;
+	margin-top:20px;
+	
+}
+.history-transport div:first-child{
+	margin-bottom:20px;
+}
+.history-transport .height-wrapper{
+	margin-top:2px;
+	margin-bottom: 20px;
+}
+.history-transport{
+	width: 55%;
 }
 .claim-status{
 	display:block;
@@ -1807,12 +1847,16 @@ td{
 	border-radius: 3px;
 	box-shadow: 15px 10px 18px #888888;	
 }
+.formTransport .container div{
+	margin-bottom: 10px;
+}
 .formTransport input,select{
     width: 100%;
    	padding-top:5px; 
 	padding-bottom:5px;
 	padding-left: 5px;
-    margin: 8px 0;
+    margin: 0;
+    /*margin-bottom: 10px;*/
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -1828,6 +1872,7 @@ td{
 	color:white;
 	font-size: 0.8em;
 	width: 30%;
+
 }
 .formLogin{
 	display: none;
@@ -1990,6 +2035,12 @@ span.psw {
     margin-top:10px;
 }
 /*--------------------------PLAN.html {begin}------------------------------ */
+.table-plan tr td:nth-child(9) i:hover{
+	color:#333;
+}
+.table-plan tr td:last-child i:hover{
+	color:#333;
+}
 .table-plan{
 	width: 95%;
 	margin-left: 2%;
@@ -2007,14 +2058,14 @@ span.psw {
 
 }
 .table-plan th:nth-child(3){
-	width: 10%;
+	width: 5%;
 }
 .table-plan th:nth-child(4){
-	width: 20%;
+	width: 5%;
 	
 }
 .table-plan th:nth-child(5){
-	width: 5%;
+	width: 15%;
 }
 .table-plan th:nth-child(6){
 	width: 10%;
@@ -2024,8 +2075,13 @@ span.psw {
 }
 .table-plan th:nth-child(8){
 	width: 10%;
+	
 }
 .table-plan th:nth-child(9){
+	width: 10%;
+	min-width: 150px;
+}
+.table-plan th:nth-child(10){
 	width: 10%;
 }
 .table-plan select{
@@ -2054,12 +2110,30 @@ span.psw {
 		text-align: right;
 	color: var(--edit-btn-color1);
 }
+.plan-info{
+	padding:3px;
+	border-radius: 3px;
+	border: 0;
+    -webkit-box-shadow:inset  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow:inset  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);	
+}
+
+.plan-date{
+	float: right;
+	padding:3px;
+	border-radius: 3px;
+	border: 0;
+    -webkit-box-shadow:inset  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow:inset  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+}
 .plan-info li:nth-child(2){
 	text-align: center;
 	background: #ff8989;
 	border-radius: 3px;
 	font-size: 1.2em;
 	margin-top:5px;
+
+
 }
 .plan-date li:nth-child(2){
 	font-size: 1.2em;
@@ -2083,92 +2157,48 @@ span.psw {
  	display: block;
  	cursor: pointer;
 }
-.table-header-plan{
-	margin-top: 30px;
+.custom-select{
+	position: relative;
 }
+.custom-select input{
+	
+}
+.custom-select i{
+	position: absolute;
+	right: 0;
+	color:white;
+}
+.list-absolute{
+	top:16px;
+
+	position:absolute;
+	z-index: 100;
+	background: white;
+	color:#333;
+	  -webkit-box-shadow:  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow:  0 3px 6px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);	
+}
+.list-absolute li:hover{
+	background: grey;
+
+}
+
 /*--------------------------PLAN.html   {end}------------------------------ */
 .test{
 	padding: 10% 10%;
 }
-.inp-btn span:hover{
-    cursor:pointer;
-    color:#00a2d3;
+.active-color{
+	background: #ff8989;
 }
-.table-task i{
-    color:#333;
-}
-/*.beaty-form-btn{
-	display: none;
+.message-info{
 	position: absolute;
-	width: 300px;
-	height: 300px;
-	background: grey;
+	left:10px;
 	top:30%;
-	left: 30%;
-	padding: 50px;
 }
-.main-circle{
-	width: 200px;
-	height: 200px;
-	background: var(--edit-btn-color1);
-	border-radius: 50%;
-	padding: 25px;
-
+@keyframes flash{
+	from{color:#333;}
+	to{color:white;}
 }
-.space-circle{
-	width: 150px;
-	height: 150px;
-	background: grey;
-	border-radius: 50%;
-	padding: 25px;
-}
-.sq{
-	position: absolute;
-	width: 20px;
-	height: 50px;
-	background: grey;
-}
-.sq1{
-	top:27px;
-	right: 50%;
-	margin-right: -10px;
-}
-.sq2{
-	bottom:27px;
-	right: 50%;	
-	margin-right: -10px;
-}
-.sq3{
-	transform: rotate(90deg);
-	top:50%;
-	margin-top:-20px;
-}
-.sq4{
-	transform: rotate(90deg);
-	right: 50px;
-	top:50%;
-	margin-top:-20px;
-}
-.btn-circle{
-	width: 102px;
-	height: 102px;
-	border:1px solid white;
-	border-radius: 50%;
-	overflow: hidden;
-
-}
-.subbtn-circle{
-	float: left;
-	width: 50px;
-	height: 50px;
-	background: var(--edit-btn-color1);
-	border: 1px solid white;
-	
-}
-
-.subbtn-circle:hover{
-	background: var(--edit-btn-color2);
-}*/
 @media (min-width: 1200px) and (max-width: 100px) {
 .table-claim button{
 	font-size: 0.7em;

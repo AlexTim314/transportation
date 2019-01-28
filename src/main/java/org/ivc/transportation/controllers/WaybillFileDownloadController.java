@@ -108,7 +108,7 @@ public class WaybillFileDownloadController {
         
         Record record = dispatcherService.findRecordByAppointment(appointment);
         Claim claim = dispatcherService.findClaimByRecord(record);
-        LocalDateTime dateTime = appointment.getAppDateTime();
+        LocalDateTime dateTime = appointment.getCreationDate();
 
         try {
             Workbook workbook;

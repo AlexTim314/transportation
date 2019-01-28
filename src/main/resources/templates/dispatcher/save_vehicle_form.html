@@ -1,0 +1,45 @@
+<form class="formTransport" id="formTransport" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formTransport')"></i>
+    <div class="container">
+        <div>
+            <label for="type">Тип</label>
+            <select name="type" >					
+                <option value="1">Выберите Тип</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>		
+        <div>
+            <label for="type-vehicle">Вид Техники</label>
+            <select name="type-vehicle">					
+                <option value="1">Выберите Вид</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>	
+        <div>
+            <label for="mark">Модель</label>
+            <input type="text" name="mark" placeholder="Введите Модель">
+        </div>
+        <div>
+            <label for="number">Гос.Номер</label>
+            <input type="text" name="number" placeholder="Введите Гос.Номер">
+        </div>
+        <div>
+            <label for="status">Статус</label>
+            <select name="status">					
+                <option value="1">Выберите Статус</option>
+                <option value="2">Исправен</option>
+                <option value="3">Неисправен</option>
+                <option value="4">Работоспособен</option>
+                <option value="5">Ремонт</option>
+                <option value="6">Списан</option>
+                <option value="7">Другое</option>
+            </select>
+        </div>	
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete">Отмена</button>
+        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+    </div>
+</form>

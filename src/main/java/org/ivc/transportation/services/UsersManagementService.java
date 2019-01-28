@@ -65,6 +65,7 @@ public class UsersManagementService {
 
     public AppUser updateUser(AppUser user) {
         AppUser edittingUser = userRepository.findByUsername(user.getUsername());
+        edittingUser.setPost(user.getPost());
         Set<AppRole> roles = new HashSet<>();
         for (AppRole role : user.getRoles()) {
             role = roleRepository.findByRoleName(role.getRoleName());

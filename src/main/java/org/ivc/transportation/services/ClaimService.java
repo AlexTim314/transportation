@@ -79,14 +79,12 @@ public class ClaimService {
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
         } else {
-            recordRepository.deleteByIdIn(
-                    claimRepository.findById(claim.getId()).get().getRecords()
-                            .stream().map(u -> u.getId()).collect(Collectors.toList())
-            );
+            recordRepository.deleteByClaimId(claim.getId());
             routeTaskRepository.deleteByIdIn(
                     claimRepository.findById(claim.getId()).get().getRouteTasks()
                             .stream().map(u -> u.getId()).collect(Collectors.toList())
             );
+//            claim.getRouteTasks().forEach(tsk -> routeTaskRepository.delete(tsk));
         }
         claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));

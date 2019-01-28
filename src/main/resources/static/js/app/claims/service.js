@@ -22,7 +22,46 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
-            
+
+            fetchAffirmedClaims: function () {
+                return $http.get('/transportation/user/affirmedClaims')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching affirmedClaims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchAffirmedClaimsTomorrow: function () {
+                return $http.get('/transportation/user/affirmedClaims/Tomorrow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching AffirmedClaimsTomorrow');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchAffirmedClaimsWeek: function () {
+                return $http.get('/transportation/user/affirmedClaims/Week')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching AffirmedClaimsWeek');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
             fetchСlaimTemplates: function () {
                 return $http.get('/transportation/user/claimTemplates')
                         .then(
@@ -115,9 +154,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
                                 }
                         );
             },
-            
-            
-
 
             updateClaim: function (claim) {
                 return $http.put('/transportation/user/claim_update',

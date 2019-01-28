@@ -34,8 +34,8 @@ public class Appointment implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date_time", nullable = false)
-    private LocalDateTime appDateTime;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDate;
 
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;
