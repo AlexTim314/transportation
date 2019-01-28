@@ -21,14 +21,14 @@
                     <th style="width: 3%;"></th>
                     <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
                 </tr>
-                <tr ng-repeat="claim in ctrl.claims">                           
-                <tr style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)" class="activeRow">
+                <tr>                           
+                <tr style = "cursor: pointer" ng-click="plctrl.rowClick(department)" class="activeRow" ng-repeat-start="department in plctrl.departments">
                     <td>
-                        <i class="fas  fa-2x fa-caret-right"></i>		
+                        <i class="{{department.isVisible !== undefined && department.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
                     </td>
-                    <td >Название подразделения 
+                    <td >{{department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> 3</i>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{records.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
                             <div title="Обработано"><i class="fas fa-check"></i>23</div>
@@ -37,7 +37,7 @@
                         </div>  
                     </td>
                 </tr>
-                <tr class="hiddenRow collapseRow" >
+                <tr class="hiddenRow" ng-show="department.isVisible !== undefined && department.isVisible" ng-repeat-end>
                     <td colspan="2">
 
                         <table class="table-claim">
@@ -53,28 +53,24 @@
                                 <th style="width:15% ">Марка</th>
                                 <th style="width:5% "> </th>
                             </tr>
-                            <tr  ng-repeat="record in ctrl.records">
-                                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                                <td>Автобус</td>
-                                <td>22.12.2018</td>
-                                <td>08:25:00</td>
-                                <td>Перевозка пассажиров в количестве 25 чел.
-
+                            <tr ng-repeat="record in department.claims.records">
+                                <td><span title="{{record.claim.specialization}}" class="{{record.claim.specialization === 'пассажирский' 'fas fa-lg fa-bus-alt':''}}
+                                          {{record.claim.specialization === 'легковой' 'fas fa-lg fa-car':''}}
+                                          {{record.claim.specialization === 'грузовой' 'fas fa-lg fa-truck':''}}
+                                          {{record.claim.specialization === 'спецтехника' 'fas fa-lg fa-tractor':''}}"></span></td>
+                                <td>{{record.claim.vehicleType.typeName}}</td>
+                                <td>{{record.startDate}}</td>
+                                <td>{{record.entranceDate}}</td>
+                                <td>{{record.claim.purpose}}
                                 </td>
-                                <td>
-                                    <span class="route-tag">Пл.10</span>
-                                    <span class="route-tag">Пл.18</span>
+                                <td ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'">
+                                    <span class="route-tag">{{task.place.name}}</span>
                                 </td>                                                         
 
                                 <td>
-                                    <select name="ots">
-                                        <option value="1">Отдел 1</option>
-                                        <option value="2">Отдел 2</option>
-                                        <option value="3">Отдел 3</option>
+                                    <select name="ots" ng-options="td as transportDep.shortName for td in plctrl.transportDeps track by td.shortName" ng-model="plctrl.record.appointments.transportDep" >
                                     </select>
-
                                 </td>
-
                                 <td>
                                     <select name="model">
                                         <option value="1">1</option>
