@@ -27,7 +27,7 @@ public class PlanningController {
     @Autowired
     private PlanningService planningService;
     
-     @GetMapping("/user/affirmedClaims/Tomorrow")
+     @GetMapping("/user/affirmedClaims/Tomorrow_")
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
@@ -36,7 +36,7 @@ public class PlanningController {
         return planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
     
-    @GetMapping("/user/affirmedClaims/Week")
+    @GetMapping("/user/affirmedClaims/Week_")
     public List<Claim> getAffirmedClaimsWeek(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
