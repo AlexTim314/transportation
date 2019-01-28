@@ -19,7 +19,7 @@
                 <th>Маршрут</th>
                 <th>
                     <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" onclick="templateAddOpen()"></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-template-confirm')"></i>                                        
                 </th>
             </tr>
             <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates">
@@ -68,54 +68,6 @@
                     </table>
                 </td>
             </tr>
-            <tr class="activeRow">
-                <td >
-                    <i class="fas  fa-2x fa-caret-right"></i>
-
-                </td>
-                <td>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" >
-                        <span class="checkmark"></span>
-                    </label>    
-                </td>
-                <td>№103 22.12.2018
-
-                </td>
-                <td>{{record}}</td>
-                <td>{{record.datetime}}</td>
-                <td></td>
-                <td>
-                    <span class="route-tag">Пл.10</span><span class="route-tag">Пл.23</span>            
-                </td>
-                <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
-                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()"></i>  
-                </td>                               
-
-            </tr>
-            <tr class="hiddenRow collapseRow">
-                <td colspan="8">
-
-                    <table class="table-claim">
-                        <tr>    
-                            <th>Дата выезда</th>
-                            <th>Время подачи</th>
-                            <th>Время выезда</th>
-                            <th>Время возвращения</th>  
-                            <th></th>                           
-                        </tr>
-                        <tr>
-                            <td>{{record.type}}</td>
-                            <td>{{record.datetime}}</td>
-                            <td>{{record.timeDelivery}}</td>
-                            <td>{{record.carBoss}}</td> 
-                            <td><i class="fas fa-lg fa-trash-alt claim-trash"></i></td>          
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
         </table>
     </div>
 </div>

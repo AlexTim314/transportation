@@ -192,6 +192,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
             formClose('del-claim-confirm');
         };
+        
+        self.deleteClaimTemplates = function () {
+            var delIds = [];
+            for (var i = 0; i < self.claimTemplates.length; i++) {
+                if (self.claimTemplates[i].checked) {
+                    delIds.push(self.claimTemplates[i].id);
+                }
+            }
+            ClaimsService.deleteClaims(delIds)
+                    .then(
+                            self.fetchClaimTemplates(),
+                            function (errResponse) {
+                                console.error('Error while deleting ClaimTemplates.');
+                            }
+                    );
+            formClose('del-claim-template-confirm');
+        };
 
         self.deleteRecord = function (claim, record) {
             var recId = record.id;
