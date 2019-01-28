@@ -107,6 +107,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.id = user.id;
             self.user.username = user.username;
             self.user.fullName = user.fullName;
+            self.user.post = user.post;
             self.user.department = user.department;
             self.user.transportDep = user.transportDep;
             self.user.roles = user.roles.slice();
