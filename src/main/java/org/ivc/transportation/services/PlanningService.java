@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.security.Principal;
@@ -32,22 +27,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanningService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    DepartmentRepository departmentRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
-    ClaimRepository claimRepository;
+    private ClaimRepository claimRepository;
 
     @Autowired
-    RecordRepository recordRepository;
+    private RecordRepository recordRepository;
 
     @Autowired
-    RouteTaskRepository routeTaskRepository;
-    
+    private RouteTaskRepository routeTaskRepository;
+
     @Autowired
-    AppointmentRepository appointmentRepository;
+    private AppointmentRepository appointmentRepository;
 
     public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
         Department department = getDepartment(principal);

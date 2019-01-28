@@ -2,7 +2,6 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.RouteTemplate;
 import org.ivc.transportation.repositories.DepartmentRepository;
@@ -24,16 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class RouteTemplateService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    DepartmentRepository departmentRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
-    RouteTemplateRepository routeTemplateRepository;
+    private RouteTemplateRepository routeTemplateRepository;
 
     @Autowired
-    RouteTaskRepository routeTaskRepository;
+    private RouteTaskRepository routeTaskRepository;
 
     public List<RouteTemplate> findRouteTemplates(Principal principal) {
         Department department = getDepartment(principal);
