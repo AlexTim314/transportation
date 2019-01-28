@@ -239,7 +239,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             ClaimsService.deleteClaims(delIds)
                     .then(
-                            self.fetchClaimTemplates(),
+                            self.fetchClaimTemplates,
                             function (errResponse) {
                                 console.error('Error while deleting ClaimTemplates.');
                             }

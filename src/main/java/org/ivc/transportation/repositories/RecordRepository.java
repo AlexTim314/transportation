@@ -20,4 +20,6 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     @Query(value = "delete from record where claim_id = :claim_id", nativeQuery = true)
     void deleteByClaimId(@Param("claim_id") Long claimId);
 
+    Record findRecordByAppointments(Appointment appointment);
+
 }
