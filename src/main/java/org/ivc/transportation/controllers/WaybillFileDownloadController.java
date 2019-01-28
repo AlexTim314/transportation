@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.controllers;
 
 import java.io.BufferedInputStream;
@@ -93,8 +88,7 @@ public class WaybillFileDownloadController {
                 break;
         };
 
-        /*   На данный момент рассматривается возможность исключить сущность Waybill
-         
+        /*   На данный момент рассматривается возможность исключить сущность Waybill         
         Waybill waybill = appointment.getWaybill();
         if (waybill == null) { unexpectedNull("Путевой лист"); }
          */
@@ -106,8 +100,8 @@ public class WaybillFileDownloadController {
         if (driver == null) {
             unexpectedNull("Водитель");
         }
-        //TODO: добавить обработку случая, когда  Записей больше 1
-        Record record = null;//dispatcherService.findRecordsByAppointmentGroup(appointment.getAppointmentGroup()).get(0);
+        
+        Record record = dispatcherService.findRecordByAppointment(appointment);
         Claim claim = dispatcherService.findClaimByRecord(record);
         LocalDateTime dateTime = appointment.getCreationDate();
 
@@ -167,7 +161,7 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(driver.getDriverClass());
                                 break;
                             case диспетчер:
-                                c.setCellValue(""
+                                c.setCellValue("Временно не поддержиавется"
                                 //        waybill.getDispatcher().getUserName()
                                 );
                                 break;
