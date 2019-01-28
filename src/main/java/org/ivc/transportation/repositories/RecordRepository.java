@@ -13,6 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository("recordRepository")
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
+    @Query(value = "select from appointment where appointment_id = :appointment_id", nativeQuery = true)
+    Record findRecordByAppointmentId(@Param("appointment_id") Long appointmentId);
+
     @Query(value = "delete from record where claim_id = :claim_id", nativeQuery = true)
     void deleteByClaimId(@Param("claim_id") Long claimId);
 

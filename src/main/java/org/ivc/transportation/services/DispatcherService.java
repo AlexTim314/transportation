@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import org.ivc.transportation.entities.Appointment;
@@ -31,9 +26,9 @@ public class DispatcherService {
     public Claim findClaimByRecord(Record record) {
         return claimRepository.findByRecords(record);
     }
-    
-    public Record findRecordByAppointment(Appointment appointment){
-        return recordRepository.findRecordByAppointments(appointment);
+
+    public Record findRecordByAppointment(Appointment appointment) {
+        return recordRepository.findRecordByAppointmentId(appointment.getId());
     }
 
 }
