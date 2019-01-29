@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Диспетчерское обеспечение</title>
@@ -11,11 +13,11 @@
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
 
-        <script src="js/app/claimsPage/service.js"></script>
-        <script src="js/app/claimsPage/controller.js"></script>
+        <script src="js/app/vehicles/service.js"></script>
+        <script src="js/app/vehicles/controller.js"></script>
 
     </head>
-    <body ng-app="myApp" >
+    <body ng-app="Transportation" >
         <div class="wrapper">
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
@@ -45,7 +47,7 @@
 
             <th:block th:include="dispatcher/appointment_form"></th:block> 
 
-            <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
+
 
             <th:block th:include="dispatcher/save_driver_form"></th:block> 
 
@@ -67,8 +69,6 @@
 
             <!--Подробнее назначени/заявки----- -->
             <th:block th:include="dispatcher/route_form"></th:block> 
-
-            <th:block th:include="dispatcher/del_confirm_dialog"></th:block> 
 
             <div class="main clearfix">
                 <div class="header clearfix">
@@ -99,12 +99,20 @@
                     <div class="clearfix" style="overflow-x:auto;">
                         <th:block th:include="dispatcher/appointments_tab"></th:block> 
 
-                        <th:block th:include="dispatcher/vehicles_tab"></th:block> 
+                        <div ng-controller="VehiclesController as ctrl">
+                            <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
+
+                            <th:block th:include="dispatcher/vehicle_status_form"></th:block> 
+
+                            <th:block th:include="dispatcher/del_vehicle_confirm_dlg"></th:block> 
+
+                            <th:block th:include="dispatcher/vehicles_tab"></th:block> 
+                        </div>
 
                         <th:block th:include="dispatcher/drivers_tab"></th:block> 
 
                         <th:block th:include="dispatcher/mechanics_tab"></th:block>
-                        
+
                         <th:block th:include="dispatcher/routes_tab"></th:block> 
                     </div>
                 </div>

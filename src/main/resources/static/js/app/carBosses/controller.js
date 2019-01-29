@@ -77,7 +77,6 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
                                 console.error('Error while deleting CarBoss.');
                             }
                     );
-            formClose('del-car-boss-confirm');
         };
 
         self.submit = function () {

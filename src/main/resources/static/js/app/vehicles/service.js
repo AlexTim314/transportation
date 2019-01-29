@@ -10,14 +10,40 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchDepartment: function () {
-                return $http.get('/transportation/department')
+            fetchTransportDep: function () {
+                return $http.get('/transportation/transportDep')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching department');
+                                    console.error('Error while fetching transportDep');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchVehicleModels: function () {
+                return $http.get('/transportation/vehicleModels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleModels');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -65,10 +91,10 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                         );
             },
 
-            deleteVehicle: function (vehicle) {
+            deleteVehicles: function (ids) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/dispatcher/vehicle_delete',
-                    data: JSON.stringify(vehicle),
+                    url: '/transportation/dispatcher/vehicles_delete',
+                    data: JSON.stringify(ids),
                     headers: self.headers
                 }).then(
                         function (response) {

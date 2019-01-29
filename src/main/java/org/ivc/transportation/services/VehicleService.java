@@ -38,8 +38,8 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public void deleteVehicle(Vehicle vehicle) {
-        vehicleRepository.delete(vehicle);
+    public void deleteVehicles(List<Long> ids) {
+        vehicleRepository.deleteByIdIn(ids);
     }
 
     private TransportDep getTransportDep(Principal principal) {

@@ -4,16 +4,42 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
     function ($scope, VehiclesService) {
         var self = this;
 
-        self.department = {id: null};
+        self.transportDep = {id: null};
+        self.vehicleTypes = [];
+        self.models = [];
 
-        self.vehicle = {id: null};
+        self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}};
         self.vehicles = [];
 
-        self.fetchDepartment = function () {
-            VehiclesService.fetchDepartment()
+        self.fetchTransportDep = function () {
+            VehiclesService.fetchTransportDep()
                     .then(
                             function (d) {
-                                self.department = d;
+                                self.transportDep = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Department');
+                            }
+                    );
+        };
+
+        self.fetchVehicleTypes = function () {
+            VehiclesService.fetchVehicleTypes()
+                    .then(
+                            function (d) {
+                                self.vehicleTypes = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Department');
+                            }
+                    );
+        };
+
+        self.fetchVehicleModels = function () {
+            VehiclesService.fetchVehicleModels()
+                    .then(
+                            function (d) {
+                                self.models = d;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Department');
@@ -33,15 +59,16 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                     );
         };
 
-        self.fetchDepartment();
+        self.fetchTransportDep();
+        self.fetchVehicleTypes();
+        self.fetchVehicleModels();
         self.fetchVehicles();
 
         self.createVehicle = function () {
-            self.vehicle.department = self.department;
+            self.vehicle.transportDep = self.transportDep;
             VehiclesService.createVehicle(self.vehicle)
                     .then(
                             function (d) {
-//                                self.vehicles.push(d);
                                 self.fetchVehicles();
                                 self.resetForm();
                             },
@@ -55,7 +82,6 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             VehiclesService.updateVehicle(self.vehicle)
                     .then(
                             function (d) {
-//                                self.vehicles.push(d);
                                 self.fetchVehicles();
                                 self.resetForm();
                             },
@@ -65,19 +91,17 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                     );
         };
 
-        self.deleteVehicle = function () {
-            VehiclesService.deleteVehicle(self.vehicle)
+        self.deleteVehicles = function () {
+            VehiclesService.deleteVehicles(self.vehicle)
                     .then(
                             function (d) {
-                                self.vehicle = {id: null};
-                                formClose('del-car-boss-confirm');
+                                formClose('del-vehicle-confirm');
                                 self.fetchVehicles();
                             },
                             function (errResponse) {
                                 console.error('Error while deleting Vehicle.');
                             }
                     );
-            formClose('del-car-boss-confirm');
         };
 
         self.submit = function () {
@@ -89,8 +113,8 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.tryToCreate = function () {
-            self.vehicle = {id: null};
-            formOpen('formVehicle');
+            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}};
+            formOpen('formTransport');
         };
 
         self.tryToUpdate = function (vehicle) {
@@ -103,17 +127,17 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             self.vehicle.address = vehicle.address;
             self.vehicle.phone = vehicle.phone;
             self.vehicle.department = vehicle.department;
-            formOpen('formVehicle');
+            formOpen('formTransport');
         };
 
-        self.tryToDelete = function (vehicle) {
+        self.tryToDelete = function () {
             self.vehicle = vehicle;
-            formOpen('del-car-boss-confirm');
+            formOpen('del-vehicle-confirm');
         };
 
         self.resetForm = function () {
-            self.vehicle = {id: null};
-            formClose('formVehicle');
+            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}};
+            formClose('formTransport');
         };
 
     }]);

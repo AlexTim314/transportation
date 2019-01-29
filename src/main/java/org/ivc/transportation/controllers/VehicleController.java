@@ -34,14 +34,14 @@ public class VehicleController {
         return vehicleService.saveVehicle(vehicle);
     }
 
-    @PutMapping("/user/carBoss_update")
+    @PutMapping("/dispatcher/vehicle_update")
     public Vehicle updateVehicle(@RequestBody Vehicle vehicle) {
         return vehicleService.saveVehicle(vehicle);
     }
 
-    @DeleteMapping("/user/carBoss_delete")
-    public ResponseEntity<String> deleteVehicle(@RequestBody Vehicle vehicle) {
-        vehicleService.deleteVehicle(vehicle);
+    @DeleteMapping("/dispatcher/vehicles_delete")
+    public ResponseEntity<String> deleteVehicle(@RequestBody List<Long> ids) {
+        vehicleService.deleteVehicles(ids);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
