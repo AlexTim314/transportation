@@ -82,6 +82,11 @@ templateAddOpen=function(){
   var sec=document.getElementsByClassName('section-template');
   sec[1].style.display = "block";
 }
+templateEditOpen=function(){
+  edit_open();
+  var sec=document.getElementsByClassName('section-template');
+  sec[1].style.display = "block";
+}
 open_tab1=function(tabName,btnName,iEnd){
    for (var i = 1; i<=iEnd; i++) {
      var str = document.getElementById("tab-list"+i);

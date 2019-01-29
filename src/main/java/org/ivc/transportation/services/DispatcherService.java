@@ -33,7 +33,7 @@ public class DispatcherService {
     }
     
     public Record findRecordByAppointment(Appointment appointment){
-        return recordRepository.findRecordByAppointments(appointment);
+        return recordRepository.findRecordByAppointmentId(appointment.getId());
     }
 
 }
