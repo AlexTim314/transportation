@@ -74,27 +74,4 @@ public class CommonController {
         return commonService.findAllPlaces();
     }
 
-    @GetMapping("/test")
-    public List<CompositeDepartmentClaimRecords> test() {
-        List<CompositeDepartmentClaimRecords> cl = new ArrayList<CompositeDepartmentClaimRecords>();
-        dr.findAll().forEach(u -> cl.add(new CompositeDepartmentClaimRecords(u)));
-        cl.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
-        return cl;
-    }
-    
-    private Claim findByRecordsWithoutRecordsAndDepartment(Record record) {
-        Claim cl = cr.findByRecords(record);
-        cl.setRecords(null);
-        cl.setDepartment(null);
-        return cl;
-    }
-
-    private List<CompositeClaimRecord> getCompositeClaimRecords(Department department) {
-        List<Record> rl = new ArrayList<Record>();
-        cr.findByDepartment(department).forEach(u -> rl.addAll(u.getRecords()));
-        List<CompositeClaimRecord> cl = new ArrayList<CompositeClaimRecord>();
-        rl.forEach(u -> cl.add(new CompositeClaimRecord(findByRecordsWithoutRecordsAndDepartment(u), u)));
-        return cl;
-    }
-
 }

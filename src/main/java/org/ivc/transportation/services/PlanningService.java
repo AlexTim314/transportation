@@ -2,16 +2,20 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.utils.CompositeClaimRecord;
+import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -27,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanningService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private DepartmentRepository departmentRepository;
 
     @Autowired
@@ -39,41 +40,29 @@ public class PlanningService {
     private RecordRepository recordRepository;
 
     @Autowired
-    private RouteTaskRepository routeTaskRepository;
-
-    @Autowired
     private AppointmentRepository appointmentRepository;
 
-    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);
-        }
-        return null;
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        List<CompositeDepartmentClaimRecords> cl = new ArrayList<CompositeDepartmentClaimRecords>();
+        departmentRepository.findAll().forEach(u -> cl.add(new CompositeDepartmentClaimRecords(u)));
+        cl.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
+        return cl;
+
     }
 
-    public List<Claim> findAffirmedClaimsByDepartment(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department);
-        }
-        return null;
+    private List<CompositeClaimRecord> getCompositeClaimRecords(Department department) {
+        List<Record> rl = new ArrayList<Record>();
+        claimRepository.findByDepartment(department).forEach(u -> rl.addAll(u.getRecords()));
+        List<CompositeClaimRecord> cl = new ArrayList<CompositeClaimRecord>();
+        rl.forEach(u -> cl.add(new CompositeClaimRecord(findByRecordsWithoutRecordsAndDepartment(u), u)));
+        return cl;
     }
 
-    private Department getDepartment(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
-        }
-        return null;
-    }
-
-    private AppUser getUser(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername());
-        }
-        return null;
+    private Claim findByRecordsWithoutRecordsAndDepartment(Record record) {
+        Claim cl = claimRepository.findByRecords(record);
+        cl.setRecords(null);
+        cl.setDepartment(null);
+        return cl;
     }
 
 }
