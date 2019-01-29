@@ -32,9 +32,9 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
     
-    @PostMapping("/planner/appointment_create")
-    public Record createAppointment(Principal principal, @RequestBody CompositeRecordIdAppointment cria) {
-        return planningService.createAppointment(principal, cria);
+    @PostMapping("/planner/appointments_create")
+    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointmen) {
+        return planningService.createAppointment(principal, compositeRecordIdAppointmen);
     }
     
 }

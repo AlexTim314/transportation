@@ -43,7 +43,7 @@ public class PlanningService {
 
     @Autowired
     private RecordRepository recordRepository;
-    
+
     @Autowired
     private AppointmentInfoRepository appointmentInfoRepository;
 
@@ -63,21 +63,26 @@ public class PlanningService {
 
     }
 
-    public Record createAppointment(Principal principal, CompositeRecordIdAppointment cria) {
-        Appointment app = cria.getAppointment();
-        app.setCreationDate(LocalDateTime.now());
-        app.setCreator(getUser(principal));
-        app.setNote("Заявка передана в транспортный отдел");
-        app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
-        
-        appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
+    public List<Record> createAppointment(Principal principal, List<CompositeRecordIdAppointment> compositeRecordIdAppointmentList) {
+        List<Record> result = new ArrayList<Record>();
+        for (int i = 0; i < compositeRecordIdAppointmentList.size(); i++) {
+            CompositeRecordIdAppointment compositeRecordIdAppointment = compositeRecordIdAppointmentList.get(i);
+            Appointment app = compositeRecordIdAppointment.getAppointment();
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(getUser(principal));
+            app.setNote("Заявка передана в транспортный отдел");
+            app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
 
-        Record rd = recordRepository.findById(cria.getRecordId()).get();
-        rd.getAppointments().add(app);
-        recordRepository.save(rd);
-        return rd;
+            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
+
+            Record rd = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
+            rd.getAppointments().add(app);
+            recordRepository.save(rd);
+            result.add(rd);
+        }
+        return result;
     }
-    
+
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
