@@ -149,6 +149,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
                             appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
                             appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
+                            appointment.status = 'READY';
                             appoints.push({
                                 recordId: self.headers[i].compositeClaimRecords[j].record.id,
                                 appointment: appointment
@@ -190,8 +191,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.rowClick = function (dep) {
-            // self.type = dep.compositeClaimRecords[0].claim.specialization;
-            //  console.log(self.type);
             if (dep.isVisible === undefined) {
                 dep.isVisible = true;
             } else {
@@ -205,11 +204,5 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(self.clrec);
             formOpen('more-claim');
         };
-
-//        self.resetForm = function (){
-//            self.clrec = {};
-//        };
-
-
 
     }]);
