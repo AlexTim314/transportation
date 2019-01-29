@@ -52,8 +52,9 @@ public class PlanningController {
 
     @PostMapping("/planner/appointments_create")
     public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointmen) {
-        System.out.println(compositeRecordIdAppointmen);
-        return planningService.createAppointment(principal, compositeRecordIdAppointmen);
+        List<Record> rl = planningService.createAppointment(principal, compositeRecordIdAppointmen);
+        System.out.println(rl);
+        return rl;
     }
 
 }

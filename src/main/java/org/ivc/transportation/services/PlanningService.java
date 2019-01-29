@@ -11,6 +11,7 @@ import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
@@ -47,6 +48,9 @@ public class PlanningService {
 
     @Autowired
     private AppointmentInfoRepository appointmentInfoRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<Record> recordList = new ArrayList<Record>();
@@ -89,9 +93,8 @@ public class PlanningService {
             app.setCreator(getUser(principal));
             app.setNote("Заявка передана в транспортный отдел");
             app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
-
+            app = appointmentRepository.save(app);
             appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
-
             Record rd = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
             rd.getAppointments().add(app);
             recordRepository.save(rd);
