@@ -19,7 +19,7 @@
         </div>	
         <div>
             <label for="mark">Модель</label>
-            <select name="mark" ng-options="m as m.modelName for m in ctrl.models| filter:ctrl.vehicle.model.vehicleType.typeName track by m.id" ng-model="ctrl.vehicle.model"></select>
+            <select name="mark" ng-options="m as m.modelName for m in ctrl.models| filter:ctrl.vehicle.model.vehicleType.typeName:true track by m.id" ng-model="ctrl.vehicle.model"></select>
         </div>
         <div>
             <label for="number">Гос.Номер</label>
@@ -36,10 +36,40 @@
                 <option value="списано">списано</option>
                 <option value="другое">другое</option>
             </select>
+        </div>
+        <label for="type_fuel">Тип Топлива</label>
+        <div class="inp-btn clearfix">                                     
+            <select name="fuel" ng-options="f as f.type + ' ' + f.mark for f in ctrl.fuels track by f.id" ng-model="ctrl.fuel">					
+            </select>
+            <span title="Добавить Тип Топлива" class="fas fa-lg fa-plus-circle" style="margin-top: 2px;" ng-click="ctrl.addFuel()"></span>
+        </div>
+        <div style="min-height: 40px;">
+            <span class="status-info cancel-status fuel-tag" style="font-size:0.7em;" ng-repeat="ft in ctrl.vehicle.fuels">
+                <b>{{ft.type}} {{ft.mark}}</b>
+                <span class="fa fa-times" ng-click="ctrl.removeFuel(ft)"></span>
+            </span>
         </div>	
+    </div>
+    <div class="formTransport subform" id="subCurrentParametr">
+        <i class="fas fa-times i-close" onclick="formClose('subCurrentParametr')"></i>
+        <div class="container">
+            <div>
+                <label for="fuel">Топливо,литр</label>
+                <input type="text" name="fuel" placeholder="Объем Топлива" ng-model="ctrl.vehicle.fuel">	
+            </div>	
+            <div>
+                <label for="odometr">Одометр,км</label>
+                <input type="text" name="odometr" placeholder="Показатели Одометра" ng-model="ctrl.vehicle.odometr">
+            </div> 
+            <div> 	
+                <label for="motohour">Моточасы</label>
+                <input type="text" name="motohour" placeholder="Введите Моточасы" ng-model="ctrl.vehicle.motohours">
+            </div>  	
+        </div>
     </div>
     <div class="container">
         <button type="button" class="btn delete" ng-click="ctrl.resetForm()">Отмена</button>
         <button type="button" class="btn edit" ng-click="ctrl.submit()"><i class="far fa-save"></i>{{ctrl.vehicle.id===null?'Сохранить':'Изменить'}}</button>
+        <i title="Текущие Параметры" class="fas fa-lg fa-cog current-param-btn" onclick="formOpen('subCurrentParametr')"></i>
     </div>
 </form>

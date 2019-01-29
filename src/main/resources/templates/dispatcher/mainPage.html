@@ -13,6 +13,9 @@
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
 
+        <script src="js/app/dispatcherPage/service.js"></script>
+        <script src="js/app/dispatcherPage/controller.js"></script>
+
         <script src="js/app/vehicles/service.js"></script>
         <script src="js/app/vehicles/controller.js"></script>
 
@@ -47,22 +50,15 @@
 
             <th:block th:include="dispatcher/appointment_form"></th:block> 
 
-
-
             <th:block th:include="dispatcher/save_driver_form"></th:block> 
 
             <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
-
-            <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
 
             <th:block th:include="dispatcher/appointment_status_form"></th:block> 
 
             <th:block th:include="dispatcher/refueling_form"></th:block> 
 
             <th:block th:include="dispatcher/vehicle_history"></th:block> 
-
-            <!--Подробнее-->
-            <th:block th:include="dispatcher/vehicle_info"></th:block> 
 
             <!--Подробнее назначени/заявки----- -->
             <th:block th:include="dispatcher/record_info"></th:block> 
@@ -78,7 +74,7 @@
                     <!--Text header -->
 
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
-                    <h3>Отдел транспортных средств</h3>
+                    <h3 ng-controller="DispatcherPageController as ctrl">{{ctrl.transportDep.fullname}}</h3>
 
                     <!--Navigation -->	
                     <nav class="nav-horizontal">
@@ -104,7 +100,11 @@
 
                             <th:block th:include="dispatcher/vehicle_status_form"></th:block> 
 
+                            <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
+
                             <th:block th:include="dispatcher/del_vehicle_confirm_dlg"></th:block> 
+
+                            <th:block th:include="dispatcher/vehicle_info"></th:block> 
 
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>

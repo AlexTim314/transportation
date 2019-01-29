@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
@@ -39,9 +40,9 @@ public class CommonController {
     @Autowired
     private DepartmentRepository dr;
 
-    @GetMapping("/departments")
-    public List<Department> getDepartments() {
-        return commonService.findAllDepartments();
+    @GetMapping("/transportDep")
+    public TransportDep getTransportDep(Principal principal) {
+        return commonService.findTransportDepByUser(principal);
     }
 
     @GetMapping("/department")
@@ -49,9 +50,9 @@ public class CommonController {
         return commonService.findDepartmentByUser(principal);
     }
 
-    @GetMapping("/transportDep")
-    public TransportDep getTransportDep(Principal principal) {
-        return commonService.findTransportDepByUser(principal);
+    @GetMapping("/departments")
+    public List<Department> getDepartments() {
+        return commonService.findAllDepartments();
     }
 
     @GetMapping("/transportDeps")
@@ -74,6 +75,11 @@ public class CommonController {
         return commonService.findAllPlaces();
     }
 
+    @GetMapping("/fuels")
+    public List<Fuel> getAllFuels() {
+        return commonService.findAllFuels();
+    }
+
     @GetMapping("/test")
     public List<CompositeDepartmentClaimRecords> test() {
         List<CompositeDepartmentClaimRecords> cl = new ArrayList<CompositeDepartmentClaimRecords>();
@@ -81,7 +87,7 @@ public class CommonController {
         cl.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
         return cl;
     }
-    
+
     private Claim findByRecordsWithoutRecordsAndDepartment(Record record) {
         Claim cl = cr.findByRecords(record);
         cl.setRecords(null);

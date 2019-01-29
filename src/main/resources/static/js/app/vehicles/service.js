@@ -22,7 +22,7 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
@@ -35,7 +35,7 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             fetchVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')
                         .then(
@@ -44,6 +44,19 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vehicleModels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchFuels: function () {
+                return $http.get('/transportation/fuels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching fuels');
                                     return $q.reject(errResponse);
                                 }
                         );
