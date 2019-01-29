@@ -2,7 +2,9 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleInfo;
 import org.ivc.transportation.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,16 @@ public class VehicleController {
     @PutMapping("/dispatcher/vehicle_update")
     public Vehicle updateVehicle(@RequestBody Vehicle vehicle) {
         return vehicleService.saveVehicle(vehicle);
+    }
+
+    @PostMapping("/dispatcher/vehicle_updateState")
+    public VehicleInfo updateVehicleStatus(@RequestBody VehicleInfo vehicleInfo) {
+        return vehicleService.updateVehiceStatus(vehicleInfo);
+    }
+
+    @PostMapping("/dispatcher/vehicle_refueling")
+    public Refueling vehicleRefueling(@RequestBody Refueling refueling) {
+        return vehicleService.vehicleRefueling(refueling);
     }
 
     @DeleteMapping("/dispatcher/vehicles_delete")
