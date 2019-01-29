@@ -2,9 +2,9 @@
     <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
         <div class="table-header clearfix">
             <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit active-color">Завтра</span>
-                <span class="filter-elem edit">За неделю</span>
-                <span class="filter-elem edit">Все</span>
+                <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+                <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
+                <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
             </div>
             <input type="search" placeholder="Поиск">						  						  		
             <ul class="plan-date" >

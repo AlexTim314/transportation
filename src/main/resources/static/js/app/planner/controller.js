@@ -23,6 +23,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appointments = [];
         self.transportDeps = [];
         self.vehicleModels = [];
+        self.today = false;
+        self.week = false;
+        self.all = false;
         self.selectedIcon;
         self.type;
 
@@ -84,7 +87,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchAllPlanRecords = function () {
-            PlannerService.fetchAllDepsRecords()
+            self.all = true;
+            self.today = false;
+            self.week = false;
+            PlannerService.fetchAllPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;
@@ -98,7 +104,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
         
         self.fetchWeekPlanRecords = function () {
-            PlannerService.fetchAllDepsRecords()
+            self.all = false;
+            self.today = false;
+            self.week = true;
+            PlannerService.fetchWeekPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;
@@ -111,8 +120,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         
-        self.fetchTodayPlanRecords = function () {
-            PlannerService.fetchAllDepsRecords()
+        self.fetchTomorrowPlanRecords = function () {
+            self.all = false;
+            self.today = true;
+            self.week = false;
+            PlannerService.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;

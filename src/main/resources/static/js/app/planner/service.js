@@ -48,7 +48,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
-            fetchAllDepsRecords: function () {
+            fetchAllPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims')
                         .then(
                                 function (response) {
@@ -61,7 +61,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
-            fetchWeekDepsRecords: function () {
+            fetchWeekPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims/Week')
                         .then(
                                 function (response) {
@@ -74,7 +74,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
-            fetchTomorrowDepsRecords: function () {
+            fetchTomorrowPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
                         .then(
                                 function (response) {
