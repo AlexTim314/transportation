@@ -19,7 +19,7 @@
                     <th>Номер мобильного</th>
                     <th>Удостоверение</th>
                     <th>Статус</th>
-                    <th><i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th> 			  					  	
+                    <th><i title="Добавить водителя" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th> 			  					  	
                 </tr>
                 <tr ng-repeat="d in ctrl.drivers| filter: searchDriver | orderBy: 'firstname'">	
                     <td>{{d.firstname}}</td>

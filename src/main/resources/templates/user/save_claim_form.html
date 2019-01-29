@@ -95,22 +95,22 @@
                     </label>
 
                     <div class="inp-btn clearfix">
-                        <input type="date"  name="date-begin" ng-model="ctrl.record.startDate" required >
+                        <input type="date"  name="date-begin" ng-model="ctrl.record.startDate" id="startDate" required >
                         <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "ctrl.addRec()"></span>
                     </div>							 		
                 </div>
 
                 <div class="right-block ">
                     <label for="time-begin">Время подачи</label>
-                    <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" required>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" id="entranceTime" required>
 
 
                     <label for="time-begin">Время выезда</label>
-                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" required>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" id="startTime" required>
 
                     <div class="check-hidden">
                         <label for="time-end">Время возвращения</label>
-                        <input type="time"  name="time-end" ng-model="ctrl.record.endDate" required>
+                        <input type="time"  name="time-end" ng-model="ctrl.record.endDate" id="endTime" required>
                     </div>
                     <div class="check-hidden">
                         <label class="custom-checkbox">
