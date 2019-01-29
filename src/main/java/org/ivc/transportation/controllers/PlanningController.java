@@ -50,6 +50,13 @@ public class PlanningController {
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
     }
 
+    @GetMapping("/planner/affirmedClaims/Date")
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek(@RequestBody ZonedDateTime date) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+    }
+
     @PostMapping("/planner/appointments_create")
     public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
         return planningService.createAppointment(principal, compositeRecordIdAppointment);
