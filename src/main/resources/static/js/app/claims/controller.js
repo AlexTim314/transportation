@@ -154,6 +154,20 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+        
+        self.getToday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = year + "-" + month + "-" + day;
+            document.getElementById('startDate').value = today;
+        };
+        
         self.fetchNewClaims();
         self.fetchAffirmedClaims();
         self.fetchClaimTemplates();
@@ -161,6 +175,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchRouteTemplates();
         self.fetchPlaces();
         self.fetchBosses();
+        self.getToday();
 
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -407,6 +422,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 records: [],
                 routeTasks: []
             };
+            self.getToday();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
             self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
         };

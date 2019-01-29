@@ -9,11 +9,11 @@
             <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
             <ul class="plan-date" >
                 <li>Дата планирования</li>
-                <li>22.12.2018
-                    <input type="date" name="date-plan" id="date-plan">
+                <li>{{plctrl.date}}
+                    <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
                 </li>
             </ul>
-            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn">Показать</button>	
+            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>	
         </div>	
         <div class="height-wrapper"> 
             <table class="table-record"  id="tbl1" >

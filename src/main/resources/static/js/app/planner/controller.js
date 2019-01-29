@@ -28,6 +28,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.all = false;
         self.selectedIcon;
         self.type;
+        self.date;
 
         self.fetchAllDepartments = function () {
             console.log('fetchDep');
@@ -137,6 +138,26 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchDatePlanRecords = function () {
+            self.all = false;
+            self.today = false;
+            self.week = false;
+            self.changeDate();
+            var datePlan = new Date(document.getElementById('date-plan').value);
+            console.log(datePlan);
+            PlannerService.fetchDatePlanRecords(datePlan)
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Records of Day');
+                            }
+                    );
+        };
+
         self.fetchTransportDeps = function () {
             PlannerService.fetchTransportDeps()
                     .then(
@@ -174,7 +195,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 day = "0" + day;
             var today = year + "-" + month + "-" + day;
             document.getElementById('date-plan').value = today;
+            self.date = day + "." + month + "." + year;
         };
+        
+        
 
         self.fetchAllPlanRecords();
         self.fetchTransportDeps();
@@ -256,6 +280,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(clrec);
             console.log(self.clrec);
             formOpen('more-claim');
+        };
+        
+        self.changeDate = function () {
+            var datePlan = new Date(document.getElementById('date-plan').value);
+            var day = datePlan.getDate();
+            var month = datePlan.getMonth() + 1;
+            var year = datePlan.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            self.date = day + "." + month + "." + year;
         };
 
 
