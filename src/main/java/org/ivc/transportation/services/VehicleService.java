@@ -34,7 +34,8 @@ public class VehicleService {
     @Autowired
     private VehicleInfoRepository vehicleInfoRepository;
     
-    @Autowired RefuelingRepository refuelingRepository;
+    @Autowired
+    RefuelingRepository refuelingRepository;
 
     public List<Vehicle> findVehiclesByTransportDep(Principal principal) {
         TransportDep transportDep = getTransportDep(principal);

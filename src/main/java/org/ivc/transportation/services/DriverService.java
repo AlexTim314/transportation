@@ -3,11 +3,9 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.DriverInfo;
-import org.ivc.transportation.repositories.RefuelingRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.DriverInfoRepository;
 import org.ivc.transportation.repositories.DriverRepository;
@@ -34,8 +32,6 @@ public class DriverService {
     @Autowired
     private DriverInfoRepository driverInfoRepository;
     
-    @Autowired RefuelingRepository refuelingRepository;
-
     public List<Driver> findDriversByTransportDep(Principal principal) {
         TransportDep transportDep = getTransportDep(principal);
         if (transportDep != null) {

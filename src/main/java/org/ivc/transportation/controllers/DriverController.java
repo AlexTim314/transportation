@@ -2,7 +2,6 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.util.List;
-import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.DriverInfo;
 import org.ivc.transportation.services.DriverService;
