@@ -135,11 +135,33 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(self.departments);
         };
 
-        self.createAppointment = function (appointment) {
-            PlannerService.createAppointment(appointment)
+
+
+        self.createAppointment = function () {
+            var appoints = [];
+            var appointment = {};
+            console.log(self.headers.length);
+            console.log(self.headers[0].compositeClaimRecords.length);
+            for (var i = 0; i < self.headers.length; i++) {
+                if (self.headers[i].compositeClaimRecords.length > 0) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
+                        if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
+                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
+                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
+                            appoints.push({
+                                recordId: self.headers[i].compositeClaimRecords[j].record.id,
+                                appointment: appointment
+                            });
+                        }
+                    }
+                }
+            }
+            console.log(appoints);
+            PlannerService.createAppointment(appoints)
                     .then(
                             function (d) {
-                                self.appointments.push(d);
+                                //self.appointments.push(d);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
