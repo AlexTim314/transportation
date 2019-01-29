@@ -96,6 +96,34 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        
+        self.fetchWeekPlanRecords = function () {
+            PlannerService.fetchAllDepsRecords()
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching WeekRecords');
+                            }
+                    );
+        };
+        
+        self.fetchTodayPlanRecords = function () {
+            PlannerService.fetchAllDepsRecords()
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching TodayRecords');
+                            }
+                    );
+        };
 
         self.fetchTransportDeps = function () {
             PlannerService.fetchTransportDeps()
