@@ -1,6 +1,7 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,7 +71,7 @@ public class Vehicle implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "vehicle_fuel", joinColumns = @JoinColumn(name = "vehicler_id"), inverseJoinColumns = @JoinColumn(name = "fuel_id"))
-    private Set<Fuel> fuels;
+    private List<Fuel> fuels;
 
     public Vehicle(String number, Double fuel, Double odometr, int motohours, VehicleStatus status, Boolean vacant, VehicleModel model, TransportDep transportDep, String note) {
         this.number = number;

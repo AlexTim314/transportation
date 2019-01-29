@@ -54,7 +54,7 @@ public class VehicleService {
 
     public Vehicle saveVehicle(Vehicle vehicle) {
         if (vehicle.getId() == null) {
-            Set<Fuel> fl = (Set<Fuel>) new ArrayList<Fuel>();
+            List<Fuel> fl = new ArrayList<Fuel>();
             vehicle.getFuels().forEach(u -> fl.add(
                     fuelRepository.findById(u.getId()).get()
             ));
