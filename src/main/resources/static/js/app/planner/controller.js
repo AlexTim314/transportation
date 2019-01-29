@@ -102,7 +102,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-        
+
         self.fetchWeekPlanRecords = function () {
             self.all = false;
             self.today = false;
@@ -119,7 +119,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-        
+
         self.fetchTomorrowPlanRecords = function () {
             self.all = false;
             self.today = true;
@@ -163,10 +163,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.getToday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = year + "-" + month + "-" + day;
+            document.getElementById('date-plan').value = today;
+        };
 
         self.fetchAllPlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
+        self.getToday();
         //self.fetchAllAppointments();
 
 
@@ -189,7 +202,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
                             appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
                             appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
-                            appointment.status = 'READY';
+                            appointment.status = 'IN_PROGRESS';
                             appoints.push({
                                 recordId: self.headers[i].compositeClaimRecords[j].record.id,
                                 appointment: appointment
@@ -244,5 +257,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(self.clrec);
             formOpen('more-claim');
         };
+
+
 
     }]);
