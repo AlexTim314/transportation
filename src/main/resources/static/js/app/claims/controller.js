@@ -27,6 +27,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.onWeek = false;
         self.isOtherDay = false;
         self.isDelete = false;
+        self.claimFromTemplateDate='';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -182,7 +183,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             menu_close();
             ClaimsService.updateClaim(claim)
                     .then(
-                            self.fetchNewClaims,
+                            function () {
+                                if (claim.templateName === null) {
+                                    self.fetchNewClaims();
+                                } else {
+                                    self.fetchClaimTemplates();
+                                }
+
+                            },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
@@ -383,7 +391,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claimTemplates[i].checked = self.all;
             }
         };
-        self.tryToUpdateClaim = function (claim) {
+        self.copyClaimProperties =  function (claim) {
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
@@ -407,6 +415,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.startDate = new Date(claim.records[0].startDate);
             self.record.entranceDate = new Date(claim.records[0].entranceDate);
             self.record.endDate = new Date(claim.records[0].endDate);
+        };
+        self.prepearClaimFromTemplate = function (claim) {
+            self.copyClaimProperties(claim);
+            self.claim.id = null;  
+            self.claim.templateName = null;            
+        };
+        self.tryToUpdateClaim = function (claim) {
+            self.copyClaimProperties(claim);
             if (self.claim.templateName === null) {
                 edit_open();
             } else {
