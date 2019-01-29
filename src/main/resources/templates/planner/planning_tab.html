@@ -54,10 +54,7 @@
                                 <th style="width:5% "> </th>
                             </tr>
                             <tr ng-repeat="clrec in header.compositeClaimRecords">
-                                <td><span title="{{clrec.claim.specialization}}" class="{{allRec.claim.specialization === 'пассажирский'?'fas fa-lg fa-bus-alt':
-                                            allRec.claim.specialization === 'легковой'?'fas fa-lg fa-car':
-                                                    allRec.claim.specialization === 'грузовой'?'fas fa-lg fa-truck':
-                                                            allRec.claim.specialization === 'спецтехника'?'fas fa-lg fa-tractor':''}}"></span></td> 
+                                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon}}"></span></td> 
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
                                 <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
@@ -72,12 +69,12 @@
                                     </select>           
                                 </td>
                                 <td>
-                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: clrec.claim.vehicleType.typeName track by tm.id" ng-model="clrec.record.appointment.vehicleModel">
+                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: clrec.claim.vehicleType.typeName:true track by tm.id" ng-model="clrec.record.appointment.vehicleModel">
                                     </select>  
 
                                 </td>
                                 <td> 
-                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim')"></i>
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
                                 </td>
                             </tr>
                         </table>

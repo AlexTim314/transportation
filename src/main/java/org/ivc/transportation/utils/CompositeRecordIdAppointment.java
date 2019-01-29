@@ -5,12 +5,15 @@
  */
 package org.ivc.transportation.utils;
 
+import lombok.Data;
 import org.ivc.transportation.entities.Appointment;
 
 /**
  *
  * @author user
  */
+
+@Data
 public class CompositeRecordIdAppointment {
 
     private Long recordId;
