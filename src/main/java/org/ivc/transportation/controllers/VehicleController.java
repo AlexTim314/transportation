@@ -43,7 +43,7 @@ public class VehicleController {
 
     @PostMapping("/dispatcher/vehicle_updateState")
     public VehicleInfo updateVehicleStatus(@RequestBody VehicleInfo vehicleInfo) {
-        return vehicleService.updateVehiceStatus(vehicleInfo);
+        return vehicleService.updateVehicleStatus(vehicleInfo);
     }
 
     @PostMapping("/dispatcher/vehicle_refueling")

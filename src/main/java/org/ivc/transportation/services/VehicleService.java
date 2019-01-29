@@ -61,7 +61,7 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public VehicleInfo updateVehiceStatus(VehicleInfo vehicleInfo) {
+    public VehicleInfo updateVehicleStatus(VehicleInfo vehicleInfo) {
         Vehicle vehicle = vehicleInfo.getVehicle();
         vehicle.setFuel(vehicleInfo.getFuel());
         vehicle.setMotohours(vehicleInfo.getMotohours());
