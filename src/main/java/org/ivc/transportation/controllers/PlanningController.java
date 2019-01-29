@@ -22,7 +22,7 @@ public class PlanningController {
     @Autowired
     private PlanningService planningService;
         
-    @GetMapping("/planner/affirmedClaims/All")
+    @GetMapping("/planner/affirmedClaims")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
         return planningService.getAffirmedClaimsAll();
     }
