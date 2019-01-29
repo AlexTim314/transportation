@@ -22,13 +22,13 @@
                     <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
                 </tr>
                 <tr>                           
-                <tr style = "cursor: pointer" ng-click="plctrl.rowClick(department)" class="activeRow" ng-repeat-start="department in plctrl.departments">
+                <tr style = "cursor: pointer" ng-click="plctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in plctrl.headers">
                     <td>
                         <i class="{{department.isVisible !== undefined && department.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
                     </td>
-                    <td >{{department.fullname}}
+                    <td >{{header.department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{records.length}}</i>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{plctrl.header.compositeClaimRecords.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
                             <div title="Обработано"><i class="fas fa-check"></i>23</div>
@@ -37,7 +37,7 @@
                         </div>  
                     </td>
                 </tr>
-                <tr class="hiddenRow" ng-show="department.isVisible !== undefined && department.isVisible" ng-repeat-end>
+                <tr class="hiddenRow" ng-show="header.isVisible !== undefined && header.isVisible" ng-repeat-end>
                     <td colspan="2">
 
                         <table class="table-claim">
@@ -46,41 +46,35 @@
                                 <th style="width:5% ">Тип транспорта</th>
                                 <th style="width:10% ">Вид техники</th>
                                 <th style="width:5% ">Дата выезда</th>
-                                <th style="width:5% ">Время подачи</th>
-                                <th style="width:20% ">Цель поездки</th>
+                                <th style="width:10% ">Время подачи</th>
+                                <th style="width:15% ">Цель поездки</th>
                                 <th style="width:15% ">Маршрут</th>
                                 <th style="width:10% ">ОТС</th>
                                 <th style="width:15% ">Марка</th>
                                 <th style="width:5% "> </th>
                             </tr>
-                            <tr ng-repeat="record in department.claims.records">
-                                <td><span title="{{record.claim.specialization}}" class="{{record.claim.specialization === 'пассажирский' 'fas fa-lg fa-bus-alt':''}}
-                                          {{record.claim.specialization === 'легковой' 'fas fa-lg fa-car':''}}
-                                          {{record.claim.specialization === 'грузовой' 'fas fa-lg fa-truck':''}}
-                                          {{record.claim.specialization === 'спецтехника' 'fas fa-lg fa-tractor':''}}"></span></td>
-                                <td>{{record.claim.vehicleType.typeName}}</td>
-                                <td>{{record.startDate}}</td>
-                                <td>{{record.entranceDate}}</td>
-                                <td>{{record.claim.purpose}}
+                            <tr ng-repeat="clrec in header.compositeClaimRecords">
+                                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon}}"></span></td> 
+                                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td>{{clrec.claim.purpose}}
                                 </td>
-                                <td ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'">
-                                    <span class="route-tag">{{task.place.name}}</span>
+                                <td >
+                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'">{{task.place.name}}</span>
                                 </td>                                                         
 
                                 <td>
-                                    <select name="ots" ng-options="td as transportDep.shortName for td in plctrl.transportDeps track by td.shortName" ng-model="plctrl.record.appointments.transportDep" >
-                                    </select>
+                                    <select name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.record.appointment.transportDep" >
+                                    </select>           
                                 </td>
                                 <td>
-                                    <select name="model">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
+                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: clrec.claim.vehicleType.typeName:true track by tm.id" ng-model="clrec.record.appointment.vehicleModel">
                                     </select>  
 
                                 </td>
                                 <td> 
-                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim')"></i>
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
                                 </td>
                             </tr>
                         </table>

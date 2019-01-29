@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Сектор планирования КАТО</title>
@@ -10,12 +12,12 @@
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
+     
+        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/controller.js"></script>
         
         <script src="js/app/planner/service.js"></script>
         <script src="js/app/planner/controller.js"></script>
-
-        <script src="js/app/claimsPage/service.js"></script>
-        <script src="js/app/claimsPage/controller.js"></script>
 
     </head>
     <body ng-app="Transportation" >
@@ -45,7 +47,7 @@
                     <span class="psw">Забыли <a href="#">Пароль?</a></span>
                 </div>
             </form>
-            <div class="main clearfix" ng-controller="PlannerController as plctrl">
+            <div class="main clearfix">
                 <div class="header clearfix">
                     <!--Logo -->
                     <div class="logo">
@@ -69,7 +71,7 @@
                 <div id="claim-create" class="tabcontent">
 
 
-                    <div class="clearfix" style="overflow-x:auto;">
+                    <div class="clearfix" style="overflow-x:auto;" ng-controller="PlannerController as plctrl">
                         <th:block th:include="planner/planning_tab"></th:block> 
                         
                         <th:block th:include="planner/archive_tab"></th:block> 

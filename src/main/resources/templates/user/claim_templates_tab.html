@@ -32,7 +32,7 @@
                         <span class="checkmark"></span>
                     </label>    
                 </td>
-                <td class="counter_record" ng-click="ctrl.rowClick(claim)">№{{claim.id}} {{claim.templateName}} 
+                <td class="counter_record" ng-click="ctrl.rowClick(claim)">{{claim.templateName}} 
                     <span title="Число записей">{{claim.records.length}}</span>
                 </td>
                 <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
@@ -42,12 +42,12 @@
                     <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                 </td>
                 <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" onclick="edit_open()"></i>
+                    <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="more_open()" ></i>  
                 </td>                               
 
             </tr>
-            <tr class="hiddenRow collapseRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
+            <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
                 <td colspan="8">
 
                     <table class="table-claim">
@@ -60,7 +60,7 @@
                         </tr>
                         <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
                             <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
-                            <td>{{record.entranceDate| date:'HH:mm'}}/td>
+                            <td>{{record.entranceDate| date:'HH:mm'}}</td>
                             <td>{{record.startDate| date:'HH:mm'}}</td>
                             <td>{{record.endDate| date:'HH:mm'}}</td>
                             <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td> 

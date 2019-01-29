@@ -6,15 +6,15 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
-import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
+import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -26,27 +26,15 @@ public class PlanningController {
 
     @Autowired
     private PlanningService planningService;
-    
-     @GetMapping("/user/affirmedClaims/Tomorrow_")
-    public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
-//        System.out.println(dStart);
-//        System.out.println(dEnd);
-        return planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+        
+    @GetMapping("/planner/affirmedClaims")
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        return planningService.getAffirmedClaimsAll();
     }
     
-    @GetMapping("/user/affirmedClaims/Week_")
-    public List<Claim> getAffirmedClaimsWeek(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
-//        System.out.println(dStart);
-//        System.out.println(dEnd);
-        System.out.println("Недельные подтвержденные заявки");
-        planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd).forEach(System.out::println);
-        return planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
+    @PostMapping("/planner/appointments_create")
+    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointmen) {
+        return planningService.createAppointment(principal, compositeRecordIdAppointmen);
     }
     
-    
-
 }
