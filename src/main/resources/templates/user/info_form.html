@@ -10,9 +10,9 @@
         <fieldset>
             <legend>Добавил</legend>
             <ul>
-                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>user</b></span></label></li>
-                <li><label><b class="fas fa-address-card"></b> ФИО:<span>Иванов Иван Иванович</span></label></li>
-                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.claim.creator.username}}</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.claim.creator.fullName}}</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.claim.creator.post}}</span></label></li>
                 <li><label><b class="fas fa-clock" ></b> Время создания:<span>{{ctrl.claim.creationDate| date:'HH:mm'}}</span></label></li>                   
             </ul>
         </fieldset>                        
@@ -29,9 +29,9 @@
         <fieldset>
             <legend>Добавил</legend>
             <ul>
-                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>user</b></span></label></li>
-                <li><label><b class="fas fa-address-card"></b> ФИО:<span>Иванов Иван Иванович</span></label></li>
-                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.affirmedClaim.creator.username}}</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.affirmedClaim.creator.fullName}}</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.affirmedClaim.creator.post}}</span></label></li>
                 <li><label><b class="fas fa-clock" ></b> Время создания:<span>{{ctrl.affirmedClaim.creationDate| date:'HH:mm'}}</span></label></li>             
             </ul>
         </fieldset>
