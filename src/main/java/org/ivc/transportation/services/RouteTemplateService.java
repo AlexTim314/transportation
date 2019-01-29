@@ -45,10 +45,7 @@ public class RouteTemplateService {
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
         if (routeTemplate.getId() != null) {
-            routeTaskRepository.deleteByIdIn(
-                    routeTemplateRepository.findById(routeTemplate.getId()).get().getRouteTasks()
-                            .stream().map(u -> u.getId()).collect(Collectors.toList())
-            );
+            routeTaskRepository.deleteByTemplateId(routeTemplate.getId());
         }
         return routeTemplateRepository.save(routeTemplate);
     }

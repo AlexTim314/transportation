@@ -33,6 +33,9 @@ public class AppUser {
 
     @Column(name = "full_name", length = 128, nullable = false)
     private String fullName;
+    
+    @Column(name = "post", length = 128)
+    private String post;
 
     @Column(name = "encrypted_password", length = 128, nullable = false)
     private String password;

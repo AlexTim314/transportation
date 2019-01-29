@@ -1,6 +1,5 @@
 package org.ivc.transportation.repositories;
 
-import java.util.List;
 import org.ivc.transportation.entities.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,10 +14,11 @@ import org.springframework.stereotype.Repository;
 @Repository("recordRepository")
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    void deleteByIdIn(List<Long> recordIds);
-
     @Modifying
-    @Query(value = "delete r from Record r where r.claim_id = :claim_id", nativeQuery = true)
+    @Query(value = "delete from record where claim_id = :claim_id", nativeQuery = true)
     void deleteByClaimId(@Param("claim_id") Long claimId);
+
+    @Query(value = "select record.* from record, appointment where record.id = appointment.record_id and appointment.id = :appointment_id", nativeQuery = true)
+    public Record findRecordByAppointmentId(@Param("appointment_id") Long appointmentId);
 
 }

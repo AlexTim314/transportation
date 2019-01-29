@@ -1,10 +1,9 @@
 package org.ivc.transportation.repositories;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import org.ivc.transportation.utils.RecordDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,18 +11,9 @@ import org.springframework.stereotype.Repository;
  * @author Sokolov Slava
  */
 @Repository("dtoRepository")
-public class DTORepository {
+public interface DTORepository extends JpaRepository<RecordDTO, Long> {
 
-    @Autowired
-    private EntityManager em;
-
-    public List<RecordDTO> getDTORecords() {
-        Query query = em.createNativeQuery(
-                "SELECT r.startDate AS startDate r.endDate AS endDate "
-                + "FROM Record",
-                "RecordDTOMapping");
-        List<RecordDTO> result = query.getResultList();
-        return result;
-    }
+    @Query(name = "getRecords", nativeQuery = true)
+    public List<RecordDTO> getDTORecords();
 
 }

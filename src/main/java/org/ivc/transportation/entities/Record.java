@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
@@ -30,15 +31,6 @@ import org.ivc.transportation.utils.RecordDTO;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"appointmentGroup"})
 @ToString(exclude = {"appointmentGroup"})
-@SqlResultSetMapping(name = "RecordDTOMapping",
-        classes = {
-            @ConstructorResult(targetClass = RecordDTO.class,
-                    columns = {
-                        @ColumnResult(name = "endDate")
-                        , @ColumnResult(name = "startDate")
-                    }
-            )}
-)
 @Entity
 @Table(name = "record")
 public class Record implements Serializable {
@@ -58,6 +50,7 @@ public class Record implements Serializable {
     private ZonedDateTime endDate;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "record_id")
     private List<Appointment> appointments;
 
 }

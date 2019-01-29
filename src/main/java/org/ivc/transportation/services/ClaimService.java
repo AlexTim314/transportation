@@ -62,7 +62,7 @@ public class ClaimService {
     public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
         Department department = getDepartment(principal);
         if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
+            return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);
         }
         return null;
     }
@@ -79,17 +79,8 @@ public class ClaimService {
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
         } else {
-//            claim.getRecords().forEach(r -> recordRepository.delete(r));
-            recordRepository.deleteByIdIn(
-                    claimRepository.findById(claim.getId()).get().getRecords()
-                            .stream().map(u -> u.getId()).collect(Collectors.toList())
-            );
-//            recordRepository.deleteByClaimId(claim.getId());
-            routeTaskRepository.deleteByIdIn(
-                    claimRepository.findById(claim.getId()).get().getRouteTasks()
-                            .stream().map(u -> u.getId()).collect(Collectors.toList())
-            );
-//            claim.getRouteTasks().forEach(tsk -> routeTaskRepository.delete(tsk));
+            recordRepository.deleteByClaimId(claim.getId());
+            routeTaskRepository.deleteByClaimId(claim.getId());
         }
         claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));
