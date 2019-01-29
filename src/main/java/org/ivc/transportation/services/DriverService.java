@@ -63,6 +63,7 @@ public class DriverService {
     }
 
     public void deleteDrivers(List<Long> ids) {
+        ids.forEach(u -> driverInfoRepository.deleteByDriverId(u));
         driverRepository.deleteByIdIn(ids);
     }
 

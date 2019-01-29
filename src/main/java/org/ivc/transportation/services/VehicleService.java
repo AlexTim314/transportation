@@ -55,9 +55,7 @@ public class VehicleService {
     public Vehicle saveVehicle(Vehicle vehicle) {
         if (vehicle.getId() == null) {
             List<Fuel> fl = new ArrayList<Fuel>();
-            vehicle.getFuels().forEach(u -> fl.add(
-                    fuelRepository.findById(u.getId()).get()
-            ));
+            vehicle.getFuels().forEach(u -> fl.add(fuelRepository.findById(u.getId()).get()));
             vehicle.setFuels(fl);
             vehicle = vehicleRepository.save(vehicle);
             VehicleInfo vehicleInfo = new VehicleInfo();
@@ -93,6 +91,7 @@ public class VehicleService {
     }
 
     public void deleteVehicles(List<Long> ids) {
+        ids.forEach(u -> vehicleInfoRepository.deleteByVehicleId(u));
         vehicleRepository.deleteByIdIn(ids);
     }
 
