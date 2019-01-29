@@ -1,22 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Department;
-import org.ivc.transportation.repositories.AppointmentRepository;
+import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
-import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.utils.CompositeClaimRecord;
+import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.EntitiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -32,45 +34,70 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlanningService {
 
     @Autowired
-    UserRepository userRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
-    DepartmentRepository departmentRepository;
+    private ClaimRepository claimRepository;
 
     @Autowired
-    ClaimRepository claimRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RecordRepository recordRepository;
+    private RecordRepository recordRepository;
 
     @Autowired
-    RouteTaskRepository routeTaskRepository;
-    
-    @Autowired
-    AppointmentRepository appointmentRepository;
+    private AppointmentInfoRepository appointmentInfoRepository;
 
-    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);
-        }
-        return null;
+    private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
+        List<Record> recordList = new ArrayList<Record>();
+        claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
+                u.getRecords()));
+        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u)));
+        return result;
     }
 
-    public List<Claim> findAffirmedClaimsByDepartment(Principal principal) {
-        Department department = getDepartment(principal);
-        if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department);
-        }
-        return null;
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+        List<Record> recordList = new ArrayList<Record>();
+        claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
+                recordRepository.findByClaimIdAndTimeFilter(u.getId(), dateStart, dateEnd)));
+        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u)));
+        return result;
     }
 
-    private Department getDepartment(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
+        departmentRepository.findDepartmentsWithAffirmedClaims().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
+        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsAll(u.getDepartment())));
+        return result;
+    }
+
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+        List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
+        departmentRepository.findDepartmentsWithAffirmedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
+        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilter(u.getDepartment(), dateStart, dateEnd)));
+        return result;
+    }
+
+    public List<Record> createAppointment(Principal principal, List<CompositeRecordIdAppointment> compositeRecordIdAppointmentList) {
+        List<Record> result = new ArrayList<Record>();
+        for (int i = 0; i < compositeRecordIdAppointmentList.size(); i++) {
+            CompositeRecordIdAppointment compositeRecordIdAppointment = compositeRecordIdAppointmentList.get(i);
+            Appointment app = compositeRecordIdAppointment.getAppointment();
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(getUser(principal));
+            app.setNote("Заявка передана в транспортный отдел");
+            app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
+
+            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
+
+            Record rd = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
+            rd.getAppointments().add(app);
+            recordRepository.save(rd);
+            result.add(rd);
         }
-        return null;
+        return result;
     }
 
     private AppUser getUser(Principal principal) {

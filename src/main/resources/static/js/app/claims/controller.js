@@ -31,6 +31,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.week = false;
         self.all = false;
         
+        self.claimFromTemplateDate='';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -171,8 +172,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             function (d) {
                                 if (self.claim.templateName === null) {
                                     self.newClaims.push(d);
+                                } else {
+                                    self.claimTemplates.push(d);
                                 }
                                 self.resetClaimForm();
+                                //self.fetchNewClaims;
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -193,7 +197,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             menu_close();
             ClaimsService.updateClaim(claim)
                     .then(
-                            self.fetchNewClaims,
+                            function () {
+                                if (claim.templateName === null) {
+                                    self.fetchNewClaims();
+                                } else {
+                                    self.fetchClaimTemplates();
+                                }
+
+                            },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
                             }
@@ -254,7 +265,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
             formClose('del-claim-confirm');
         };
-        
+
         self.deleteClaimTemplates = function () {
             var delIds = [];
             for (var i = 0; i < self.claimTemplates.length; i++) {
@@ -264,7 +275,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             ClaimsService.deleteClaims(delIds)
                     .then(
-                            self.fetchClaimTemplates(),
+                            self.fetchClaimTemplates,
                             function (errResponse) {
                                 console.error('Error while deleting ClaimTemplates.');
                             }
@@ -420,7 +431,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claimTemplates[i].checked = self.all;
             }
         };
-        self.tryToUpdateClaim = function (claim) {
+        self.copyClaimProperties =  function (claim) {
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
@@ -444,7 +455,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.startDate = new Date(claim.records[0].startDate);
             self.record.entranceDate = new Date(claim.records[0].entranceDate);
             self.record.endDate = new Date(claim.records[0].endDate);
-            edit_open();
+        };
+        self.prepearClaimFromTemplate = function (claim) {
+            self.copyClaimProperties(claim);
+            self.claim.id = null;  
+            self.claim.templateName = null;            
+        };
+        self.tryToUpdateClaim = function (claim) {
+            self.copyClaimProperties(claim);
+            if (self.claim.templateName === null) {
+                edit_open();
+            } else {
+                templateEditOpen();
+            }
         };
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;

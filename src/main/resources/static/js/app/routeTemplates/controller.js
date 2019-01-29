@@ -99,7 +99,6 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                                 console.error('Error while deleting RouteTemplates.');
                             }
                     );
-            formClose('del-route-templ-confirm');
         };
 
         self.submit = function () {

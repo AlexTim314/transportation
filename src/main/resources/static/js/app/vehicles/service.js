@@ -1,6 +1,7 @@
+
 'use strict';
 
-App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, $document) {
+App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q, $document) {
 
         self.csrfHeaderName = $document[0].querySelector("meta[name='_csrf_header']").getAttribute('content');
         self.csrf = $document[0].querySelector("meta[name='_csrf']").getAttribute('content');
@@ -9,72 +10,33 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            fetchAllDepartments: function () {
-                return $http.get('/transportation/planner/departments')
+            fetchTransportDep: function () {
+                return $http.get('/transportation/transportDep')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching departments');
+                                    console.error('Error while fetching transportDep');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
             
-            fetchAllClaims: function () {
-                return $http.get('/transportation/planner/claims')
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching claims');
+                                    console.error('Error while fetching vehicleTypes');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
             
-            fetchAllAppointments: function () {
-                return $http.get('/transportation/planner/appointments')
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching appointments');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-            
-            fetchAllDepsRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims')
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching allRecs');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-            
-            fetchTransportDeps: function () {
-                return $http.get('/transportation/transportDeps')
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching transportDeps');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-            
-            fetchAllVehicleModels: function () {
+            fetchVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')
                         .then(
                                 function (response) {
@@ -87,47 +49,59 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            createAppointment: function (appointments) {
-                return $http.post('/transportation/planner/appointments_create',
-                        JSON.stringify(appointments), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                    
-                                },
-                                function (errResponse) {
-                                    console.error('Error while creating appointments');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
-
-            updateAppointment: function (appointment) {
-                return $http.put('/transportation/planner/appointment_update',
-                        JSON.stringify(appointment), {headers: self.headers})
+            fetchVehicles: function () {
+                return $http.get('/transportation/dispatcher/vehicles')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while updating appointment');
+                                    console.error('Error while fetching bosses');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
 
-            deleteAppointment: function (appointment) {
-                console.log(appointment);
+            createVehicle: function (vehicle) {
+                return $http.post('/transportation/dispatcher/vehicle_create',
+                        JSON.stringify(vehicle), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            updateVehicle: function (vehicle) {
+                return $http.put('/transportation/dispatcher/vehicle_update',
+                        JSON.stringify(vehicle), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            deleteVehicles: function (ids) {
                 return $http({method: 'DELETE',
-                    url: '/transportation/planner/appointment_delete',
-                    data: JSON.stringify(appointment),
+                    url: '/transportation/dispatcher/vehicles_delete',
+                    data: JSON.stringify(ids),
                     headers: self.headers
                 }).then(
                         function (response) {
                             return response.data;
                         },
                         function (errResponse) {
-                            console.error('Error while deleting appointment');
+                            console.error('Error while deleting vehicle');
                             return $q.reject(errResponse);
                         }
                 );
@@ -135,6 +109,3 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 
         };
     }]);
-
-
-

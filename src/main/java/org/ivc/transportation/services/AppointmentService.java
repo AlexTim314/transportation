@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.services;
 
 import java.util.List;
@@ -20,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AppointmentService {
-    
+
     @Autowired
-    AppointmentRepository appointmentRepository;
-    
-    public List<Appointment> findByStatus(AppointmentStatus status){
+    private AppointmentRepository appointmentRepository;
+
+    public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
     }
-    
+
 }

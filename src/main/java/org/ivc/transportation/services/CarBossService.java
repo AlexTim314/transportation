@@ -2,7 +2,6 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.util.List;
-import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.repositories.CarBossRepository;
@@ -22,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class CarBossService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    CarBossRepository carBossRepository;
+    private CarBossRepository carBossRepository;
 
     public List<CarBoss> findCarBossesByDepartment(Principal principal) {
         Department department = getDepartment(principal);
