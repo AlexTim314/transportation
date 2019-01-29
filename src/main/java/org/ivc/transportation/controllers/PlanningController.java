@@ -26,5 +26,16 @@ public class PlanningController {
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
         return planningService.getAffirmedClaimsAll();
     }
+    
+//    @PostMapping("/user/appointment_create")
+//    public Claim createAppointment(@RequestBody Claim claim) {
+//        return claimService.saveClaim(principal, claim);
+//    }
+//    
+//    @PutMapping("/user/claim_update")
+//    public Claim updateClaim(Principal principal, @RequestBody Claim claim) {
+//        return claimService.saveClaim(principal, claim);
+//    }
+
 
 }

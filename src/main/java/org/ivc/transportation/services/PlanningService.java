@@ -29,33 +29,22 @@ public class PlanningService {
     @Autowired
     private ClaimRepository claimRepository;
 
-    @Autowired
-    private RecordRepository recordRepository;
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
-        List<CompositeDepartmentClaimRecords> cl = new ArrayList<CompositeDepartmentClaimRecords>();
-        departmentRepository.findAll().forEach(u -> cl.add(new CompositeDepartmentClaimRecords(u)));
-        cl.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
-        return cl;
-
-    }
+//    @Autowired
+//    private AppointmentRepository appointmentRepository;
 
     private List<CompositeClaimRecord> getCompositeClaimRecords(Department department) {
-        List<Record> rl = new ArrayList<Record>();
-        claimRepository.findByDepartment(department).forEach(u -> rl.addAll(u.getRecords()));
-        List<CompositeClaimRecord> cl = new ArrayList<CompositeClaimRecord>();
-        rl.forEach(u -> cl.add(new CompositeClaimRecord(findByRecordsWithoutRecordsAndDepartment(u), u)));
-        return cl;
+        List<Record> recordList = new ArrayList<Record>();
+        claimRepository.findByDepartment(department).forEach(u -> recordList.addAll(u.getRecords()));
+        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u)));
+        return result;
     }
 
-    private Claim findByRecordsWithoutRecordsAndDepartment(Record record) {
-        Claim cl = claimRepository.findByRecords(record);
-        cl.setRecords(null);
-        cl.setDepartment(null);
-        return cl;
-    }
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
+        departmentRepository.findAll().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
+        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
+        return result;
 
+    }
 }
