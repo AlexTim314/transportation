@@ -11,12 +11,16 @@ import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
+import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -45,9 +49,15 @@ public class PlanningService {
 
     @Autowired
     RouteTaskRepository routeTaskRepository;
-    
+
     @Autowired
     AppointmentRepository appointmentRepository;
+
+    @Autowired
+    TransportDepRepository transportDepRepository;
+
+    @Autowired
+    VehicleModelRepository vehicleModelRepository;
 
     public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
         Department department = getDepartment(principal);
@@ -79,6 +89,14 @@ public class PlanningService {
             return userRepository.findByUsername(loginedUser.getUsername());
         }
         return null;
+    }
+
+    public List<TransportDep> findAllTransportDeps() {
+        return transportDepRepository.findAll();
+    }
+
+    public List<VehicleModel> findAllVehicleModels() {
+        return vehicleModelRepository.findAll();
     }
 
 }

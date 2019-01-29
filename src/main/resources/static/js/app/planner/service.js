@@ -22,6 +22,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
+            fetchAllClaims: function () {
+                return $http.get('/transportation/planner/claims')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching claims');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchAllAppointments: function () {
                 return $http.get('/transportation/planner/appointments')
                         .then(
@@ -30,6 +43,45 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching appointments');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchAllDepsRecords: function () {
+                return $http.get('/transportation/test')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching allRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchTransportDeps: function () {
+                return $http.get('/transportation/management/transportDeps')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching transportDeps');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchAllVehicleModels: function () {
+                return $http.get('/transportation/planner/vehicleModels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleModels');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -83,5 +135,6 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 
         };
     }]);
+
 
 

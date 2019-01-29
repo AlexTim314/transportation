@@ -12,6 +12,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.PlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +30,7 @@ public class PlanningController {
     @Autowired
     private PlanningService planningService;
     
-     @GetMapping("/user/affirmedClaims/Tomorrow_")
+     @GetMapping("/planner/claims/Tomorrow")
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
@@ -36,7 +39,7 @@ public class PlanningController {
         return planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
     
-    @GetMapping("/user/affirmedClaims/Week_")
+    @GetMapping("/planner/claims/Week")
     public List<Claim> getAffirmedClaimsWeek(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
@@ -47,6 +50,21 @@ public class PlanningController {
         return planningService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
     
+
     
+    @GetMapping("/planner/claims")
+    public List<Claim> getAffirmedClaimsAll(Principal principal) {
+        return planningService.findAffirmedClaimsByDepartment(principal);
+    }
+    
+    @GetMapping("/planner/transportDeps")
+    public List<TransportDep> getAllTransportDeps() {
+        return planningService.findAllTransportDeps();
+    }
+    
+    @GetMapping("/planner/vehicleModels")
+    public List<VehicleModel> getAllVehicleModels() {
+        return planningService.findAllVehicleModels();
+    }  
 
 }
