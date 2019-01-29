@@ -45,4 +45,11 @@ public class AppointmentInfo implements Serializable {
 
     @ManyToOne
     private Appointment appointment;
+    
+    public AppointmentInfo(LocalDateTime modificationDate, AppointmentStatus status, String note, Appointment appointment) {
+        this.modificationDate = modificationDate;
+        this.status = status;
+        this.note = note;
+        this.appointment = appointment;
+    }
 }

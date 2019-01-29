@@ -5,11 +5,16 @@
  */
 package org.ivc.transportation.controllers;
 
+import java.security.Principal;
 import java.util.List;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,15 +32,9 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
     
-//    @PostMapping("/user/appointment_create")
-//    public Claim createAppointment(@RequestBody Claim claim) {
-//        return claimService.saveClaim(principal, claim);
-//    }
-//    
-//    @PutMapping("/user/claim_update")
-//    public Claim updateClaim(Principal principal, @RequestBody Claim claim) {
-//        return claimService.saveClaim(principal, claim);
-//    }
-
-
+    @PostMapping("/planner/appointments_create")
+    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointmen) {
+        return planningService.createAppointment(principal, compositeRecordIdAppointmen);
+    }
+    
 }
