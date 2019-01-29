@@ -73,9 +73,9 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                     );
         };
 
-        self.updateRouteTemplate = function (routeTemplate) {
+        self.updateRouteTemplate = function () {
             self.prepareRoute();
-            RouteTemplatesService.updateRouteTemplate(routeTemplate)
+            RouteTemplatesService.updateRouteTemplate(self.routeTemplate)
                     .then(
                             function (d) {
 //                                self.routeTemplates.push(d);
@@ -99,7 +99,14 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                                 console.error('Error while deleting RouteTemplates.');
                             }
                     );
-            formClose('del-route-templ-confirm');
+        };
+
+        self.submit = function () {
+            if (self.routeTemplate.id === null) {
+                self.createRouteTemplate();
+            } else {
+                self.updateRouteTemplate();
+            }
         };
 
         self.addTask = function (p) {

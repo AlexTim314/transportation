@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
@@ -29,19 +28,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClaimService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    DepartmentRepository departmentRepository;
+    private DepartmentRepository departmentRepository;
 
     @Autowired
-    ClaimRepository claimRepository;
+    private ClaimRepository claimRepository;
 
     @Autowired
-    RecordRepository recordRepository;
+    private RecordRepository recordRepository;
 
     @Autowired
-    RouteTaskRepository routeTaskRepository;
+    private RouteTaskRepository routeTaskRepository;
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);
@@ -62,7 +61,7 @@ public class ClaimService {
     public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
         Department department = getDepartment(principal);
         if (department != null) {
-            return claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrueAndRecordsStartDateBetween(department, dStart, dEnd);
+            return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);
         }
         return null;
     }

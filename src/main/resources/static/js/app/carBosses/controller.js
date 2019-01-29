@@ -51,8 +51,8 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
                     );
         };
 
-        self.updateCarBoss = function (carBoss) {
-            CarBossesService.updateCarBoss(carBoss)
+        self.updateCarBoss = function () {
+            CarBossesService.updateCarBoss(self.carBoss)
                     .then(
                             function (d) {
 //                                self.carBosses.push(d);
@@ -77,7 +77,14 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
                                 console.error('Error while deleting CarBoss.');
                             }
                     );
-            formClose('del-car-boss-confirm');
+        };
+
+        self.submit = function () {
+            if (self.carBoss.id === null) {
+                self.createCarBoss();
+            } else {
+                self.updateCarBoss()();
+            }
         };
 
         self.tryToCreate = function () {
