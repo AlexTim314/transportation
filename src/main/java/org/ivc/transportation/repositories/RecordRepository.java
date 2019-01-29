@@ -1,5 +1,6 @@
 package org.ivc.transportation.repositories;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
@@ -23,6 +24,8 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     @Query(value = "select record.* from record, appointment where record.id = appointment.record_id and appointment.id = :appointment_id", nativeQuery = true)
     public Record findRecordByAppointmentId(@Param("appointment_id") Long appointmentId);
     
+    @Query(value = "select * from record where start_date between :date_start and :date_end and claim_id = :claim_id", nativeQuery = true)
+    List<Record> findByClaimIdAndTimeFilter(@Param("claim_id") Long claimId, @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
     
     
 
