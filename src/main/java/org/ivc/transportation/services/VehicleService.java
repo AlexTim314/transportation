@@ -1,10 +1,15 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
+import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleInfo;
+import org.ivc.transportation.repositories.RefuelingRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleInfoRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,6 +31,12 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private VehicleInfoRepository vehicleInfoRepository;
+    
+    @Autowired
+    RefuelingRepository refuelingRepository;
+
     public List<Vehicle> findVehiclesByTransportDep(Principal principal) {
         TransportDep transportDep = getTransportDep(principal);
         if (transportDep != null) {
@@ -35,7 +46,38 @@ public class VehicleService {
     }
 
     public Vehicle saveVehicle(Vehicle vehicle) {
+        if (vehicle.getId() == null) {
+            vehicle = vehicleRepository.save(vehicle);
+            VehicleInfo vehicleInfo = new VehicleInfo();
+            vehicleInfo.setVehicle(vehicle);
+            vehicleInfo.setModificationDate(LocalDateTime.now());
+            vehicleInfo.setFuel(vehicle.getFuel());
+            vehicleInfo.setMotohours(vehicle.getMotohours());
+            vehicleInfo.setOdometr(vehicle.getOdometr());
+            vehicleInfo.setNote("При создании");
+            vehicleInfo.setStatus(vehicle.getStatus());
+            vehicleInfoRepository.save(vehicleInfo);
+            return vehicle;
+        }
         return vehicleRepository.save(vehicle);
+    }
+
+    public VehicleInfo updateVehicleStatus(VehicleInfo vehicleInfo) {
+        Vehicle vehicle = vehicleInfo.getVehicle();
+        vehicle.setFuel(vehicleInfo.getFuel());
+        vehicle.setMotohours(vehicleInfo.getMotohours());
+        vehicle.setNote(vehicleInfo.getNote());
+        vehicle.setOdometr(vehicleInfo.getOdometr());
+        vehicle.setStatus(vehicleInfo.getStatus());
+        vehicleInfo.setModificationDate(LocalDateTime.now());
+        return vehicleInfoRepository.save(vehicleInfo);
+    }
+
+    public Refueling vehicleRefueling(Refueling refueling) {
+        Vehicle vehicle = refueling.getVehicle();
+        vehicle.setFuel(vehicle.getFuel()+refueling.getVolume());
+        vehicleRepository.save(vehicle);
+        return refuelingRepository.save(refueling);
     }
 
     public void deleteVehicles(List<Long> ids) {
