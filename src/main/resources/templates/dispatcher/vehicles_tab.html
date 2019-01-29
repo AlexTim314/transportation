@@ -1,7 +1,7 @@
 <div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
         <div class="table-header table-header-plan clearfix">
-            <input type="search" placeholder="Поиск">
+            <input type="search" placeholder="Поиск" ng-model="vehicleSearch">
         </div>	
         <div class="height-wrapper">       
             <table class="table-transport">
@@ -19,23 +19,22 @@
                     <th>Cтатус</th>
                     <th style="width:15%;">
                         <i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" onclick="formOpen('formTransport')"></i>
-                        <i title="Изменить транспорт" class="fas fa-lg fa-edit"></i>
-                        <i title="Удалить транспорт"class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
+                        <i title="Удалить транспорт" class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>
                     </th>
                 </tr>
-                <tr>
+                <tr ng-repeat="v in ctrl.vehicles| filter: vehicleSearch">
                     <td>
                         <label class="custom-checkbox">
-                            <input type="checkbox" >
+                            <input type="checkbox" ng-model="v.checked">
                             <span class="checkmark"></span>
                         </label>
                     </td>
-                    <td>Пассажирский</td>
-                    <td>Автобус</td>
-                    <td>ПАЗ</td>
-                    <td>XX 515 XA</td>			
+                    <td>{{v.model.vehicleType.specialization}}</td>
+                    <td>{{v.model.vehicleType.typeName}}</td>
+                    <td>{{v.model.modelName}}</td>
+                    <td>{{v.number}}</td>			
                     <td>
-                        <i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Исправен</span>
+                        <i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeVehicleStatus')"></i><span  class="status-info status-ready">{{v.status}}</span>
                     </td>
                     <td>
                         <i title="История" class="fas fa-lg fa-history" onclick="formOpen('history-transport')"></i>

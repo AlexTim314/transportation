@@ -8,6 +8,7 @@ import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
@@ -28,7 +29,7 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
-    
+
     @Autowired
     private RecordRepository rr;
 
@@ -48,6 +49,11 @@ public class CommonController {
         return commonService.findDepartmentByUser(principal);
     }
 
+    @GetMapping("/transportDep")
+    public TransportDep getTransportDep(Principal principal) {
+        return commonService.findTransportDepByUser(principal);
+    }
+
     @GetMapping("/transportDeps")
     public List<TransportDep> getTransportDeps() {
         return commonService.findAllTransportDeps();
@@ -58,33 +64,14 @@ public class CommonController {
         return commonService.findAllVehicleTypes();
     }
 
+    @GetMapping("/vehicleModels")
+    public List<VehicleModel> getVehicleModels() {
+        return commonService.findAllVehicleModels();
+    }
+
     @GetMapping("/places")
     public List<Place> getAllPlaces() {
         return commonService.findAllPlaces();
-    }
-
-    
-    Claim findByRecordsWithoutRecordsAndDepartment(Record record) {
-        Claim cl = cr.findByRecords(record);
-        cl.setRecords(null);
-        cl.setDepartment(null);
-        return cl;
-    }
-
-List<CompositeClaimRecord> getCompositeClaimRecords(Department department) {
-    List<Record> rl = new ArrayList<Record>();
-    cr.findByDepartment(department).forEach(u -> rl.addAll(u.getRecords()));
-    List<CompositeClaimRecord> cl = new ArrayList<CompositeClaimRecord>();
-    rl.forEach(u -> cl.add(new CompositeClaimRecord(findByRecordsWithoutRecordsAndDepartment(u),u)));
-    return cl;
-}
-    
-    @GetMapping("/test")
-    public List<CompositeDepartmentClaimRecords> test() {
-        List<CompositeDepartmentClaimRecords> cl = new ArrayList<CompositeDepartmentClaimRecords>();
-        dr.findAll().forEach(u -> cl.add(new CompositeDepartmentClaimRecords(u)));
-        cl.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
-        return cl;
     }
 
 }
