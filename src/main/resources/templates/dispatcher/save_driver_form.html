@@ -1,29 +1,33 @@
-<form action="#" class="formTransport" id="formDriver" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close" onclick="formClose('formDriver')"></i>
+<form class="formTransport" id="formDriver" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" ng-click="ctrl.resetForm()"></i>
     <div class="container">
         <div>
             <label for="dsurname">Фамилия</label>
-            <input type="text" name="dsurname" placeholder="Введите Фамилию">	
+            <input type="text" name="dsurname" placeholder="Введите Фамилию" ng-model="ctrl.driver.firstname">	
         </div>	
         <div>
             <label for="dfirstname">Имя</label>
-            <input type="text" name="dfirstname" placeholder="Введите Имя">
+            <input type="text" name="dfirstname" placeholder="Введите Имя" ng-model="ctrl.driver.name">
         </div> 
         <div> 	
             <label for="dsecondname">Отчество</label>
-            <input type="text" name="dsecondname" placeholder="Введите Отчество">
+            <input type="text" name="dsecondname" placeholder="Введите Отчество" ng-model="ctrl.driver.surname">
         </div>  
+        <div>    
+            <label for="birthday">Дата рождения</label>
+            <input type="date" name="birthday" ng-model="ctrl.driver.birthday">
+        </div>
         <div>
             <label for="number">Номер мобильного</label >
-            <input type="text" name="number" placeholder="Введите Мобильный">
+            <input type="text" name="number" placeholder="Введите Мобильный" ng-model="ctrl.driver.phone">
         </div>	
         <div>	
             <label for="license">Удостоверение</label >
-            <input type="text" name="license" placeholder="Введите Удостоверение">
+            <input type="text" name="license" placeholder="Введите Удостоверение" ng-model="ctrl.driver.driverLicense">
         </div>	
     </div>
     <div class="container " >
-        <button type="button" class="btn delete">Отмена</button>
-        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+        <button type="button" class="btn delete" ng-click="ctrl.resetForm()">Отмена</button>
+        <button type="button" class="btn edit" ng-click="ctrl.submit()"><i class="far  fa-save"></i>{{ctrl.driver.id===null?'Сохранить':'Изменить'}}</button>
     </div>
 </form>

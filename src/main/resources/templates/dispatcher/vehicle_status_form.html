@@ -1,22 +1,24 @@
 <form class="formTransport" id="formChangeVehicleStatus" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close" onclick="formClose('formChangeVehicleStatus')"></i>
+    <i class="fas fa-times i-close" ng-click="ctrl.closeStatusForm()"></i>
     <div class="container">
         <div>
             <label for="status">Статус</label>
-            <select name="status">					
-                <option value="1">Выберите Статус</option>
-                <option value="2">Выполняется</option>
-                <option value="3">Отменено</option>
-                <option value="4">Завершено</option>
+            <select name="status" ng-model="ctrl.vehicleInfo.status">					
+                <option value="" disabled selected><--Выберите статус--></option>                 
+                <option value="исправно">исправно</option>
+                <option value="неисправно">неисправно</option>
+                <option value="неработоспособно">неработоспособно</option>
+                <option value="ремонт">ремонт</option>
+                <option value="списано">списано</option>
+                <option value="другое">другое</option>
             </select>
         </div>
         <div> 	
             <label >Примечание</label>
-            <textarea ></textarea>  
+            <textarea ng-model="ctrl.vehicleInfo.note"></textarea>  
         </div>	  	
     </div>
-    <div class="container " >
-        <!--  <button type="button" class="btn delete">Отмена</button> -->
-        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+    <div class="container">
+        <button type="button" class="btn edit" ng-click="ctrl.createVehicleInfo()"><i class="far  fa-save"></i>Сохранить</button>
     </div>
 </form>

@@ -87,16 +87,16 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            createAppointment: function (appointment) {
-                return $http.post('/transportation/planner/appointment_create',
-                        JSON.stringify(appointment), {headers: self.headers})
+            createAppointment: function (appointments) {
+                return $http.post('/transportation/planner/appointments_create',
+                        JSON.stringify(appointments), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
                                     
                                 },
                                 function (errResponse) {
-                                    console.error('Error while creating appointment');
+                                    console.error('Error while creating appointments');
                                     return $q.reject(errResponse);
                                 }
                         );

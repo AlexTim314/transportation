@@ -34,12 +34,12 @@
                     <td>{{v.model.modelName}}</td>
                     <td>{{v.number}}</td>			
                     <td>
-                        <i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeVehicleStatus')"></i><span  class="status-info status-ready">{{v.status}}</span>
+                        <i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateVehicleStatus(v)"></i><span  class="status-info status-ready">{{v.status}}</span>
                     </td>
                     <td>
                         <i title="История" class="fas fa-lg fa-history" onclick="formOpen('history-transport')"></i>
                         <i title="Заправить" class="fas fa-lg fa-gas-pump" onclick="formOpen('formRefueling')"></i>
-                        <i title="Текущие Параметры" class="fas fa-cog" onclick="formOpen('formCurrentParametr')"></i>
+                        <i title="Текущие Параметры" class="fas fa-cog" ng-click="ctrl.tryToUpdateVehicleState(v)"></i>
                         <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.openInfoForm(v)" ></i> 
                     </td>
                 </tr>

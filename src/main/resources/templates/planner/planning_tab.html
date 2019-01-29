@@ -54,14 +54,14 @@
                                 <th style="width:5% "> </th>
                             </tr>
                             <tr ng-repeat="clrec in header.compositeClaimRecords">
-                                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon}}"></span></td> 
+                                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td> 
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
                                 <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
                                 <td >
-                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'">{{task.place.name}}</span>
+                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                                 </td>                                                         
 
                                 <td>
@@ -87,7 +87,7 @@
         </div>  
 
         <div class="assert-block clearfix">
-            <button class="btn edit assert"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
+            <button class="btn edit assert" ng-click="plctrl.createAppointment()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
         </div>
     </div>	
 

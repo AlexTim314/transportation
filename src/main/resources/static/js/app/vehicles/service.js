@@ -90,6 +90,21 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                         );
             },
 
+            createVehicleInfo: function (vehicleInfo) {
+                return $http.post('/transportation/dispatcher/vehicle_updateState',
+                        JSON.stringify(vehicleInfo), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
             updateVehicle: function (vehicle) {
                 return $http.put('/transportation/dispatcher/vehicle_update',
                         JSON.stringify(vehicle), {headers: self.headers})

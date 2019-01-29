@@ -20,7 +20,7 @@
         <script src="js/app/planner/controller.js"></script>
 
     </head>
-    <body ng-app="Transportation" >
+    <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
         <div class="wrapper">
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
@@ -71,7 +71,7 @@
                 <div id="claim-create" class="tabcontent">
 
 
-                    <div class="clearfix" style="overflow-x:auto;" ng-controller="PlannerController as plctrl">
+                    <div class="clearfix" style="overflow-x:auto;">
                         <th:block th:include="planner/planning_tab"></th:block> 
                         
                         <th:block th:include="planner/archive_tab"></th:block> 

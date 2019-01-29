@@ -68,7 +68,7 @@ public class Vehicle implements Serializable {
     @ManyToOne
     private TransportDep transportDep;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vehicle_fuel", joinColumns = @JoinColumn(name = "vehicler_id"), inverseJoinColumns = @JoinColumn(name = "fuel_id"))
     private List<Fuel> fuels;
 

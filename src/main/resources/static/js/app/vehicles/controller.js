@@ -101,11 +101,16 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
 
         self.createVehicleInfo = function () {
             self.vehicleInfo.vehicle = self.vehicle;
-            VehiclesService.createVehicle(self.vehicle)
+            VehiclesService.createVehicleInfo(self.vehicleInfo)
                     .then(
                             function (d) {
                                 self.fetchVehicles();
-                                self.resetForm();
+                                self.closeStateForm();
+                                self.closeStatusForm();
+                                self.vehicle.status = d.status;
+                                self.vehicle.ododmetr = d.ododmetr;
+                                self.vehicle.fuel = d.fuel;
+                                self.vehicle.motohours = d.motohours;
                             },
                             function (errResponse) {
                                 console.error('Error while creating Vehicle.');
@@ -168,7 +173,21 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
 
         self.tryToUpdateVehicleState = function (vehicle) {
             self.vehicle = vehicle;
+            self.vehicleInfo.status = vehicle.status;
+            self.vehicleInfo.fuel = vehicle.fuel;
+            self.vehicleInfo.odometr = vehicle.odometr;
+            self.vehicleInfo.motohours = vehicle.motohours;
             formOpen('formCurrentParametr');
+        };
+
+        self.tryToUpdateVehicleStatus = function (vehicle) {
+            self.vehicle = vehicle;
+            self.vehicleInfo.status = vehicle.status;
+            self.vehicleInfo.fuel = vehicle.fuel;
+            self.vehicleInfo.odometr = vehicle.odometr;
+            self.vehicleInfo.motohours = vehicle.motohours;
+            self.vehicleInfo.note = null;
+            formOpen('formChangeVehicleStatus')
         };
 
         self.resetForm = function () {
@@ -210,9 +229,13 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.closeStateForm = function () {
-            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
             self.vehicleInfo = {id: null};
             formClose('formCurrentParametr');
+        };
+
+        self.closeStatusForm = function () {
+            self.vehicleInfo = {id: null};
+            formClose('formChangeVehicleStatus')
         };
 
     }]);

@@ -36,10 +36,10 @@ public class VehicleService {
 
     @Autowired
     private VehicleInfoRepository vehicleInfoRepository;
-    
+
     @Autowired
     RefuelingRepository refuelingRepository;
-    
+
     @Autowired
     FuelRepository fuelRepository;
 
@@ -54,9 +54,7 @@ public class VehicleService {
     public Vehicle saveVehicle(Vehicle vehicle) {
         if (vehicle.getId() == null) {
             List<Fuel> fl = new ArrayList<Fuel>();
-            vehicle.getFuels().forEach(u -> fl.add(
-                    fuelRepository.findById(u.getId()).get()
-            ));
+            vehicle.getFuels().forEach(u -> fl.add(fuelRepository.findById(u.getId()).get()));
             vehicle.setFuels(fl);
             vehicle = vehicleRepository.save(vehicle);
             VehicleInfo vehicleInfo = new VehicleInfo();
@@ -81,17 +79,19 @@ public class VehicleService {
         vehicle.setOdometr(vehicleInfo.getOdometr());
         vehicle.setStatus(vehicleInfo.getStatus());
         vehicleInfo.setModificationDate(LocalDateTime.now());
+        vehicleRepository.save(vehicle);
         return vehicleInfoRepository.save(vehicleInfo);
     }
 
     public Refueling vehicleRefueling(Refueling refueling) {
         Vehicle vehicle = refueling.getVehicle();
-        vehicle.setFuel(vehicle.getFuel()+refueling.getVolume());
+        vehicle.setFuel(vehicle.getFuel() + refueling.getVolume());
         vehicleRepository.save(vehicle);
         return refuelingRepository.save(refueling);
     }
 
     public void deleteVehicles(List<Long> ids) {
+        ids.forEach(u -> vehicleInfoRepository.deleteByVehicleId(u));
         vehicleRepository.deleteByIdIn(ids);
     }
 
