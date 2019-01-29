@@ -61,6 +61,32 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
+            fetchWeekDepsRecords: function () {
+                return $http.get('/transportation/planner/affirmedClaims/Week')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching weekRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchTomorrowDepsRecords: function () {
+                return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching tomorrowRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchTransportDeps: function () {
                 return $http.get('/transportation/transportDeps')
                         .then(
