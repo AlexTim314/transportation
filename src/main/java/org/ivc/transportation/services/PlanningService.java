@@ -56,6 +56,11 @@ public class PlanningService {
     }
 
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        
+        //List<Claim> cl = claimRepository
+        
+        
+        
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findAll().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecords(u.getDepartment())));
