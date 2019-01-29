@@ -15,7 +15,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.clrec = {};
+        self.clrec = {record: {}, claim: {}};
         self.departments = [];
         self.headers = [];
         self.claims = [];
@@ -40,28 +40,21 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
-        self.selectIcon = function () {
-           
+        self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
             var car = 'fas fa-lg fa-car';
             var truck = 'fas fa-lg fa-truck';
             var tractor = 'fas fa-lg fa-tractor';
-            if (self.type === 'пассажирский') {
-                self.selectIcon(bus);
+            switch (spec) {
+                case "пассажирский":
+                    return bus;
+                case "легковой":
+                    return car;
+                case "грузовой":
+                    return truck;
+                case "спецтехника":
+                    return tractor;
             }
-            ;
-            if (self.type === 'легковой') {
-                self.selectIcon(car);
-            }
-            ;
-            if (self.type === 'грузовик') {
-                self.selectIcon(truck);
-            }
-            ;
-            if (self.type === 'спецтехника') {
-                self.selectIcon(tractor);
-            }
-            ;
         };
 
         self.fetchAllAppointments = function () {
@@ -175,23 +168,25 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.rowClick = function (dep) {
-            self.type = dep.compositeClaimRecords[0].claim.specialization;
-            console.log(self.type);
+            // self.type = dep.compositeClaimRecords[0].claim.specialization;
+            //  console.log(self.type);
             if (dep.isVisible === undefined) {
                 dep.isVisible = true;
             } else {
                 dep.isVisible = !dep.isVisible;
             }
         };
-        
-        self.moreInfoOpen = function(clrec){
+
+        self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
+            console.log(clrec);
+            console.log(self.clrec);
             formOpen('more-claim');
         };
-        
-        self.resetForm = function (){
-            
-        };
+
+//        self.resetForm = function (){
+//            self.clrec = {};
+//        };
 
 
 
