@@ -26,5 +26,5 @@ public class PlanningController {
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
         return planningService.getAffirmedClaimsAll();
     }
-    
+
 }

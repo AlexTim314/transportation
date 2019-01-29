@@ -1,10 +1,7 @@
 package org.ivc.transportation.services;
 
-import java.security.Principal;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
@@ -12,13 +9,9 @@ import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
-import org.ivc.transportation.repositories.RouteTaskRepository;
-import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
