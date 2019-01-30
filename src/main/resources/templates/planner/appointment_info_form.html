@@ -5,22 +5,22 @@
     <fieldset>
         <legend>Параметры</legend>
         <ul>
-            <li><label ></i> Дата Выезда<span>22.12.2018</span></label></li>
-            <li><label > Дата Возвращения<span>22.12.2018</span></label></li>
-            <li><label> Время Подачи<span>07:50</span></label></li>
-            <li><label>	Время Выезда<span>08:50</span></label></li>
-            <li><label> Время Возвращения<span>18:00</span></label></li>
+            <li><label></i> Дата Выезда<span>{{plctrl.compClRec.record.startDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Дата Возвращения<span>{{plctrl.compClRec.record.endDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Время Подачи<span>{{plctrl.compClRec.record.entranceDate| date:'HH:mm'}}</span></label></li>
+            <li><label>	Время Выезда<span>{{plctrl.compClRec.record.startDate| date:'HH:mm'}}</span></label></li>
+            <li><label> Время Возвращения<span>{{plctrl.compClRec.record.endDate| date:'HH:mm'}}</span></label></li>
         </ul>
     </fieldset>
     <fieldset>
         <legend>Цель</legend>
-        <p>Перевозка пассажиров в количестве 25 чел.</p>
+        <p>{{plctrl.compClRec.claim.purpose}}</p>
     </fieldset>
     <fieldset>
         <legend>Назначено</legend>
         <ul>
-            <li><label > ОТС<span>№1</span></label></li>
-            <li><label > Диспетчер<span>Иванов И.И.</span></label></li>
+            <li><label > ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
+            <li><label > Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
         </ul>
     </fieldset>
 </div>
