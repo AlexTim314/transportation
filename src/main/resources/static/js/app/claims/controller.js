@@ -428,12 +428,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         };
-        self.setClaimForTemp = function (claim) {
-            self.claim = claim;
+        self.setClaimForTemp = function (claim) {            
+            self.copyClaimProperties(claim);
             self.claim.id = null;
-            for (var i = 0; i < self.claim.records.length; i++) {
-                self.claim.records[i].id = null;
-            }
             formOpen('dialog-save');
         };
         self.checkAll = function () {
