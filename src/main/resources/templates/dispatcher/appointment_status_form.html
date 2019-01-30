@@ -3,20 +3,22 @@
     <div class="container">
         <div>
             <label for="status">Статус</label>
-            <select name="status">					
-                <option value="1">Выберите Статус</option>
-                <option value="2">Выполняется</option>
-                <option value="3">Отменено</option>
-                <option value="4">Завершено</option>
+            <select name="status" ng-model="plctrl.clrec.appointment.status">					
+                <option value="" disabled selected>Выберите Статус</option>
+                <option value="IN_PROGRESS">Обрабатывается</option>
+                <option value="READY">Готово</option>
+                <option value="COMPLETED">Завершено</option>
+                <option value="CANCELED">Отменено</option>
+                
             </select>
         </div>
         <div> 	
             <label >Примечание</label>
-            <textarea ></textarea>  
+            <textarea ng-model="plctrl.clrec.appointment.note"></textarea>  
         </div>	  	
     </div>
     <div class="container " >
         <!--  <button type="button" class="btn delete">Отмена</button> -->
-        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+        <button type="button" class="btn edit" ng-click="plctrl.changeAppStatus()" onclick="formClose('formChangeStatus')"><i class="far  fa-save"></i>Сохранить</button>
     </div>
 </form>

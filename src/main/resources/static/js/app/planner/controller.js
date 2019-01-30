@@ -261,8 +261,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
 
-        self.fetchAllPlanRecords();
-        self.fetchAllCompletePlanRecords();
+        self.fetchTomorrowPlanRecords();
+        self.fetchTomorrowCompletePlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
         self.getToday();

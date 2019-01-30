@@ -181,7 +181,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
 
 
-        self.fetchAllPlanRecords();
+        self.fetchTomorrowPlanRecords();
         self.fetchAllVehicleModels();
         self.fetchDrivers();
         self.fetchVehicles();
@@ -193,41 +193,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.departments = obj.departments;
             console.log(self.departments);
         };
-
-
-
-//        self.createAppointment = function () {
-//            var appoints = [];
-//            var appointment = {};
-//            console.log(self.headers.length);
-//            console.log(self.headers[0].compositeClaimRecords.length);
-//            for (var i = 0; i < self.headers.length; i++) {
-//                if (self.headers[i].compositeClaimRecords.length > 0) {
-//                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-//                        appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
-//                        if (self.headers[i].compositeClaimRecords[j].appointment !== undefined && self.headers[i].compositeClaimRecords[j].appointment.transportDep !== null) {
-//                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].appointment.vehicleModel;
-//                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].appointment.transportDep;
-//                            appointment.status = 'IN_PROGRESS';
-//                            appoints.push({
-//                                recordId: self.headers[i].compositeClaimRecords[j].record.id,
-//                                appointment: appointment
-//                            });
-//                        }
-//                    }
-//                }
-//            }
-//            console.log(appoints);
-//            PlannerService.createAppointment(appoints)
-//                    .then(
-//                            function (d) {
-//                                self.fetchAllCompletePlanRecords();
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while creating Appointment.');
-//                            }
-//                    );
-//        };
 
         self.updateAppointment = function () {
             console.log(self.tempAppoints);
@@ -267,6 +232,22 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.tempAppoints.push(self.clrec.appointment);
             formClose('formAppointment');
         };
+        
+        self.prepareToChangeStatus = function (clrec) {
+            self.clrec = clrec;
+            formOpen('formChangeStatus');
+        };
+        
+        self.changeAppStatus = function () {
+            console.log(self.clrec.appointment);
+            DispatcherService.updateStatusAppointment(self.clrec.appointment)
+                    .then(
+                            self.fetchAllPlanRecords,
+                            function (errResponse) {
+                                console.error('Error while changing status Appointment.');
+                            }
+                    );
+        };
 
         self.rowClick = function (dep) {
             if (dep.isVisible === undefined) {
@@ -285,6 +266,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formOpen('formAppointment');
         };
 
+        self.moreInfoOpen = function (clrec) {
+            self.clrec = clrec;
+            formOpen('more-claim');
+        };
 
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);

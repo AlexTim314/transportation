@@ -170,7 +170,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.fetchNewClaims();
-        self.fetchAffirmedClaims();
+        self.fetchAffirmedClaimsTomorrow();
         self.fetchClaimTemplates();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
@@ -566,6 +566,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.carBoss = cb;
         };
 
+        self.statusClass = function (record) {
+            var status;
+            var date = new Date(record.appointments[0].creationDate);
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (date < new Date(record.appointments[i].creationDate)) {
+                    date = new Date(record.appointments[i].creationDate);
+                    status = record.appointments[i].status;
+                }
+            }
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
+        };
+
         self.selectStatusIco = function (stat) {
             var inProgress = 'fas fa-lg fa-clock';
             var ready = 'fas fa-lg fa-check';
@@ -583,11 +595,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.selectStatus = function (stat) {
+        self.selectStatus = function (record) {
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
             var canceled = 'Отменено';
+            var stat;
+            var date = new Date(record.appointments[0].creationDate);
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (date < new Date(record.appointments[i].creationDate)) {
+                    date = new Date(record.appointments[i].creationDate);
+                    stat = record.appointments[i].status;
+                }
+            }
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
