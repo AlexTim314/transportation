@@ -51,11 +51,11 @@
                     </td>
                     <td style="position: relative;">	  						
                         <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoAffClick(affirmedClaim)"></i>
-<!--                        <div class="record-status">
-                            <div>Готово: 0</div>
-                            <div>Не готово: 3</div>
-                            <div>Отменено: 1</div>
-                        </div>  -->
+                        <!--                        <div class="record-status">
+                                                    <div>Готово: 0</div>
+                                                    <div>Не готово: 3</div>
+                                                    <div>Отменено: 1</div>
+                                                </div>  -->
                     </td>				  				
 
                 </tr>
@@ -79,14 +79,16 @@
                                 <td>{{record.entranceDate| date:'HH:mm'}}</td>
                                 <td>{{record.startDate| date:'HH:mm'}}</td>
                                 <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
-                                <td>{{record.appointments[record.appointments.length-1].vehicleModel.modelName}}</td>
-                                <td>{{record.appointments[record.appointments.length-1].vehicle.number}}</td>
+                                <td>{{record.appointments[record.appointments.length - 1].vehicleModel.modelName}}</td>
+                                <td>{{record.appointments[record.appointments.length - 1].vehicle.number}}</td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{record.appointments[record.appointments.length-1].driver.phone}} </span></i>
-                                    {{record.appointments[record.appointments.length-1].driver.firstname}} {{record.appointments[record.appointments.length-1].driver.name.length[1]}}.{{record.appointments[record.appointments.length-1].driver.surname.length[1]}}.
+                                    <i class="fa fa-lg fa-mobile-alt" ng-show="ctrl.checkPhone(record.appointments[record.appointments.length - 1])"> 
+                                        <span class="phone-info">{{record.appointments[record.appointments.length - 1].driver.phone}} </span>
+                                    </i>
+                                    {{ctrl.showDriver(record.appointments[record.appointments.length - 1])}}
                                 </td>
                                 <td>
-                                    <span class="claim-status done-status"><i class="{{ctrl.selectStatusIco(record.appointments[record.appointments.length-1].status)}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length-1].status)}}"></i></span>
+                                    <i class="{{ctrl.statusClass(record.appointments[record.appointments.length - 1].status)}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length - 1].status)}}"></i>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>

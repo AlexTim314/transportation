@@ -183,6 +183,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchAllPlanRecords();
         self.fetchAllVehicleModels();
         self.getToday();
+        self.fetchVehicles();
+        self.fetchDrivers();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -225,7 +227,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //        };
 
         self.updateAppointment = function () {
-            
             DispatcherService.updateAppointment(appointment)
                     .then(
                             self.fetchAllAppointments,
@@ -248,7 +249,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formClose('formAppointment');
         };
 
-        self.order = function (clrec) {
+        self.appoint = function (clrec) {
             self.clrec = clrec;
             formOpen('formAppointment');
         };
@@ -328,6 +329,24 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                 case 'CANCELED':
                     return canceled;
             }
+        };
+
+        self.statusClass = function (appointment) {
+            var status = appointment.status;
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
+        };
+
+        self.personToString = function (person) {
+            var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
+            return result;
+        };
+
+        self.checkPhone = function (appointment) {
+            return appointment.driver !== null && appointment.driver !== undefined && appointment.driver.phone !== null && appointment.driver.phone !== undefined;
+        };
+
+        self.showDriver = function (appointment) {
+            return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
         };
 
     }]);

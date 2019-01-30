@@ -25,7 +25,7 @@
                     <th style="width: 3%;"></th>
                     <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
                 </tr>
-                                        
+
                 <tr style = "cursor: pointer" ng-click="plctrl.rowCompleteClick(header)" class="activeRow" ng-repeat-start="header in plctrl.complHeaders| filter: searchCompleteClaim">
                     <td>
                         <i class="{{header.isVisible !== undefined && header.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
@@ -51,13 +51,13 @@
                                 <th style="width:5%">Тип транспорта</th>
                                 <th style="width:10%">Вид техники</th>
                                 <th style="width:5%">Дата выезда</th>
-                                <th style="width:5%">Время подачи</th>
+                                <th style="width:10%">Время подачи</th>
                                 <th style="width:20%">Маршрут</th>
                                 <th style="width:10%">Марка</th>
                                 <th style="width:5%">Гос.номер</th>
                                 <th style="width:10%">Водитель</th>
                                 <th style="width:10%">Статус</th>
-                                <th style="width:10%"></th>
+                                <th style="width:5%"></th>
                             </tr>
                             <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: clrec.record.startDate | filter: searchCompleteClaim" >
 
@@ -69,8 +69,9 @@
                                 <td>{{clrec.appointment.vehicleModel.modelName}}</td>
                                 <td>{{clrec.appointment.vehicle.number}}</td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
-                                    {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}</td>
+                                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                                    {{plctrl.showDriver(clrec.appointment)}}
+                                </td>
                                 <td>
                                     <span class="status-info {{plctrl.selectStatusColor(clrec.appointment.status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointment.status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointment.status)}}</span>
                                 </td>
@@ -78,16 +79,9 @@
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoAppointments(clrec)"></i>
                                 </td>
                             </tr>
-
-
                         </table>
-
-
                     </td>
-                </tr>
-
-                </td> 
-                </tr>	                                                
+                </tr>                                                
             </table>
         </div>  
     </div>	

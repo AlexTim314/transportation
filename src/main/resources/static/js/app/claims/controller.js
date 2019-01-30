@@ -32,7 +32,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.all = false;
         self.allday = false;
         self.claimFromTemplateDate = '';
-        
+
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -254,6 +254,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                     }
                                 }
                                 self.fetchAffirmedClaims();
+                                self.all = false;
                             },
 //                            self.fetchNewClaims,
 //                            self.fetchAffirmedClaims,
@@ -277,6 +278,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
             formClose('del-claim-confirm');
+            self.all = false;
         };
 
         self.deleteClaimTemplates = function () {
@@ -294,6 +296,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
             formClose('del-claim-template-confirm');
+            self.all = false;
         };
 
         self.deleteRecord = function (claim, record) {
@@ -334,6 +337,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
             return result;
         };
+
         self.addRTask = function () {
             var rt = {id: null};
             rt.orderNum = self.claim.routeTasks.length;
@@ -419,7 +423,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 vehicleType: null,
                 records: [],
                 routeTasks: [],
-                claimFromTemplateDate:null
+                claimFromTemplateDate: null
             };
             self.getToday();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
@@ -428,7 +432,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         };
-        self.setClaimForTemp = function (claim) {            
+        self.setClaimForTemp = function (claim) {
             self.copyClaimProperties(claim);
             self.claim.id = null;
             formOpen('dialog-save');
@@ -482,7 +486,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
                     //поиск более ранней записи                    
                     var index = 0;
-                    for (var i = 1; i < claim.records.length; i++) {                        
+                    for (var i = 1; i < claim.records.length; i++) {
                         if (claim.records[0].startDate > claim.records[i].startDate) {
                             index = i;
                         }
@@ -550,10 +554,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.selectStatusIco = function (stat) {
-            var inProgress = 'fas fa-clock';
-            var ready = 'fas fa-check';
-            var completed = 'fas fa-check-double';
-            var canceled = 'fas fa-ban';
+            var inProgress = 'fas fa-lg fa-clock';
+            var ready = 'fas fa-lg fa-check';
+            var completed = 'fas fa-lg fa-check-double';
+            var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -565,7 +569,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
             }
         };
-        
+
         self.selectStatus = function (stat) {
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
@@ -582,6 +586,50 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
             }
         };
-        
+
+        self.selectStatusColor = function (stat) {
+            var inProgress = 'done-status';
+            var ready = 'status-ready';
+            var completed = 'status-ready';
+            var canceled = 'cancel-status';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+
+        self.statusClass = function (appointment) {
+            if (appointment === null || appointment === undefined) {
+                return '';
+            }
+            var status = appointment.status;
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
+        };
+
+        self.personToString = function (person) {
+            var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
+            return result;
+        };
+
+        self.checkPhone = function (appointment) {
+            if (appointment === null || appointment === undefined) {
+                return false;
+            }
+            return appointment.driver !== null && appointment.driver !== undefined && appointment.driver.phone !== null && appointment.driver.phone !== undefined;
+        };
+
+        self.showDriver = function (appointment) {
+            if (appointment === null || appointment === undefined) {
+                return '-';
+            }
+            return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
+        };
+
     }]);
 
