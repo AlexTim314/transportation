@@ -86,7 +86,7 @@
                                     {{record.appointments[record.appointments.length-1].driver.firstname}} {{record.appointments[record.appointments.length-1].driver.name.length[1]}}.{{record.appointments[record.appointments.length-1].driver.surname.length[1]}}.
                                 </td>
                                 <td>
-                                    <span class="claim-status done-status"><i class="{{ctrl.selectStatusIco(record.appointments[record.appointments.length-1].status)}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length-1].status)}}"></i></span>
+                                    <i class="{{ctrl.statusClass(record.appointments[record.appointments.length-1].status)}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length-1].status)}}"></i>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>

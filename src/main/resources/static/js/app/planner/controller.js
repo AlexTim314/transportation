@@ -287,7 +287,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
 
-        self.createAppointment = function () {
+        self.createAppointments = function () {
             var appoints = [];
             var appointment = {};
             console.log(self.headers.length);
@@ -309,10 +309,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
             console.log(appoints);
-            PlannerService.createAppointment(appoints)
+            PlannerService.createAppointments(appoints)
                     .then(
                             function (d) {
+                                self.fetchAllPlanRecords();
                                 self.fetchAllCompletePlanRecords();
+//                                open_tab1('tab-list2', 'tab-btn2', 2);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -412,10 +414,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.selectStatusIco = function (stat) {
-            var inProgress = 'fas fa-clock';
-            var ready = 'fas fa-check';
-            var completed = 'fas fa-check-double';
-            var canceled = 'fas fa-ban';
+            var inProgress = 'fas fa-lg fa-clock';
+            var ready = 'fas fa-lg fa-check';
+            var completed = 'fas fa-lg fa-check-double';
+            var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -430,10 +432,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.selectStatusColor = function (stat) {
-            var inProgress = 'done_status';
-            var ready = 'done_status';
-            var completed = 'status_ready';
-            var canceled = 'cancel_status';
+            var inProgress = 'done-status';
+            var ready = 'status-ready';
+            var completed = 'status-ready';
+            var canceled = 'cancel-status';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -444,6 +446,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 'CANCELED':
                     return canceled;
             }
+        };
+
+        self.statusClass = function (clrec) {
+            var status = clrec.appointment.status;
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
         };
 
     }]);

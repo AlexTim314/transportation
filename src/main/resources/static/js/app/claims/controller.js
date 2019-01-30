@@ -553,10 +553,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.selectStatusIco = function (stat) {
-            var inProgress = 'fas fa-clock';
-            var ready = 'fas fa-check';
-            var completed = 'fas fa-check-double';
-            var canceled = 'fas fa-ban';
+            var inProgress = 'fas fa-lg fa-clock';
+            var ready = 'fas fa-lg fa-check';
+            var completed = 'fas fa-lg fa-check-double';
+            var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -584,6 +584,28 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'CANCELED':
                     return canceled;
             }
+        };
+
+        self.selectStatusColor = function (stat) {
+            var inProgress = 'done-status';
+            var ready = 'status-ready';
+            var completed = 'status-ready';
+            var canceled = 'cancel-status';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        self.statusClass = function (appointment) {
+            var status = appointment.status;
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
         };
         
     }]);
