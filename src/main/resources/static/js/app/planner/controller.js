@@ -35,6 +35,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.type;
         self.date;
 
+        var expandedHeaders = [];
+
         self.fetchAllDepartments = function () {
             console.log('fetchDep');
             PlannerService.fetchAllDepartments()
@@ -97,6 +99,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                expandHeaders();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllRecords');
@@ -112,6 +115,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                expandHeaders();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -127,6 +131,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                expandHeaders();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TodayRecords');
@@ -144,6 +149,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                expandHeaders();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -265,12 +271,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.departments = obj.departments;
         };
 
-
-
         self.createAppointments = function () {
             var appoints = [];
             var appointment = {};
+            expandedHeaders = [];
             for (var i = 0; i < self.headers.length; i++) {
+                if (self.headers[i].isVisible) {
+                    expandedHeaders[i] = true;
+                }
                 for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                     var appointment = self.headers[i].compositeClaimRecords[j].appointment;
                     var recId = self.headers[i].compositeClaimRecords[j].record.id;
@@ -285,8 +293,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             PlannerService.createAppointments(appoints)
                     .then(
                             function (d) {
-                                self.fetchAllPlanRecords();
-                                self.fetchAllCompletePlanRecords();
+                                if (self.all) {
+                                    self.fetchAllPlanRecords();
+                                    self.fetchAllCompletePlanRecords();
+                                    return;
+                                }
+                                if (self.week) {
+                                    self.fetchWeekPlanRecords();
+                                    self.fetchWeekCompletePlanRecords();
+                                    return;
+                                }
+                                if (self.today) {
+                                    self.fetchTomorrowPlanRecords();
+                                    self.fetchTomorrowCompletePlanRecords();
+                                    return;
+                                }
+                                self.fetchDatePlanRecords();
+                                self.fetchDateCompletePlanRecords();
 //                                open_tab1('tab-list2', 'tab-btn2', 2);
                             },
                             function (errResponse) {
@@ -438,6 +461,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
             return appointment.status !== 'CANCELED' && appointment.id !== null;
+        };
+
+        var expandHeaders = function () {
+            for (var k in expandedHeaders) {
+                self.headers[k].isVisible = expandedHeaders[k];
+            }
         };
 
     }]);
