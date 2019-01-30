@@ -1,126 +1,59 @@
 <div class="clearfix"  id="tab-list1" xmlns:th="http://www.thymeleaf.org">
     <div class="table-header clearfix">
         <div class="fast-filter clearfix">                                    
-            <span class="filter-elem edit active-color">Завтра</span>
-            <span class="filter-elem edit">За неделю</span>
-            <span class="filter-elem edit">Все</span>
+            <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+            <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
+            <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
         </div>
-        <input type="search" placeholder="Поиск">						  		
+        <input type="search" placeholder="Поиск" ng-model="searchClaim">						  		
         <ul class="plan-info ">
             <li>Cостояние Плана</li>
             <li>Завершено</li>
         </ul>						  		
         <ul class="plan-date" >
             <li>Дата планирования</li>
-            <li>22.12.2018
-                <input type="date" name="date-plan" placeholder="22.12.2018">
+            <li>
+                <input type="date" name="date-plan" id="date-plan">
             </li>
         </ul>
-        <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn">Показать</button>
+        <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>
 
     </div>	
     <div class="height-wrapper">            
         <table class=" table-plan table-claim" >
             <tr>
-                <th>Тип транспорта</th>
-                <th>Вид техники</th>
-                <th>Дата выезда</th>
-                <th>Время выхода</th>
-                <th>Маршрут</th>
-                <th>Марка</th>
-                <th>Гос.номер</th>
-                <th>Водитель</th>
-                <th>Cтатус</th>
-                <th></th>
+                <th style="width:5%">Тип транспорта</th>
+                <th style="width:7%">Вид техники</th>
+                <th style="width:5%">Дата выезда</th>
+                <th style="width:10%">Время подачи</th>
+                <th style="width:20%">Маршрут</th>
+                <th style="width:10%">Марка</th>
+                <th style="width:5%">Гос.номер</th>
+                <th style="width:10%">Водитель</th>
+                <th style="width:8%">Статус</th>
+                <th style="width:10%"></th>
             </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
+            <tr ng-repeat="clrec in plctrl.headers| orderBy: clrec.record.startDate">
+                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
+                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                 <td>
-                    <span class="route-tag">пл.10</span>
-                    <span class="route-tag">пл.18</span>
+                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                 </td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
+                <td>{{clrec.appointment.vehicleModel.modelName}}</td>
+                <td>{{clrec.appointment.vehicle.number}}</td>
                 <td class="td-relative">
-                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
-                    Султанов E.E.		  					
+                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                    {{plctrl.showDriver(clrec.appointment)}}		  					
                 </td>
-                <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Выполняется</span></td>		  				
+                <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
                 <td>
-                    <i title="Назначить"class="fas fa-lg fa-code-branch" onclick="formOpen('formAppointment')"></i>
+                    <i title="Назначить"class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
                     <i title="Печать Путевого Листа"class="fa fa-lg fa-print"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim')" ></i> 
                 </td>
             </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
-                <td>Пл.10-Пл.18</td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
-                <td>Султанов E.E.</td>
-                <td></td>		  				
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
-                <td>Пл.10-Пл.18</td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
-                <td>Султанов E.E.</td>
-                <td></td>		  				
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
-                <td>Пл.10-Пл.18</td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
-                <td>Султанов E.E.</td>
-                <td></td>		  				
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
-                <td>Пл.10-Пл.18</td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
-                <td> <i class="fa fa-lg fa-mobile-alt"></i>Султанов E.E.</td>
-                <td></td>		  				
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                <td>Микроавтобус</td>
-                <td>22.12.2018</td>
-                <td>08:00</td>
-                <td>Пл.10-Пл.18</td>
-                <td>Iveco</td>
-                <td>XA 421 KK</td>
-                <td> <i class="fa fa-lg fa-mobile-alt"></i>Султанов E.E.</td>
-                <td></td>
-                <td>
-                </td>
-            </tr>
-
         </table>
     </div>	
 

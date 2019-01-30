@@ -46,8 +46,7 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/affirmedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek(@RequestBody ZonedDateTime date) {
-        System.out.println(date);
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
@@ -73,16 +72,15 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/plannedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getPlannedClaimsWeek(@RequestBody ZonedDateTime date) {
-        System.out.println(date);
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsDate(@RequestBody ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
     }
 
     @PostMapping("/planner/appointments_create")
-    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
-        return planningService.createAppointment(principal, compositeRecordIdAppointment);
+    public List<Record> createAppointments(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
+        return planningService.createAppointments(principal, compositeRecordIdAppointment);
     }
 
 }

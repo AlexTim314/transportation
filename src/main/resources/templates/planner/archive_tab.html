@@ -69,8 +69,9 @@
                                 <td>{{clrec.appointment.vehicleModel.modelName}}</td>
                                 <td>{{clrec.appointment.vehicle.number}}</td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
-                                    {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}</td>
+                                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                                    {{plctrl.showDriver(clrec.appointment)}}
+                                </td>
                                 <td>
                                     <span class="status-info {{plctrl.selectStatusColor(clrec.appointment.status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointment.status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointment.status)}}</span>
                                 </td>

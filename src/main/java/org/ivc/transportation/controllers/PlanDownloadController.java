@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.TableWidthType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -35,7 +36,6 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
-import org.ivc.transportation.services.AppointmentService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -44,8 +44,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +63,6 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
-
-    @Autowired
-    private AppointmentService appointmentService;
 
     @Autowired
     private ServletContext servletContext;
@@ -100,12 +95,20 @@ public class PlanDownloadController {
         FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         //------------------ Шапка
-        XWPFTable table = document.createTable(1, 2);
+        XWPFTable table = document.createTable(1, 1);
         table.setBottomBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
         table.setTopBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
 
+        
         XWPFTableRow row = table.getRow(0);
         XWPFTableCell cell = row.addNewTableCell();
+        TableWidthType widthType = TableWidthType.DXA;
+        table.setWidthType(widthType);
+        row.getCell(0).setWidthType(widthType);
+        row.getCell(0).setWidth("20");
+        row.getCell(1).setWidthType(widthType);
+        row.getCell(1).setWidth("10");
+
         /* CTTcPr ctTcPr = cell.getCTTc().addNewTcPr();
         CTTblWidth cellWidth = ctTcPr.addNewTcW();
         cellWidth.setW(BigInteger.valueOf(1440*1/4));*/  // sets width
@@ -127,9 +130,11 @@ public class PlanDownloadController {
         textToParagraph(paragraph, "ПЛАН", "Times New Roman", 12, true, ParagraphAlignment.CENTER);
         String planeDate = formateDate(now.plusDays(1));//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
         textToParagraph(document.createParagraph(), "выхода автомобилей Комплекса автотранспортного обеспечения на "
-                + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
+                + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);        
 
         table = document.createTable();
+        //table.setWidthType(TableWidthType.PCT);        
+        
         row = table.getRow(0);
         boolean isBold = true;
         int fontSize = 8;
@@ -153,14 +158,16 @@ public class PlanDownloadController {
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Фамилия \n" + "водителя",
                 "Times New Roman", fontSize, isBold, parAligCenter);
 
-        row.getCell(0).setWidth("3.00%");
+        //row.getCell(0).setWidth("5");
+        System.out.println("table widthtype " + table.getWidthType());
+        System.out.println("table width " + table.getWidth());
 
         CTHMerge hMergeRestart = CTHMerge.Factory.newInstance();
         hMergeRestart.setVal(STMerge.RESTART);
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        List<Appointment> appointments = appointmentService.findByStatus(AppointmentStatus.READY);
+        List<Appointment> appointments = dispatcherService.findByStatus(AppointmentStatus.READY);
 
         //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
         List<RowData> rowDataList = new LinkedList<>();
@@ -170,11 +177,13 @@ public class PlanDownloadController {
             Claim claim = dispatcherService.findClaimByRecord(record);
 
             rowData.carBoss = claim.getCarBoss().getFirstname();
-            rowData.driver = getDriverNameWithInitials(a.getDriver());
+            //rowData.driver = getDriverNameWithInitials(a.getDriver());
+            rowData.driver = "пока не поддерживается";
             rowData.departmentName = claim.getDepartment().getFullname();
             rowData.purposes = claim.getPurpose();
             rowData.vehicleModelName = a.getVehicleModel().getModelName();
-            rowData.vehicleNumber = a.getVehicle().getNumber();
+            //rowData.vehicleNumber = a.getVehicle().getNumber();
+            rowData.vehicleNumber = "пока не поддерживается";
 
             String[] tmpArr = a.getTransportDep().getShortname().split(" ");
             rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
@@ -201,10 +210,10 @@ public class PlanDownloadController {
 
         //-----------тестовые данные для проверки отображения
         RowData rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-1";
         rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Перевозка пассажиров";
         rd.route = "Пл.10, Пл. 95";
         rd.time = "8:00-19:00";
         rd.transportDepNumber = "4";
@@ -214,10 +223,10 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-1";
         rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Перевозка грузов";
         rd.route = "Пл.10, Пл. 95";
         rd.time = "8:00-19:00";
         rd.transportDepNumber = "4";
@@ -227,7 +236,7 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver = "Водитель В.В.";
         rd.purposes = "Нужно поездить туда-сюда";
@@ -240,7 +249,7 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "LikeABoss L.B.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver = "Водитель В.В.";
         rd.purposes = "Нужно поездить туда-сюда";
@@ -293,7 +302,7 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, isBold, parAligCenter);
             textToParagraph(row.getCell(8).getParagraphs().get(0), rowData.driver,
                     "Times New Roman", fontSize, false, parAligLeft);
-        }
+        }        
 
         document.write(fileOutputStream);
         document.close();
