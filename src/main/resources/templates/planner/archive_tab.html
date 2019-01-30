@@ -2,11 +2,11 @@
     <div style="overflow-x:auto;">
         <div class="table-header clearfix">
             <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit active-color">Завтра</span>
-                <span class="filter-elem edit">За неделю</span>
-                <span class="filter-elem edit">Все</span>
+                <span class="filter-elem edit {{plctrl.ctoday?'active-color':''}}" ng-click="plctrl.fetchTomorrowCompletePlanRecords()">Завтра</span>
+                <span class="filter-elem edit {{plctrl.cweek?'active-color':''}}" ng-click="plctrl.fetchWeekCompletePlanRecords()">За неделю</span>
+                <span class="filter-elem edit {{plctrl.call?'active-color':''}}" ng-click="plctrl.fetchAllCompletePlanRecords()">Все</span>
             </div>
-            <input type="search" placeholder="Поиск">						  		
+            <input type="search" placeholder="Поиск" ng-model="searchCompleteClaim">						  		
             <ul class="plan-info ">
                 <li>Cостояние Плана</li>
                 <li>Завершено</li>
@@ -14,10 +14,10 @@
             <ul class="plan-date" >
                 <li>Дата планирования</li>
                 <li>22.12.2018
-                    <input type="date" name="date-plan" placeholder="22.12.2018">
+                    <input type="date" name="date-plan" id="compl-date-plan">
                 </li>
             </ul>
-            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn">Показать</button>		  			                 
+            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn"  ng-click="plctrl.fetchDateCompletePlanRecords()">Показать</button>		  			                 
         </div>
         <div class="height-wrapper"> 
             <table class="table-record"  id="tbl2" >
@@ -25,14 +25,14 @@
                     <th style="width: 3%;"></th>
                     <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
                 </tr>
-                <tr ng-repeat="claim in ctrl.claims">                           
-                <tr style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)" class="activeRow">
+                                        
+                <tr style = "cursor: pointer" ng-click="plctrl.rowCompleteClick(header)" class="activeRow" ng-repeat-start="header in plctrl.complHeaders| filter: searchCompleteClaim">
                     <td>
-                        <i class="fas  fa-2x fa-caret-right"></i>		
+                        <i class="{{header.isVisible !== undefined && header.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
                     </td>
-                    <td >КЭССТ
+                    <td >{{header.department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> 3</i>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
 
                         </span>
                         <div class="record-status" >
@@ -42,7 +42,7 @@
                         </div>  
                     </td>
                 </tr>
-                <tr class="hiddenRow collapseRow">
+                <tr class="hiddenRow" ng-show="header.isVisible !== undefined && header.isVisible" ng-repeat-end>
                     <td colspan="2">
                         <table class=" table-claim">
 
@@ -59,18 +59,18 @@
                                 <th style="width:10%">Статус</th>
                                 <th style="width:10%"></th>
                             </tr>
-                            <tr>
+                            <tr ng-repeat="clrec in header.compositeClaimRecords| filter: searchCompleteClaim | orderBy: clrec.record.startDate">
 
-                                <td><span title="Пассажирский"class="fas fa-lg fa-bus-alt"></span></td>
-                                <td>Микроавтобус</td>
-                                <td>22.12.2018</td>
-                                <td>08:00</td>
-                                <td><span class="route-tag">пл.18</span><span class="route-tag">пл.10</span></td>
-                                <td>IVECO 23</td>
-                                <td>XA234</td>
+                                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
+                                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td><span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span></td>
+                                <td>{{clrec.appointment.vehicleModel}}</td>
+                                <td>{{clrec.appointment.vehicle.number}}</td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
-                                    Султанов E.E</td>
+                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                                    {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}</td>
                                 <td>
                                     <span class="status-info status-ready"><i class="fas fa-flag" onclick="formOpen('more-status-flag')"></i>Готово</span>
                                 </td>
