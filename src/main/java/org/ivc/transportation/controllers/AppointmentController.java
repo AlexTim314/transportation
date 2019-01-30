@@ -1,6 +1,10 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.CarBoss;
@@ -28,8 +32,30 @@ public class AppointmentController {
     private DispatcherService dispatcherService;
 
     @GetMapping("/dispatcher/appointments")
-    public List<CompositeClaimRecord> getCarBosses(Principal principal) {
+    public List<CompositeClaimRecord> getAppointments(Principal principal) {
         return dispatcherService.getAppointments(principal);
     }
+
+    @GetMapping("/dispatcher/appointments/Tomorrow")
+    public List<CompositeClaimRecord> getAppointmentsTomorrow(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+    }
+
+    @GetMapping("/dispatcher/appointments/Week")
+    public List<CompositeClaimRecord> getAppointmentsWeek(Principal principal) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+    }
+
+    @PostMapping("/dispatcher/appointments/Date")
+    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody ZonedDateTime date) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+    }
+
 
 }
