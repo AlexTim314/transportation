@@ -88,7 +88,7 @@
                                     {{ctrl.showDriver(record.appointments[record.appointments.length - 1])}}
                                 </td>
                                 <td>
-                                    <i class="{{ctrl.statusClass(record.appointments[record.appointments.length - 1])}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length - 1].status)}}"></i>
+                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}"></i>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>
