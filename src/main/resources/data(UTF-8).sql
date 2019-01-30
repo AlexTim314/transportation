@@ -361,3 +361,9 @@ INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
 	VALUES ('2019-01-31 18:00:00', '2019-01-31 07:00:00', '2019-01-31 07:45:00', 1);
 INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
 	VALUES ('2019-02-01 18:00:00', '2019-02-01 07:00:00', '2019-02-01 07:45:00', 1);
+INSERT INTO public.route_task(order_num, work_name, place_id, claim_id)
+	VALUES (0, 'Начало движения к пл. 18', 24, 1);
+INSERT INTO public.route_task(order_num, work_name, place_id, claim_id)
+	VALUES (1, 'Перевозка пассажиров - 50 чел.', 29, 1);
+INSERT INTO public.route_task(order_num, work_name, place_id, claim_id)
+	VALUES (2, 'Перевозка пассажиров - 50 чел.', 24, 1);
