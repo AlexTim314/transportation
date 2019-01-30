@@ -57,41 +57,33 @@ public class PlanningService {
     }
 
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
-        List<Record> recordList = new ArrayList<Record>();
-        claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
-                u.getRecords()));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+        recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(department.getId())
+                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
 
     private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
-        List<Record> recordList = new ArrayList<Record>();
-        claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
-                recordRepository.findByClaimIdAndTimeFilter(u.getId(), dateStart, dateEnd)));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+        recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(department.getId(), dateStart, dateEnd)
+                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsAllplanned(Department department) {
-        List<Record> recordList = new ArrayList<Record>();
-        claimRepository.findByDepartmentAndAffirmationDateIsNotNull(department).forEach(u -> recordList.addAll(
-                u.getRecords()));
+    private List<CompositeClaimRecord> getCompositeClaimRecordsAllPlanned(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+        recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullPlanned(department.getId())
+                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterplanned(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
-        List<Record> recordList = new ArrayList<Record>();
-        claimRepository.findByDepartmentAndAffirmationDateIsNotNull(department).forEach(u -> recordList.addAll(
-                recordRepository.findByClaimIdAndTimeFilter(u.getId(), dateStart, dateEnd)));
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+        recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(department.getId(), dateStart, dateEnd)
+                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
@@ -113,14 +105,14 @@ public class PlanningService {
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsAll() {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithPlannedClaims().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
-        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsAllplanned(u.getDepartment())));
+        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsAllPlanned(u.getDepartment())));
         return result;
     }
 
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithPlannedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
-        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilterplanned(u.getDepartment(), dateStart, dateEnd)));
+        result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilterPlanned(u.getDepartment(), dateStart, dateEnd)));
         return result;
     }
 
