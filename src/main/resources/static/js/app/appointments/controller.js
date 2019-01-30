@@ -15,12 +15,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.clrec = {record: {}, claim: {}};
+        self.clrec = {record: {}, claim: {}, appointment: {}};
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.departments = [];
         self.headers = [];
         self.complHeaders = [];
         self.vehicles = [];
+        self.drivers = [];
         self.claims = [];
         self.records = [];
         self.appointments = [];
@@ -35,7 +36,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.selectedIcon;
         self.type;
         self.date;
-
+        self.tempAppoints = [];
 
 
         self.selectIcon = function (spec) {
@@ -182,6 +183,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.fetchAllPlanRecords();
         self.fetchAllVehicleModels();
+        self.fetchDrivers();
+        self.fetchVehicles();
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
@@ -227,15 +230,29 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //        };
 
         self.updateAppointment = function () {
-            DispatcherService.updateAppointment(appointment)
+            console.log(self.tempAppoints);
+            DispatcherService.updateAppointment(self.tempAppoints)
                     .then(
-                            self.fetchAllAppointments,
+                            self.tempAppoints = [],
+                            self.fetchAllPlanRecords,
                             function (errResponse) {
                                 console.error('Error while updating Appointment.');
                             }
                     );
         };
 
+        self.prepareToUpdateAppointment = function () {
+            for (var i = 0; i < self.tempAppoints.length; i++) {
+                if (self.tempAppoints.length > 0) {
+                    if (self.tempAppoints[i].id === self.clrec.appointment.id) {
+                        self.tempAppoints.splice(i, 1);
+                        console.log('splice appointment');
+                    }
+                }
+            }
+            self.tempAppoints.push(self.clrec.appointment);
+            formClose('formAppointment');
+        };
 
         self.rowClick = function (dep) {
             if (dep.isVisible === undefined) {

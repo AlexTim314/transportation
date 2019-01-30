@@ -25,7 +25,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
             
             fetchWeekPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Week')
+                return $http.get('/transportation/dispatcher/appointments/Week')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -38,7 +38,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
             
             fetchTomorrowPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
+                return $http.get('/transportation/dispatcher/appointments/Tomorrow')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -51,7 +51,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
             
             fetchDatePlanRecords: function (date) {
-                return $http.post('/transportation/planner/affirmedClaims/Date',
+                return $http.post('/transportation/dispatcher/appointments/Date',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -120,9 +120,9 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
 //                        );
 //            },
 
-            updateAppointment: function (appointment) {
-                return $http.put('/transportation/planner/appointment_update',
-                        JSON.stringify(appointment), {headers: self.headers})
+            updateAppointment: function (appointments) {
+                return $http.put('/transportation/dispatcher/appointments_update',
+                        JSON.stringify(appointments), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
