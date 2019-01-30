@@ -596,15 +596,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.selectStatus = function (record) {
+            if (record.appointments.length === 0) {
+                return '-';
+            }
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
             var canceled = 'Отменено';
             var stat;
-            var date = new Date(record.appointments[0].creationDate);
+            var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
-                if (date < new Date(record.appointments[i].creationDate)) {
-                    date = new Date(record.appointments[i].creationDate);
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
                     stat = record.appointments[i].status;
                 }
             }
@@ -637,12 +640,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
-        self.statusClass = function (appointment) {
-            if (appointment === null || appointment === undefined) {
+        self.statusClass = function (record) {
+            if (record.appointments.length === 0) {
                 return '';
             }
-            var status = appointment.status;
-            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
+            var stat;
+            var id = record.appointments[0].id;
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
+                    stat = record.appointments[i].status;
+                }
+            }
+            return self.selectStatusIco(stat) + ' ' + self.selectStatusColor(stat);
         };
 
         self.personToString = function (person) {

@@ -51,10 +51,15 @@ public class AppointmentController {
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
-    
+
     @PutMapping("/dispatcher/appointments_update")
-    public List<Appointment> createAppointment(Principal principal, @RequestBody List<Appointment> appointments) {
+    public List<Appointment> updateAppointments(Principal principal, @RequestBody List<Appointment> appointments) {
         return dispatcherService.updateAppointments(principal, appointments);
     }
-    
+
+    @PutMapping("/dispatcher/appointment_update")
+    public Appointment updateAppointment(Principal principal, @RequestBody Appointment appointment) {
+        return dispatcherService.updateAppointment(appointment);
+    }
+
 }

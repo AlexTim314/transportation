@@ -191,12 +191,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
-            console.log(self.departments);
         };
 
-        self.updateAppointment = function () {
-            console.log(self.tempAppoints);
-            DispatcherService.updateAppointment(self.tempAppoints)
+        self.updateAppointments = function () {
+            DispatcherService.updateAppointments(self.tempAppoints)
                     .then(
                             function (d) {
                                 self.tempAppoints = [];
@@ -239,10 +237,23 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
         
         self.changeAppStatus = function () {
-            console.log(self.clrec.appointment);
             DispatcherService.updateStatusAppointment(self.clrec.appointment)
                     .then(
-                            self.fetchAllPlanRecords,
+                            function (d) {
+                                if (self.all) {
+                                    self.fetchAllPlanRecords();
+                                    return;
+                                }
+                                if (self.week) {
+                                    self.fetchWeekPlanRecords();
+                                    return;
+                                }
+                                if (self.today) {
+                                    self.fetchTomorrowPlanRecords();
+                                    return;
+                                }
+                                self.fetchDatePlanRecords();
+                            },
                             function (errResponse) {
                                 console.error('Error while changing status Appointment.');
                             }

@@ -120,7 +120,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
 //                        );
 //            },
 
-            updateAppointment: function (appointments) {
+            updateAppointments: function (appointments) {
                 return $http.put('/transportation/dispatcher/appointments_update',
                         JSON.stringify(appointments), {headers: self.headers})
                         .then(
@@ -135,8 +135,8 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
             
             updateStatusAppointment: function (appointment) {
-                return $http.put('/transportation/dispatcher/appointments_update',
-                        JSON.stringify([appointment]), {headers: self.headers})
+                return $http.put('/transportation/dispatcher/appointment_update',
+                        JSON.stringify(appointment), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

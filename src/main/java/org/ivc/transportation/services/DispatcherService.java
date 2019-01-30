@@ -102,4 +102,14 @@ public class DispatcherService {
         return result;
     }
 
+    public Appointment updateAppointment(Appointment appointment) {
+        appointmentRepository.save(appointment);
+        appointmentInfoRepository
+                .save(new AppointmentInfo(LocalDateTime.now(),
+                        appointment.getStatus(),
+                        appointment.getNote(),
+                        appointment));
+        return appointment;
+    }
+
 }
