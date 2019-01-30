@@ -28,7 +28,7 @@ public class AppointmentController {
     private DispatcherService dispatcherService;
 
     @GetMapping("/dispatcher/appointments")
-    public List<CompositeClaimRecord> getCarBosses(Principal principal) {
+    public List<CompositeClaimRecord> getAppointments(Principal principal) {
         return dispatcherService.getAppointments(principal);
     }
 

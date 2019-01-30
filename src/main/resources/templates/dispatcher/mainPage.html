@@ -16,12 +16,15 @@
         <script src="js/app/dispatcherPage/service.js"></script>
         <script src="js/app/dispatcherPage/controller.js"></script>
 
+        <script src="js/app/appointments/service.js"></script>
+        <script src="js/app/appointments/controller.js"></script>
+
         <script src="js/app/vehicles/service.js"></script>
         <script src="js/app/vehicles/controller.js"></script>
 
         <script src="js/app/drivers/service.js"></script>
         <script src="js/app/drivers/controller.js"></script>
-        
+
         <script src="js/app/mechanics/service.js"></script>
         <script src="js/app/mechanics/controller.js"></script>
 
@@ -53,21 +56,21 @@
                     <span class="psw">Забыли <a href="#">Пароль?</a></span>
                 </div>
             </form >
+            <div ng-controller="DispatcherController as plctrl">
+                <th:block th:include="dispatcher/appointment_form"></th:block> 
 
-            <th:block th:include="dispatcher/appointment_form"></th:block> 
+                <th:block th:include="dispatcher/appointment_status_form"></th:block> 
 
-            <th:block th:include="dispatcher/appointment_status_form"></th:block> 
+                <th:block th:include="dispatcher/refueling_form"></th:block> 
 
-            <th:block th:include="dispatcher/refueling_form"></th:block> 
+                <th:block th:include="dispatcher/vehicle_history"></th:block> 
 
-            <th:block th:include="dispatcher/vehicle_history"></th:block> 
+                <!--Подробнее назначени/заявки----- -->
+                <th:block th:include="dispatcher/record_info"></th:block> 
 
-            <!--Подробнее назначени/заявки----- -->
-            <th:block th:include="dispatcher/record_info"></th:block> 
-
-            <!--Подробнее назначени/заявки----- -->
-            <th:block th:include="dispatcher/route_form"></th:block> 
-
+                <!--Подробнее назначени/заявки----- -->
+                <th:block th:include="dispatcher/route_form"></th:block> 
+            </div>
             <div class="main clearfix">
                 <div class="header clearfix">
                     <!--Logo -->
@@ -118,7 +121,7 @@
                         <div ng-controller="MechanicsController as ctrl">
                             <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
                             <th:block th:include="dispatcher/del_mechanic_confirm_dlg"></th:block>
-                            
+
                             <th:block th:include="dispatcher/mechanics_tab"></th:block>
                         </div>
 
