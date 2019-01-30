@@ -124,7 +124,7 @@ public class PlanningService {
         return result;
     }
 
-    public List<Record> createAppointment(Principal principal, List<CompositeRecordIdAppointment> compositeRecordIdAppointmentList) {
+    public List<Record> createAppointments(Principal principal, List<CompositeRecordIdAppointment> compositeRecordIdAppointmentList) {
         List<Record> result = new ArrayList<Record>();
         for (int i = 0; i < compositeRecordIdAppointmentList.size(); i++) {
             CompositeRecordIdAppointment compositeRecordIdAppointment = compositeRecordIdAppointmentList.get(i);

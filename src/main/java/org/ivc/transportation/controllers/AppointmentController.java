@@ -7,17 +7,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
-import org.ivc.transportation.entities.CarBoss;
-import org.ivc.transportation.services.CarBossService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,6 +50,10 @@ public class AppointmentController {
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
-
-
+    
+    @PostMapping("/dispatcher/appointments_update")
+    public List<Appointment> createAppointment(Principal principal, @RequestBody List<Appointment> appointments) {
+        return dispatcherService.updateAppointments(principal, appointments);
+    }
+    
 }
