@@ -26,7 +26,9 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     List<Claim> findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(Department department);
 
     List<Claim> findByDepartmentAndTemplateNameIsNotNull(Department department);
+    
     List<Claim> findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(Department department);
+    List<Claim> findByDepartmentAndAffirmationDateIsNotNull(Department department);
 
     @Query(value = "select claim.* from claim, record " +
             "where record.start_date between :start_date and :end_date and " +
