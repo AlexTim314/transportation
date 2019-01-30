@@ -254,52 +254,52 @@ for (i = 1; i < elements.length; i++) {
     });
 }
 
-var tab1 = document.getElementById("tbl2");
-var elements1 = tab1.getElementsByTagName('tr');
-var i;
-
-for (i = 1; i < elements1.length; i++) {
-    elements1[i].addEventListener("click", function () {
-
-        var panel1 = this.nextElementSibling;
-        var i_item = this.getElementsByTagName('i');
-        if (i_item[0].classList.contains("fa-caret-right")) {
-            i_item[0].classList.remove("fa-caret-right");
-            i_item[0].classList.add("fa-caret-down");
-        } else {
-            i_item[0].classList.remove("fa-caret-down");
-            i_item[0].classList.add("fa-caret-right");
-        }
-        if (panel1.classList.contains("hiddenRow")) {
-            panel1.classList.toggle("collapseRow");
-            this.classList.toggle("activeRow");
-        }
-
-    });
-}
-var tab2 = document.getElementById("tbl3");
-var elements2 = tab2.getElementsByTagName('tr');
-var i;
-
-for (i = 1; i < elements2.length; i++) {
-    elements2[i].addEventListener("click", function () {
-
-        var panel2 = this.nextElementSibling;
-        var i_item = this.getElementsByTagName('i');
-        if (i_item[0].classList.contains("fa-caret-right")) {
-            i_item[0].classList.remove("fa-caret-right");
-            i_item[0].classList.add("fa-caret-down");
-        } else {
-            i_item[0].classList.remove("fa-caret-down");
-            i_item[0].classList.add("fa-caret-right");
-        }
-        if (panel2.classList.contains("hiddenRow")) {
-            panel2.classList.toggle("collapseRow");
-            this.classList.toggle("activeRow");
-        }
-
-    });
-}
+//var tab1 = document.getElementById("tbl2");
+//var elements1 = tab1.getElementsByTagName('tr');
+//var i;
+//
+//for (i = 1; i < elements1.length; i++) {
+//    elements1[i].addEventListener("click", function () {
+//
+//        var panel1 = this.nextElementSibling;
+//        var i_item = this.getElementsByTagName('i');
+//        if (i_item[0].classList.contains("fa-caret-right")) {
+//            i_item[0].classList.remove("fa-caret-right");
+//            i_item[0].classList.add("fa-caret-down");
+//        } else {
+//            i_item[0].classList.remove("fa-caret-down");
+//            i_item[0].classList.add("fa-caret-right");
+//        }
+//        if (panel1.classList.contains("hiddenRow")) {
+//            panel1.classList.toggle("collapseRow");
+//            this.classList.toggle("activeRow");
+//        }
+//
+//    });
+//}
+//var tab2 = document.getElementById("tbl3");
+//var elements2 = tab2.getElementsByTagName('tr');
+//var i;
+//
+//for (i = 1; i < elements2.length; i++) {
+//    elements2[i].addEventListener("click", function () {
+//
+//        var panel2 = this.nextElementSibling;
+//        var i_item = this.getElementsByTagName('i');
+//        if (i_item[0].classList.contains("fa-caret-right")) {
+//            i_item[0].classList.remove("fa-caret-right");
+//            i_item[0].classList.add("fa-caret-down");
+//        } else {
+//            i_item[0].classList.remove("fa-caret-down");
+//            i_item[0].classList.add("fa-caret-right");
+//        }
+//        if (panel2.classList.contains("hiddenRow")) {
+//            panel2.classList.toggle("collapseRow");
+//            this.classList.toggle("activeRow");
+//        }
+//
+//    });
+//}
 
 fasttab = function () {
     var fast_element = getElementsByClassName('fast-filter');

@@ -24,7 +24,33 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     @Query(value = "select record.* from record, appointment where appointment.id = :appointment_id and record.id = appointment.record_id", nativeQuery = true)
     public Record findRecordByAppointmentId(@Param("appointment_id") Long appointmentId);
 
-    @Query(value = "select * from record where start_date between :date_start and :date_end and claim_id = :claim_id", nativeQuery = true)
-    List<Record> findByClaimIdAndTimeFilter(@Param("claim_id") Long claimId, @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+    @Query(value = "select record.* from record, claim where " +
+            "claim.department_id = :department_id and " +
+            "claim.affirmation_date is not null and " +
+            "claim.actual = true and " +
+            "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
+    List<Record> findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(@Param("department_id") Long departmentId);
 
+    @Query(value = "select record.* from record, claim where " +
+            "claim.department_id = :department_id and " +
+            "claim.affirmation_date is not null and " +
+            "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
+    List<Record> findByDepartmentIdAndAffirmationDateIsNotNullPlanned(@Param("department_id") Long departmentId);
+
+    @Query(value = "select record.* from record, claim where " +
+            "claim.department_id = :department_id and " +
+            "claim.affirmation_date is not null and " +
+            "claim.actual = true and " +
+            "record.start_date between :date_start and :date_end and " +
+            "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
+    List<Record> findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(@Param("department_id") Long departmentId,
+            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+
+    @Query(value = "select record.* from record, claim where " +
+            "claim.department_id = :department_id and " +
+            "claim.affirmation_date is not null and " +
+            "record.start_date between :date_start and :date_end and " +
+            "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
+    List<Record> findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(@Param("department_id") Long departmentId,
+            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
 }

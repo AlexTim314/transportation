@@ -31,8 +31,6 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(Department department);
 
-    List<Claim> findByDepartmentAndAffirmationDateIsNotNull(Department department);
-
     @Query(value = "select claim.* from claim, record "
             + "where record.start_date between :start_date and :end_date and "
             + "claim.id = record.claim_id and "
@@ -43,8 +41,6 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     List<Claim> findAffirmedClaimsByDepartmentTimeFilter(@Param("department_id") Long departmentId,
             @Param("start_date") ZonedDateTime startDate,
             @Param("end_date") ZonedDateTime endDate);
-
-    List<Claim> findByDepartment(Department department);
 
     void deleteByIdAndAffirmationDateIsNull(Long id);
 

@@ -41,7 +41,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.departments = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Departments');
@@ -71,7 +70,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.appointments = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Appointments');
@@ -84,7 +82,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.claims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Claims');
@@ -100,8 +97,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
-                                // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllRecords');
@@ -117,8 +112,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
-                                // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -134,8 +127,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
-                                // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TodayRecords');
@@ -149,13 +140,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.week = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
-            console.log(datePlan);
             PlannerService.fetchDatePlanRecords(datePlan)
                     .then(
                             function (d) {
                                 self.headers = d;
-                                // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -173,7 +161,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-                                console.log(self.complHeaders);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllCompleteRecords');
@@ -189,8 +176,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-
-                                console.log(self.complHeaders);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteWeekRecords');
@@ -207,7 +192,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 self.complHeaders = d;
                                 // self.records = d.records;
-                                console.log(self.complHeaders);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteTodayRecords');
@@ -224,7 +208,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-                                console.log(self.complHeaders);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteRecords of Day');
@@ -237,7 +220,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.transportDeps = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TransportDeps');
@@ -250,7 +232,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.vehicleModels = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleModels');
@@ -282,37 +263,31 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
-            console.log(self.departments);
         };
 
 
 
-        self.createAppointment = function () {
+        self.createAppointments = function () {
             var appoints = [];
             var appointment = {};
-            console.log(self.headers.length);
-            console.log(self.headers[0].compositeClaimRecords.length);
             for (var i = 0; i < self.headers.length; i++) {
-                if (self.headers[i].compositeClaimRecords.length > 0) {
-                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                        appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
-                        if (self.headers[i].compositeClaimRecords[j].appointment !== undefined && self.headers[i].compositeClaimRecords[j].appointment.transportDep !== null) {
-                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].appointment.vehicleModel;
-                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].appointment.transportDep;
-                            appointment.status = 'IN_PROGRESS';
-                            appoints.push({
-                                recordId: self.headers[i].compositeClaimRecords[j].record.id,
-                                appointment: appointment
-                            });
-                        }
+                for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                    var appointment = self.headers[i].compositeClaimRecords[j].appointment;
+                    var recId = self.headers[i].compositeClaimRecords[j].record.id;
+                    if (appointment.status === 'CANCELED' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
+                        appoints.push({
+                            recordId: recId,
+                            appointment: appointment
+                        });
                     }
                 }
             }
-            console.log(appoints);
-            PlannerService.createAppointment(appoints)
+            PlannerService.createAppointments(appoints)
                     .then(
                             function (d) {
+                                self.fetchAllPlanRecords();
                                 self.fetchAllCompletePlanRecords();
+//                                open_tab1('tab-list2', 'tab-btn2', 2);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -358,15 +333,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
-            console.log(clrec);
-            console.log(self.clrec);
             formOpen('more-claim');
         };
 
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
-            console.log(compClRec);
-            console.log(self.compClRec);
             formOpen('more-claim-status');
         };
 
@@ -412,10 +383,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.selectStatusIco = function (stat) {
-            var inProgress = 'fas fa-clock';
-            var ready = 'fas fa-check';
-            var completed = 'fas fa-check-double';
-            var canceled = 'fas fa-ban';
+            var inProgress = 'fas fa-lg fa-clock';
+            var ready = 'fas fa-lg fa-check';
+            var completed = 'fas fa-lg fa-check-double';
+            var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -430,10 +401,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.selectStatusColor = function (stat) {
-            var inProgress = 'done_status';
-            var ready = 'done_status';
-            var completed = 'status_ready';
-            var canceled = 'cancel_status';
+            var inProgress = 'done-status';
+            var ready = 'status-ready';
+            var completed = 'status-ready';
+            var canceled = 'cancel-status';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -444,6 +415,29 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 'CANCELED':
                     return canceled;
             }
+        };
+
+        self.statusClass = function (clrec) {
+            var status = clrec.appointment.status;
+            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
+        };
+
+        self.personToString = function (person) {
+            var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
+            return result;
+        };
+
+        self.checkPhone = function (appointment) {
+            return appointment.driver !== null && appointment.driver !== undefined && appointment.driver.phone !== null && appointment.driver.phone !== undefined;
+        };
+
+        self.showDriver = function (appointment) {
+            return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
+        };
+
+        self.disable = function (clrec) {
+            var appointment = clrec.appointment;
+            return appointment.status !== 'CANCELED' && appointment.id !== null;
         };
 
     }]);

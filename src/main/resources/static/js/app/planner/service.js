@@ -186,7 +186,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            createAppointment: function (appointments) {
+            createAppointments: function (appointments) {
                 return $http.post('/transportation/planner/appointments_create',
                         JSON.stringify(appointments), {headers: self.headers})
                         .then(

@@ -22,16 +22,16 @@
     <div class="height-wrapper">            
         <table class=" table-plan table-claim" >
             <tr>
-                <th>Тип транспорта</th>
-                <th>Вид техники</th>
-                <th>Дата выезда</th>
-                <th>Время выхода</th>
-                <th>Маршрут</th>
-                <th>Марка</th>
-                <th>Гос.номер</th>
-                <th>Водитель</th>
-                <th>Cтатус</th>
-                <th></th>
+                <th style="width:5%">Тип транспорта</th>
+                <th style="width:7%">Вид техники</th>
+                <th style="width:5%">Дата выезда</th>
+                <th style="width:10%">Время подачи</th>
+                <th style="width:20%">Маршрут</th>
+                <th style="width:10%">Марка</th>
+                <th style="width:5%">Гос.номер</th>
+                <th style="width:10%">Водитель</th>
+                <th style="width:8%">Статус</th>
+                <th style="width:10%"></th>
             </tr>
             <tr ng-repeat="clrec in plctrl.headers| orderBy: clrec.record.startDate">
                 <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
@@ -39,17 +39,17 @@
                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
                 <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                 <td>
-                     <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                 </td>
                 <td>{{clrec.appointment.vehicleModel.modelName}}</td>
                 <td>{{clrec.appointment.vehicle.number}}</td>
                 <td class="td-relative">
-                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
-                     {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}		  					
+                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                    {{plctrl.showDriver(clrec.appointment)}}		  					
                 </td>
-                <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Выполняется</span></td>		  				
+                <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
                 <td>
-                    <i title="Назначить"class="fas fa-lg fa-code-branch" ng-click="plctrl.order(clrec)"></i>
+                    <i title="Назначить"class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
                     <i title="Печать Путевого Листа"class="fa fa-lg fa-print"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim')" ></i> 
                 </td>
