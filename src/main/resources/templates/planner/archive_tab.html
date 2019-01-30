@@ -59,7 +59,7 @@
                                 <th style="width:10%">Статус</th>
                                 <th style="width:10%"></th>
                             </tr>
-                            <tr ng-repeat="clrec in header.compositeClaimRecords| filter: searchCompleteClaim | orderBy: clrec.record.startDate">
+                            <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: clrec.record.startDate | filter: searchCompleteClaim" >
 
                                 <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
@@ -72,7 +72,7 @@
                                     <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
                                     {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}</td>
                                 <td>
-                                    <span class="status-info {{plctrl.selectStatusColor(clrec.appointments[clrec.appointments.length-1].status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointments[clrec.appointments.length-1].status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointments[clrec.appointments.length-1].status)}}</span>
+                                    <span class="status-info {{plctrl.selectStatusColor(clrec.appointment.status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointment.status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointment.status)}}</span>
                                 </td>
                                 <td>
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoAppointments(clrec)"></i>

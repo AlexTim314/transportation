@@ -69,7 +69,20 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching bosses');
+                                    console.error('Error while fetching vehicles');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchVehicleHistory: function (vehicle) {
+                return $http.get('/transportation/dispatcher/vehicle_history/' + vehicle.id)
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicle history');
                                     return $q.reject(errResponse);
                                 }
                         );

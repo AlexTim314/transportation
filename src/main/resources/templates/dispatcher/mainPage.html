@@ -21,7 +21,7 @@
 
         <script src="js/app/drivers/service.js"></script>
         <script src="js/app/drivers/controller.js"></script>
-        
+
         <script src="js/app/mechanics/service.js"></script>
         <script src="js/app/mechanics/controller.js"></script>
 
@@ -53,14 +53,7 @@
                     <span class="psw">Забыли <a href="#">Пароль?</a></span>
                 </div>
             </form >
-
-            <th:block th:include="dispatcher/appointment_form"></th:block> 
-
-            <th:block th:include="dispatcher/appointment_status_form"></th:block> 
-
             <th:block th:include="dispatcher/refueling_form"></th:block> 
-
-            <th:block th:include="dispatcher/vehicle_history"></th:block> 
 
             <!--Подробнее назначени/заявки----- -->
             <th:block th:include="dispatcher/record_info"></th:block> 
@@ -95,7 +88,12 @@
                 <div id="claim-create" class="tabcontent">
 
                     <div class="clearfix" style="overflow-x:auto;">
-                        <th:block th:include="dispatcher/appointments_tab"></th:block> 
+                        <div>
+                            <th:block th:include="dispatcher/appointment_form"></th:block>
+                            <th:block th:include="dispatcher/appointment_status_form"></th:block> 
+
+                            <th:block th:include="dispatcher/appointments_tab"></th:block> 
+                        </div>
 
                         <div ng-controller="VehiclesController as ctrl">
                             <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
@@ -103,6 +101,7 @@
                             <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
                             <th:block th:include="dispatcher/del_vehicle_confirm_dlg"></th:block> 
                             <th:block th:include="dispatcher/vehicle_info"></th:block> 
+                            <th:block th:include="dispatcher/vehicle_history"></th:block> 
 
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>
@@ -118,7 +117,7 @@
                         <div ng-controller="MechanicsController as ctrl">
                             <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
                             <th:block th:include="dispatcher/del_mechanic_confirm_dlg"></th:block>
-                            
+
                             <th:block th:include="dispatcher/mechanics_tab"></th:block>
                         </div>
 
