@@ -367,3 +367,13 @@ INSERT INTO public.route_task(order_num, work_name, place_id, claim_id)
 	VALUES (1, 'Перевозка пассажиров - 50 чел.', 29, 1);
 INSERT INTO public.route_task(order_num, work_name, place_id, claim_id)
 	VALUES (2, 'Перевозка пассажиров - 50 чел.', 24, 1);
+
+INSERT INTO public.vehicle(fuel, motohours, note, "number", odometr, status, model_id, transport_dep_id)
+	VALUES (111, 333, null, 'X111XXX94', 222, 0, 1, 1);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(1, 1);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(1, 2);
+
+INSERT INTO public.vehicle(fuel, motohours, note, "number", odometr, status, model_id, transport_dep_id)
+	VALUES (999, 777, null, 'X222XXX94', 888, 0, 35, 1);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(2, 2);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(2, 3); 
