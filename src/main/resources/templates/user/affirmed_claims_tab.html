@@ -79,14 +79,14 @@
                                 <td>{{record.entranceDate| date:'HH:mm'}}</td>
                                 <td>{{record.startDate| date:'HH:mm'}}</td>
                                 <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
-                                <td>{{record.appointments[0].vehicleModel.modelName}}</td>
-                                <td>{{record.appointments[0].vehicle.number}}</td>
+                                <td>{{record.appointments[record.appointments.length-1].vehicleModel.modelName}}</td>
+                                <td>{{record.appointments[record.appointments.length-1].vehicle.number}}</td>
                                 <td class="td-relative">
-                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{record.appointments[0].driver.phone}} </span></i>
-                                    {{record.appointments[0].driver.firstname}} {{record.appointments[0].driver.name.length[1]}}.{{record.appointments[0].driver.surname.length[1]}}.
+                                    <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{record.appointments[record.appointments.length-1].driver.phone}} </span></i>
+                                    {{record.appointments[record.appointments.length-1].driver.firstname}} {{record.appointments[record.appointments.length-1].driver.name.length[1]}}.{{record.appointments[record.appointments.length-1].driver.surname.length[1]}}.
                                 </td>
                                 <td>
-                                    <span class="claim-status done-status"><i class="fas fa-check"></i>{{record.appointments[0].status}}</span>
+                                    <span class="claim-status done-status"><i class="{{ctrl.selectStatusIco(record.appointments[record.appointments.length-1].status)}}" title="{{ctrl.selectStatus(record.appointments[record.appointments.length-1].status)}}"></i></span>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>

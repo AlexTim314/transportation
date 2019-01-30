@@ -2183,13 +2183,12 @@ span.psw {
 	right: 0;
 	height: 23px;
 	background: grey;
-	display: none;
+	display: block;
 }
 .plan-date li:nth-child(2):hover {
 	cursor: pointer;
 }
 .plan-date li:nth-child(2):hover input{
- 	display: block;
  	cursor: pointer;
 }
 .custom-select{

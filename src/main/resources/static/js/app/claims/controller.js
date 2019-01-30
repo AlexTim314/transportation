@@ -30,8 +30,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.today = false;
         self.week = false;
         self.all = false;
-        
-        self.claimFromTemplateDate='';
+
+        self.claimFromTemplateDate = '';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -154,7 +154,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.getToday = function () {
             var date = new Date();
             var day = date.getDate();
@@ -167,7 +167,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var today = year + "-" + month + "-" + day;
             document.getElementById('startDate').value = today;
         };
-        
+
         self.fetchNewClaims();
         self.fetchAffirmedClaims();
         self.fetchClaimTemplates();
@@ -420,7 +420,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 actual: true,
                 vehicleType: null,
                 records: [],
-                routeTasks: []
+                routeTasks: [],
+                claimFromTemplateDate:null
             };
             self.getToday();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
@@ -447,7 +448,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claimTemplates[i].checked = self.all;
             }
         };
-        self.copyClaimProperties =  function (claim) {
+        self.copyClaimProperties = function (claim) {
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
@@ -473,9 +474,40 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.endDate = new Date(claim.records[0].endDate);
         };
         self.prepearClaimFromTemplate = function (claim) {
-            self.copyClaimProperties(claim);
-            self.claim.id = null;  
-            self.claim.templateName = null;            
+            if (claim !== null) {
+                self.copyClaimProperties(claim);
+                self.claim.id = null;
+                self.claim.templateName = null;
+                if (self.claimFromTemplateDate !== '') {
+                    Date.prototype.addDays = function (days) {
+                        var date = new Date(this.valueOf());
+                        date.setDate(date.getDate() + days);
+                        return date;
+                    }
+
+                    //поиск более ранней записи                    
+                    var index = 0;
+                    for (var i = 1; i < claim.records.length; i++) {                        
+                        if (claim.records[0].startDate > claim.records[i].startDate) {
+                            index = i;
+                        }
+                    }
+                    var date = new Date(claim.records[index].startDate);
+                    var datesDiff = self.claimFromTemplateDate.getDate() - date.getDate();
+                    self.record.startDate = date.addDays(datesDiff);
+                    self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
+                    self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
+
+                    for (var i = 0; i < claim.records.length; i++) {
+                        date = new Date(claim.records[i].startDate);
+                        self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
+                        date = new Date(claim.records[i].entranceDate);
+                        self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
+                        date = new Date(claim.records[i].endDate);
+                        self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                    }
+                }
+            }
         };
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
@@ -521,5 +553,40 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
+
+        self.selectStatusIco = function (stat) {
+            var inProgress = 'fas fa-clock';
+            var ready = 'fas fa-check';
+            var completed = 'fas fa-check-double';
+            var canceled = 'fas fa-ban';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        self.selectStatus = function (stat) {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
     }]);
 
