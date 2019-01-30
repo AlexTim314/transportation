@@ -30,8 +30,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.today = false;
         self.week = false;
         self.all = false;
-        
-        self.claimFromTemplateDate='';
+
+        self.claimFromTemplateDate = '';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -154,7 +154,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.getToday = function () {
             var date = new Date();
             var day = date.getDate();
@@ -167,7 +167,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var today = year + "-" + month + "-" + day;
             document.getElementById('startDate').value = today;
         };
-        
+
         self.fetchNewClaims();
         self.fetchAffirmedClaims();
         self.fetchClaimTemplates();
@@ -218,7 +218,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 } else {
                                     self.fetchClaimTemplates();
                                 }
-
                             },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
@@ -238,24 +237,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.affirmClaims = function () {
             var affIds = [];
-            var affClm = [];
             for (var i = 0; i < self.newClaims.length; i++) {
                 if (self.newClaims[i].checked) {
                     affIds.push(self.newClaims[i].id);
-                    affClm.push(self.newClaims[i]);
                 }
             }
             ClaimsService.affirmClaims(affIds)
                     .then(
                             function () {
-                                for (var i = 0; i < affClm.length; i++) {
-                                    self.affirmedClaims.push(affClm[i]);
+                                for (var i = 0; i < affIds.length; i++) {
                                     for (var j = 0; j < self.newClaims.length; j++) {
-                                        if (self.newClaims[j] === affClm[i]) {
+                                        if (self.newClaims[j].id === affIds[i]) {
                                             self.newClaims.splice(j, 1);
                                         }
                                     }
                                 }
+                                self.fetchAffirmedClaims();
                             },
 //                            self.fetchNewClaims,
 //                            self.fetchAffirmedClaims,
@@ -447,7 +444,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claimTemplates[i].checked = self.all;
             }
         };
-        self.copyClaimProperties =  function (claim) {
+        self.copyClaimProperties = function (claim) {
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
@@ -474,8 +471,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
         self.prepearClaimFromTemplate = function (claim) {
             self.copyClaimProperties(claim);
-            self.claim.id = null;  
-            self.claim.templateName = null;            
+            self.claim.id = null;
+            self.claim.templateName = null;
         };
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);

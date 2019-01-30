@@ -51,6 +51,10 @@ public class VehicleService {
         return null;
     }
 
+    public List<VehicleInfo> findVehicleHistoryById(Long vehicleId) {
+        return vehicleInfoRepository.findByVehicleId(vehicleId);
+    }
+
     public Vehicle saveVehicle(Vehicle vehicle) {
         if (vehicle.getId() == null) {
             List<Fuel> fl = new ArrayList<Fuel>();
