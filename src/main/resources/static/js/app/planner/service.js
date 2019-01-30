@@ -201,19 +201,21 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            updateAppointment: function (appointment) {
-                return $http.put('/transportation/planner/appointment_update',
-                        JSON.stringify(appointment), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while updating appointment');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
+//            updateAppointment: function (appointment) {
+//                return $http.put('/transportation/planner/appointment_update',
+//                        JSON.stringify(appointment), {headers: self.headers})
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while updating appointment');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+            
+
 
             deleteAppointment: function (appointment) {
                 console.log(appointment);
