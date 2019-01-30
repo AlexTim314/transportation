@@ -57,7 +57,7 @@ public class PlanningService {
         claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
                 u.getRecords()));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u)));
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u,  appointmentRepository.getLastByRecordId(u.getId()))));
         return result;
     }
 
@@ -66,7 +66,7 @@ public class PlanningService {
         claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
                 recordRepository.findByClaimIdAndTimeFilter(u.getId(), dateStart, dateEnd)));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u)));
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u, appointmentRepository.getLastByRecordId(u.getId()))));
         return result;
     }
 
