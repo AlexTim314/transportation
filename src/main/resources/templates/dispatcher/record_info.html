@@ -5,15 +5,15 @@
     <fieldset>
         <legend>Параметры</legend>
         <ul>
-            <li><label> Дата Выезда<span>22.12.2018</span></label></li>
-            <li><label> Дата Возвращения<span>22.12.2018</span></label></li>
-            <li><label> Время Выхода<span>07:50</span></label></li>
-            <li><label> Время Выезда<span>08:50</span></label></li>
-            <li><label> Время Возвращения<span><b>18:00</b></span></label></li>
+            <li><label> Дата Выезда<span>{{plctrl.clrec.record.startDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Дата Возвращения<span>{{plctrl.clrec.record.endDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Время Выхода<span>{{plctrl.clrec.record.entranceDate| date:'HH:mm'}}</span></label></li>
+            <li><label> Время Выезда<span>{{plctrl.clrec.record.startDate| date:'HH:mm'}}</span></label></li>
+            <li><label> Время Возвращения<span><b>{{plctrl.clrec.record.endDate| date:'HH:mm'}}</b></span></label></li>
         </ul>
     </fieldset>
     <fieldset style="min-height: 50px;">
         <legend>Цель</legend>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis amet explicabo velit earum adipisci, iste quis accusantium, iusto, mollitia eum laborum sit sequi provident harum, aspernatur deserunt. Suscipit, obcaecati, vero!</p>
+        <p>{{plctrl.clrec.claim.purpose}}</p>
     </fieldset>
 </div>

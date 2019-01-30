@@ -132,6 +132,20 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                     return $q.reject(errResponse);
                                 }
                         );
+            },
+            
+            updateStatusAppointment: function (appointment) {
+                return $http.put('/transportation/dispatcher/appointments_update',
+                        JSON.stringify([appointment]), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating appointment');
+                                    return $q.reject(errResponse);
+                                }
+                        );
             }
 
         };

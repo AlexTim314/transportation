@@ -170,7 +170,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.fetchNewClaims();
-        self.fetchAffirmedClaims();
+        self.fetchAffirmedClaimsTomorrow();
         self.fetchClaimTemplates();
         self.fetchVehicleTypes();
         self.fetchRouteTemplates();
