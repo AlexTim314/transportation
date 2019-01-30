@@ -16,8 +16,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
         self.clrec = {record: {}, claim: {}};
+        self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.departments = [];
         self.headers = [];
+        self.complHeaders = [];
         self.claims = [];
         self.records = [];
         self.appointments = [];
@@ -26,6 +28,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.today = false;
         self.week = false;
         self.all = false;
+        self.ctoday = false;
+        self.cweek = false;
+        self.call = false;
         self.selectedIcon;
         self.type;
         self.date;
@@ -158,6 +163,75 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+
+
+        self.fetchAllCompletePlanRecords = function () {
+            self.call = true;
+            self.ctoday = false;
+            self.cweek = false;
+            PlannerService.fetchAllCompletePlanRecords()
+                    .then(
+                            function (d) {
+                                self.complHeaders = d;
+                                console.log(self.complHeaders);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching AllCompleteRecords');
+                            }
+                    );
+        };
+
+        self.fetchWeekCompletePlanRecords = function () {
+            self.call = false;
+            self.ctoday = false;
+            self.cweek = true;
+            PlannerService.fetchWeekCompletePlanRecords()
+                    .then(
+                            function (d) {
+                                self.complHeaders = d;
+
+                                console.log(self.complHeaders);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching CompleteWeekRecords');
+                            }
+                    );
+        };
+
+        self.fetchTomorrowCompletePlanRecords = function () {
+            self.call = false;
+            self.ctoday = true;
+            self.cweek = false;
+            PlannerService.fetchTomorrowCompletePlanRecords()
+                    .then(
+                            function (d) {
+                                self.complHeaders = d;
+                                // self.records = d.records;
+                                console.log(self.complHeaders);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching CompleteTodayRecords');
+                            }
+                    );
+        };
+
+        self.fetchDateCompletePlanRecords = function () {
+            self.call = false;
+            self.ctoday = false;
+            self.cweek = false;
+            var datePlan = new Date(document.getElementById('compl-date-plan').value);
+            PlannerService.fetchDateCompletePlanRecords(datePlan)
+                    .then(
+                            function (d) {
+                                self.complHeaders = d;
+                                console.log(self.complHeaders);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching CompleteRecords of Day');
+                            }
+                    );
+        };
+
         self.fetchTransportDeps = function () {
             PlannerService.fetchTransportDeps()
                     .then(
@@ -197,15 +271,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             document.getElementById('date-plan').value = today;
             self.date = day + "." + month + "." + year;
         };
-        
-        
+
+
 
         self.fetchAllPlanRecords();
+        self.fetchAllCompletePlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
         self.getToday();
-        //self.fetchAllAppointments();
-
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -223,9 +296,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 if (self.headers[i].compositeClaimRecords.length > 0) {
                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                         appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
-                        if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
-                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
-                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
+                        if (self.headers[i].compositeClaimRecords[j].appointment !== undefined && self.headers[i].compositeClaimRecords[j].appointment.transportDep !== null) {
+                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].appointment.vehicleModel;
+                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].appointment.transportDep;
                             appointment.status = 'IN_PROGRESS';
                             appoints.push({
                                 recordId: self.headers[i].compositeClaimRecords[j].record.id,
@@ -239,7 +312,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             PlannerService.createAppointment(appoints)
                     .then(
                             function (d) {
-                                //self.appointments.push(d);
+                                self.fetchAllCompletePlanRecords();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -275,13 +348,28 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
 
+        self.rowCompleteClick = function (dep) {
+            if (dep.isVisible === undefined) {
+                dep.isVisible = true;
+            } else {
+                dep.isVisible = !dep.isVisible;
+            }
+        };
+
         self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
             console.log(clrec);
             console.log(self.clrec);
             formOpen('more-claim');
         };
-        
+
+        self.moreInfoAppointments = function (compClRec) {
+            self.compClRec = compClRec;
+            console.log(compClRec);
+            console.log(self.compClRec);
+            formOpen('more-claim-status');
+        };
+
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);
             var day = datePlan.getDate();
@@ -294,6 +382,68 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.date = day + "." + month + "." + year;
         };
 
+        self.getFilter = function (clrec) {
+            var vType = clrec.claim.vehicleType;
+            var filter = {};
+            if (vType !== null && vType !== undefined) {
+                filter.vehicleType = {typeName: vType.typeName};
+            } else {
+                filter.vehicleType = {specialization: clrec.claim.specialization};
+            }
+            return filter;
+        };
 
+        self.selectStatus = function (stat) {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+
+
+        self.selectStatusIco = function (stat) {
+            var inProgress = 'fas fa-clock';
+            var ready = 'fas fa-check';
+            var completed = 'fas fa-check-double';
+            var canceled = 'fas fa-ban';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+
+
+        self.selectStatusColor = function (stat) {
+            var inProgress = 'done_status';
+            var ready = 'done_status';
+            var completed = 'status_ready';
+            var canceled = 'cancel_status';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
 
     }]);

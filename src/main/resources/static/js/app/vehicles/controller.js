@@ -14,6 +14,8 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
         self.vehicles = [];
         self.vehicleInfo = {id: null};
+        
+        self.history = [];
 
         self.all = false;
 
@@ -75,6 +77,20 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vehicles');
+                            }
+                    );
+        };
+        
+        self.getVehicleHistory = function (vehicle) {
+            self.vehicle = vehicle;
+            VehiclesService.fetchVehicleHistory(vehicle)
+                    .then(
+                            function (d) {
+                                self.history = d;
+                                formOpen('history-transport');
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vehicle History');
                             }
                     );
         };
@@ -236,6 +252,23 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.closeStatusForm = function () {
             self.vehicleInfo = {id: null};
             formClose('formChangeVehicleStatus')
+        };
+        
+        self.closeVehicleHistoryForm = function () {
+            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
+            formClose('history-transport')
+        };
+        
+        self.shortFullName = function (user) {
+            var nameArr = user.fullName.split(' ');
+            var result = nameArr[0];
+            if (nameArr.length > 1) {
+                result += " " + nameArr[1].charAt(0) + ".";
+            }
+            if (nameArr.length > 2) {
+                result += nameArr[2].charAt(0) + "."
+            }
+            return result;
         };
 
     }]);

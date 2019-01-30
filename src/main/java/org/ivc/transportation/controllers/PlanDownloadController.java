@@ -36,7 +36,6 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
-import org.ivc.transportation.services.AppointmentService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -45,8 +44,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +63,6 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
-
-    @Autowired
-    private AppointmentService appointmentService;
 
     @Autowired
     private ServletContext servletContext;
@@ -173,8 +167,7 @@ public class PlanDownloadController {
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        //List<Appointment> appointments = appointmentService.findByStatus(AppointmentStatus.READY);
-        List<Appointment> appointments = appointmentService.findByStatus(AppointmentStatus.IN_PROGRESS);
+        List<Appointment> appointments = dispatcherService.findByStatus(AppointmentStatus.READY);
 
         //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
         List<RowData> rowDataList = new LinkedList<>();
@@ -217,10 +210,10 @@ public class PlanDownloadController {
 
         //-----------тестовые данные для проверки отображения
         RowData rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-1";
         rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Перевозка пассажиров";
         rd.route = "Пл.10, Пл. 95";
         rd.time = "8:00-19:00";
         rd.transportDepNumber = "4";
@@ -230,10 +223,10 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-1";
         rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Перевозка грузов";
         rd.route = "Пл.10, Пл. 95";
         rd.time = "8:00-19:00";
         rd.transportDepNumber = "4";
@@ -243,7 +236,7 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "КарБосс К.Б.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver = "Водитель В.В.";
         rd.purposes = "Нужно поездить туда-сюда";
@@ -256,7 +249,7 @@ public class PlanDownloadController {
         rowDataList.add(rd);
 
         rd = new RowData();
-        rd.carBoss = "LikeABoss L.B.";
+        rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver = "Водитель В.В.";
         rd.purposes = "Нужно поездить туда-сюда";

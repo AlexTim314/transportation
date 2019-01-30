@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
@@ -51,16 +46,41 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/affirmedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek(@RequestBody ZonedDateTime date) {
-        System.out.println(date);
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
     }
 
+    @GetMapping("/planner/plannedClaims")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsAll() {
+        return planningService.getPlannedClaimsAll();
+    }
+
+    @GetMapping("/planner/plannedClaims/Tomorrow")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsTomorrow() {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+    }
+
+    @GetMapping("/planner/plannedClaims/Week")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsWeek() {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+    }
+
+    @PostMapping("/planner/plannedClaims/Date")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsDate(@RequestBody ZonedDateTime date) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+    }
+
     @PostMapping("/planner/appointments_create")
-    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
-        return planningService.createAppointment(principal, compositeRecordIdAppointment);
+    public List<Record> createAppointments(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
+        return planningService.createAppointments(principal, compositeRecordIdAppointment);
     }
 
 }

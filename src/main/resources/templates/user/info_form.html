@@ -40,7 +40,7 @@
             <ul>
                 <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.affirmedClaim.affirmator.username}}</b></span></label></li>
                 <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.affirmedClaim.affirmator.fullName}}</span></label></li>
-                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>Начальник</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.affirmedClaim.affirmator.post}}</span></label></li>
                 <li><label><b class="fas fa-calendar-alt" ></b> Дата:<span>{{ctrl.affirmedClaim.affirmationDate| date:'dd.MM.yyyy'}}</span></label></li>
                 <li><label><b class="fas fa-clock" ></b> Время:<span>{{ctrl.affirmedClaim.affirmationDate| date:'HH:mm'}}</span></label></li>               
             </ul>

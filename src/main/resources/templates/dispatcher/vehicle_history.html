@@ -1,92 +1,32 @@
 <div class="more-info history-transport" id="history-transport" xmlns:th="http://www.thymeleaf.org">
     <div>История транспорта
-        <i class="fas fa-times" onclick="formClose('history-transport')"></i>
+        <i class="fas fa-times" ng-click="ctrl.closeVehicleHistoryForm()"></i>
     </div>
-    <span class="status-info done-status history-header"><b>ПАЗ XC №XA 514 KK</b></span>       
+    <span class="status-info done-status history-header"><b>{{ctrl.vehicle.model.modelName}} гос. номер: {{ctrl.vehicle.number}}</b></span>       
     <div class="height-wrapper" style="min-height: 200px;max-height: 200px;">       
         <table class="table-transport" style="width: 90%;margin-left: 5%;">
             <tr>
-                <th style="width:13%; ">Пользователь</th>
-                <th style="width:10%; ">Дата изменения</th>
-                <th style="width:10%">Топливо,л</th>
-                <th style="width:10%">Одометр,км</th>
-                <th style="width:10%">Моточасы</th>
-                <th style="width:10%">Статус</th>
-                <th style="width:20%">Примечание</th>
-                <th style="width:10%;"></th>
+<!--                <th style="width:13%; ">Пользователь</th>-->
+                <th style="width:15%; ">Дата изменения</th>
+                <th style="width:15%">Топливо,л</th>
+                <th style="width:15%">Одометр,км</th>
+                <th style="width:15%">Моточасы</th>
+                <th style="width:15%">Статус</th>
+                <th style="width:25%">Примечание</th>
+<!--                <th style="width:10%;"></th>-->
 
             </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
+            <tr ng-repeat="hr in ctrl.history | orderBy: 'modificationDate'">
+                <!--<td>{{ctrl.shortFullName(hr.)}}</td>-->
+                <td>{{hr.modificationDate| date:'dd.MM.yyyy HH:mm'}}</td>
+                <td>{{hr.fuel}}</td>
+                <td>{{hr.odometr}}</td>
+                <td>{{hr.motohours}}</td>			
+                <td><span class="status-info status-ready"><b>{{hr.status}}</b></span></td>
+                <td>{{hr.note}}</td>
+<!--                <td>
                     <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
-            </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
-                    <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
-            </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
-                    <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
-            </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
-                    <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
-            </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
-                    <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
-            </tr>
-            <tr>
-                <td>Иванов С.М.</td>
-                <td>12.12.2018</td>
-                <td>23</td>
-                <td>2345</td>
-                <td>245</td>			
-                <td><span class="status-info status-ready"><b>Исправен</b></span></td>
-                <td>Особых отметок нет</td>
-                <td>
-                    <i title="Удалить" class="fas fa-lg fa-times"></i>		  						
-                </td>
+                </td>-->
             </tr>
         </table>
     </div>          

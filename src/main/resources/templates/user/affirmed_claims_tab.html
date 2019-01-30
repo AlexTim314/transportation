@@ -6,7 +6,7 @@
             <div class="fast-filter clearfix">                                    
                 <span class="filter-elem edit {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
                 <span class="filter-elem edit {{ctrl.week?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
-                <span class="filter-elem edit {{ctrl.all?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
+                <span class="filter-elem edit {{ctrl.allday?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
             </div>
             <input type="search" placeholder="Поиск" ng-model="searchAffirm">
         </div>
