@@ -30,8 +30,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.today = false;
         self.week = false;
         self.all = false;
-
+        self.allday = false;
         self.claimFromTemplateDate = '';
+        
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -44,7 +45,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaims = function () {
-            self.all = true;
+            self.allday = true;
             self.today = false;
             self.week = false;
             ClaimsService.fetchAffirmedClaims()
@@ -58,7 +59,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaimsWeek = function () {
-            self.all = false;
+            self.allday = false;
             self.today = false;
             self.week = true;
             self.affirmedClaims = [];
@@ -74,7 +75,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
         self.fetchAffirmedClaimsTomorrow = function () {
-            self.all = false;
+            self.allday = false;
             self.today = true;
             self.week = false;
             ClaimsService.fetchAffirmedClaimsTomorrow()
