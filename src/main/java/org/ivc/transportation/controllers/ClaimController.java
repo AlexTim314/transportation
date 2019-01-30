@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,6 +85,11 @@ public class ClaimController {
     public ResponseEntity<String> deleteClaims(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/user/recordCancel")
+    public Record recordCancel(Principal principal, @RequestBody Record record) {
+        return claimService.recordCancel(principal, record);
     }
     
     @DeleteMapping("/user/record_delete")

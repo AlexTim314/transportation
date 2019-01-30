@@ -60,5 +60,12 @@ public class Appointment implements Serializable {
 
     @ManyToOne
     private AppUser creator;
+    
+    public Appointment(LocalDateTime creationDate, AppointmentStatus status, String note, AppUser creator) {
+        this.creationDate = creationDate;
+        this.status = status;
+        this.note = note;
+        this.creator = creator;
+    }
 
 }
