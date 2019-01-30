@@ -18,6 +18,10 @@ import org.springframework.stereotype.Repository;
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     Claim findByRecords(Record record);
+    
+    @Query(value = "select claim.* from claim, record where record.id = :record_id and claim.id = record.claim_id", nativeQuery = true)
+    Claim findByRecordId(@Param("record_id") Long recordId);
+            
 
     List<Claim> findByDepartmentAndAffirmationDateIsNullAndTemplateNameIsNull(Department department);
 
