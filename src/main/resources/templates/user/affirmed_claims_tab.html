@@ -88,7 +88,7 @@
                                     {{ctrl.showDriver(record.appointments[record.appointments.length - 1])}}
                                 </td>
                                 <td>
-                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}"></i>
+                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}" ng-click = "ctrl.showNote(record)"></i>
                                 </td> 
                                 <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
                             </tr>
@@ -97,6 +97,16 @@
                 </tr>
 
             </table>
+
+            <div class="more-info" id="appt-note" style="width: 25%;">
+                <div>Примечание
+                    <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="formClose('appt-note')"></i>
+                </div>
+                <fieldset style="min-height: 50px;">
+                    <legend><i class="{{ctrl.selectStatusIco(ctrl.appt.status) + ' ' + ctrl.selectStatusColor(ctrl.appt.status)}}"></i> {{ctrl.apptStatus()}} </legend>
+                    <p>{{ctrl.appt.note}}</p>
+                </fieldset>                        
+            </div>
 
         </div>
     </div>	

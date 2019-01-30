@@ -566,18 +566,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.carBoss = cb;
         };
 
-        self.statusClass = function (record) {
-            var status;
-            var date = new Date(record.appointments[0].creationDate);
-            for (var i = 1; i < record.appointments.length; i++) {
-                if (date < new Date(record.appointments[i].creationDate)) {
-                    date = new Date(record.appointments[i].creationDate);
-                    status = record.appointments[i].status;
-                }
-            }
-            return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
-        };
-
         self.selectStatusIco = function (stat) {
             var inProgress = 'fas fa-lg fa-clock';
             var ready = 'fas fa-lg fa-check';
@@ -603,7 +591,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var ready = 'Готово';
             var completed = 'Завершено';
             var canceled = 'Отменено';
-            var stat;
+            var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
                 if (id < record.appointments[i].id) {
@@ -644,7 +632,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (record.appointments.length === 0) {
                 return '';
             }
-            var stat;
+            var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
                 if (id < record.appointments[i].id) {
@@ -653,6 +641,45 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             }
             return self.selectStatusIco(stat) + ' ' + self.selectStatusColor(stat);
+        };
+
+        self.appt = {};
+
+        self.apptStatus = function () {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            var stat = self.appt.status;
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+
+        self.showNote = function (record) {
+            if (record.appointments.length === 0) {
+                return;
+            }
+            var appt = record.appointments[0];
+            var id = record.appointments[0].id;
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
+                    appt = record.appointments[i];
+                }
+            }
+            if (appt.note === null || appt.note === undefined || appt.note.length < 3) {
+                return;
+            }
+            self.appt = appt;
+            formOpen('appt-note')
         };
 
         self.personToString = function (person) {
