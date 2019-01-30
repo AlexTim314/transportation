@@ -377,3 +377,25 @@ INSERT INTO public.vehicle(fuel, motohours, note, "number", odometr, status, mod
 	VALUES (999, 777, null, 'X222XXX94', 888, 0, 35, 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(2, 2);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(2, 3);
+
+INSERT INTO public.vehicle(fuel, motohours, note, "number", odometr, status, model_id, transport_dep_id)
+	VALUES (222, 444, null, 'X333XXX94', 333, 0, 2, 2);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(3, 1);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(3, 2);
+
+INSERT INTO public.vehicle(fuel, motohours, note, "number", odometr, status, model_id, transport_dep_id)
+	VALUES (888, 666, null, 'X444XXX94', 777, 0, 36, 2);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(4, 2);
+insert into vehicle_fuel(vehicle_id, fuel_id) values(4, 3);
+
+INSERT INTO public.driver(address, birthday, driver_class, driver_license, firstname, name, note, phone, status, surname, transport_dep_id)
+	VALUES (null, '1979-01-30', null, '-x123456789x-', 'Иванов', 'Иван', null, '+77776665544', 0, 'Иванович', 1);
+
+INSERT INTO public.driver(address, birthday, driver_class, driver_license, firstname, name, note, phone, status, surname, transport_dep_id)
+	VALUES (null, '1979-01-29', null, '-x123456789x-', 'Петров', 'Иван', null, '+77776665543', 0, 'Иванович', 1);
+
+INSERT INTO public.driver(address, birthday, driver_class, driver_license, firstname, name, note, phone, status, surname, transport_dep_id)
+	VALUES (null, '1979-01-28', null, '-x123456789x-', 'Сидоров', 'Иван', null, '+77776665542', 0, 'Иванович', 2);
+
+INSERT INTO public.driver(address, birthday, driver_class, driver_license, firstname, name, note, phone, status, surname, transport_dep_id)
+	VALUES (null, '1979-01-27', null, '-x123456789x-', 'Козлов', 'Иван', null, '+77776665541', 0, 'Иванович', 2);
