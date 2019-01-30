@@ -68,11 +68,11 @@
                                 </td>                                                         
 
                                 <td>
-                                    <select name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" >
+                                    <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" >
                                     </select>           
                                 </td>
                                 <td>
-                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: plctrl.getFilter(clrec):true track by tm.id" ng-model="clrec.appointment.vehicleModel">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: plctrl.getFilter(clrec):true track by tm.id" ng-model="clrec.appointment.vehicleModel">
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>
