@@ -16,6 +16,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
         self.clrec = {record: {}, claim: {}};
+        self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.departments = [];
         self.headers = [];
         self.complHeaders = [];
@@ -300,7 +301,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 if (self.headers[i].compositeClaimRecords.length > 0) {
                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                         appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
-                        if (self.headers[i].compositeClaimRecords[j].appointment !== undefined && self.headers[i].compositeClaimRecords[j].appointment !== null) {
+                        if (self.headers[i].compositeClaimRecords[j].appointment !== undefined && self.headers[i].compositeClaimRecords[j].appointment.transportDep !== null) {
                             appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].appointment.vehicleModel;
                             appointment.transportDep = self.headers[i].compositeClaimRecords[j].appointment.transportDep;
                             appointment.status = 'IN_PROGRESS';
@@ -365,6 +366,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(clrec);
             console.log(self.clrec);
             formOpen('more-claim');
+        };
+        
+        self.moreInfoAppointments = function (compClRec) {
+            self.compClRec = compClRec;
+            console.log(compClRec);
+            console.log(self.compClRec);
+            formOpen('more-claim-status');
         };
 
         self.changeDate = function () {
