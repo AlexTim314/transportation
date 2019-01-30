@@ -30,8 +30,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.today = false;
         self.week = false;
         self.all = false;
-        
-        self.claimFromTemplateDate='';
+
+        self.claimFromTemplateDate = '';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -154,7 +154,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
-        
+
         self.getToday = function () {
             var date = new Date();
             var day = date.getDate();
@@ -167,7 +167,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var today = year + "-" + month + "-" + day;
             document.getElementById('startDate').value = today;
         };
-        
+
         self.fetchNewClaims();
         self.fetchAffirmedClaims();
         self.fetchClaimTemplates();
@@ -447,7 +447,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claimTemplates[i].checked = self.all;
             }
         };
-        self.copyClaimProperties =  function (claim) {
+        self.copyClaimProperties = function (claim) {
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
@@ -474,8 +474,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
         self.prepearClaimFromTemplate = function (claim) {
             self.copyClaimProperties(claim);
-            self.claim.id = null;  
-            self.claim.templateName = null;            
+            self.claim.id = null;
+            self.claim.templateName = null;
         };
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
@@ -521,5 +521,40 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
+
+        self.selectStatusIco = function (stat) {
+            var inProgress = 'fas fa-clock';
+            var ready = 'fas fa-check';
+            var completed = 'fas fa-check-double';
+            var canceled = 'fas fa-ban';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        self.selectStatus = function (stat) {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
     }]);
 
