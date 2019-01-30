@@ -35,7 +35,6 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
-import org.ivc.transportation.services.AppointmentService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -44,8 +43,6 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +62,6 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
-
-    @Autowired
-    private AppointmentService appointmentService;
 
     @Autowired
     private ServletContext servletContext;
@@ -160,7 +154,7 @@ public class PlanDownloadController {
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        List<Appointment> appointments = appointmentService.findByStatus(AppointmentStatus.READY);
+        List<Appointment> appointments = dispatcherService.findByStatus(AppointmentStatus.READY);
 
         //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
         List<RowData> rowDataList = new LinkedList<>();

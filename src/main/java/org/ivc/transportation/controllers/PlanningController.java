@@ -79,8 +79,8 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/appointments_create")
-    public List<Record> createAppointment(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
-        return planningService.createAppointment(principal, compositeRecordIdAppointment);
+    public List<Record> createAppointments(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
+        return planningService.createAppointments(principal, compositeRecordIdAppointment);
     }
 
 }
