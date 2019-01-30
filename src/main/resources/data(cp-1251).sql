@@ -348,3 +348,16 @@ insert into car_boss(firstname, name, surname, birthday, address, phone, post, d
     null,
     'Главный инженер',
     (select id from department where shortname='ЦИП ИК'));
+
+INSERT INTO public.claim(actual, affirmation_date, creation_date, purpose, specialization, template_name, affirmator_id, car_boss_id, creator_id, department_id, vehicle_type_id)
+	VALUES (true, null, '2019-01-30 15:45:08.15', 'Перевозка пассажиров', 0, null, null, 1, 2, 17, 1);
+INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
+	VALUES ('2019-01-28 18:00:00', '2019-01-28 07:00:00', '2019-01-28 07:45:00', 1);
+INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
+	VALUES ('2019-01-29 18:00:00', '2019-01-29 07:00:00', '2019-01-29 07:45:00', 1);
+INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
+	VALUES ('2019-01-30 18:00:00', '2019-01-30 07:00:00', '2019-01-30 07:45:00', 1);
+INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
+	VALUES ('2019-01-31 18:00:00', '2019-01-31 07:00:00', '2019-01-31 07:45:00', 1);
+INSERT INTO public.record(end_date, entrance_date, start_date, claim_id)
+	VALUES ('2019-02-01 18:00:00', '2019-02-01 07:00:00', '2019-02-01 07:45:00', 1);
