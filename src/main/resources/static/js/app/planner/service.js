@@ -105,7 +105,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             
             
             fetchAllCompletePlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims')
+                return $http.get('/transportation/planner/plannedClaims')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -118,7 +118,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             },
             
             fetchWeekCompletePlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Week')
+                return $http.get('/transportation/planner/plannedClaims/Week')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -131,7 +131,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             },
             
             fetchTomorrowCompletePlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
+                return $http.get('/transportation/planner/plannedClaims/Tomorrow')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -144,7 +144,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             },
             
             fetchDateCompletePlanRecords: function (date) {
-                return $http.post('/transportation/planner/affirmedClaims/Date',
+                return $http.post('/transportation/planner/plannedClaims/Date',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {

@@ -66,13 +66,13 @@
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
                                 <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td><span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span></td>
-                                <td>{{clrec.appointment.vehicleModel}}</td>
+                                <td>{{clrec.appointment.vehicleModel.modelName}}</td>
                                 <td>{{clrec.appointment.vehicle.number}}</td>
                                 <td class="td-relative">
                                     <i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
                                     {{clrec.appointment.driver.firstname}} {{clrec.appointment.driver.name.length[1]}}.{{clrec.appointment.driver.surname.length[1]}}</td>
                                 <td>
-                                    <span class="status-info status-ready"><i class="fas fa-flag" onclick="formOpen('more-status-flag')"></i>Готово</span>
+                                    <span class="status-info {{plctrl.selectStatusColor(clrec.appointments[clrec.appointments.length-1].status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointments[clrec.appointments.length-1].status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointments[clrec.appointments.length-1].status)}}</span>
                                 </td>
                                 <td>
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim-status')"></i>

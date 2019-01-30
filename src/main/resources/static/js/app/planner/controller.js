@@ -277,6 +277,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.fetchAllPlanRecords();
+        self.fetchAllCompletePlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
         self.getToday();
@@ -387,6 +388,59 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 filter.vehicleType = {specialization: clrec.claim.specialization};
             }
             return filter;
+        };
+        
+        self.selectStatus = function (stat) {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        
+         self.selectStatusIco = function (stat) {
+            var inProgress = 'fas fa-clock';
+            var ready = 'fas fa-check';
+            var completed = 'fas fa-check-double';
+            var canceled = 'fas fa-ban';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        
+         self.selectStatusColor = function (stat) {
+            var inProgress = 'done_status';
+            var ready = 'done_status';
+            var completed = 'status_ready';
+            var canceled = 'cancel_status';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
         };
 
     }]);
