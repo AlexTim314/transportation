@@ -56,21 +56,11 @@
                     <span class="psw">Забыли <a href="#">Пароль?</a></span>
                 </div>
             </form >
-            <div ng-controller="DispatcherController as plctrl">
-                <th:block th:include="dispatcher/appointment_form"></th:block> 
-
-                <th:block th:include="dispatcher/appointment_status_form"></th:block> 
-
-                <th:block th:include="dispatcher/refueling_form"></th:block> 
-
-                <th:block th:include="dispatcher/vehicle_history"></th:block> 
-
-                <!--Подробнее назначени/заявки----- -->
-                <th:block th:include="dispatcher/record_info"></th:block> 
+            <th:block th:include="dispatcher/refueling_form"></th:block> 
 
                 <!--Подробнее назначени/заявки----- -->
                 <th:block th:include="dispatcher/route_form"></th:block> 
-            </div>
+                
             <div class="main clearfix">
                 <div class="header clearfix">
                     <!--Logo -->
@@ -98,7 +88,12 @@
                 <div id="claim-create" class="tabcontent">
 
                     <div class="clearfix" style="overflow-x:auto;">
-                        <th:block th:include="dispatcher/appointments_tab"></th:block> 
+                        <div ng-controller="DispatcherController as plctrl">
+                            <th:block th:include="dispatcher/appointment_form"></th:block>
+                            <th:block th:include="dispatcher/appointment_status_form"></th:block> 
+
+                            <th:block th:include="dispatcher/appointments_tab"></th:block> 
+                        </div>
 
                         <div ng-controller="VehiclesController as ctrl">
                             <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
@@ -106,6 +101,7 @@
                             <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
                             <th:block th:include="dispatcher/del_vehicle_confirm_dlg"></th:block> 
                             <th:block th:include="dispatcher/vehicle_info"></th:block> 
+                            <th:block th:include="dispatcher/vehicle_history"></th:block> 
 
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>

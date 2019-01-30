@@ -219,7 +219,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 } else {
                                     self.fetchClaimTemplates();
                                 }
-
                             },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
@@ -239,24 +238,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.affirmClaims = function () {
             var affIds = [];
-            var affClm = [];
             for (var i = 0; i < self.newClaims.length; i++) {
                 if (self.newClaims[i].checked) {
                     affIds.push(self.newClaims[i].id);
-                    affClm.push(self.newClaims[i]);
                 }
             }
             ClaimsService.affirmClaims(affIds)
                     .then(
                             function () {
-                                for (var i = 0; i < affClm.length; i++) {
-                                    self.affirmedClaims.push(affClm[i]);
+                                for (var i = 0; i < affIds.length; i++) {
                                     for (var j = 0; j < self.newClaims.length; j++) {
-                                        if (self.newClaims[j] === affClm[i]) {
+                                        if (self.newClaims[j].id === affIds[i]) {
                                             self.newClaims.splice(j, 1);
                                         }
                                     }
                                 }
+                                self.fetchAffirmedClaims();
                             },
 //                            self.fetchNewClaims,
 //                            self.fetchAffirmedClaims,

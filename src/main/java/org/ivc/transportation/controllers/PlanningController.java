@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
@@ -51,8 +46,7 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/affirmedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek(@RequestBody ZonedDateTime date) {
-        System.out.println(date);
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
@@ -78,8 +72,7 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/plannedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getPlannedClaimsWeek(@RequestBody ZonedDateTime date) {
-        System.out.println(date);
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsDate(@RequestBody ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
         return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);

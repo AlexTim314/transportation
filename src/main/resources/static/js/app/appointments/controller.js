@@ -20,6 +20,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.departments = [];
         self.headers = [];
         self.complHeaders = [];
+        self.vehicles = [];
         self.claims = [];
         self.records = [];
         self.appointments = [];
@@ -35,7 +36,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.type;
         self.date;
 
-        
+
 
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
@@ -138,7 +139,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        
+
         self.fetchDrivers = function () {
             DispatcherService.fetchDrivers()
                     .then(
@@ -150,7 +151,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        
+
         self.fetchVehicles = function () {
             DispatcherService.fetchVehicles()
                     .then(
@@ -223,7 +224,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //                    );
 //        };
 
-        self.updateAppointment = function (appointment) {
+        self.updateAppointment = function () {
+            
             DispatcherService.updateAppointment(appointment)
                     .then(
                             self.fetchAllAppointments,
@@ -242,13 +244,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             }
         };
 
+        self.resetAppForm = function () {
+            formClose('formAppointment');
+        };
 
-
-        self.moreInfoOpen = function (clrec) {
+        self.order = function (clrec) {
             self.clrec = clrec;
-            console.log(clrec);
-            console.log(self.clrec);
-            formOpen('more-claim');
+            formOpen('formAppointment');
         };
 
 

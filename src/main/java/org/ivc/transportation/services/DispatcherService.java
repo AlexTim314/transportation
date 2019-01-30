@@ -1,6 +1,7 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
@@ -56,7 +57,16 @@ public class DispatcherService {
         return result;
     }
     
-    public TransportDep findTransportDepByUser(Principal principal) {
+    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+        List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        appointmentList.forEach(u -> result.add(
+                new CompositeClaimRecord(claimRepository.findClaimByAppointmentId(u.getId()),
+                        recordRepository.findRecordByAppointmentId(u.getId()), u)
+        ));
+        return result;
+    }
+    private TransportDep findTransportDepByUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();

@@ -1,30 +1,21 @@
 <form class="formAppointment" id="formAppointment" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close" onclick="formClose('formAppointment')"></i>
+    <i class="fas fa-times i-close" ng-click="plctrl.resetAppForm()"></i>
     <div class="container">
         <label for="mark"><b>Марка</b></label>
-        <select name="mark">	
-            <option value="0">Выберите Марку</option>				
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+        <select name="mark" ng-options="m as m.modelName for m in plctrl.vehicleModels track by m.id"   ng-model="plctrl.clrec.appointment.vehicleModel">	
+            <option value="" disabled selected>Выберите Марку</option>				
         </select>
         <label for="number"><b>Гос.Номер</b></label>
-        <select name="number">	
-            <option value="0">Выберите Гос.Номер</option>				
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+        <select name="number" ng-options="n as n.number for n in plctrl.vehicles track by n.id"   ng-model="plctrl.clrec.appointment.vehicle">	
+            <option value="" disabled selected>Выберите Гос.Номер</option>				
         </select>
         <label for="driver"><b>Водитель</b></label>
-        <select name="driver">
-            <option value="0">Выберите Водителя</option>					
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+        <select name="driver" ng-options="d as d.number for d in plctrl.drivers track by d.id"   ng-model="plctrl.clrec.appointment.driver">
+            <option value="" disabled selected>Выберите Водителя</option>					
         </select>
     </div>
     <div class="container " >
-        <button type="button" class="btn delete">Отмена</button>
-        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+        <button type="button" class="btn delete" ng-click="plctrl.resetAppForm()">Отмена</button>
+        <button type="button" class="btn edit" ng-click="plctrl.updateAppointment()"><i class="far  fa-save"></i>Сохранить</button>
     </div>
 </form>
