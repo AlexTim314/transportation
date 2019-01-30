@@ -12,6 +12,7 @@ import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +52,7 @@ public class AppointmentController {
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
     
-    @PostMapping("/dispatcher/appointments_update")
+    @PutMapping("/dispatcher/appointments_update")
     public List<Appointment> createAppointment(Principal principal, @RequestBody List<Appointment> appointments) {
         return dispatcherService.updateAppointments(principal, appointments);
     }
