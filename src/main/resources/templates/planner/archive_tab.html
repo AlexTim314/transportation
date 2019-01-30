@@ -75,7 +75,7 @@
                                     <span class="status-info {{plctrl.selectStatusColor(clrec.appointments[clrec.appointments.length-1].status)}}"><i class="{{plctrl.selectStatusIco(clrec.appointments[clrec.appointments.length-1].status)}}" onclick="formOpen('more-status-flag')"></i>{{plctrl.selectStatus(clrec.appointments[clrec.appointments.length-1].status)}}</span>
                                 </td>
                                 <td>
-                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" onclick="formOpen('more-claim-status')"></i>
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoAppointments(clrec)"></i>
                                 </td>
                             </tr>
 
