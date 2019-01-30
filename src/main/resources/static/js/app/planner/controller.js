@@ -15,7 +15,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
         self.vehicleType = {id: null, typeName: '', specialization: ''};
-        self.clrec = {};
+        self.clrec = {record: {}, claim: {}};
         self.departments = [];
         self.headers = [];
         self.claims = [];
@@ -23,8 +23,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appointments = [];
         self.transportDeps = [];
         self.vehicleModels = [];
+        self.today = false;
+        self.week = false;
+        self.all = false;
         self.selectedIcon;
         self.type;
+        self.date;
 
         self.fetchAllDepartments = function () {
             console.log('fetchDep');
@@ -40,28 +44,21 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
-        self.selectIcon = function () {
-           
+        self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
             var car = 'fas fa-lg fa-car';
             var truck = 'fas fa-lg fa-truck';
             var tractor = 'fas fa-lg fa-tractor';
-            if (self.type === 'пассажирский') {
-                self.selectIcon(bus);
+            switch (spec) {
+                case "пассажирский":
+                    return bus;
+                case "легковой":
+                    return car;
+                case "грузовой":
+                    return truck;
+                case "спецтехника":
+                    return tractor;
             }
-            ;
-            if (self.type === 'легковой') {
-                self.selectIcon(car);
-            }
-            ;
-            if (self.type === 'грузовик') {
-                self.selectIcon(truck);
-            }
-            ;
-            if (self.type === 'спецтехника') {
-                self.selectIcon(tractor);
-            }
-            ;
         };
 
         self.fetchAllAppointments = function () {
@@ -91,7 +88,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchAllPlanRecords = function () {
-            PlannerService.fetchAllDepsRecords()
+            self.all = true;
+            self.today = false;
+            self.week = false;
+            PlannerService.fetchAllPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;
@@ -100,6 +100,60 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllRecords');
+                            }
+                    );
+        };
+
+        self.fetchWeekPlanRecords = function () {
+            self.all = false;
+            self.today = false;
+            self.week = true;
+            PlannerService.fetchWeekPlanRecords()
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching WeekRecords');
+                            }
+                    );
+        };
+
+        self.fetchTomorrowPlanRecords = function () {
+            self.all = false;
+            self.today = true;
+            self.week = false;
+            PlannerService.fetchTomorrowPlanRecords()
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching TodayRecords');
+                            }
+                    );
+        };
+
+        self.fetchDatePlanRecords = function () {
+            self.all = false;
+            self.today = false;
+            self.week = false;
+            self.changeDate();
+            var datePlan = new Date(document.getElementById('date-plan').value);
+            console.log(datePlan);
+            PlannerService.fetchDatePlanRecords(datePlan)
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                // self.records = d.records;
+                                console.log(self.headers);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Records of Day');
                             }
                     );
         };
@@ -130,10 +184,26 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.getToday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = year + "-" + month + "-" + day;
+            document.getElementById('date-plan').value = today;
+            self.date = day + "." + month + "." + year;
+        };
+        
+        
 
         self.fetchAllPlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
+        self.getToday();
         //self.fetchAllAppointments();
 
 
@@ -142,11 +212,34 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(self.departments);
         };
 
-        self.createAppointment = function (appointment) {
-            PlannerService.createAppointment(appointment)
+
+
+        self.createAppointment = function () {
+            var appoints = [];
+            var appointment = {};
+            console.log(self.headers.length);
+            console.log(self.headers[0].compositeClaimRecords.length);
+            for (var i = 0; i < self.headers.length; i++) {
+                if (self.headers[i].compositeClaimRecords.length > 0) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
+                        if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
+                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
+                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
+                            appointment.status = 'IN_PROGRESS';
+                            appoints.push({
+                                recordId: self.headers[i].compositeClaimRecords[j].record.id,
+                                appointment: appointment
+                            });
+                        }
+                    }
+                }
+            }
+            console.log(appoints);
+            PlannerService.createAppointment(appoints)
                     .then(
                             function (d) {
-                                self.appointments.push(d);
+                                //self.appointments.push(d);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -175,22 +268,30 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.rowClick = function (dep) {
-            self.type = dep.compositeClaimRecords[0].claim.specialization;
-            console.log(self.type);
             if (dep.isVisible === undefined) {
                 dep.isVisible = true;
             } else {
                 dep.isVisible = !dep.isVisible;
             }
         };
-        
-        self.moreInfoOpen = function(clrec){
+
+        self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
+            console.log(clrec);
+            console.log(self.clrec);
             formOpen('more-claim');
         };
         
-        self.resetForm = function (){
-            
+        self.changeDate = function () {
+            var datePlan = new Date(document.getElementById('date-plan').value);
+            var day = datePlan.getDate();
+            var month = datePlan.getMonth() + 1;
+            var year = datePlan.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            self.date = day + "." + month + "." + year;
         };
 
 

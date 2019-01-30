@@ -1,7 +1,7 @@
 <div class="tab-list3"  id="tab-list3" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
         <div class="table-header table-header-plan clearfix">
-            <input type="search" placeholder="Поиск">
+            <input type="search" placeholder="Поиск" ng-model="searchDriver">
             <ul >
                 <li>Всего:<span>44</span></li>
                 <li>Готово:<span>33</span></li>
@@ -19,19 +19,19 @@
                     <th>Номер мобильного</th>
                     <th>Удостоверение</th>
                     <th>Статус</th>
-                    <th><i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" onclick="formOpen('formDriver')"></i></th> 			  					  	
+                    <th><i title="Добавить водителя" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th> 			  					  	
                 </tr>
-                <tr>	
-                    <td>Султанов</td>
-                    <td>Султан</td>
-                    <td>Султанович</td>
-                    <td>15.05.1975</td>
-                    <td>87773332211</td>
-                    <td>78822 B,C</td>
-                    <td><i title="Изменить Статус" class="fa fa-flag"  onclick="formOpen('formChangeStatus')"></i><span  class="status-info status-ready">Свободен</span></td>			
+                <tr ng-repeat="d in ctrl.drivers| filter: searchDriver | orderBy: 'firstname'">	
+                    <td>{{d.firstname}}</td>
+                    <td>{{d.name}}</td>
+                    <td>{{d.surname}}</td>
+                    <td>{{d.birthday| date:'dd.MM.yyyy'}}</td>
+                    <td>{{d.phone}}</td>
+                    <td>{{d.driverLicense}}</td>
+                    <td><i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateStatus(d)"></i><span  class="status-info status-ready">{{d.status}}</span></td>			
                     <td>
-                        <i class="fas fa-lg fa-edit" onclick="formEditOpen('formDriver')"></i>
-                        <i class="fas fa-lg fa-trash-alt" onclick="formOpen('dialog-window')"></i>	
+                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(d)"></i>
+                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(d)"></i>	
                     </td>
                 </tr>
             </table>

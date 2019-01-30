@@ -6,6 +6,7 @@
 package org.ivc.transportation.utils;
 
 import lombok.Data;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 
@@ -17,10 +18,12 @@ import org.ivc.transportation.entities.Record;
 public class CompositeClaimRecord {
     private Claim claim;
     private Record record;
+    private Appointment appointment;
     
-    public CompositeClaimRecord(Claim claim, Record record) {
+    public CompositeClaimRecord(Claim claim, Record record, Appointment appointment) {
         this.claim = claim;
         this.record = record;
+        this.appointment = appointment;
     }
     
 }

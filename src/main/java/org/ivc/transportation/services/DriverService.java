@@ -9,6 +9,7 @@ import org.ivc.transportation.entities.DriverInfo;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.DriverInfoRepository;
 import org.ivc.transportation.repositories.DriverRepository;
+import org.ivc.transportation.utils.EntitiesUtils.DriverStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -31,7 +32,7 @@ public class DriverService {
 
     @Autowired
     private DriverInfoRepository driverInfoRepository;
-    
+
     public List<Driver> findDriversByTransportDep(Principal principal) {
         TransportDep transportDep = getTransportDep(principal);
         if (transportDep != null) {
@@ -42,6 +43,7 @@ public class DriverService {
 
     public Driver saveDriver(Driver driver) {
         if (driver.getId() == null) {
+            driver.setStatus(DriverStatus.работоспособен);
             driver = driverRepository.save(driver);
             DriverInfo driverInfo = new DriverInfo();
             driverInfo.setDriver(driver);
@@ -59,11 +61,13 @@ public class DriverService {
         driver.setNote(driverInfo.getNote());
         driver.setStatus(driverInfo.getStatus());
         driverInfo.setModificationDate(LocalDateTime.now());
+        driverRepository.save(driver);
         return driverInfoRepository.save(driverInfo);
     }
 
-    public void deleteDrivers(List<Long> ids) {
-        driverRepository.deleteByIdIn(ids);
+    public void deleteDriver(Driver driver) {
+        driverInfoRepository.deleteByDriverId(driver.getId());
+        driverRepository.delete(driver);
     }
 
     private TransportDep getTransportDep(Principal principal) {
@@ -73,4 +77,5 @@ public class DriverService {
         }
         return null;
     }
+
 }

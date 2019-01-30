@@ -2,11 +2,14 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleInfo;
+import org.ivc.transportation.repositories.FuelRepository;
 import org.ivc.transportation.repositories.RefuelingRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleInfoRepository;
@@ -33,9 +36,12 @@ public class VehicleService {
 
     @Autowired
     private VehicleInfoRepository vehicleInfoRepository;
-    
+
     @Autowired
     RefuelingRepository refuelingRepository;
+
+    @Autowired
+    FuelRepository fuelRepository;
 
     public List<Vehicle> findVehiclesByTransportDep(Principal principal) {
         TransportDep transportDep = getTransportDep(principal);
@@ -47,6 +53,9 @@ public class VehicleService {
 
     public Vehicle saveVehicle(Vehicle vehicle) {
         if (vehicle.getId() == null) {
+            List<Fuel> fl = new ArrayList<Fuel>();
+            vehicle.getFuels().forEach(u -> fl.add(fuelRepository.findById(u.getId()).get()));
+            vehicle.setFuels(fl);
             vehicle = vehicleRepository.save(vehicle);
             VehicleInfo vehicleInfo = new VehicleInfo();
             vehicleInfo.setVehicle(vehicle);
@@ -70,17 +79,19 @@ public class VehicleService {
         vehicle.setOdometr(vehicleInfo.getOdometr());
         vehicle.setStatus(vehicleInfo.getStatus());
         vehicleInfo.setModificationDate(LocalDateTime.now());
+        vehicleRepository.save(vehicle);
         return vehicleInfoRepository.save(vehicleInfo);
     }
 
     public Refueling vehicleRefueling(Refueling refueling) {
         Vehicle vehicle = refueling.getVehicle();
-        vehicle.setFuel(vehicle.getFuel()+refueling.getVolume());
+        vehicle.setFuel(vehicle.getFuel() + refueling.getVolume());
         vehicleRepository.save(vehicle);
         return refuelingRepository.save(refueling);
     }
 
     public void deleteVehicles(List<Long> ids) {
+        ids.forEach(u -> vehicleInfoRepository.deleteByVehicleId(u));
         vehicleRepository.deleteByIdIn(ids);
     }
 

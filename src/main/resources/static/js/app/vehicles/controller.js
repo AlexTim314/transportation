@@ -7,9 +7,17 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.transportDep = {id: null};
         self.vehicleTypes = [];
         self.models = [];
+        self.fuels = [];
 
-        self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}};
+        self.fuel = {id: null};
+
+        self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
         self.vehicles = [];
+        self.vehicleInfo = {id: null};
+
+        self.all = false;
+
+        var idsArr = [];
 
         self.fetchTransportDep = function () {
             VehiclesService.fetchTransportDep()
@@ -18,7 +26,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                                 self.transportDep = d;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Department');
+                                console.error('Error while fetching TransportDep');
                             }
                     );
         };
@@ -30,7 +38,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                                 self.vehicleTypes = d;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Department');
+                                console.error('Error while fetching VehicleTypes');
                             }
                     );
         };
@@ -42,7 +50,19 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                                 self.models = d;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Department');
+                                console.error('Error while fetching Models');
+                            }
+                    );
+        };
+
+        self.fetchFuels = function () {
+            VehiclesService.fetchFuels()
+                    .then(
+                            function (d) {
+                                self.fuels = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Fuels');
                             }
                     );
         };
@@ -54,7 +74,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                                 self.vehicles = d;
                             },
                             function (errResponse) {
-                                console.error('Error while fetching Bosses');
+                                console.error('Error while fetching Vehicles');
                             }
                     );
         };
@@ -62,6 +82,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.fetchTransportDep();
         self.fetchVehicleTypes();
         self.fetchVehicleModels();
+        self.fetchFuels();
         self.fetchVehicles();
 
         self.createVehicle = function () {
@@ -71,6 +92,25 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                             function (d) {
                                 self.fetchVehicles();
                                 self.resetForm();
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Vehicle.');
+                            }
+                    );
+        };
+
+        self.createVehicleInfo = function () {
+            self.vehicleInfo.vehicle = self.vehicle;
+            VehiclesService.createVehicleInfo(self.vehicleInfo)
+                    .then(
+                            function (d) {
+                                self.fetchVehicles();
+                                self.closeStateForm();
+                                self.closeStatusForm();
+                                self.vehicle.status = d.status;
+                                self.vehicle.ododmetr = d.ododmetr;
+                                self.vehicle.fuel = d.fuel;
+                                self.vehicle.motohours = d.motohours;
                             },
                             function (errResponse) {
                                 console.error('Error while creating Vehicle.');
@@ -92,7 +132,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.deleteVehicles = function () {
-            VehiclesService.deleteVehicles(self.vehicle)
+            VehiclesService.deleteVehicles(idsArr)
                     .then(
                             function (d) {
                                 formClose('del-vehicle-confirm');
@@ -118,26 +158,84 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.tryToUpdate = function (vehicle) {
-            self.vehicle.id = vehicle.id;
-            self.vehicle.firstname = vehicle.firstname;
-            self.vehicle.name = vehicle.name;
-            self.vehicle.surname = vehicle.surname;
-            self.vehicle.post = vehicle.post;
-            self.vehicle.birthday = vehicle.birthday;
-            self.vehicle.address = vehicle.address;
-            self.vehicle.phone = vehicle.phone;
-            self.vehicle.department = vehicle.department;
             formOpen('formTransport');
         };
 
         self.tryToDelete = function () {
-            self.vehicle = vehicle;
+            idsArr = [];
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].checked) {
+                    idsArr.push(self.vehicles[i].id);
+                }
+            }
             formOpen('del-vehicle-confirm');
         };
 
+        self.tryToUpdateVehicleState = function (vehicle) {
+            self.vehicle = vehicle;
+            self.vehicleInfo.status = vehicle.status;
+            self.vehicleInfo.fuel = vehicle.fuel;
+            self.vehicleInfo.odometr = vehicle.odometr;
+            self.vehicleInfo.motohours = vehicle.motohours;
+            formOpen('formCurrentParametr');
+        };
+
+        self.tryToUpdateVehicleStatus = function (vehicle) {
+            self.vehicle = vehicle;
+            self.vehicleInfo.status = vehicle.status;
+            self.vehicleInfo.fuel = vehicle.fuel;
+            self.vehicleInfo.odometr = vehicle.odometr;
+            self.vehicleInfo.motohours = vehicle.motohours;
+            self.vehicleInfo.note = null;
+            formOpen('formChangeVehicleStatus')
+        };
+
         self.resetForm = function () {
-            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}};
+            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
             formClose('formTransport');
+        };
+
+        self.checkAll = function () {
+            for (var i = 0; i < self.vehicles.length; i++) {
+                self.vehicles[i].checked = self.all;
+            }
+        };
+
+        self.addFuel = function () {
+            self.vehicle.fuels.push(self.fuel);
+            self.fuel = {id: null};
+        };
+
+        self.removeFuel = function (fuel) {
+            var k = -1;
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].id === fuel.id) {
+                    k = i;
+                    break;
+                }
+            }
+            self.vehicle.fuels.splice(k, 1);
+            self.fuel = {id: null};
+        };
+
+        self.openInfoForm = function (vehicle) {
+            self.vehicle = vehicle;
+            formOpen('more-transport');
+        };
+
+        self.closeInfoForm = function () {
+            self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
+            formClose('more-transport');
+        };
+
+        self.closeStateForm = function () {
+            self.vehicleInfo = {id: null};
+            formClose('formCurrentParametr');
+        };
+
+        self.closeStatusForm = function () {
+            self.vehicleInfo = {id: null};
+            formClose('formChangeVehicleStatus')
         };
 
     }]);

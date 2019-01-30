@@ -83,7 +83,7 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             if (self.carBoss.id === null) {
                 self.createCarBoss();
             } else {
-                self.updateCarBoss()();
+                self.updateCarBoss();
             }
         };
 
@@ -98,7 +98,7 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             self.carBoss.name = carBoss.name;
             self.carBoss.surname = carBoss.surname;
             self.carBoss.post = carBoss.post;
-            self.carBoss.birthday = carBoss.birthday;
+            self.carBoss.birthday = new Date(carBoss.birthday);
             self.carBoss.address = carBoss.address;
             self.carBoss.phone = carBoss.phone;
             self.carBoss.department = carBoss.department;

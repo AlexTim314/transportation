@@ -13,8 +13,17 @@
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
 
+        <script src="js/app/dispatcherPage/service.js"></script>
+        <script src="js/app/dispatcherPage/controller.js"></script>
+
         <script src="js/app/vehicles/service.js"></script>
         <script src="js/app/vehicles/controller.js"></script>
+
+        <script src="js/app/drivers/service.js"></script>
+        <script src="js/app/drivers/controller.js"></script>
+        
+        <script src="js/app/mechanics/service.js"></script>
+        <script src="js/app/mechanics/controller.js"></script>
 
     </head>
     <body ng-app="Transportation" >
@@ -47,22 +56,11 @@
 
             <th:block th:include="dispatcher/appointment_form"></th:block> 
 
-
-
-            <th:block th:include="dispatcher/save_driver_form"></th:block> 
-
-            <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
-
-            <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
-
             <th:block th:include="dispatcher/appointment_status_form"></th:block> 
 
             <th:block th:include="dispatcher/refueling_form"></th:block> 
 
             <th:block th:include="dispatcher/vehicle_history"></th:block> 
-
-            <!--Подробнее-->
-            <th:block th:include="dispatcher/vehicle_info"></th:block> 
 
             <!--Подробнее назначени/заявки----- -->
             <th:block th:include="dispatcher/record_info"></th:block> 
@@ -78,15 +76,15 @@
                     <!--Text header -->
 
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
-                    <h3>Отдел транспортных средств</h3>
+                    <h3 ng-controller="DispatcherPageController as ctrl">{{ctrl.transportDep.fullname}}</h3>
 
                     <!--Navigation -->	
                     <nav class="nav-horizontal">
-                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)">Назначения</div>
-                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 5)">Транспорт</div>		
-                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 5)">Водители</div>	
-                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 5)">Механики</div>	
-                        <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)">Маршруты</div>	
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)">Назначения</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)">Транспорт</div>		
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 4)">Водители</div>	
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)">Механики</div>	
+                        <!--<div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)">Маршруты</div>-->	
                     </nav>
 
                     <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
@@ -101,17 +99,28 @@
 
                         <div ng-controller="VehiclesController as ctrl">
                             <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
-
                             <th:block th:include="dispatcher/vehicle_status_form"></th:block> 
-
+                            <th:block th:include="dispatcher/vehicle_state_form"></th:block> 
                             <th:block th:include="dispatcher/del_vehicle_confirm_dlg"></th:block> 
+                            <th:block th:include="dispatcher/vehicle_info"></th:block> 
 
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>
 
-                        <th:block th:include="dispatcher/drivers_tab"></th:block> 
+                        <div ng-controller="DriversController as ctrl">
+                            <th:block th:include="dispatcher/save_driver_form"></th:block> 
+                            <th:block th:include="dispatcher/driver_status_form"></th:block> 
+                            <th:block th:include="dispatcher/del_driver_confirm_dlg"></th:block> 
 
-                        <th:block th:include="dispatcher/mechanics_tab"></th:block>
+                            <th:block th:include="dispatcher/drivers_tab"></th:block> 
+                        </div>
+
+                        <div ng-controller="MechanicsController as ctrl">
+                            <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
+                            <th:block th:include="dispatcher/del_mechanic_confirm_dlg"></th:block>
+                            
+                            <th:block th:include="dispatcher/mechanics_tab"></th:block>
+                        </div>
 
                         <th:block th:include="dispatcher/routes_tab"></th:block> 
                     </div>

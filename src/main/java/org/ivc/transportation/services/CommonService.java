@@ -3,11 +3,13 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.repositories.FuelRepository;
 import org.ivc.transportation.repositories.PlaceRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
@@ -43,6 +45,9 @@ public class CommonService {
     private PlaceRepository placeRepository;
 
     @Autowired
+    private FuelRepository fuelRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public List<Department> findAllDepartments() {
@@ -65,6 +70,10 @@ public class CommonService {
         return placeRepository.findAll();
     }
 
+    public List<Fuel> findAllFuels() {
+        return fuelRepository.findAll();
+    }
+
     public Department findDepartmentByName(String shortname) {
         return departmentRepository.findByShortname(shortname);
     }
@@ -76,7 +85,7 @@ public class CommonService {
         }
         return null;
     }
-    
+
     public TransportDep findTransportDepByUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();

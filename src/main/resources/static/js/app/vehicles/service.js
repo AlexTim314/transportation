@@ -22,7 +22,7 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
@@ -35,7 +35,7 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
-            
+
             fetchVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')
                         .then(
@@ -44,6 +44,19 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vehicleModels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchFuels: function () {
+                return $http.get('/transportation/fuels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching fuels');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -65,6 +78,21 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
             createVehicle: function (vehicle) {
                 return $http.post('/transportation/dispatcher/vehicle_create',
                         JSON.stringify(vehicle), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            createVehicleInfo: function (vehicleInfo) {
+                return $http.post('/transportation/dispatcher/vehicle_updateState',
+                        JSON.stringify(vehicleInfo), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

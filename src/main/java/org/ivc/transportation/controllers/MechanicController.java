@@ -39,9 +39,9 @@ public class MechanicController {
         return mechanicService.saveMechanic(mechanic);
     }
 
-    @DeleteMapping("/dispatcher/mechanics_delete")
-    public ResponseEntity<String> deleteMechanic(@RequestBody List<Long> ids) {
-        mechanicService.deleteMechanics(ids);
+    @DeleteMapping("/dispatcher/mechanic_delete")
+    public ResponseEntity<String> deleteMechanic(@RequestBody Mechanic mechanic) {
+        mechanicService.deleteMechanic(mechanic);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

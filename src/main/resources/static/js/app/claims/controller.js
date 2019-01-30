@@ -30,6 +30,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.today = false;
         self.week = false;
         self.all = false;
+
         self.claimFromTemplateDate = '';
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -153,6 +154,20 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                             }
                     );
         };
+
+        self.getToday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var today = year + "-" + month + "-" + day;
+            document.getElementById('startDate').value = today;
+        };
+
         self.fetchNewClaims();
         self.fetchAffirmedClaims();
         self.fetchClaimTemplates();
@@ -160,6 +175,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchRouteTemplates();
         self.fetchPlaces();
         self.fetchBosses();
+        self.getToday();
 
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -407,6 +423,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 routeTasks: [],
                 claimFromTemplateDate:null
             };
+            self.getToday();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
             self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
         };
@@ -536,5 +553,40 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
+
+        self.selectStatusIco = function (stat) {
+            var inProgress = 'fas fa-clock';
+            var ready = 'fas fa-check';
+            var completed = 'fas fa-check-double';
+            var canceled = 'fas fa-ban';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
+        self.selectStatus = function (stat) {
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceled = 'Отменено';
+            switch (stat) {
+                case 'IN_PROGRESS':
+                    return inProgress;
+                case 'READY':
+                    return ready;
+                case 'COMPLETED':
+                    return completed;
+                case 'CANCELED':
+                    return canceled;
+            }
+        };
+        
     }]);
 

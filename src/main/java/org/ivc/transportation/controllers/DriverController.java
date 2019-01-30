@@ -45,9 +45,9 @@ public class DriverController {
         return driverService.updateDriverStatus(driverInfo);
     }
 
-    @DeleteMapping("/dispatcher/drivers_delete")
-    public ResponseEntity<String> deleteDriver(@RequestBody List<Long> ids) {
-        driverService.deleteDrivers(ids);
+    @DeleteMapping("/dispatcher/driver_delete")
+    public ResponseEntity<String> deleteDriver(@RequestBody Driver driver) {
+        driverService.deleteDriver(driver);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

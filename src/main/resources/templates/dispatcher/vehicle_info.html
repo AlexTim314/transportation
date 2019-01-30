@@ -1,23 +1,23 @@
 <div class="more-info" id="more-transport" xmlns:th="http://www.thymeleaf.org">
     <div>Дополнительная информация
-        <i class="fas fa-times" onclick="formClose('more-transport')"></i>
+        <i class="fas fa-times" ng-click="ctrl.closeInfoForm()"></i>
     </div>
     <fieldset>
         <legend>Параметры</legend>
         <ul>
-            <li><label ><b class="fas fa-oil-can" ></b> Топливо,л:<span>33</span></label></li>
-            <li><label><b class="fas fa-road" ></b> Одометр,км:<span>000235</span></label></li>
-            <li><label><b class="fas fa-clock" ></b> Моточасы:<span>23</span></label></li>
-            <li><label><b class="fas fa-flag" ></b> Статус:<span class="status-info status-ready"><b>Исправен</b></span></label></li>
+            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{ctrl.vehicle.fuel}}</span></label></li>
+            <li><label><b class="fas fa-road"></b> Одометр,км:<span>{{ctrl.vehicle.odometr}}</span></label></li>
+            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{ctrl.vehicle.motohours}}</span></label></li>
+            <li><label><b class="fas fa-flag"></b> Статус:<span class="status-info status-ready"><b>{{ctrl.vehicle.status}}</b></span></label></li>
         </ul>
     </fieldset>
     <fieldset>
         <legend>Виды Топлива</legend>
-        <p>Бензин АИ-92</p>
+        <p ng-repeat="f in ctrl.vehicle.fuels">{{f.type}} {{f.mark}}</p>
 
     </fieldset>
     <fieldset style="min-height: 50px;">
         <legend>Примечание</legend>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis amet explicabo velit earum adipisci, iste quis accusantium, iusto, mollitia eum laborum sit sequi provident harum, aspernatur deserunt. Suscipit, obcaecati, vero!</p>
+        <p>{{ctrl.vehicle.note}}</p>
     </fieldset>
 </div>

@@ -38,8 +38,8 @@ public class MechanicService {
         return mechanicRepository.save(mechanic);
     }
 
-    public void deleteMechanics(List<Long> ids) {
-        mechanicRepository.deleteByIdIn(ids);
+    public void deleteMechanic(Mechanic mechanic) {
+        mechanicRepository.delete(mechanic);
     }
 
     private TransportDep getTransportDep(Principal principal) {
