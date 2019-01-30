@@ -42,7 +42,6 @@
 
                         <table class="table-claim">
                             <tr>	
-
                                 <th style="width:5% ">Тип транспорта</th>
                                 <th style="width:10% ">Вид техники</th>
                                 <th style="width:5% ">Дата выезда</th>
@@ -53,7 +52,7 @@
                                 <th style="width:15% ">Марка</th>
                                 <th style="width:5% "> </th>
                             </tr>
-                            <tr ng-repeat="clrec in header.compositeClaimRecords| filter: searchClaim">
+                            <tr ng-repeat="clrec in header.compositeClaimRecords| filter: searchClaim | orderBy: clrec.record.startDate">
                                 <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td> 
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
@@ -65,11 +64,11 @@
                                 </td>                                                         
 
                                 <td>
-                                    <select name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.record.appointment.transportDep" >
+                                    <select name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" >
                                     </select>           
                                 </td>
                                 <td>
-                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: clrec.claim.vehicleType.typeName:true track by tm.id" ng-model="clrec.record.appointment.vehicleModel">
+                                    <select name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: plctrl.getFilter(clrec):true track by tm.id" ng-model="clrec.appointment.vehicleModel">
                                     </select>  
 
                                 </td>

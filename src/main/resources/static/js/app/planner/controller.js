@@ -197,8 +197,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             document.getElementById('date-plan').value = today;
             self.date = day + "." + month + "." + year;
         };
-        
-        
+
+
 
         self.fetchAllPlanRecords();
         self.fetchTransportDeps();
@@ -224,8 +224,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                         appointment = {id: null, creationDate: '', status: '', transportDep: null, vehicleModel: null, vehicle: null, driver: null};
                         if (self.headers[i].compositeClaimRecords[j].record.appointment !== undefined) {
-                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].record.appointment.vehicleModel;
-                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].record.appointment.transportDep;
+                            appointment.vehicleModel = self.headers[i].compositeClaimRecords[j].appointment.vehicleModel;
+                            appointment.transportDep = self.headers[i].compositeClaimRecords[j].appointment.transportDep;
                             appointment.status = 'IN_PROGRESS';
                             appoints.push({
                                 recordId: self.headers[i].compositeClaimRecords[j].record.id,
@@ -281,7 +281,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             console.log(self.clrec);
             formOpen('more-claim');
         };
-        
+
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);
             var day = datePlan.getDate();
@@ -294,6 +294,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.date = day + "." + month + "." + year;
         };
 
-
+        self.getFilter = function (clrec) {
+            var vType = clrec.claim.vehicleType;
+            var filter = {};
+            if (vType !== null && vType !== undefined) {
+                filter.vehicleType = {typeName: vType.typeName};
+            } else {
+                filter.vehicleType = {specialization: clrec.claim.specialization};
+            }
+            return filter;
+        };
 
     }]);
