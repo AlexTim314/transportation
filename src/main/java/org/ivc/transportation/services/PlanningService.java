@@ -52,12 +52,17 @@ public class PlanningService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    private Appointment prepareAppointment(Appointment appointment) {
+        return appointment == null ? new Appointment() : appointment;
+    }
+
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<Record> recordList = new ArrayList<Record>();
         claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
                 u.getRecords()));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u,  appointmentRepository.getLastByRecordId(u.getId()))));
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
 
@@ -66,7 +71,8 @@ public class PlanningService {
         claimRepository.findByDepartmentAndAffirmationDateIsNotNullAndActualIsTrue(department).forEach(u -> recordList.addAll(
                 recordRepository.findByClaimIdAndTimeFilter(u.getId(), dateStart, dateEnd)));
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecords(u), u, appointmentRepository.getLastByRecordId(u.getId()))));
+        recordList.forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
 

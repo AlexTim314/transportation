@@ -420,7 +420,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 actual: true,
                 vehicleType: null,
                 records: [],
-                routeTasks: []
+                routeTasks: [],
+                claimFromTemplateDate:null
             };
             self.getToday();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
@@ -473,9 +474,40 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.endDate = new Date(claim.records[0].endDate);
         };
         self.prepearClaimFromTemplate = function (claim) {
-            self.copyClaimProperties(claim);
-            self.claim.id = null;
-            self.claim.templateName = null;
+            if (claim !== null) {
+                self.copyClaimProperties(claim);
+                self.claim.id = null;
+                self.claim.templateName = null;
+                if (self.claimFromTemplateDate !== '') {
+                    Date.prototype.addDays = function (days) {
+                        var date = new Date(this.valueOf());
+                        date.setDate(date.getDate() + days);
+                        return date;
+                    }
+
+                    //поиск более ранней записи                    
+                    var index = 0;
+                    for (var i = 1; i < claim.records.length; i++) {                        
+                        if (claim.records[0].startDate > claim.records[i].startDate) {
+                            index = i;
+                        }
+                    }
+                    var date = new Date(claim.records[index].startDate);
+                    var datesDiff = self.claimFromTemplateDate.getDate() - date.getDate();
+                    self.record.startDate = date.addDays(datesDiff);
+                    self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
+                    self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
+
+                    for (var i = 0; i < claim.records.length; i++) {
+                        date = new Date(claim.records[i].startDate);
+                        self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
+                        date = new Date(claim.records[i].entranceDate);
+                        self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
+                        date = new Date(claim.records[i].endDate);
+                        self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                    }
+                }
+            }
         };
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
