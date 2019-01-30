@@ -5,6 +5,8 @@
  */
 package org.ivc.transportation.utils;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.Data;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
