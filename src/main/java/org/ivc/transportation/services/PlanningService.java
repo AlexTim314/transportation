@@ -20,6 +20,7 @@ import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
+import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -133,6 +134,13 @@ public class PlanningService {
             result.add(rd);
         }
         return result;
+    }
+
+    public Record recordCancel(Principal principal, Record record) {
+        Appointment app = appointmentRepository.save(new Appointment(LocalDateTime.now(), AppointmentStatus.CANCELED, "Отменено на стадии планирования", getUser(principal)));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        recordRepository.findById(record.getId()).get().getAppointments().add(app);
+        return recordRepository.save(record);
     }
 
     private AppUser getUser(Principal principal) {

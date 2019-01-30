@@ -5,14 +5,21 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.repositories.AppointmentInfoRepository;
+import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.EntitiesUtils;
+import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -38,6 +45,12 @@ public class ClaimService {
 
     @Autowired
     private RecordRepository recordRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentInfoRepository appointmentInfoRepository;
 
     @Autowired
     private RouteTaskRepository routeTaskRepository;
@@ -95,6 +108,14 @@ public class ClaimService {
             claimRepository.save(claim);
         });
     }
+
+    public Record recordCancel(Principal principal, Record record) {
+        Appointment app = appointmentRepository.save(new Appointment(LocalDateTime.now(), AppointmentStatus.CANCELED, "Отменено пользователем", getUser(principal)));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        recordRepository.findById(record.getId()).get().getAppointments().add(app);
+        return recordRepository.save(record);
+    }
+
 
     public void deleteClaim(Claim claim) {
         claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());

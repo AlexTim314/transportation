@@ -94,7 +94,7 @@ public class DispatcherService {
             appt.setNote("транспорт и водитель назначены");
             result.add(appointmentRepository.save(appt));
             appointmentInfoRepository
-                    .save(new AppointmentInfo(appt.getCreationDate(),
+                    .save(new AppointmentInfo(LocalDateTime.now(),
                             appt.getStatus(),
                             appt.getNote(),
                             appt));
