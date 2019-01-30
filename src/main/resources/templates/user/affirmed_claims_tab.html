@@ -103,7 +103,7 @@
                     <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="formClose('appt-note')"></i>
                 </div>
                 <fieldset style="min-height: 50px;">
-                    <legend><i class="{{ctrl.selectStatusIco(ctrl.appt.status) + ' ' + ctrl.selectStatusColor(ctrl.appt.status)}}"></i> {{ctrl.apptStatus()}} </legend>
+                    <legend><i class="{{ctrl.selectStatusIco(ctrl.appt.status) + ' ' + ctrl.selectStatusColor(ctrl.appt.status)}}"> {{ctrl.apptStatus()}} </i></legend>
                     <p>{{ctrl.appt.note}}</p>
                 </fieldset>                        
             </div>
