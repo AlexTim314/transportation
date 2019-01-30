@@ -307,6 +307,30 @@ insert into app_role(role_name) values('ROLE_ADMIN');
 insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
 
 insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'admin1',
+    'Дегтярёв',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 2'));
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'admin2',
+    'Нестеров',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='ЦИП ИК'),
+    (select id from transport_dep where shortname='ОТС 2'));
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'admin3',
+    'Чигорин',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='КЭССТ'),
+    (select id from transport_dep where shortname='ОТС 3'));
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
     'manager',
     'Соколов',
     '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
@@ -398,4 +422,4 @@ INSERT INTO public.driver(address, birthday, driver_class, driver_license, first
 	VALUES (null, '1979-01-28', null, '-x123456789x-', 'Сидоров', 'Иван', null, '+77776665542', 0, 'Иванович', 2);
 
 INSERT INTO public.driver(address, birthday, driver_class, driver_license, firstname, name, note, phone, status, surname, transport_dep_id)
-	VALUES (null, '1979-01-27', null, '-x123456789x-', 'Козлов', 'Иван', null, '+77776665541', 0, 'Иванович', 2);
+	VALUES (null, '1979-01-27', null, '-x123456789x-', 'Козлов', 'Иван', null, '+77776665541', 0, 'Иванович', 2); 

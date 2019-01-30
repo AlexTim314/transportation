@@ -318,15 +318,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
-        self.updateAppointment = function (appointment) {
-            PlannerService.updateAppointment(appointment)
-                    .then(
-                            self.fetchAllAppointments,
-                            function (errResponse) {
-                                console.error('Error while updating Appointment.');
-                            }
-                    );
-        };
+//        self.updateAppointment = function (appointment) {
+//            PlannerService.updateAppointment(appointment)
+//                    .then(
+//                            self.fetchAllAppointments,
+//                            function (errResponse) {
+//                                console.error('Error while updating Appointment.');
+//                            }
+//                    );
+//        };
 
         self.deleteAppointment = function (appointment) {
             PlannerService.deleteAppointment(appointment)

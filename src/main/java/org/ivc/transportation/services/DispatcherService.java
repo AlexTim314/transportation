@@ -88,11 +88,17 @@ public class DispatcherService {
 
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
         List<Appointment> result = new ArrayList<Appointment>();
-        for (int i = 0; i < appointments.size(); i++) {
-            Appointment appointment = appointments.get(i);
-            appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), appointment.getStatus(), appointment.getNote(), appointment));
-            result.add(appointmentRepository.save(appointment));
-        }
+        appointments.forEach(appt -> {
+            appt.setCreationDate(LocalDateTime.now());
+            appt.setStatus(AppointmentStatus.READY);
+            appt.setNote("транспорт и водитель назначены");
+            result.add(appointmentRepository.save(appt));
+            appointmentInfoRepository
+                    .save(new AppointmentInfo(appt.getCreationDate(),
+                            appt.getStatus(),
+                            appt.getNote(),
+                            appt));
+        });
         return result;
     }
 
