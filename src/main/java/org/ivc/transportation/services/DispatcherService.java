@@ -50,8 +50,8 @@ public class DispatcherService {
         List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDep(findTransportDepByUser(principal).getId());
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         appointmentList.forEach(u -> result.add(
-                new CompositeClaimRecord(appointmentRepository.findClaimByAppointmentId(u.getId()),
-                        appointmentRepository.findRecordByAppointmentId(u.getId()), u)
+                new CompositeClaimRecord(claimRepository.findClaimByAppointmentId(u.getId()),
+                        recordRepository.findRecordByAppointmentId(u.getId()), u)
         ));
         return result;
     }

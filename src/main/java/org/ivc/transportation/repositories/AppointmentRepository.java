@@ -20,14 +20,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     public List<Appointment> findByStatus(AppointmentStatus status);
     @Query(value = "select * from appointment where id = (select max(id) from appointment where record_id = :record_id)", nativeQuery = true)
     public Appointment getLastByRecordId(@Param("record_id") Long recordId);
-
-    @Query(value = "select claim.* from claim, record, appointment " +
-            "where appointment.id = :appointment_id and record.id = appointment.record_id and claim.id = record.claim_id", nativeQuery = true)
-    public Claim findClaimByAppointmentId(@Param("appointment_id") Long appointmentId);
-
-    @Query(value = "select record.* from record, appointment " +
-            "where appointment.id = :appointment_id and record.id = appointment.record_id", nativeQuery = true)
-    public Record findRecordByAppointmentId(@Param("appointment_id") Long appointmentId);
     
     @Query(value = "select appointment.* from appointment " +
             "where transport_dep_id = :transport_dep_id", nativeQuery = true)
