@@ -352,6 +352,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
         self.addRec = function () {
             var sd = new Date(self.record.startDate);
+            if (sd === null) {
+                return;
+            }
             var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
@@ -394,6 +397,13 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.claim.records.splice(k, 1);
         };
+
+        self.checkRec = function (rec) {
+            self.record.checked = false;
+            self.record = rec;
+            self.record.checked = true;
+        };
+
         self.rowClick = function (clm) {
             if (clm.isVisible === undefined) {
                 clm.isVisible = true;
@@ -542,6 +552,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.resetRTaskForm();
         };
         self.submitClaim = function () {
+            if (self.validateForm()) {
+                return;
+            }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
             } else {
@@ -629,6 +642,27 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return '-';
             }
             return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
+        };
+
+        self.validateForm = function () {
+            if (self.claim.specialization === null) {
+                return true;
+            }
+            if (self.claim.records.length === 0) {
+                return true;
+            }
+            for (var i = 0; i < self.claim.records.length; i++) {
+                var r = self.claim.records[i];
+                if (r.startDate === null || r.startDate === undefined
+                        || r.entranceDate === null || r.entranceDate === undefined
+                        || r.endDate === null || r.endDate === undefined) {
+                    return true;
+                }
+            }
+            if (self.claim.routeTasks.length === 0) {
+                return true;
+            }
+            return false;
         };
 
     }]);
