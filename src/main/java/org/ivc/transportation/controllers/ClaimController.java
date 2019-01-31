@@ -9,6 +9,7 @@ import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.ClaimService;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,8 +89,8 @@ public class ClaimController {
     }
 
     @PostMapping("/user/recordCancel")
-    public Record recordCancel(Principal principal, @RequestBody Record record) {
-        return claimService.recordCancel(principal, record);
+    public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        return claimService.recordCancel(principal, compositeRecordIdAppointment);
     }
     
     @DeleteMapping("/user/record_delete")

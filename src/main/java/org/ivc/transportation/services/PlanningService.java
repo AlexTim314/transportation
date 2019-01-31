@@ -8,6 +8,7 @@ import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
@@ -56,11 +57,11 @@ public class PlanningService {
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
     }
-
+    
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(department.getId())
-                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
@@ -68,7 +69,7 @@ public class PlanningService {
     private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(department.getId(), dateStart, dateEnd)
-                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
@@ -76,7 +77,7 @@ public class PlanningService {
     private List<CompositeClaimRecord> getCompositeClaimRecordsAllPlanned(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullPlanned(department.getId())
-                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
@@ -84,7 +85,7 @@ public class PlanningService {
     private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(department.getId(), dateStart, dateEnd)
-                .forEach(u -> result.add(new CompositeClaimRecord(claimRepository.findByRecordId(u.getId()), u,
+                .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
         return result;
     }
@@ -134,13 +135,6 @@ public class PlanningService {
             result.add(rd);
         }
         return result;
-    }
-
-    public Record recordCancel(Principal principal, Record record) {
-        Appointment app = appointmentRepository.save(new Appointment(LocalDateTime.now(), AppointmentStatus.CANCELED, "Отменено на стадии планирования", getUser(principal)));
-        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
-        recordRepository.findById(record.getId()).get().getAppointments().add(app);
-        return recordRepository.save(record);
     }
 
     private AppUser getUser(Principal principal) {
