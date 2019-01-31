@@ -294,7 +294,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
-            formOpen('more-claim');
+            formOpen('more-claim1');
         };
 
         self.changeDate = function () {

@@ -5,6 +5,8 @@ package org.ivc.transportation.utils;
  * @author alextim
  */
 public class EntitiesUtils {
+    
+    public static final String USER_CANCEL_STR = "Отменено пользователем. ";
 
     public static enum VehicleSpecialization {
         пассажирский,

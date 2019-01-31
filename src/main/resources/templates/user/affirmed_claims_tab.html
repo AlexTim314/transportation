@@ -1,7 +1,5 @@
 <div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
-
-
         <div class="table-header clearfix">
             <div class="fast-filter clearfix">                                    
                 <span class="filter-elem edit {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
@@ -15,10 +13,6 @@
                 <tr>
                     <th></th>
                     <th>
-                        <label class="custom-checkbox">
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
                     </th>
                     <th>Заявка</th>		
                     <th>Тип транспорта</th>
@@ -35,10 +29,7 @@
 
                     </td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" >
-                            <span class="checkmark"></span>
-                        </label>	
+                        <i class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()"></i>
                     </td>
                     <td class="counter_record" ng-click="ctrl.rowClick(affirmedClaim)">№{{affirmedClaim.id}} {{affirmedClaim.creationDate| date:'dd.MM.yyyy'}} 
                         <span title="Число записей">{{affirmedClaim.records.length}}</span>
@@ -90,7 +81,7 @@
                                 <td>
                                     <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}" ng-click = "ctrl.showNote(record)"></i>
                                 </td> 
-                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.cancelAffRecord(record)"></i></td>          
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.prepareToCancel(record)"></i></td>          
                             </tr>
                         </table>
                     </td>
@@ -109,5 +100,6 @@
             </div>
 
         </div>
-    </div>	
+    </div>
+   
 </div>

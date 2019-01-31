@@ -20,6 +20,7 @@ import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
+import static org.ivc.transportation.utils.EntitiesUtils.USER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -109,13 +110,20 @@ public class ClaimService {
         });
     }
 
-    public Record recordCancel(Principal principal, Record record) {
-        Appointment app = appointmentRepository.save(new Appointment(LocalDateTime.now(), AppointmentStatus.CANCELED, "Отменено пользователем", getUser(principal)));
+    public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        Appointment app = compositeRecordIdAppointment.getAppointment();
+        if (app.getId() == null) {
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(getUser(principal));
+            app.setNote(USER_CANCEL_STR + app.getNote());
+        }
+        app.setStatus(AppointmentStatus.CANCELED);
+        app = appointmentRepository.save(app);
         appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
-        recordRepository.findById(record.getId()).get().getAppointments().add(app);
+        Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
+        record.getAppointments().add(app);
         return recordRepository.save(record);
     }
-
 
     public void deleteClaim(Claim claim) {
         claimRepository.deleteByIdAndAffirmationDateIsNull(claim.getId());
