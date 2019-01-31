@@ -88,15 +88,18 @@ public class DispatcherService {
         }
         return null;
     }
-    
+
     private void updateClaimActual(Appointment appointment) {
         Claim claim = claimRepository.findClaimByAppointmentId(appointment.getId());
         List<Appointment> appList = new ArrayList<Appointment>();
         claim.getRecords().forEach(u -> appList.add(appointmentRepository.getLastByRecordId(u.getId())));
         boolean fl = true;
-        for (Appointment appt : appList)
-            if (appt.getStatus() != AppointmentStatus.COMPLETED)
+        for (Appointment appt : appList) {
+            if (appt == null || appt.getStatus() != AppointmentStatus.COMPLETED) {
                 fl = false;
+                break;
+            }
+        }
         if (fl) {
             claim.setActual(false);
             claimRepository.save(claim);

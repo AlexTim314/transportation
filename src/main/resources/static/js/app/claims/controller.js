@@ -346,15 +346,31 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED';
                 canceledApp.note = self.cancelNote;
             } else {
-                canceledApp = {id: null, creationDate: '', status: '', note: '', vehicleModel: {}, vehicle: {}, driver: {}};
+                canceledApp = {id: null, creationDate: '', status: '', note: ''};
                 canceledApp.status = 'CANCELED';
                 canceledApp.note = self.cancelNote;
             }
             console.log(canceledApp);
-            ClaimsService.cancelAffRecord(self.record.id, canceledApp)
+            ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
-                               // for (var i = 0; i < d; i++) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                ;
+                                for (var i = 0; i < self.affirmedClaims.length; i++) {
+                                    for (var j = 0; j < self.affirmedClaims[i].records.length; j++) {
+                                        if (self.affirmedClaims[i].records[j].id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.affirmedClaims[l].records[k] = d;
                             },
                             console.log('Отмененное назначение:'),
                             function (errResponse) {
@@ -750,6 +766,25 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return true;
             }
             return false;
+        };
+
+        self.showCancelIcon = function (record) {
+            if (record.appointments.length === 0) {
+                return true;
+            }
+            var appt = record.appointments[0];
+            var id = record.appointments[0].id;
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
+                    appt = record.appointments[i];
+                }
+            }
+            if (appt.status !== "COMPLETED") {
+                return true;
+            } else {
+                return false;
+            }
         };
 
     }]);
