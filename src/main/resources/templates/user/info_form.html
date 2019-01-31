@@ -1,0 +1,49 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <div class="more-info" id="more-claim" style="width: 30%;">
+        <div>Дополнительная информация
+            <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="formClose('more-claim')"></i>
+        </div>
+        <fieldset style="min-height: 50px;">
+            <legend>Цель поездки</legend>
+            <p>{{ctrl.claim.purpose}}</p>
+        </fieldset>
+        <fieldset>
+            <legend>Добавил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.claim.creator.username}}</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.claim.creator.fullName}}</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.claim.creator.post}}</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время создания:<span>{{ctrl.claim.creationDate| date:'HH:mm'}}</span></label></li>                   
+            </ul>
+        </fieldset>                        
+    </div>
+
+    <div class="more-info" id="more-claim-confirm" style="width: 30%;">
+        <div>Дополнительная информация
+            <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="formClose('more-claim-confirm')"></i>
+        </div>
+        <fieldset style="min-height: 50px;">
+            <legend>Цель поездки</legend>
+            <p>{{ctrl.affirmedClaim.purpose}}</p>
+        </fieldset>
+        <fieldset>
+            <legend>Добавил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.affirmedClaim.creator.username}}</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.affirmedClaim.creator.fullName}}</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.affirmedClaim.creator.post}}</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время создания:<span>{{ctrl.affirmedClaim.creationDate| date:'HH:mm'}}</span></label></li>             
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>Утвердил</legend>
+            <ul>
+                <li><label ><b class="fas fa-user" ></b> Логин:<span class="status-info status-ready"><b>{{ctrl.affirmedClaim.affirmator.username}}</b></span></label></li>
+                <li><label><b class="fas fa-address-card"></b> ФИО:<span>{{ctrl.affirmedClaim.affirmator.fullName}}</span></label></li>
+                <li><label ><b class="fas fa-user-tie" ></b> Должность:<span>{{ctrl.affirmedClaim.affirmator.post}}</span></label></li>
+                <li><label><b class="fas fa-calendar-alt" ></b> Дата:<span>{{ctrl.affirmedClaim.affirmationDate| date:'dd.MM.yyyy'}}</span></label></li>
+                <li><label><b class="fas fa-clock" ></b> Время:<span>{{ctrl.affirmedClaim.affirmationDate| date:'HH:mm'}}</span></label></li>               
+            </ul>
+        </fieldset>            
+    </div>    
+</div>

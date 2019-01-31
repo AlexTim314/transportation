@@ -1,0 +1,21 @@
+<form class="formAppointment" id="formAppointment" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" ng-click="plctrl.resetAppForm()"></i>
+    <div class="container">
+        <label for="mark"><b>Марка</b></label>
+        <select name="mark" ng-options="m as m.modelName for m in plctrl.vehicleModels track by m.id"   ng-model="plctrl.clrec.appointment.vehicleModel">	
+            <option value="" disabled selected>Выберите Марку</option>				
+        </select>
+        <label for="number"><b>Гос.Номер</b></label>
+        <select name="number" ng-options="n as n.number for n in plctrl.vehicles| filter: plctrl.clrec.appointment.vehicleModel.modelName:true track by n.id"   ng-model="plctrl.clrec.appointment.vehicle">	
+            <option value="" disabled selected>Выберите Гос.Номер</option>				
+        </select>
+        <label for="driver"><b>Водитель</b></label>
+        <select name="driver" ng-options="d as plctrl.personToString(d) for d in plctrl.drivers track by d.id"   ng-model="plctrl.clrec.appointment.driver">
+            <option value="" disabled selected>Выберите Водителя</option>					
+        </select>
+    </div>
+    <div class="container " >
+        <button type="button" class="btn delete" ng-click="plctrl.resetAppForm()">Отмена</button>
+        <button type="button" class="btn edit" ng-click="plctrl.prepareToUpdateAppointment()"><i class="far  fa-save"></i>Сохранить</button>
+    </div>
+</form>

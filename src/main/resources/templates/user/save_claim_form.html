@@ -1,0 +1,142 @@
+<div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="menu_close()"></i>
+    <form>
+        <!-- Для создания по шаблону -->
+        <section  class="section-template">
+            <div class="form-item clearfix" >
+
+                <div class="left-block">
+                    <label>Название шаблона</label>                    
+                    <select name="template" ng-options="tn.templateName for tn in ctrl.claimTemplates"   ng-model="tn" ng-change="ctrl.prepearClaimFromTemplate(tn)">
+                        <option value="" disabled selected><--Не выбрано--></option>
+                    </select>
+                </div>
+
+
+                <div class="right-block-tempate" >
+                    <label>Дата</label>
+                    <input type="date"  ng-model="ctrl.claimFromTemplateDate" ng-change="ctrl.prepearClaimFromTemplate(tn)"></input>
+                </div>
+
+            </div> 
+        </section>
+        <section  class="section-template">
+            <div class="form-item clearfix" >
+                <label>Название шаблона</label>
+                <input type="text" ng-model="ctrl.claim.templateName"></input>
+            </div> 
+        </section>
+
+        <section class="section-type">
+            <div class="form-item">
+                <div class="check-item" > 
+                    <label class="custom-checkbox">
+                        по требованию
+                        <input type="checkbox" id="check-hidden1" onclick="checkHidden()">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>	
+            </div>
+            <div class="form-item clearfix" >
+
+                <div class=" left-block">
+                    <label for="type">Тип транспорта</label>
+                    <select name="type" ng-model="ctrl.claim.specialization" required>
+                        <option value="" disabled selected><--Выберите специализацию--></option>
+                        <option value="пассажирский">Пассажирский</option>
+                        <option value="легковой">Легковой</option>
+                        <option value="грузовой">Грузовой</option>
+                        <option value="спецтехника">Спецтехника</option>
+                    </select>
+                </div>
+
+
+                <div class="right-block" >
+                    <label for="criterion">Вид техники</label>
+                    <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType">
+                        <option value="" disabled selected><--Выберите тип--></option>
+                    </select>	
+                </div>
+
+            </div> 
+
+            <div class="form-item">
+                <label for="purpose">Цель</label>
+                <textarea name="purpose" rows="10" ng-model="ctrl.claim.purpose"></textarea>
+            </div>
+            <div class="form-item clearfix">
+                <label for="carBoss">Старший</label>
+                <select name="carBoss" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
+                    <option value="" disabled selected>Выберите старшего машины</option>
+                </select>
+            </div>	
+
+            <div class="form-item check-hidden clearfix">
+
+                <div class="left-block-route">
+                    <label for="route">Маршрут</label>
+                    <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
+                        <!--                        <option value="" disabled selected><--Выберите маршрут</option>-->
+                        <option>Свой маршрут</option>
+                    </select> 
+                </div>
+                <div class="right-block-route">
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                </div>
+            </div>	
+        </section>
+        <section>	 
+            <div class="form-item clearfix" >
+                <div class="form-item-date ">
+                    <label for="date-begin">Дата:</label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" ng-model = "ctrl.onWeek">на неделю
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <div class="inp-btn clearfix">
+                        <input type="date"  name="date-begin" ng-model="ctrl.record.startDate" id="startDate" required >
+                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "ctrl.addRec()"></span>
+                    </div>							 		
+                </div>
+
+                <div class="right-block ">
+                    <label for="time-begin">Время подачи</label>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" id="entranceTime" required>
+
+
+                    <label for="time-begin">Время выезда</label>
+                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" id="startTime" required>
+
+                    <div class="check-hidden">
+                        <label for="time-end">Время возвращения</label>
+                        <input type="time"  name="time-end" ng-model="ctrl.record.endDate" id="endTime" required>
+                    </div>
+                    <div class="check-hidden">
+                        <label class="custom-checkbox">
+                            
+                            
+                            
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="ctrl.isOtherDay">другой день
+                            <span class="checkmark" title="установить дату возвращения на следующий день"></span>
+                        </label>
+                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
+                    </div>
+
+                </div>
+                <div class="left-block-tag">
+                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in ctrl.claim.records| orderBy:'startDate'" ng-click="ctrl.checkRec(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
+                        <span class="fas fa-times" ng-click = "ctrl.removeRec(rec)"></span>
+                    </div>
+                </div>
+            </div> 					
+
+        </section>
+
+
+        <div class="form-item">
+            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
+        </div>
+
+    </form>
+</div>

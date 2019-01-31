@@ -1,0 +1,64 @@
+<div class="clearfix"  id="tab-list1" xmlns:th="http://www.thymeleaf.org">
+    <div class="table-header clearfix">
+        <div class="fast-filter clearfix">                                    
+            <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+            <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
+            <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
+        </div>
+        <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  		
+        <ul class="plan-info ">
+            <li>Cостояние Плана</li>
+            <li>Завершено</li>
+        </ul>						  		
+        <ul class="plan-date" >
+            <li>Дата планирования</li>
+            <li>
+                <input type="date" name="date-plan" id="date-plan">
+            </li>
+        </ul>
+        <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>
+
+    </div>	
+    <div class="height-wrapper">            
+        <table class=" table-plan table-claim" >
+            <tr>
+                <th style="width:5%">Тип транспорта</th>
+                <th style="width:7%">Вид техники</th>
+                <th style="width:5%">Дата выезда</th>
+                <th style="width:10%">Время подачи</th>
+                <th style="width:20%">Маршрут</th>
+                <th style="width:10%">Марка</th>
+                <th style="width:5%">Гос.номер</th>
+                <th style="width:10%">Водитель</th>
+                <th style="width:8%">Статус</th>
+                <th style="width:10%"></th>
+            </tr>
+            <tr ng-repeat="clrec in plctrl.headers| orderBy: clrec.record.startDate | filter: searchAppointment">
+                <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
+                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                <td>
+                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                </td>
+                <td>{{clrec.appointment.vehicleModel.modelName}}</td>
+                <td>{{clrec.appointment.vehicle.number}}</td>
+                <td class="td-relative">
+                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                    {{plctrl.showDriver(clrec.appointment)}}		  					
+                </td>
+                <td><i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus(clrec)"></i><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
+                <td>
+                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
+                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill(clrec.appointment)"></i>
+                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i> 
+                </td>
+            </tr>
+        </table>
+    </div>	
+
+    <div class="assert-block clearfix">
+        <button class="btn edit assert" ng-click="plctrl.updateAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
+        <span class="btn edit btn-print"><i class="fa fa-lg fa-print"></i></span>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="tab-list4"  id="tab-list4" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск" ng-model="mechanicSearch">
+        </div>
+
+        <div class="height-wrapper">
+
+            <table class="table-transport">
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Дата рождения</th>
+                    <th>Адрес</th>
+                    <th>Номер мобильного</th>
+                    <th>Квалификация</th>                                    
+                    <th> <i title="Добавить механика" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th>                                   
+                </tr>
+                <tr ng-repeat="mh in ctrl.mechanics| filter: mechanicSearch | orderBy: 'firstname'">    
+                    <td>{{mh.firstname}}</td>
+                    <td>{{mh.name}}</td>
+                    <td>{{mh.surname}}</td>
+                    <td>{{mh.birthday| date:'dd.MM.yyyy'}}</td>
+                    <td>{{mh.address}}</td> 
+                    <td>{{mh.phone}}</td>
+                    <td>{{mh.workmanship}}</td>
+
+                    <td>
+                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(mh)"></i>
+                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(mh)"></i>  
+                    </td>
+                </tr>
+            </table>
+        </div>  
+    </div>
+</div>

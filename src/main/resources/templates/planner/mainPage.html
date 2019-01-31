@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Сектор планирования КАТО</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+     
+        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/controller.js"></script>
+        
+        <script src="js/app/planner/service.js"></script>
+        <script src="js/app/planner/controller.js"></script>
+
+    </head>
+    <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите Логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите Пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+            <div class="main clearfix">
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
+
+                    <h1>Комплекс Автотранспортного Обеспечения</h1>
+                    <h3>Планирование задействования транспортных средств</h3>
+
+                    <!--Navigation -->	
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 2)">Обработка заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			
+                    </nav>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                </div>
+                <!--Sidebar-->
+                <th:block th:include="planner/slidebar"></th:block> 
+
+                <div id="claim-create" class="tabcontent">
+
+
+                    <div class="clearfix" style="overflow-x:auto;">
+                        <th:block th:include="planner/planning_tab"></th:block> 
+                        
+                        <th:block th:include="planner/archive_tab"></th:block> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <th:block th:include="planner/record_info_form"></th:block> 
+        
+        <th:block th:include="planner/appointment_info_form"></th:block> 
+        
+        <th:block th:include="planner/status_info_form"></th:block> 
+          
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>

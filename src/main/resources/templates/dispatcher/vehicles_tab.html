@@ -1,0 +1,49 @@
+<div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header table-header-plan clearfix">
+            <input type="search" placeholder="Поиск" ng-model="vehicleSearch">
+        </div>	
+        <div class="height-wrapper">       
+            <table class="table-transport">
+                <tr>
+                    <th>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAll()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th>Тип транспорта</th>
+                    <th>Вид техники</th>
+                    <th>Модель</th>
+                    <th>Гос.номер</th>
+                    <th>Cтатус</th>
+                    <th style="width:15%;">
+                        <i title="Добавить транспорт" class="fas fa-lg fa-plus-circle" onclick="formOpen('formTransport')"></i>
+                        <i title="Удалить транспорт" class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete()"></i>
+                    </th>
+                </tr>
+                <tr ng-repeat="v in ctrl.vehicles| filter: vehicleSearch">
+                    <td>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" ng-model="v.checked">
+                            <span class="checkmark"></span>
+                        </label>
+                    </td>
+                    <td>{{v.model.vehicleType.specialization}}</td>
+                    <td>{{v.model.vehicleType.typeName}}</td>
+                    <td>{{v.model.modelName}}</td>
+                    <td>{{v.number}}</td>			
+                    <td>
+                        <i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateVehicleStatus(v)"></i><span  class="status-info status-ready">{{v.status}}</span>
+                    </td>
+                    <td>
+                        <i title="История" class="fas fa-lg fa-history" ng-click="ctrl.getVehicleHistory(v)"></i>
+                        <i title="Заправить" class="fas fa-lg fa-gas-pump" onclick="formOpen('formRefueling')"></i>
+                        <i title="Текущие Параметры" class="fas fa-cog" ng-click="ctrl.tryToUpdateVehicleState(v)"></i>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.openInfoForm(v)" ></i> 
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>	
+</div>

@@ -1,0 +1,26 @@
+<div class="more-info" id="more-claim-status" style="width: 25%" xmlns:th="http://www.thymeleaf.org">
+    <div>Дополнительная информация
+        <i class="fas fa-times" onclick="formClose('more-claim-status')"></i>
+    </div>
+    <fieldset>
+        <legend>Параметры</legend>
+        <ul>
+            <li><label></i> Дата Выезда<span>{{plctrl.compClRec.record.startDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Дата Возвращения<span>{{plctrl.compClRec.record.endDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Время Подачи<span>{{plctrl.compClRec.record.entranceDate| date:'HH:mm'}}</span></label></li>
+            <li><label>	Время Выезда<span>{{plctrl.compClRec.record.startDate| date:'HH:mm'}}</span></label></li>
+            <li><label> Время Возвращения<span>{{plctrl.compClRec.record.endDate| date:'HH:mm'}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Цель</legend>
+        <p>{{plctrl.compClRec.claim.purpose}}</p>
+    </fieldset>
+    <fieldset>
+        <legend>Назначено</legend>
+        <ul>
+            <li><label > ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
+            <li><label > Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
+        </ul>
+    </fieldset>
+</div>

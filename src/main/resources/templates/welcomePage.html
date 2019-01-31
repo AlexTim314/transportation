@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>        
+        <title th:utext="${title}"></title>
+    </head>
+
+    <body>
+
+        <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>  
+
+    <h2>Message : <span th:utext="${message}"></span></h2>
+    <a href="/transportation/departmentsManagement">Управление подразделениями</a> 
+    <br>
+    <a href="/transportation/transportDepsManagement">Управление транспортными отделами</a> 
+    <br>
+    <a href="/transportation/placesManagement">Управление местами</a> 
+    <br>
+    <a href="/transportation/vehicleTypesManagement">Типы транспортных средств</a> 
+    <br>  
+    <a href="/transportation/fuelsManagement">Типы топлива</a> 
+    <br>  
+    <br> 
+    <a href="/transportation/claims">Подача заявок подразделениями</a>
+    <a href="/transportation/planner">Планировщики</a>
+    <a href="/transportation/dispatcher">Транспортный отдел</a>
+    <br>  
+    <br>
+    <a href="/transportation/usersManagement">usersManagement</a>
+    <br>
+    <a href="/transportation/dispatcher">Dispatcher Page</a> 
+    <br>
+  <!--
+   <a href="/transportation/planner/plandownload">Plan.docx download</a> 
+    <br>
+   <a href="/transportation/addWaypointsShow">Редактирование путевых точек</a>-->
+
+</body>
+</html>  

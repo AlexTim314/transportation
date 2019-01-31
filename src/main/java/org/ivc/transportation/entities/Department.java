@@ -1,42 +1,68 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
  *
- * @author Sokolov Slava
+ * @author Sokolov Slava & Nesterov Yuriy
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
+@ToString
+@Entity
+@Table(name = "department")
 public class Department implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @NonNull
-    private String name;
+    @Column(name = "shortname", nullable = false, unique = true, length = 64)
+    private String shortname;
 
+    @Column(name = "fullname", unique = true, length = 255)
+    private String fullname;
+
+    @Column(name = "address", unique = true, length = 255)
     private String address;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-    private Set<Claim> claims;
+    @Column(name = "phone", unique = true, length = 16)
+    private String phone;
+
+    public Department(String shortname) {
+        this.shortname = shortname;
+    }
+
+    public Department(String shortname, String fullname) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+    }
+
+    public Department(String shortname, String fullname, String address) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
+    }
+
+    public Department(String shortname, String fullname, String address, String phone) {
+        this.shortname = shortname;
+        this.fullname = fullname;
+        this.address = address;
+        this.phone = phone;
+    }
 
 }

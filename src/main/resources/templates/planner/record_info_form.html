@@ -1,0 +1,15 @@
+<div class="more-info" id="more-claim" xmlns:th="http://www.thymeleaf.org">
+    <div>Дополнительная информация
+        <i class="fas fa-times" onclick="formClose('more-claim')"></i>
+    </div>
+    <fieldset>
+        <legend>Параметры</legend>
+        <ul>
+            <li><label> Дата Выезда<span>{{plctrl.clrec.record.startDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Дата Возвращения<span>{{plctrl.clrec.record.endDate| date:'dd.MM.yyyy'}}</span></label></li>
+            <li><label> Время Подачи<span>{{plctrl.clrec.record.entranceDate| date:'HH:mm'}}</span></label></li>
+            <li><label>	Время Выезда<span>{{plctrl.clrec.record.startDate| date:'HH:mm'}} </span></label></li>
+            <li><label> Время Возвращения<span><b>{{plctrl.clrec.record.endDate| date:'HH:mm'}}</b></span></label></li>
+        </ul>
+    </fieldset>
+</div>

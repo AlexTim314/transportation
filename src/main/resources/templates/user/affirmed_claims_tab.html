@@ -1,0 +1,105 @@
+<div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
+    <div style="overflow-x:auto;">
+        <div class="table-header clearfix">
+            <div class="fast-filter clearfix">                                    
+                <span class="filter-elem edit {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
+                <span class="filter-elem edit {{ctrl.week?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
+                <span class="filter-elem edit {{ctrl.allday?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
+            </div>
+            <input type="search" placeholder="Поиск" ng-model="searchAffirm">
+        </div>
+        <div class="height-wrapper"> 
+            <table class="table-record" id="tbl2">
+                <tr>
+                    <th></th>
+                    <th>
+                    </th>
+                    <th>Заявка</th>		
+                    <th>Тип транспорта</th>
+                    <th>Вид техники</th>
+                    <th>Старший</th>
+                    <th>Маршрут</th>
+                    <th> 			
+                    </th>
+                </tr>
+
+                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| filter: searchAffirm">
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
+                        <i class="{{affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
+
+                    </td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
+                        <i class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()"></i>
+                    </td>
+                    <td class="counter_record" ng-click="ctrl.rowClick(affirmedClaim)">№{{affirmedClaim.id}} {{affirmedClaim.creationDate| date:'dd.MM.yyyy'}} 
+                        <span title="Число записей">{{affirmedClaim.records.length}}</span>
+                    </td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.specialization}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.vehicleType.typeName}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.carBoss.firstname}} {{affirmedClaim.carBoss.name}} {{affirmedClaim.carBoss.surname}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">
+                        <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
+                    </td>
+                    <td style="position: relative;">	  						
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoAffClick(affirmedClaim)"></i>
+                        <!--                        <div class="record-status">
+                                                    <div>Готово: 0</div>
+                                                    <div>Не готово: 3</div>
+                                                    <div>Отменено: 1</div>
+                                                </div>  -->
+                    </td>				  				
+
+                </tr>
+                <tr class="hiddenRow" ng-show="affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible" ng-repeat-end>
+                    <td colspan="8">
+
+                        <table class="table-claim">
+                            <tr>	
+                                <th>Дата выезда</th>
+                                <th>Время подачи</th>
+                                <th>Время выезда</th>
+                                <th>Время возвращения</th>
+                                <th>Марка транспорта</th>
+                                <th>Номер транспорта</th>
+                                <th>Водитель</th>
+                                <th>Статус</th>	
+                                <th></th>			  				
+                            </tr>
+                            <tr ng-repeat="record in affirmedClaim.records| orderBy: 'startDate'">
+                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                                <td>{{record.startDate| date:'HH:mm'}}</td>
+                                <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
+                                <td>{{record.appointments[record.appointments.length - 1].vehicleModel.modelName}}</td>
+                                <td>{{record.appointments[record.appointments.length - 1].vehicle.number}}</td>
+                                <td class="td-relative">
+                                    <i class="fa fa-lg fa-mobile-alt" ng-show="ctrl.checkPhone(record.appointments[record.appointments.length - 1])"> 
+                                        <span class="phone-info">{{record.appointments[record.appointments.length - 1].driver.phone}} </span>
+                                    </i>
+                                    {{ctrl.showDriver(record.appointments[record.appointments.length - 1])}}
+                                </td>
+                                <td>
+                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}" ng-click = "ctrl.showNote(record)"></i>
+                                </td> 
+                                <td><i class="fas fa-lg fa-ban claim-trash" title="Отменить" ng-click="ctrl.prepareToCancel(record)" ng-show = "ctrl.showCancelIcon(record)"></i></td>          
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div class="more-info" id="appt-note" style="width: 25%;">
+                <div>Примечание
+                    <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="formClose('appt-note')"></i>
+                </div>
+                <fieldset style="min-height: 50px;">
+                    <legend><i class="{{ctrl.selectStatusIco(ctrl.appt.status) + ' ' + ctrl.selectStatusColor(ctrl.appt.status)}}"> {{ctrl.apptStatus()}} </i></legend>
+                    <p>{{ctrl.appt.note}}</p>
+                </fieldset>                        
+            </div>
+
+        </div>
+    </div>
+   
+</div>

@@ -1,0 +1,22 @@
+<form class="formTransport" id="formChangeStatus" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formChangeStatus')"></i>
+    <div class="container">
+        <div>
+            <label for="status">Статус</label>
+            <select name="status" ng-model="plctrl.clrec.appointment.status">					
+                <option value="" disabled selected>Выберите Статус</option>
+                <option value="COMPLETED">Завершено</option>
+                <option value="CANCELED">Отменено</option>
+                
+            </select>
+        </div>
+        <div> 	
+            <label >Примечание</label>
+            <textarea ng-model="plctrl.clrec.appointment.note"></textarea>  
+        </div>	  	
+    </div>
+    <div class="container " >
+        <!--  <button type="button" class="btn delete">Отмена</button> -->
+        <button type="button" class="btn edit" ng-click="plctrl.changeAppStatus()" onclick="formClose('formChangeStatus')"><i class="far  fa-save"></i>Сохранить</button>
+    </div>
+</form>

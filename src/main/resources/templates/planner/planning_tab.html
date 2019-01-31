@@ -1,0 +1,94 @@
+<div style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
+    <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
+        <div class="table-header clearfix">
+            <div class="fast-filter clearfix">                                    
+                <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+                <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
+                <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
+            </div>
+            <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
+            <ul class="plan-date" >
+                <li>Дата планирования</li>
+                <li id="filter-date">{{plctrl.date}}
+                    <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
+                </li>
+            </ul>
+            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>	
+        </div>	
+        <div class="height-wrapper"> 
+            <table class="table-record"  id="tbl1" >
+                <tr class="header-level">
+                    <th style="width: 3%;"></th>
+                    <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
+                </tr>
+                <tr>                           
+                <tr style = "cursor: pointer" ng-click="plctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in plctrl.headers| filter: searchClaim">
+                    <td>
+                        <i class="{{header.isVisible !== undefined && header.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
+                    </td>
+                    <td >{{header.department.fullname}}
+                        <span>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
+                        </span>
+                        <div class="record-status" style="width: 6%;">
+                            <div title="Обработано"><i class="fas fa-check"></i>23</div>
+                            <div title="Не обработано"><i class="fas fa-clock"></i>12</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>3</div>
+                        </div>  
+                    </td>
+                </tr>
+                <tr class="hiddenRow" ng-show="header.isVisible !== undefined && header.isVisible" ng-repeat-end>
+                    <td colspan="2">
+
+                        <table class="table-claim">
+                            <tr>	
+                                <th style="width:5% ">Тип транспорта</th>
+                                <th style="width:10% ">Вид техники</th>
+                                <th style="width:5% ">Дата выезда</th>
+                                <th style="width:10% ">Время подачи</th>
+                                <th style="width:15% ">Цель поездки</th>
+                                <th style="width:15% ">Маршрут</th>
+                                <th style="width:10% ">ОТС</th>
+                                <th style="width:15% ">Марка</th>
+                                <th style="width:5% ">Статус</th>
+                                <th style="width:5% "> </th>
+                            </tr>
+                            <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: 'startDate' | filter: searchClaim">
+                                <td class="td-relative">
+                                    <div class="new-tag" ng-show="clrec.appointment.id === null">New</div>
+                                    <span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span>
+                                </td> 
+                                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td>{{clrec.claim.purpose}}
+                                </td>
+                                <td >
+                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                                </td>                                                         
+
+                                <td>
+                                    <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" >
+                                    </select>           
+                                </td>
+                                <td>
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: plctrl.getFilter(clrec):true track by tm.id" ng-model="clrec.appointment.vehicleModel">
+                                    </select>  
+                                </td>
+                                <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>
+                                <td> 
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>                                                
+            </table>
+        </div>  
+
+        <div class="assert-block clearfix">
+            <button class="btn edit assert" ng-click="plctrl.createAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
+        </div>
+    </div>	
+
+</div>

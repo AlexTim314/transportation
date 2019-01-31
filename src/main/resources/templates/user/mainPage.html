@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Подача заявок на автотранспорт</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+
+        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/controller.js"></script>
+
+        <script src="js/app/claims/service.js"></script>
+        <script src="js/app/claims/controller.js"></script>
+
+        <script src="js/app/routeTemplates/service.js"></script>
+        <script src="js/app/routeTemplates/controller.js"></script>
+
+        <script src="js/app/carBosses/service.js"></script>
+        <script src="js/app/carBosses/controller.js"></script>
+
+    </head>
+    <body ng-app="Transportation">
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+
+            <!--<th:block th:include="user/delete_confirm_dialog"></th:block>--> 
+
+            <div class="main clearfix">
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
+
+                    <h1>Структурное подразделение</h1>
+                    <h3 ng-controller="ClaimsPageController as ctrl">{{ctrl.department.shortname}}</h3>
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)" >Подача заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 5)" >Утверждённые заявки</div>
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 5)" >Шаблоны заявок</div>
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 5)" >Маршруты</div>	
+                        <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)" >Старшие машин</div>  
+                    </nav>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                </div>
+                <!--Sidebar-->
+                <th:block th:include="user/slidebar"></th:block>  
+
+                <div id="claim-create" class="tabcontent">
+
+
+                    <div ng-controller="ClaimsController as ctrl">
+                        <!--Подробнее-->
+                        <th:block th:include="user/cancel_record"></th:block>
+                        <th:block th:include="user/info_form"></th:block>  
+                        <!-- служебные формы -->
+                        <th:block th:include="user/save_claim_form"></th:block>
+                        <th:block th:include="user/save_template_dialog"></th:block>
+                        <th:block th:include="user/route_tasks_form"></th:block> 
+                        <th:block th:include="user/del_claim_confirm"></th:block> 
+                        <th:block th:include="user/del_claim_template_confirm"></th:block> 
+
+                        <!-- Формы с таблицами -->
+                        <th:block th:include="user/new_claims_tab"></th:block> 
+                        <th:block th:include="user/affirmed_claims_tab"></th:block>
+                        <th:block th:include="user/claim_templates_tab"></th:block>  
+                    </div>
+
+                    <div ng-controller="RouteTemplatesController as ctrl">
+                        <th:block th:include="user/save_route_templ_form"></th:block>  
+                        <th:block th:include="user/del_route_templ_confirm"></th:block> 
+
+                        <th:block th:include="user/route_templates_tab"></th:block> 
+                    </div>
+
+                    <div ng-controller="CarBossesController as ctrl">
+                        <th:block th:include="user/save_car_boss_form"></th:block> 
+                        <th:block th:include="user/del_car_boss_confirm"></th:block> 
+
+                        <th:block th:include="user/car_bosses_tab"></th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>

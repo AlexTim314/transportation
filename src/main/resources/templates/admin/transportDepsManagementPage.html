@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>Транспортные отделы</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/transportDepsManagement/service.js"></script>
+        <script src="js/app/transportDepsManagement/controller.js"></script>
+
+        <link href="css/lib/bootstrap.css" rel="stylesheet"/>
+        <link href="css/lib/app.css" rel="stylesheet"/>
+    </head>
+
+    <body ng-app="Transportation" ng-controller="TransportDepsManagementController as ctrl">
+        <a href="#" onclick="history.back();">Возврат на страницу приветствия</a>
+                <div class="generic-container">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Транспортный отдел</span></div>
+                        <div class="panel-body">
+                            <div class="formcontainer">
+                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                                    <input type="hidden" ng-model="ctrl.transportDep.id" />
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="shortname">Наименование</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.shortname" id="shortname" class="form-control input-sm" transportDepholder="Наименование" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="fullname">Полное наименование</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.fullname" id="fullname" class="form-control input-sm" transportDepholder="Полное наименование" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="address">Адрес</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.address" id="address" class="form-control input-sm" transportDepholder="Адрес"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="phone">Телефон</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.transportDep.phone" id="phone" class="form-control input-sm" transportDepholder="Телефон"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-actions floatRight">
+                                            <input type="submit" class="btn btn-sm btn-info" ng-disabled="myForm.$pristine" value="{{ctrl.transportDep.id===null?'Добавить':'Изменить'}}">
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm">Сбросить форму</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>	
+                    </div>
+
+
+
+
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Список транспортных отделов</span></div>
+                        <br>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="searching">Поиск</label>
+                                <div class="col-md-7">
+                                    <input type="search" ng-model="search" id="searching" class="form-control input-sm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive" style="max-height: 40vh; min-height: 40vh; overflow-y: auto;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Наименование</th>
+                                            <th>Полное наименование</th>
+                                            <th>Адрес</th>
+                                            <th>Телефон</th>
+                                            <th style="width: 200px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="transportDep in ctrl.transportDeps| filter:search">
+                                            <td>{{transportDep.id}}</td>
+                                            <td>{{transportDep.shortname}}</td>
+                                            <td>{{transportDep.fullname}}</td>
+                                            <td>{{transportDep.address}}</td>
+                                            <td>{{transportDep.phone}}</td>                                            
+                                            <td><button type="button" ng-click="ctrl.editTransportDep(transportDep)" class="btn btn-success">Изменить</button>
+                                                <button type="button" ng-click="ctrl.deleteTransportDep(transportDep)" class="btn btn-danger custom-width">Удалить</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+
+                </html>

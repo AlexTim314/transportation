@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <title>Путевые точки</title>
+
+        <script src="js/lib/angular.min.js" ></script>
+        <!--        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>-->
+        <script src="js/app/app.js"></script>
+        <script src="js/app/placesManagement/service.js"></script>
+        <script src="js/app/placesManagement/controller.js"></script>
+
+        <link href="css/lib/bootstrap.css" rel="stylesheet"/>
+        <link href="css/lib/app.css" rel="stylesheet"/>
+    </head>
+
+    <body ng-app="Transportation" ng-controller="PlacesManagementController as ctrl">
+        <a href="#" onclick="history.back();">Возврат на страницу приветствия</a>
+                <div class="generic-container">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Путевая точка</span></div>
+                        <div class="panel-body">
+                            <div class="formcontainer">
+                                <!--                                <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
+                                                                <div class="alert alert-danger" role="alert" ng-if="ctrl.errorMessage">{{ctrl.errorMessage}}</div>-->
+                                <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                                    <input type="hidden" ng-model="ctrl.place.id" />
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="name">Название путевой точки</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.place.name" id="name" class="form-control input-sm" placeholder="Название путевой точки" required ng-minlength="3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="col-md-2 control-lable" for="address">Адрес путевой точки</label>
+                                            <div class="col-md-7">
+                                                <input type="text" ng-model="ctrl.place.address" id="address" class="form-control input-sm" placeholder="Введите адрес"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-actions floatRight">
+                                            <input type="submit" class="btn btn-sm btn-info" ng-disabled="myForm.$pristine" value="{{ctrl.place.id===null?'Добавить':'Изменить'}}">
+                                            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm">Сбросить форму</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>	
+                    </div>
+
+
+
+
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading"><span class="lead">Список путевых точек</span></div>
+                        <br>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="searching">Поиск</label>
+                                <div class="col-md-7">
+                                    <input type="search" ng-model="search" id="searching" class="form-control input-sm"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive" style="max-height: 40vh; min-height: 40vh; overflow-y: auto;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Название</th>
+                                            <th>Адрес</th>
+                                            <th style="width: 200px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="place in ctrl.places| filter:search">
+                                            <td>{{place.id}}</td>
+                                            <td>{{place.name}}</td>
+                                            <td>{{place.address}}</td>
+                                            <td><button type="button" ng-click="ctrl.editPlace(place)" class="btn btn-success">Изменить</button>
+                                                <button type="button" ng-click="ctrl.deletePlace(place)" class="btn btn-danger custom-width">Удалить</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+
+                </html>
