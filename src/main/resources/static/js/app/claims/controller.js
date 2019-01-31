@@ -10,7 +10,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.record = {id: null, startDate: '', endDate: '', entranceDate: '', appointments: []};
-        self.appointment = {id: null, creationDate: '', status: '', vehicleModel: {}, vehicle: {}, driver: {}};
+        self.appointment = {id: null, creationDate: '', status: '', note: '', vehicleModel: {}, vehicle: {}, driver: {}};
         self.vehicleModel = {id: null, modelName: ''};
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
@@ -32,6 +32,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.all = false;
         self.allday = false;
         self.claimFromTemplateDate = '';
+        self.cancelNote = '';
 
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -320,18 +321,63 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.cancelAffRecord = function (rec) {
-            var maxDateApp = {};
-            var maxDate = rec.appointments[0].creationDate;
-            for (var i = 0; i < rec.appointments.length; i++) {
-                if (rec.appointments[i].creationDate > maxDate) {
-                    maxDate = rec.appointments[i].creationDate;
-                    maxDateApp = rec.appointments[i];
+        self.prepareToCancel = function (rec) {
+            self.record.id = rec.id;
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            self.record.endDate = new Date(rec.endDate);
+            self.record.appointments = rec.appointments;
+
+            console.log(self.record);
+            formOpen('formCancel');
+        };
+
+
+        self.cancelAffRecord = function () {
+            var canceledApp = {};
+            if (self.record.appointments.length !== 0) {
+                var id = self.record.appointments[0].id;
+                canceledApp = self.record.appointments[0];
+                for (var i = 1; i < self.record.appointments.length; i++) {
+                    if (id < self.record.appointments[i].id) {
+                        id = self.record.appointments[i].id;
+                        canceledApp = self.record.appointments[i];
+                    }
                 }
+                canceledApp.status = 'CANCELED';
+                canceledApp.note = self.cancelNote;
+            } else {
+                canceledApp = {id: null, creationDate: '', status: '', note: ''};
+                canceledApp.status = 'CANCELED';
+                canceledApp.note = self.cancelNote;
             }
-            maxDateApp.status = 'CANCELED';
-            console.log('Отмененное назначение:');
-            console.log(maxDateApp);
+            console.log(canceledApp);
+            ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
+                    .then(
+                            function (d) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                ;
+                                for (var i = 0; i < self.affirmedClaims.length; i++) {
+                                    for (var j = 0; j < self.affirmedClaims[i].records.length; j++) {
+                                        if (self.affirmedClaims[i].records[j].id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.affirmedClaims[l].records[k] = d;
+                            },
+                            console.log('Отмененное назначение:'),
+                            function (errResponse) {
+                                console.error('Error while canceled Record.');
+                            }
+                    );
         };
 
         self.carBossToString = function (boss) {
@@ -723,6 +769,25 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             }
             return false;
+        };
+
+        self.showCancelIcon = function (record) {
+            if (record.appointments.length === 0) {
+                return true;
+            }
+            var appt = record.appointments[0];
+            var id = record.appointments[0].id;
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
+                    appt = record.appointments[i];
+                }
+            }
+            if (appt.status !== "COMPLETED") {
+                return true;
+            } else {
+                return false;
+            }
         };
 
     }]);

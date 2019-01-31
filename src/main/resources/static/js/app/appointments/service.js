@@ -120,6 +120,19 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
 //                        );
 //            },
 
+            downloadWaybill: function (appointment) {
+                return $http.get('/transportation/dispatcher/waybilldownload/'+appointment.id)
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while download waybill');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             updateAppointments: function (appointments) {
                 return $http.put('/transportation/dispatcher/appointments_update',
                         JSON.stringify(appointments), {headers: self.headers})

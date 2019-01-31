@@ -230,12 +230,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.tempAppoints.push(self.clrec.appointment);
             formClose('formAppointment');
         };
-        
+
         self.prepareToChangeStatus = function (clrec) {
             self.clrec = clrec;
             formOpen('formChangeStatus');
         };
-        
+
         self.changeAppStatus = function () {
             DispatcherService.updateStatusAppointment(self.clrec.appointment)
                     .then(
@@ -277,9 +277,24 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formOpen('formAppointment');
         };
 
+        self.downloadWaybill = function (appointment) {
+            
+            window.open("/transportation/dispatcher/waybilldownload/" + appointment.id, "_self");
+            //self.appointment = appointment;
+          /*  DispatcherService.downloadWaybill(appointment)
+                    .then(
+                            function (response) {
+                                return response.data;
+                            },
+                            function (errResponse) {
+                                console.error('Error while download waybill');
+                            }
+                    );*/
+        };
+
         self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
-            formOpen('more-claim');
+            formOpen('more-claim1');
         };
 
         self.changeDate = function () {

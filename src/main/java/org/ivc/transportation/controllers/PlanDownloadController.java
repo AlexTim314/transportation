@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.LinkedList;
@@ -47,10 +48,12 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STPageOrientation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Класс для формирования и отправки пользователю файла с планом выхода
@@ -67,8 +70,11 @@ public class PlanDownloadController {
     @Autowired
     private ServletContext servletContext;
 
-    @GetMapping("/plandownload")
-    public void download(HttpServletResponse response) throws FileNotFoundException, IOException {
+    @GetMapping("planner/plandownload/")
+    @ResponseBody
+    public FileSystemResource download(HttpServletResponse response) throws FileNotFoundException, IOException {
+        ZonedDateTime date = ZonedDateTime.now();
+        ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1);
 
         System.out.println("plan.docx write");
 
@@ -99,7 +105,6 @@ public class PlanDownloadController {
         table.setBottomBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
         table.setTopBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
 
-        
         XWPFTableRow row = table.getRow(0);
         XWPFTableCell cell = row.addNewTableCell();
         TableWidthType widthType = TableWidthType.DXA;
@@ -109,32 +114,25 @@ public class PlanDownloadController {
         row.getCell(1).setWidthType(widthType);
         row.getCell(1).setWidth("10");
 
-        /* CTTcPr ctTcPr = cell.getCTTc().addNewTcPr();
-        CTTblWidth cellWidth = ctTcPr.addNewTcW();
-        cellWidth.setW(BigInteger.valueOf(1440*1/4));*/  // sets width
-        //table.getCTTbl().addNewTblGrid().addNewGridCol().setW(BigInteger.valueOf(*1440));
-        //cell.setWidth("3.00%");
-        //XWPFParagraph paragraph = ;//document.createParagraph();
-
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО
-        LocalDate now = LocalDate.now(); //TODO: уточнить, что допустимо время текущего момента, а не брать из заявки, например        
-        textToParagraph(cell.addParagraph(), formateDate(now), 12, ParagraphAlignment.LEFT);        
+        //LocalDate now = LocalDate.now(); //TODO: уточнить, что допустимо время текущего момента, а не брать из заявки, например        
+        textToParagraph(cell.addParagraph(), formateDate(date.toLocalDate()), 12, ParagraphAlignment.LEFT);
 
         //END------------------ Шапка
         //---------------- Заполнение файла
         XWPFParagraph paragraph = document.createParagraph();
         paragraph.setSpacingBefore(200);
         textToParagraph(paragraph, "ПЛАН", "Times New Roman", 12, true, ParagraphAlignment.CENTER);
-        String planeDate = formateDate(now.plusDays(1));//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
+        String planeDate = formateDate(tomorrow.toLocalDate());//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
         textToParagraph(document.createParagraph(), "выхода автомобилей Комплекса автотранспортного обеспечения на "
-                + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);        
+                + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
 
         table = document.createTable();
         //table.setWidthType(TableWidthType.PCT);        
-        
+
         row = table.getRow(0);
         boolean isBold = true;
         int fontSize = 8;
@@ -166,8 +164,9 @@ public class PlanDownloadController {
         hMergeRestart.setVal(STMerge.RESTART);
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
-
-        List<Appointment> appointments = dispatcherService.findByStatus(AppointmentStatus.READY);
+        
+        
+        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, tomorrow);
 
         //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
         List<RowData> rowDataList = new LinkedList<>();
@@ -177,13 +176,11 @@ public class PlanDownloadController {
             Claim claim = dispatcherService.findClaimByRecord(record);
 
             rowData.carBoss = claim.getCarBoss().getFirstname();
-            //rowData.driver = getDriverNameWithInitials(a.getDriver());
-            rowData.driver = "пока не поддерживается";
+            rowData.driver = getDriverNameWithInitials(a.getDriver());
             rowData.departmentName = claim.getDepartment().getFullname();
             rowData.purposes = claim.getPurpose();
             rowData.vehicleModelName = a.getVehicleModel().getModelName();
-            //rowData.vehicleNumber = a.getVehicle().getNumber();
-            rowData.vehicleNumber = "пока не поддерживается";
+            rowData.vehicleNumber = a.getVehicle().getNumber();            
 
             String[] tmpArr = a.getTransportDep().getShortname().split(" ");
             rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
@@ -209,59 +206,60 @@ public class PlanDownloadController {
         }
 
         //-----------тестовые данные для проверки отображения
-        RowData rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver = "Водитель В.В.";
-        rd.purposes = "Перевозка пассажиров";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time = "8:00-19:00";
-        rd.transportDepNumber = "4";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
+        if (appointments.isEmpty()) {
+            RowData rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-1";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Перевозка пассажиров";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "4";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+            rowDataList.add(rd);
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver = "Водитель В.В.";
-        rd.purposes = "Перевозка грузов";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time = "8:00-19:00";
-        rd.transportDepNumber = "4";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-1";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Перевозка грузов";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "4";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+            rowDataList.add(rd);
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time = "8:00-19:00";
-        rd.transportDepNumber = "4";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-2";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Нужно поездить туда-сюда";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "4";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+            rowDataList.add(rd);
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver = "Водитель В.В.";
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time = "8:00-19:00";
-        rd.transportDepNumber = "4";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-2";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Нужно поездить туда-сюда";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "4";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+            rowDataList.add(rd);
 
-        //end-----------тестовые данные для проверки
+        }//end-----------тестовые данные для проверки
         rowDataList.sort((r1, r2) -> {
             return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы сначала те, что должны быть первыми, потом алфавитный
         });
@@ -302,7 +300,7 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, isBold, parAligCenter);
             textToParagraph(row.getCell(8).getParagraphs().get(0), rowData.driver,
                     "Times New Roman", fontSize, false, parAligLeft);
-        }        
+        }
 
         document.write(fileOutputStream);
         document.close();
@@ -310,32 +308,29 @@ public class PlanDownloadController {
         System.out.println(" written successully");
 
         //-------------- отправка файла
-        try {
-            MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-            String fileName = "plan" + now.toString() + ".docx";
-            MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
-
-            response.setContentType(mediaType.getType());
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
-            response.setContentLength((int) file.length());
-
-            try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
-                BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-
-                byte[] buffer = new byte[1024];
-                int bytesRead = 0;
-                while ((bytesRead = inStream.read(buffer)) != -1) {
-
-                    System.out.println("Plan downloading..(" + bytesRead + "bytes)");
-                    outStream.write(buffer, 0, bytesRead);
-                }
-
-                outStream.flush();
-            }
-
-        } catch (IOException ex) {
-            throw new RuntimeException("IOError writing file to output stream");
+        MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
+        String fileName = "plan" + date.toLocalDate().toString() + ".docx";
+        MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
+        response.setContentType(mediaType.getType());
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+        response.setContentLength((int) file.length());
+        FileSystemResource resource = new FileSystemResource(file);
+        return resource;
+        
+        /*  try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
+        BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
+        
+        byte[] buffer = new byte[1024];
+        int bytesRead = 0;
+        while ((bytesRead = inStream.read(buffer)) != -1) {
+        
+        System.out.println("Plan downloading..(" + bytesRead + "bytes)");
+        outStream.write(buffer, 0, bytesRead);
         }
+        
+        outStream.flush();
+        }*/
+       
 
     }
 

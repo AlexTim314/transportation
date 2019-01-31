@@ -102,6 +102,20 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
+            printPlan: function (date) {
+                return $http.post('/transportation/planner/plandownload',
+                        JSON.stringify(date), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                    
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching Recs of date');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },            
             
             
             fetchAllCompletePlanRecords: function () {

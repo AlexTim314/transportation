@@ -1,7 +1,10 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +65,7 @@ public class DispatcherService {
         List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDep(findTransportDepByUser(principal).getId());
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         appointmentList.forEach(u -> result.add(
-                new CompositeClaimRecord(claimRepository.findClaimByAppointmentId(u.getId()),
+                new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(u.getId())),
                         recordRepository.findRecordByAppointmentId(u.getId()), u)
         ));
         return result;
@@ -72,7 +75,7 @@ public class DispatcherService {
         List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         appointmentList.forEach(u -> result.add(
-                new CompositeClaimRecord(claimRepository.findClaimByAppointmentId(u.getId()),
+                new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(u.getId())),
                         recordRepository.findRecordByAppointmentId(u.getId()), u)
         ));
         return result;
@@ -86,13 +89,32 @@ public class DispatcherService {
         return null;
     }
 
+    private void updateClaimActual(Appointment appointment) {
+        Claim claim = claimRepository.findClaimByAppointmentId(appointment.getId());
+        List<Appointment> appList = new ArrayList<Appointment>();
+        claim.getRecords().forEach(u -> appList.add(appointmentRepository.getLastByRecordId(u.getId())));
+        boolean fl = true;
+        for (Appointment appt : appList) {
+            if (appt == null || appt.getStatus() != AppointmentStatus.COMPLETED) {
+                fl = false;
+                break;
+            }
+        }
+        if (fl) {
+            claim.setActual(false);
+            claimRepository.save(claim);
+        }
+    }
+
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
         List<Appointment> result = new ArrayList<Appointment>();
         appointments.forEach(appt -> {
             appt.setCreationDate(LocalDateTime.now());
             appt.setStatus(AppointmentStatus.READY);
-            appt.setNote("транспорт и водитель назначены");
-            result.add(appointmentRepository.save(appt));
+            appt.setNote("Транспорт и водитель назначены");
+            appt = appointmentRepository.save(appt);
+            updateClaimActual(appt);
+            result.add(appt);
             appointmentInfoRepository
                     .save(new AppointmentInfo(LocalDateTime.now(),
                             appt.getStatus(),
@@ -109,7 +131,18 @@ public class DispatcherService {
                         appointment.getStatus(),
                         appointment.getNote(),
                         appointment));
+        updateClaimActual(appointment);
         return appointment;
+    }
+
+    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, ZonedDateTime date) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
+    }
+
+    public Appointment getAppointmentById(Long apptId) {
+        return appointmentRepository.findById(apptId).get();
     }
 
 }
