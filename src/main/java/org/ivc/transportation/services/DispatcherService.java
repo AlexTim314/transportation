@@ -88,6 +88,20 @@ public class DispatcherService {
         }
         return null;
     }
+    
+    private void updateClaimActual(Appointment appointment) {
+        Claim claim = claimRepository.findClaimByAppointmentId(appointment.getId());
+        List<Appointment> appList = new ArrayList<Appointment>();
+        claim.getRecords().forEach(u -> appList.add(appointmentRepository.getLastByRecordId(u.getId())));
+        boolean fl = true;
+        for (Appointment appt : appList)
+            if (appt.getStatus() != AppointmentStatus.COMPLETED)
+                fl = false;
+        if (fl) {
+            claim.setActual(false);
+            claimRepository.save(claim);
+        }
+    }
 
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
         List<Appointment> result = new ArrayList<Appointment>();
@@ -95,7 +109,9 @@ public class DispatcherService {
             appt.setCreationDate(LocalDateTime.now());
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
-            result.add(appointmentRepository.save(appt));
+            appt = appointmentRepository.save(appt);
+            updateClaimActual(appt);
+            result.add(appt);
             appointmentInfoRepository
                     .save(new AppointmentInfo(LocalDateTime.now(),
                             appt.getStatus(),
@@ -112,6 +128,7 @@ public class DispatcherService {
                         appointment.getStatus(),
                         appointment.getNote(),
                         appointment));
+        updateClaimActual(appointment);
         return appointment;
     }
 
