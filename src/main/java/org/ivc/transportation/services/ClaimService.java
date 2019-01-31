@@ -118,7 +118,7 @@ public class ClaimService {
             app.setCreator(getUser(principal));
             app.setNote(USER_CANCEL_STR + app.getNote());
         }
-        appointmentRepository.save(app);
+        app = appointmentRepository.save(app);
         appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
         record.getAppointments().add(app);
