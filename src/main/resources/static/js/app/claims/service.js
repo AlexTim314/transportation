@@ -184,8 +184,9 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             },
             
             cancelAffRecord:  function (id, appointment) {
+                console.log({id, appointment});
                 return $http.put('/transportation/user/recordCancel',
-                        JSON.stringify([id, appointment]), {headers: self.headers})
+                        JSON.stringify({id, appointment}), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

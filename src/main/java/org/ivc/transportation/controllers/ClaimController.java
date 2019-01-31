@@ -88,7 +88,7 @@ public class ClaimController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/user/recordCancel")
+    @PutMapping("/user/recordCancel")
     public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
         return claimService.recordCancel(principal, compositeRecordIdAppointment);
     }
