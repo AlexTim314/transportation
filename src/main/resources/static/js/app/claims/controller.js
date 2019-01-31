@@ -10,7 +10,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
         self.record = {id: null, startDate: '', endDate: '', entranceDate: '', appointments: []};
-        self.appointment = {id: null, creationDate: '', status: '', vehicleModel: {}, vehicle: {}, driver: {}};
+        self.appointment = {id: null, creationDate: '', status: '', note: '', vehicleModel: {}, vehicle: {}, driver: {}};
         self.vehicleModel = {id: null, modelName: ''};
         self.vehicle = {id: null, number: ''};
         self.driver = {id: null, firstname: '', name: '', surname: '', phone: ''};
@@ -32,6 +32,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.all = false;
         self.allday = false;
         self.claimFromTemplateDate = '';
+        self.canselNote = '';
 
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -320,17 +321,32 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.cancelAffRecord = function (rec) {
-            var maxDateApp = {};
-            var maxDate = rec.appointments[0].creationDate;
-            for (var i = 0; i < rec.appointments.length; i++) {
-                if (rec.appointments[i].creationDate > maxDate) {
-                    maxDate = rec.appointments[i].creationDate;
-                    maxDateApp = rec.appointments[i];
+            var canceledApp = {};
+            if (rec.appointments !== undefined && rec.appointments !== null) {
+                var id = rec.appointments[0].id;
+                canceledApp = rec.appointments[0];
+                for (var i = 1; i < rec.appointments.length; i++) {
+                    if (id < rec.appointments[i].id) {
+                        id = rec.appointments[i].id;
+                        canceledApp = rec.appointments[i];
+                    }
                 }
+                canceledApp.status = 'CANCELED';
+                canceledApp.note = self.canselNote;
+
+            } else {
+                canceledApp = {id: null, creationDate: '', status: '', note: '', vehicleModel: {}, vehicle: {}, driver: {}};
+                canceledApp.status = 'CANCELED';
+                canceledApp.note = self.canselNote;
             }
-            maxDateApp.status = 'CANCELED';
-            console.log('Отмененное назначение:');
-            console.log(maxDateApp);
+            console.log(canceledApp);
+            ClaimsService.cancelAffRecord(rec.id, canceledApp)
+                    .then(
+                            console.log('Отмененное назначение:'),
+                            function (errResponse) {
+                                console.error('Error while canceled Record.');
+                            }
+                    );
         };
 
         self.carBossToString = function (boss) {
