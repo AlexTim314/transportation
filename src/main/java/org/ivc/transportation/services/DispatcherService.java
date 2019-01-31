@@ -1,7 +1,10 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +94,7 @@ public class DispatcherService {
         appointments.forEach(appt -> {
             appt.setCreationDate(LocalDateTime.now());
             appt.setStatus(AppointmentStatus.READY);
-            appt.setNote("транспорт и водитель назначены");
+            appt.setNote("Транспорт и водитель назначены");
             result.add(appointmentRepository.save(appt));
             appointmentInfoRepository
                     .save(new AppointmentInfo(LocalDateTime.now(),
@@ -110,6 +113,12 @@ public class DispatcherService {
                         appointment.getNote(),
                         appointment));
         return appointment;
+    }
+
+    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, ZonedDateTime date) {
+        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+        return appointmentRepository.findAppointmentsForPlan(status, dStart, dEnd);
     }
 
 }
