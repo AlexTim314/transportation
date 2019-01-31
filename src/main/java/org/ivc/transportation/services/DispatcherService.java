@@ -118,7 +118,11 @@ public class DispatcherService {
     public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, ZonedDateTime date) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
-        return appointmentRepository.findAppointmentsForPlan(status, dStart, dEnd);
+        return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
+    }
+
+    public Appointment getAppointmentById(Long apptId) {
+        return appointmentRepository.findById(apptId).get();
     }
 
 }
