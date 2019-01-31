@@ -30,5 +30,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "appointment.transport_dep_id = :transport_dep_id and record.start_date between :date_start and :date_end and appointment.record_id = record.id", nativeQuery = true)
     public List<Appointment> findAppointmentsByTransportDepTimeFilter(@Param("transport_dep_id") Long transportDepId, @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
     
-    
+    @Query(value = "select appointment.* from appointment, record where " +
+            "record.start_date between :date_start and :date_end and appointment.record_id = record.id and appointment.status = :status", nativeQuery = true)
+    public List<Appointment> findAppointmentsForPlan(@Param("status") AppointmentStatus status,
+            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
 }

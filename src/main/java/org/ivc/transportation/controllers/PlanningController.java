@@ -83,8 +83,4 @@ public class PlanningController {
         return planningService.createAppointments(principal, compositeRecordIdAppointment);
     }
 
-    @PostMapping("/planner/recordCancel")
-    public Record recordCancel(Principal principal, @RequestBody Record record) {
-        return planningService.recordCancel(principal, record);
-    }
 }
