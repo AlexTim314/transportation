@@ -109,9 +109,9 @@ public class PlanDownloadController {
         XWPFTableCell cell = row.addNewTableCell();
         TableWidthType widthType = TableWidthType.DXA;
         table.setWidthType(widthType);
-        row.getCell(0).setWidthType(widthType);
+        //row.getCell(0).setWidthType(widthType);
         row.getCell(0).setWidth("20");
-        row.getCell(1).setWidthType(widthType);
+        //row.getCell(1).setWidthType(widthType);
         row.getCell(1).setWidth("10");
 
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
