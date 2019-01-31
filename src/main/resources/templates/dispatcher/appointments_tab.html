@@ -50,7 +50,7 @@
                 <td><i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus(clrec)"></i><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
                 <td>
                     <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
-                    <i title="Печать Путевого Листа" class="fa fa-lg fa-print"></i>
+                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill(clrec.appointment)"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i> 
                 </td>
             </tr>

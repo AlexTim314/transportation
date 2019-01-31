@@ -155,8 +155,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 console.error('Error while fetching Records of Day');
                             }
                     );
-        };
-
+        };        
 
 
         self.fetchAllCompletePlanRecords = function () {
@@ -243,6 +242,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 console.error('Error while fetching VehicleModels');
                             }
                     );
+        };
+        
+        self.downloadPlan = function () {
+            
+                window.open("/transportation/planner/plandownload/", "_self");    
+            
+            
+            /*var datePlan = new Date(document.getElementById('date-plan').value);
+            PlannerService.printPlan(datePlan)
+                    .then(
+                            function () {                                
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Records of Day');
+                            }
+                    );*/
         };
 
         self.getToday = function () {

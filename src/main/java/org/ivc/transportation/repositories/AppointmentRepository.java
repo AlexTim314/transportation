@@ -32,6 +32,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     
     @Query(value = "select appointment.* from appointment, record where " +
             "record.start_date between :date_start and :date_end and appointment.record_id = record.id and appointment.status = :status", nativeQuery = true)
-    public List<Appointment> findAppointmentsForPlan(@Param("status") AppointmentStatus status,
+    public List<Appointment> findAppointmentsForPlan(@Param("status") int status,
             @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
 }

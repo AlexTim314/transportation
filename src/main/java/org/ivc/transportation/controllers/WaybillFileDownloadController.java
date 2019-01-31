@@ -39,15 +39,20 @@ import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils.*;
 import org.ivc.transportation.utils.MediaTypeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
  * @author alextim
  */
+@Controller
 public class WaybillFileDownloadController {
 
     @Autowired
@@ -56,19 +61,23 @@ public class WaybillFileDownloadController {
     @Autowired
     private ServletContext servletContext;
 
-    @PostMapping("/waybilldownload")
-    public void download(HttpServletResponse response, Principal principal, @RequestBody Appointment appointment) throws FileNotFoundException, IOException {
+    @GetMapping("/dispatcher/waybilldownload/{apptId}")
+    @ResponseBody
+    public FileSystemResource download(HttpServletResponse response, Principal principal, @PathVariable("apptId") Long apptId) throws FileNotFoundException, IOException {
 
         if (principal == null) {
             throw new NullPrincipalException("Неавторизованный доступ к данной странице закрыт. "
                     + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
         }
+        
+        Appointment appointment = dispatcherService.getAppointmentById(apptId);
+        
         if (appointment == null) {
             unexpectedNull("Назначение");
         }
         if (appointment.getStatus() != AppointmentStatus.READY) {
 
-            String message = "Error2. Распоряжение не утверждено. Для печати "
+            String message = "Error2. Распоряжение " + appointment.getId() + " не утверждено. Для печати "
                     + "путевого листа, прежде требуется согласовать и "
                     + "утвердить распоряжение." + appointment.getStatus();
             System.out.println(message);
@@ -100,7 +109,7 @@ public class WaybillFileDownloadController {
         if (driver == null) {
             unexpectedNull("Водитель");
         }
-        
+
         Record record = dispatcherService.findRecordByAppointment(appointment);
         Claim claim = dispatcherService.findClaimByRecord(record);
         LocalDateTime dateTime = appointment.getCreationDate();
@@ -121,11 +130,11 @@ public class WaybillFileDownloadController {
                         switch (namedCell) {
                             case серия:
                                 //c.setCellValue(waybill.getSeries());
-                                c.setCellValue("Временно не поддержиавется");
+                                c.setCellValue("1 - ");
                                 break;
                             case номер:
                                 //c.setCellValue(waybill.getNumber());
-                                c.setCellValue("Временно не поддержиавется");
+                                c.setCellValue(appointment.getId());
                                 break;
                             case число:
                                 c.setCellValue(dateTime.getDayOfMonth());
@@ -161,12 +170,11 @@ public class WaybillFileDownloadController {
                                 c.setCellValue(driver.getDriverClass());
                                 break;
                             case диспетчер:
-                                c.setCellValue("Временно не поддержиавется"
-                                //        waybill.getDispatcher().getUserName()
-                                );
+                                c.setCellValue(appointment.getCreator().getFullName());
                                 break;
                             case механик:
-                                c.setCellValue(appointment.getMechanic().getFirstname());
+                                String text = appointment.getMechanic() != null ? appointment.getMechanic().getFirstname() : "Не указан";
+                                c.setCellValue(text);
                                 break;
                             case время_выезда_по_графику:
                                 c.setCellValue(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
@@ -212,41 +220,49 @@ public class WaybillFileDownloadController {
             //String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
             String fileName = "DownloadWaybill.xls";
             File file = File.createTempFile("waybill", specialization.name());
-
+            
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             workbook.close();
 
-            try {
-                MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-                MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
+            MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
+            MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
 
-                response.setContentType(mediaType.getType());
-                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
-                response.setContentLength((int) file.length());
-
-                try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
-                    BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-
-                    byte[] buffer = new byte[1024];
-                    int bytesRead = 0;
-                    while ((bytesRead = inStream.read(buffer)) != -1) {
-
-                        System.out.println("Waybill downloading..(" + bytesRead + "bytes)");
-                        outStream.write(buffer, 0, bytesRead);
-                    }
-
-                    outStream.flush();
+            response.setContentType(mediaType.getType());
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
+            response.setContentLength((int) file.length());
+            
+            FileSystemResource resource = new FileSystemResource(file);
+            return resource;
+           /* InputStream inputStream = new FileInputStream(file);
+              return outputStream -> {
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                    System.out.println("Writing some bytes..");
+                    outputStream.write(data, 0, nRead);
                 }
-
-            } catch (IOException ex) {
-                throw new RuntimeException("IOError writing file to output stream");
+            };
+*/
+            /*try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
+            BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
+            
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            while ((bytesRead = inStream.read(buffer)) != -1) {
+            
+            System.out.println("Waybill downloading..(" + bytesRead + "bytes)");
+            outStream.write(buffer, 0, bytesRead);
             }
-
-        } catch (IOException | EncryptedDocumentException ex) {
+            
+            outStream.flush();
+            }
+             */
+        } catch (EncryptedDocumentException ex) {
             ex.printStackTrace();
         }
-
+        System.out.println("return null");
+        return null;
     }
 
     private void unexpectedNull(String message) {
