@@ -116,6 +116,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
+                                self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -715,9 +716,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         || r.endDate === null || r.endDate === undefined) {
                     return true;
                 }
-            }
-            if (self.claim.routeTasks.length === 0) {
-                return true;
             }
             return false;
         };
