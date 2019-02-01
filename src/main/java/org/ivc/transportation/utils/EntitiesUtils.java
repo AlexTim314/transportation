@@ -37,7 +37,10 @@ public class EntitiesUtils {
         IN_PROGRESS,
         READY,
         COMPLETED,
-        CANCELED;
+        CANCELED,
+        CANCELED_BY_USER,
+        CANCELED_BY_PLANNER,
+        CANCELED_BY_DISPATCHER;
     }
     
     public static enum FuelType {

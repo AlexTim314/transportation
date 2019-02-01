@@ -31,6 +31,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.ctoday = false;
         self.cweek = false;
         self.call = false;
+        self.cancelNote = '';
         self.selectedIcon;
         self.type;
         self.date;
@@ -500,6 +501,63 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.apptStatus = function () {
             var status = self.appt.status;
             return self.selectStatus(status);
+        };
+
+        self.prepareToCancel = function (rec) {
+            self.record.id = rec.id;
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            self.record.endDate = new Date(rec.endDate);
+            self.record.appointments = rec.appointments;
+
+            console.log(self.record);
+            formOpen('formCancel');
+        };
+
+        self.cancelRecord = function () {
+            var canceledApp = {};
+            if (self.record.appointments.length !== 0) {
+                var id = self.record.appointments[0].id;
+                canceledApp = self.record.appointments[0];
+                for (var i = 1; i < self.record.appointments.length; i++) {
+                    if (id < self.record.appointments[i].id) {
+                        id = self.record.appointments[i].id;
+                        canceledApp = self.record.appointments[i];
+                    }
+                }
+                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.note = self.cancelNote;
+            } else {
+                canceledApp = {id: null, creationDate: '', status: '', note: ''};
+                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.note = self.cancelNote;
+            }
+            console.log(canceledApp);
+            PlannerService.cancelRecord({recordId: self.record.id, appointment: canceledApp})
+                    .then(
+                            function (d) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                ;
+                                for (var i = 0; i < self.headers.length; i++) {
+                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.headers[l].compositeClaimRecords[k].record = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while canceled Record.');
+                            }
+                    );
         };
 
     }]);
