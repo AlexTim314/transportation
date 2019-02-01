@@ -129,6 +129,7 @@ public class WaybillFileDownloadController {
                         Cell c = getCell(workbook, name);
                         switch (namedCell) {
                             case серия:
+                                //TODO: узнать как формировать номер серии
                                 //c.setCellValue(waybill.getSeries());
                                 c.setCellValue("1 - ");
                                 break;
@@ -215,10 +216,9 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
-
-            // workbook.createSheet("доплер");
-            //String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
-            String fileName = "DownloadWaybill.xls";
+            
+            String fileName = "Путевой_" + dateTime.format(DateTimeFormatter.ofPattern("YYYY.MM.dd")) + "_id" + appointment.getId() + ".xls";
+            
             File file = File.createTempFile("waybill", specialization.name());
             
             FileOutputStream fileOutputStream = new FileOutputStream(file);
