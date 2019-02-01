@@ -43,6 +43,7 @@ import org.ivc.transportation.utils.MediaTypeUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
@@ -80,6 +81,14 @@ public class PlanDownloadController {
 
         XWPFDocument document = new XWPFDocument();
 
+        CTSectPr sectPr = document.getDocument().getBody().addNewSectPr();
+        CTPageMar pageMar = sectPr.addNewPgMar();
+        //отступы 0,5 см - 283L
+        pageMar.setLeft(BigInteger.valueOf(283L));
+        pageMar.setTop(BigInteger.valueOf(283L));
+        pageMar.setRight(BigInteger.valueOf(283L));
+        pageMar.setBottom(BigInteger.valueOf(283L));
+
         //--- Установка Альбомной ориентации листа
         CTDocument1 doc = document.getDocument();
         CTBody body = doc.getBody();
@@ -93,12 +102,10 @@ public class PlanDownloadController {
         }
 
         pageSize.setOrient(STPageOrientation.LANDSCAPE);
+        //Размер А4: 842 * 20 на 595 * 20
         pageSize.setW(BigInteger.valueOf(842 * 20));
         pageSize.setH(BigInteger.valueOf(595 * 20));
-
         //end--- Установка Альбомной ориентации листа
-        File file = File.createTempFile("plan", LocalDate.now().toString());
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
 
         //------------------ Шапка
         XWPFTable table = document.createTable(1, 1);
@@ -109,16 +116,13 @@ public class PlanDownloadController {
         XWPFTableCell cell = row.addNewTableCell();
         TableWidthType widthType = TableWidthType.DXA;
         table.setWidthType(widthType);
-        row.getCell(0).setWidthType(widthType);
         row.getCell(0).setWidth("20");
-        row.getCell(1).setWidthType(widthType);
         row.getCell(1).setWidth("10");
 
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
-        textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО
-        //LocalDate now = LocalDate.now(); //TODO: уточнить, что допустимо время текущего момента, а не брать из заявки, например        
+        textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО        
         textToParagraph(cell.addParagraph(), formateDate(date.toLocalDate()), 12, ParagraphAlignment.LEFT);
 
         //END------------------ Шапка
@@ -131,19 +135,21 @@ public class PlanDownloadController {
                 + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
 
         table = document.createTable();
-        //table.setWidthType(TableWidthType.PCT);        
+        table.setWidthType(widthType);
+        table.setCellMargins(0, -10, 0, -10);
 
         row = table.getRow(0);
+        
         boolean isBold = true;
         int fontSize = 8;
         ParagraphAlignment parAligCenter = ParagraphAlignment.CENTER;
-        textToParagraph(row.getCell(0).getParagraphs().get(0), " №\n" + "п/п",
+        textToParagraph(row.getCell(0).getParagraphs().get(0), " №  п/п",
                 "Times New Roman", fontSize, isBold, parAligCenter);
-        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Марка\n" + "автомобиля",
+        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Марка автомобиля",
                 "Times New Roman", fontSize, isBold, parAligCenter);
-        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Гос. номер\n" + "автомобиля",
+        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Гос. номер автомобиля",
                 "Times New Roman", fontSize, isBold, parAligCenter);
-        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "№\n" + "ОТС",
+        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "№\n ОТС",
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Цели и задачи поездки",
                 "Times New Roman", fontSize, isBold, parAligCenter);
@@ -153,10 +159,15 @@ public class PlanDownloadController {
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Время выхода",
                 "Times New Roman", fontSize, isBold, parAligCenter);
-        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Фамилия \n" + "водителя",
-                "Times New Roman", fontSize, isBold, parAligCenter);
+        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Фамилия водителя",
+                "Times New Roman", fontSize, isBold, parAligCenter);        
+        
 
-        //row.getCell(0).setWidth("5");
+        System.out.println("table widthtype " + table.getWidthType());
+        System.out.println("table width " + table.getWidth());
+
+        setCellsWidth(row);
+
         System.out.println("table widthtype " + table.getWidthType());
         System.out.println("table width " + table.getWidth());
 
@@ -164,8 +175,7 @@ public class PlanDownloadController {
         hMergeRestart.setVal(STMerge.RESTART);
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
-        
-        
+
         List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, tomorrow);
 
         //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
@@ -180,7 +190,7 @@ public class PlanDownloadController {
             rowData.departmentName = claim.getDepartment().getFullname();
             rowData.purposes = claim.getPurpose();
             rowData.vehicleModelName = a.getVehicleModel().getModelName();
-            rowData.vehicleNumber = a.getVehicle().getNumber();            
+            rowData.vehicleNumber = a.getVehicle().getNumber();
 
             String[] tmpArr = a.getTransportDep().getShortname().split(" ");
             rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
@@ -279,6 +289,7 @@ public class PlanDownloadController {
             };
 
             row = table.createRow();
+            setCellsWidth(row);
             isBold = true;
             fontSize = 8;
             ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
@@ -302,6 +313,8 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, false, parAligLeft);
         }
 
+        File file = File.createTempFile("plan", LocalDate.now().toString());
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
         document.write(fileOutputStream);
         document.close();
 
@@ -316,7 +329,7 @@ public class PlanDownloadController {
         response.setContentLength((int) file.length());
         FileSystemResource resource = new FileSystemResource(file);
         return resource;
-        
+
         /*  try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
         BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
         
@@ -330,14 +343,24 @@ public class PlanDownloadController {
         
         outStream.flush();
         }*/
-       
-
     }
 
     private String formateDate(LocalDate date) {
         return date.format(DateTimeFormatter.ofPattern("« dd » "
                 + date.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru"))
                 + "  YYYY г."));
+    }
+
+    private void setCellsWidth(XWPFTableRow row) {
+        row.getTableCells().get(0).setWidth("70");
+        row.getTableCells().get(1).setWidth("365");
+        row.getTableCells().get(2).setWidth("202");
+        row.getTableCells().get(3).setWidth("72");
+        row.getTableCells().get(4).setWidth("899");
+        row.getTableCells().get(5).setWidth("368");
+        row.getTableCells().get(6).setWidth("350");
+        row.getTableCells().get(7).setWidth("254");
+        row.getTableCells().get(8).setWidth("271");
     }
 
     private class RowData {
