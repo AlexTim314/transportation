@@ -155,7 +155,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 console.error('Error while fetching Records of Day');
                             }
                     );
-        };        
+        };
 
 
         self.fetchAllCompletePlanRecords = function () {
@@ -243,21 +243,21 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-        
+
         self.downloadPlan = function () {
-            
-                window.open("/transportation/planner/plandownload/", "_self");    
-            
-            
+
+            window.open("/transportation/planner/plandownload/", "_self");
+
+
             /*var datePlan = new Date(document.getElementById('date-plan').value);
-            PlannerService.printPlan(datePlan)
-                    .then(
-                            function () {                                
-                            },
-                            function (errResponse) {
-                                console.error('Error while fetching Records of Day');
-                            }
-                    );*/
+             PlannerService.printPlan(datePlan)
+             .then(
+             function () {                                
+             },
+             function (errResponse) {
+             console.error('Error while fetching Records of Day');
+             }
+             );*/
         };
 
         self.getToday = function () {
@@ -297,6 +297,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                     var appointment = self.headers[i].compositeClaimRecords[j].appointment;
                     var recId = self.headers[i].compositeClaimRecords[j].record.id;
+                    if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") < 0) {
+                        continue;
+                    }
                     if (appointment.status === 'CANCELED' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
@@ -475,6 +478,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
+            if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") >= 0) {
+                return true;
+            }
             return appointment.status !== 'CANCELED' && appointment.id !== null;
         };
 
@@ -482,6 +488,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             for (var k in expandedHeaders) {
                 self.headers[k].isVisible = expandedHeaders[k];
             }
+        };
+
+        self.appt = {};
+
+        self.checkRec = function (clrec) {
+            self.appt = clrec.appointment;
+            formOpen('appt-note');
+        };
+
+        self.apptStatus = function () {
+            var status = self.appt.status;
+            return self.selectStatus(status);
         };
 
     }]);

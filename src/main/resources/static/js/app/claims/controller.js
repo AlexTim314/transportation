@@ -118,6 +118,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
+                                self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -577,6 +578,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 templateEditOpen();
             }
         };
+        
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
@@ -585,6 +587,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
+        
         self.updateRTask = function () {
             self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
@@ -594,6 +597,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.claim.routeTasks.push(rt);
         };
+        
         self.submitRTask = function () {
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
@@ -602,6 +606,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetRTaskForm();
         };
+        
         self.submitClaim = function () {
             if (self.validateForm()) {
                 return;
@@ -613,6 +618,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
+        
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -767,9 +773,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         || r.endDate === null || r.endDate === undefined) {
                     return true;
                 }
-            }
-            if (self.claim.routeTasks.length === 0) {
-                return true;
             }
             return false;
         };
