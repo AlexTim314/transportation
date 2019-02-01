@@ -117,6 +117,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
+                                self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -346,15 +347,31 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED';
                 canceledApp.note = self.cancelNote;
             } else {
-                canceledApp = {id: null, creationDate: '', status: '', note: '', vehicleModel: {}, vehicle: {}, driver: {}};
+                canceledApp = {id: null, creationDate: '', status: '', note: ''};
                 canceledApp.status = 'CANCELED';
                 canceledApp.note = self.cancelNote;
             }
             console.log(canceledApp);
-            ClaimsService.cancelAffRecord(self.record.id, canceledApp)
+            ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
-                               // for (var i = 0; i < d; i++) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                ;
+                                for (var i = 0; i < self.affirmedClaims.length; i++) {
+                                    for (var j = 0; j < self.affirmedClaims[i].records.length; j++) {
+                                        if (self.affirmedClaims[i].records[j].id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.affirmedClaims[l].records[k] = d;
                             },
                             console.log('Отмененное назначение:'),
                             function (errResponse) {
@@ -556,6 +573,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 templateEditOpen();
             }
         };
+        
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
@@ -564,6 +582,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
+        
         self.updateRTask = function () {
             self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
@@ -573,6 +592,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.claim.routeTasks.push(rt);
         };
+        
         self.submitRTask = function () {
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
@@ -581,6 +601,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetRTaskForm();
         };
+        
         self.submitClaim = function () {
             if (self.validateForm()) {
                 return;
@@ -592,6 +613,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
+        
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -746,10 +768,26 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return true;
                 }
             }
-            if (self.claim.routeTasks.length === 0) {
+            return false;
+        };
+
+        self.showCancelIcon = function (record) {
+            if (record.appointments.length === 0) {
                 return true;
             }
-            return false;
+            var appt = record.appointments[0];
+            var id = record.appointments[0].id;
+            for (var i = 1; i < record.appointments.length; i++) {
+                if (id < record.appointments[i].id) {
+                    id = record.appointments[i].id;
+                    appt = record.appointments[i];
+                }
+            }
+            if (appt.status !== "COMPLETED") {
+                return true;
+            } else {
+                return false;
+            }
         };
 
     }]);

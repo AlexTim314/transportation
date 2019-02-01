@@ -71,13 +71,11 @@
                 </select>
             </div>	
 
-            <div class="form-item check-hidden clearfix">
+            <div class="form-item clearfix">
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
                     <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
-                        <!--                        <option value="" disabled selected><--Выберите маршрут</option>-->
-                        <option>Свой маршрут</option>
                     </select> 
                 </div>
                 <div class="right-block-route">
