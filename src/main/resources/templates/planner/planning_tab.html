@@ -75,7 +75,7 @@
                                     <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm as tm.modelName for tm in plctrl.vehicleModels| filter: plctrl.getFilter(clrec):true track by tm.id" ng-model="clrec.appointment.vehicleModel">
                                     </select>  
                                 </td>
-                                <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>
+                                <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
                                 <td> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
                                 </td>
@@ -86,6 +86,16 @@
             </table>
         </div>  
 
+        <div class="more-info" id="appt-note" style="width: 25%;">
+                <div>Примечание
+                    <i class="fas fa-times" onclick="formClose('appt-note')"></i>
+                </div>
+                <fieldset style="min-height: 50px;">
+                    <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(ctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
+                    <p>{{plctrl.appt.note}}</p>
+                </fieldset>                        
+            </div>
+        
         <div class="assert-block clearfix">
             <button class="btn edit assert" ng-click="plctrl.createAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
         </div>
