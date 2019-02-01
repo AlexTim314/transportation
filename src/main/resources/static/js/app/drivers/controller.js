@@ -34,6 +34,20 @@ App.controller('DriversController', ['$scope', 'DriversService',
                     );
         };
 
+        self.setBirthday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear() - 18;
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var maxDay = year + "-" + month + "-" + day;
+            document.getElementById('birthday').value = maxDay;
+            document.getElementById('birthday').max = maxDay;
+        };
+
         self.fetchTransportDep();
         self.fetchDrivers();
 
@@ -106,6 +120,7 @@ App.controller('DriversController', ['$scope', 'DriversService',
         self.tryToCreate = function () {
             self.driver = {id: null};
             formOpen('formDriver');
+            self.setBirthday();
         };
 
         self.tryToUpdate = function (driver) {

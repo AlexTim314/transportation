@@ -33,6 +33,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.allday = false;
         self.claimFromTemplateDate = '';
         self.cancelNote = '';
+        self.minDate;
 
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -168,6 +169,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 day = "0" + day;
             var today = year + "-" + month + "-" + day;
             document.getElementById('startDate').value = today;
+            document.getElementById('startDate').min = today;
+            document.getElementById('entranceTime').value = "00:00";
+            document.getElementById('startTime').value = "00:00";
+            document.getElementById('endTime').value = "00:00";
         };
 
         self.fetchNewClaims();
@@ -673,6 +678,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
             }
         };
+        
 
         self.statusClass = function (record) {
             if (record.appointments.length === 0) {
