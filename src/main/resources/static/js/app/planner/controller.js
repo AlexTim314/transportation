@@ -298,10 +298,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                     var appointment = self.headers[i].compositeClaimRecords[j].appointment;
                     var recId = self.headers[i].compositeClaimRecords[j].record.id;
-                    if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") < 0) {
+                    if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -410,7 +410,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -418,8 +420,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
@@ -436,7 +442,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -454,7 +464,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -479,10 +493,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
-            if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") >= 0) {
+            if (appointment.status !== 'CANCELED_BY_DISPATCHER' && appointment.id !== null) {
                 return true;
             }
-            return appointment.status !== 'CANCELED' && appointment.id !== null;
         };
 
         var expandHeaders = function () {

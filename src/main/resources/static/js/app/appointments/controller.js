@@ -324,7 +324,9 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -332,8 +334,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
@@ -350,7 +356,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -368,7 +378,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
