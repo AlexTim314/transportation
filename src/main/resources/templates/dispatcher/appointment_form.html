@@ -10,7 +10,7 @@
             <option value="" disabled selected>Выберите Гос.Номер</option>				
         </select>
         <label for="driver"><b>Водитель</b></label>
-        <select name="driver" ng-options="d as plctrl.personToString(d) for d in plctrl.drivers track by d.id"   ng-model="plctrl.clrec.appointment.driver">
+        <select name="driver" ng-options="d as plctrl.personToString(d) for d in plctrl.drivers| filter: d.vacant:true track by d.id"   ng-model="plctrl.clrec.appointment.driver">
             <option value="" disabled selected>Выберите Водителя</option>					
         </select>
     </div>
