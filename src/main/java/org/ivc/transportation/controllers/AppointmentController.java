@@ -7,8 +7,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,6 +62,11 @@ public class AppointmentController {
     @PutMapping("/dispatcher/appointment_update")
     public Appointment updateAppointment(Principal principal, @RequestBody Appointment appointment) {
         return dispatcherService.updateAppointment(appointment);
+    }
+
+    @PutMapping("/dispatcher/recordCancel")
+    public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        return dispatcherService.recordCancel(principal, compositeRecordIdAppointment);
     }
 
 }

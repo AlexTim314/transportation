@@ -111,13 +111,14 @@ public class ClaimService {
     }
 
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        System.out.println(compositeRecordIdAppointment);
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
             app.setCreationDate(LocalDateTime.now());
             app.setCreator(getUser(principal));
             app.setNote(USER_CANCEL_STR + app.getNote());
         }
-        app.setStatus(AppointmentStatus.CANCELED);
+        app.setStatus(AppointmentStatus.CANCELED_BY_USER);
         app = appointmentRepository.save(app);
         appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
