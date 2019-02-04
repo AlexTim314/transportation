@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
@@ -67,6 +68,12 @@ public class AppointmentController {
     @PutMapping("/dispatcher/recordCancel")
     public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
         return dispatcherService.recordCancel(principal, compositeRecordIdAppointment);
+    }
+    
+
+    @GetMapping("/dispatcher/vacantDrivers")
+    public List<Driver> getVacantDrivers(Principal principal) {
+        return dispatcherService.getVacantDrivers(principal);
     }
 
 }
