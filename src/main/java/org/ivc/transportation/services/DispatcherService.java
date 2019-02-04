@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
@@ -19,7 +20,9 @@ import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
+import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
+import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -143,6 +146,30 @@ public class DispatcherService {
 
     public Appointment getAppointmentById(Long apptId) {
         return appointmentRepository.findById(apptId).get();
+    }
+    
+    public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        System.out.println(compositeRecordIdAppointment);
+        Appointment app = compositeRecordIdAppointment.getAppointment();
+        if (app.getId() == null) {
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(getUser(principal));
+            app.setNote(DISPATCHER_CANCEL_STR + app.getNote());
+        }
+        app.setStatus(AppointmentStatus.CANCELED_BY_DISPATCHER);
+        app = appointmentRepository.save(app);
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
+        record.getAppointments().add(app);
+        return recordRepository.save(record);
+    }
+    
+    private AppUser getUser(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername());
+        }
+        return null;
     }
 
 }
