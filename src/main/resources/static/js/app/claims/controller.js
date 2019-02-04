@@ -651,7 +651,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
@@ -668,11 +670,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceled;
+                    return canceledByUser ;
                 case 'CANCELED_BY_PLANNER':
-                    return canceled;
+                    return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
-                    return canceled;
+                    return canceledByDispatcher;
             }
         };
 

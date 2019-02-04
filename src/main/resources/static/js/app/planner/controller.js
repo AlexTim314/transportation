@@ -493,10 +493,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
-//            if (appointment.status === 'CANCELED_BY_USER') {
-//                return true;
-//            }
-            return appointment.status !== 'CANCELED_BY_USER' && appointment.id !== null;
+            if (appointment.status !== 'CANCELED_BY_DISPATCHER' && appointment.id !== null) {
+                return true;
+            }
         };
 
         var expandHeaders = function () {
