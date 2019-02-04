@@ -349,11 +349,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         canceledApp = self.record.appointments[i];
                     }
                 }
-                canceledApp.status = 'CANCELED';
+                canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             } else {
                 canceledApp = {id: null, creationDate: '', status: '', note: ''};
-                canceledApp.status = 'CANCELED';
+                canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
             console.log(canceledApp);
@@ -635,7 +635,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -663,7 +667,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -680,7 +688,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -707,7 +719,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             var stat = self.appt.status;
             switch (stat) {
                 case 'IN_PROGRESS':
@@ -716,8 +730,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
