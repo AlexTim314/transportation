@@ -35,6 +35,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.selectedIcon;
         self.type;
         self.date;
+        self.inProgress;
+        self.canceled;
+        self.ready;
 
         var expandedHeaders = [];
 
@@ -100,6 +103,21 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+//                                for (var i = 0; i < self.headers.length; i++) {
+//                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
+//
+//                                        }
+//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'READY') {
+//
+//                                        }
+//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
+//                                                self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
+//                                                self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
+//
+//                                        }
+//                                    }
+//                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -421,7 +439,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
