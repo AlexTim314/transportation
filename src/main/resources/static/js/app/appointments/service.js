@@ -92,14 +92,16 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                         );
             },
             
-            fetchVacantDrivers: function () {
-                return $http.get('/transportation/dispatcher/vacantDrivers')
+            fetchVacantDrivers: function (app) {
+               return $http.post('/transportation/dispatcher/vacantDrivers',
+                        JSON.stringify(app), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
+                                    
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching vacantDrivers');
+                                    console.error('Error while fetching vacant drivers');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -113,6 +115,21 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchVacantVehicles: function (app) {
+               return $http.post('/transportation/dispatcher/vacantVehicles',
+                        JSON.stringify(app), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                    
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vacant Vehicle');
                                     return $q.reject(errResponse);
                                 }
                         );
