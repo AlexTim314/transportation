@@ -23,7 +23,7 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
             + "appointment.status = 1 and ("
             + "(record.start_date between :date_start and :date_end) or "
             + "(record.end_date between :date_start and :date_end) or "
-            + "(record.start_date > :date_start and record.end_date < :date_end)) and"
+            + "(record.start_date > :date_start and record.end_date < :date_end)) and "
             + "record.id = appointment.record_id)", nativeQuery = true)
     List<Driver> findVacantByTransportDepId(@Param("transport_dep_id") Long transportDepId,
             @Param("date_start") ZonedDateTime dateStart,
