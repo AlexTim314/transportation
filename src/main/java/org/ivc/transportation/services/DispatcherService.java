@@ -59,7 +59,7 @@ public class DispatcherService {
 
     @Autowired
     private DriverRepository driverRepository;
-    
+
     @Autowired
     private VehicleRepository vehicleRepository;
 
@@ -120,12 +120,21 @@ public class DispatcherService {
         }
     }
 
+    private void setVacantFalse(Appointment appointment) {
+        Driver driver = driverRepository.findById(appointment.getDriver().getId()).get();
+        driver.setVacant(false);
+        driverRepository.save(driver);
+        Vehicle vehicle = vehicleRepository.findById(appointment.getVehicle().getId()).get();
+        vehicle.setVacant(false);
+        vehicleRepository.save(vehicle);
+    }
+
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
         List<Appointment> result = new ArrayList<Appointment>();
         appointments.forEach(appt -> {
-            appt.setCreationDate(LocalDateTime.now());
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
+            setVacantFalse(appt);
             appt = appointmentRepository.save(appt);
             updateClaimActual(appt);
             result.add(appt);
@@ -139,6 +148,9 @@ public class DispatcherService {
     }
 
     public Appointment updateAppointment(Appointment appointment) {
+        appointment.setStatus(AppointmentStatus.READY);
+        appointment.setNote("Транспорт и водитель назначены");
+        setVacantFalse(appointment);
         appointmentRepository.save(appointment);
         appointmentInfoRepository
                 .save(new AppointmentInfo(LocalDateTime.now(),
@@ -158,7 +170,7 @@ public class DispatcherService {
     public Appointment getAppointmentById(Long apptId) {
         return appointmentRepository.findById(apptId).get();
     }
-    
+
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         System.out.println(compositeRecordIdAppointment);
         Appointment app = compositeRecordIdAppointment.getAppointment();
@@ -174,7 +186,7 @@ public class DispatcherService {
         record.getAppointments().add(app);
         return recordRepository.save(record);
     }
-    
+
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
