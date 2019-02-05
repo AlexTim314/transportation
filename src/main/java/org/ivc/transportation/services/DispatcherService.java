@@ -120,21 +120,11 @@ public class DispatcherService {
         }
     }
 
-    private void setVacantFalse(Appointment appointment) {
-        Driver driver = driverRepository.findById(appointment.getDriver().getId()).get();
-        driver.setVacant(false);
-        driverRepository.save(driver);
-        Vehicle vehicle = vehicleRepository.findById(appointment.getVehicle().getId()).get();
-        vehicle.setVacant(false);
-        vehicleRepository.save(vehicle);
-    }
-
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
         List<Appointment> result = new ArrayList<Appointment>();
         appointments.forEach(appt -> {
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
-            setVacantFalse(appt);
             appt = appointmentRepository.save(appt);
             updateClaimActual(appt);
             result.add(appt);
@@ -150,7 +140,6 @@ public class DispatcherService {
     public Appointment updateAppointment(Appointment appointment) {
         appointment.setStatus(AppointmentStatus.READY);
         appointment.setNote("Транспорт и водитель назначены");
-        setVacantFalse(appointment);
         appointmentRepository.save(appointment);
         appointmentInfoRepository
                 .save(new AppointmentInfo(LocalDateTime.now(),
@@ -195,12 +184,15 @@ public class DispatcherService {
         return null;
     }
 
-    public List<Driver> getVacantDrivers(Principal principal) {
-        return driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId());
+    public List<Driver> getVacantDrivers(Principal principal, Appointment appointment) {
+        ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
+        ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
+        return driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
     }
 
-    public List<Vehicle> getVacantVehicles(Principal principal, VehicleModel vehicleModel) {
-        return vehicleRepository.findVacantByTransportDepIdAndModelId(findTransportDepByUser(principal).getId(), vehicleModel.getId());
+    public List<Vehicle> getVacantVehicles(Principal principal, Appointment appointment) {
+//        return vehicleRepository.findVacantByTransportDepIdAndModelId(findTransportDepByUser(principal).getId(), vehicleModel.getId());
+return null;
     }
 
 }

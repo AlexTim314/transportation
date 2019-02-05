@@ -73,14 +73,14 @@ public class AppointmentController {
     }
     
 
-    @GetMapping("/dispatcher/vacantDrivers")
-    public List<Driver> getVacantDrivers(Principal principal) {
-        return dispatcherService.getVacantDrivers(principal);
+    @PostMapping("/dispatcher/vacantDrivers")
+    public List<Driver> getVacantDrivers(Principal principal, @RequestBody Appointment appointment) {
+        return dispatcherService.getVacantDrivers(principal, appointment);
     }
     
     @PostMapping("/dispatcher/vacantVehicles")
-    public List<Vehicle> getVacantDrivers(Principal principal, @RequestBody VehicleModel vehicleModel) {
-        return dispatcherService.getVacantVehicles(principal, vehicleModel);
+    public List<Vehicle> getVacantVehicles(Principal principal, @RequestBody Appointment appointment) {
+        return dispatcherService.getVacantVehicles(principal, appointment);
     }
 
 }
