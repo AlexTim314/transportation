@@ -92,6 +92,19 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                         );
             },
             
+            fetchVacantDrivers: function () {
+                return $http.get('/transportation/dispatcher/vacantDrivers')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vacantDrivers');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchVehicles: function () {
                 return $http.get('/transportation/dispatcher/vehicles')
                         .then(

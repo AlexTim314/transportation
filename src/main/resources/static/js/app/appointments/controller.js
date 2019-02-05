@@ -22,6 +22,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.complHeaders = [];
         self.vehicles = [];
         self.drivers = [];
+        self.vacantDrivers = [];
         self.claims = [];
         self.records = [];
         self.appointments = [];
@@ -152,6 +153,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+        
+        self.fetchVacantDrivers = function () {
+            DispatcherService.fetchVacantDrivers()
+                    .then(
+                            function (d) {
+                                self.vacantDrivers = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vacant Drivers');
+                            }
+                    );
+        };
 
         self.fetchVehicles = function () {
             DispatcherService.fetchVehicles()
@@ -188,6 +201,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
+        
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -274,6 +288,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.appoint = function (clrec) {
             self.clrec = clrec;
+            self.fetchVacantDrivers();
             formOpen('formAppointment');
         };
 
