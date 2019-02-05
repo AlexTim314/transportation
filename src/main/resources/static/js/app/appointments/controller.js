@@ -302,7 +302,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.appoint = function (clrec) {
             self.clrec = clrec;
             self.fetchVacantDrivers(self.clrec.appointment);
-            self.fetchVacantVehicles(self.clrec.appointment);
+           // self.fetchVacantVehicles(self.clrec.appointment);
             formOpen('formAppointment');
         };
 

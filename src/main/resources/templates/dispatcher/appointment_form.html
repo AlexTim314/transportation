@@ -6,7 +6,7 @@
             <option value="" disabled selected>Выберите Марку</option>				
         </select>
         <label for="number"><b>Гос.Номер</b></label>
-        <select name="number" ng-options="n as n.number for n in plctrl.vacantVehicles| filter: plctrl.clrec.appointment.vehicleModel.modelName:true track by n.id"   ng-model="plctrl.clrec.appointment.vehicle">	
+        <select name="number" ng-options="n as n.number for n in plctrl.vehicles| filter: plctrl.clrec.appointment.vehicleModel.modelName:true track by n.id"   ng-model="plctrl.clrec.appointment.vehicle">	
             <option value="" disabled selected>Выберите Гос.Номер</option>				
         </select>
         <label for="driver"><b>Водитель</b></label>
