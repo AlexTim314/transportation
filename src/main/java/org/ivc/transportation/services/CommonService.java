@@ -1,6 +1,7 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
@@ -15,6 +16,7 @@ import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleTypeRepository;
+import org.ivc.transportation.utils.CompositeTransportDepVehicleModels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -92,6 +94,13 @@ public class CommonService {
             return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
         }
         return null;
+    }
+
+    public List<CompositeTransportDepVehicleModels> findVehicleModelsByTransportDep() {
+        List<CompositeTransportDepVehicleModels> list = new ArrayList<CompositeTransportDepVehicleModels>();
+        transportDepRepository.findAll().forEach(u -> list.add(new CompositeTransportDepVehicleModels(u,
+            vehicleModelRepository.findVehicleModelsByTransportDepId(u.getId()))));
+        return list;
     }
 
 }
