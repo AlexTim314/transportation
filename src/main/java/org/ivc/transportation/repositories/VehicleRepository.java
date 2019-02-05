@@ -22,8 +22,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Query(value = "select * from vehicle where status = 0 and model_id = :model_id and transport_dep_id = :transport_dep_id and id not in ("
             + "select appointment.vehicle_id from appointment, record where "
-            + "appointment.status = 1 and record.start_date < :date_end and "
-            + "record.end_date > :date_start)", nativeQuery = true)
+            + "appointment.status = 1 and ("
+            + "(record.start_date between :date_start and :date_end) or "
+            + "(record.end_date between :date_start and :date_end) or "
+            + "(record.start_date > :date_start and record.end_date < :date_end)) and"
+            + "record.id = appointment.record_id)", nativeQuery = true)
     List<Vehicle> findVacantByTransportDepId(@Param("transport_dep_id") Long transportDepId,
             @Param("model_id") Long modelId,
             @Param("date_start") ZonedDateTime dateStart,
