@@ -68,7 +68,7 @@ public class Driver implements Serializable {
     @Column(name = "note", length = 255)
     private String note;
 
-    @Transient
+    //@Transient
     @Column(name = "vacant", nullable = false)
     private boolean vacant;
 
