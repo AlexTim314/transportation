@@ -15,12 +15,15 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -56,6 +59,9 @@ public class DispatcherService {
 
     @Autowired
     private DriverRepository driverRepository;
+    
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -179,6 +185,10 @@ public class DispatcherService {
 
     public List<Driver> getVacantDrivers(Principal principal) {
         return driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId());
+    }
+
+    public List<Vehicle> getVacantVehicles(Principal principal, VehicleModel vehicleModel) {
+        return vehicleRepository.findVacantByTransportDepIdAndModelId(findTransportDepByUser(principal).getId(), vehicleModel.getId());
     }
 
 }
