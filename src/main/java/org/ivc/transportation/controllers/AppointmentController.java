@@ -9,6 +9,8 @@ import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -74,6 +76,11 @@ public class AppointmentController {
     @GetMapping("/dispatcher/vacantDrivers")
     public List<Driver> getVacantDrivers(Principal principal) {
         return dispatcherService.getVacantDrivers(principal);
+    }
+    
+    @PostMapping("/dispatcher/vacantVehicles")
+    public List<Vehicle> getVacantDrivers(Principal principal, @RequestBody VehicleModel vehicleModel) {
+        return dispatcherService.getVacantVehicles(principal, vehicleModel);
     }
 
 }
