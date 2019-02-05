@@ -35,10 +35,10 @@
                             <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
 
                         </span>
-                        <div class="record-status" >
-                            <div title="Обработано"><i class="fas fa-check"></i>23</div>
-                            <div title="Не обработано"><i class="fas fa-clock"></i>12</div>
-                            <div title="Отменено"><i class="fas fa-ban"></i>3</div>
+                        <div class="record-status">
+                            <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
+                            <div title="Обрабатывается"><i class="fas fa-clock"></i>{{plctrl.amountInProgress(header)}}</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>{{plctrl.amountCanceled(header)}}</div>
                         </div>  
                     </td>
                 </tr>

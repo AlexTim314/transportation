@@ -103,21 +103,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.headers = d;
-//                                for (var i = 0; i < self.headers.length; i++) {
-//                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
-//
-//                                        }
-//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'READY') {
-//
-//                                        }
-//                                        if (self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
-//                                                self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
-//                                                self.headers[i].compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
-//
-//                                        }
-//                                    }
-//                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -589,6 +574,38 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 console.error('Error while canceled Record.');
                             }
                     );
+        };
+
+        self.amountReady = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'READY') {
+                    k = k + 1;
+                }
+            }
+            return k;
+        };
+
+        self.amountInProgress = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
+                    k = k + 1;
+                }
+            }
+            return k;
+        };
+
+        self.amountCanceled = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
+                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_PLANNER' ||
+                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
+                    k = k + 1;
+                }
+            }
+            return k;
         };
 
     }]);
