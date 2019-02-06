@@ -38,6 +38,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.inProgress;
         self.canceled;
         self.ready;
+        self.newStartTime;
+        self.newEndTime;
+        self.newEntranceTime;
 
         var expandedHeaders = [];
 
@@ -395,7 +398,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.moreInfoOpen = function (clrec) {
-            self.clrec = clrec;
+            self.compClRec = clrec;
             formOpen('more-claim');
         };
 
@@ -625,6 +628,40 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
             return k;
+        };
+
+        self.correctingTime = function (rec) {
+            formOpen('correctTime');
+            self.record = rec;
+           // self.newStartTime = new Date(rec.startDate);
+            //self.newEntranceTime = new Date(rec.entranceDate);
+           // self.newEndTime = new Date(rec.endDate);
+          //  console.log(self.newStartTime);
+        };
+        
+        self.correctingRoute = function (clm) {
+            formOpen('formRoute');
+
+        };
+
+        self.updateTime = function () {
+            PlannerService.updateTime(rec)
+                    .then(
+                            
+                            function (errResponse) {
+                                console.error('Error while updating Time');
+                            }
+                    );
+        };
+        
+        self.updateRoute = function () {
+            PlannerService.updateRoute(clm)
+                    .then(
+                            
+                            function (errResponse) {
+                                console.error('Error while updating Route.');
+                            }
+                    );
         };
 
     }]);

@@ -1,0 +1,44 @@
+<div class="new-claim-task" id="formTask" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
+    <div class="form-item">
+        <label for="type">Место</label>
+        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "ctrl.routeTask.place">
+            <option value="" disabled selected><--Выберите место--></option>
+        </select>
+    </div>	
+    <div class="form-item" style="margin-bottom:20px;"> 
+
+        <label for="work">Работы</label>
+        <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
+
+        <div class="left-block" style="margin-top:10px;">	
+            <div ng-show="ctrl.routeTask.id!=null" class="btn delete" ng-click="ctrl.resetRTaskForm()">Сброс</div>
+        </div>
+        
+        <div class="right-block" style="margin-top:10px;">	
+            <div class="btn edit" ng-click="ctrl.submitRTask()"><i class="{{ctrl.routeTask.id===null?'fas fa-plus-circle':'fas fa-edit'}}" style="cursor:pointer;" ></i>{{ctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
+        </div>
+    </div>
+    <div class="small-height-wrapper">	
+        <table class="table-task" >
+            <tr>
+                <th>Место</th>
+                <th>Задание</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="routeTask in ctrl.claim.routeTasks| orderBy: 'orderNum'">
+                <td>{{routeTask.place.name}}</td>
+                <td>{{routeTask.workName}}</td>
+                <td>
+                    <i class="fas fa-times" ng-click="ctrl.removeRTask(routeTask)"></i>
+                    <i class="fas fa-edit" ng-click="ctrl.tryToUpdateRTask(routeTask)"></i>
+                </td>	 					
+            </tr>	 				
+        </table>
+    </div>
+    <div class="form-item">
+        <div class="right-block">	
+            <div class="btn edit" onclick="formClose('formTask')"><i class="fas fa-save"></i>Сохранить</div>
+        </div>    
+    </div>
+</div>

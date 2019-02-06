@@ -4,11 +4,11 @@
     </div>
     <fieldset>
         <ul>
-            <li><label><b class="fas fa-flag" ></b> Статус:<span class="status-info status-ready"><b>Готово</b></span></label></li>
+            <li><label><b class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(plctrl.appt.status)}}" ></b> Статус:<span class="status-info status-ready"><b>{{plctrl.apptStatus()}}</b></span></label></li>
         </ul>
     </fieldset>
     <fieldset>
         <legend>Примечание</legend>
-        <p>Готово к выполнению</p>
+        <p>{{plctrl.appt.note}}</p>
     </fieldset>
 </div> 

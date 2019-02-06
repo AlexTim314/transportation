@@ -19,7 +19,10 @@
             <table class="table-record"  id="tbl1" >
                 <tr class="header-level">
                     <th style="width: 3%;"></th>
-                    <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
+                    <th style="width: 97%;">
+                        ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ 
+                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" style="float: right;margin-right: 1%;" onclick="formOpen('form-add')"></i>
+                    </th>
                 </tr>
                 <tr>                           
                 <tr style = "cursor: pointer" ng-click="plctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in plctrl.headers| filter: searchClaim">
@@ -61,10 +64,11 @@
                                 </td> 
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
-                                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
                                 <td >
+                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.cerrectingRoute(clrec.claim)"></i>
                                     <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                                 </td>                                                         
 
@@ -93,7 +97,7 @@
                     <i class="fas fa-times" onclick="formClose('appt-note')"></i>
                 </div>
                 <fieldset style="min-height: 50px;">
-                    <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(ctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
+                    <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(plctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
                     <p>{{plctrl.appt.note}}</p>
                 </fieldset>                        
             </div>

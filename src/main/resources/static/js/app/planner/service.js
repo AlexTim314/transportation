@@ -241,6 +241,34 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            updateRoute: function (claim) {
+                return $http.put('/transportation/planner/route_update',
+                        JSON.stringify(claim), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating route');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            }, 
+            
+            updateTime: function (record) {
+                return $http.put('/transportation/planner/time_update',
+                        JSON.stringify(record), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating time');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             deleteAppointment: function (appointment) {
                 console.log(appointment);
