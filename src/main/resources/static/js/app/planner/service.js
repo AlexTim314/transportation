@@ -196,6 +196,18 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            fetchPlaces: function () {
+                return $http.get('/transportation/places')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching places');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             createAppointments: function (appointments) {
                 return $http.post('/transportation/planner/appointments_create',
@@ -240,7 +252,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             updateRoute: function (claim) {
                 return $http.put('/transportation/planner/route_update',
                         JSON.stringify(claim), {headers: self.headers})
@@ -253,8 +265,8 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                     return $q.reject(errResponse);
                                 }
                         );
-            }, 
-            
+            },
+
             updateTime: function (record) {
                 return $http.put('/transportation/planner/time_update',
                         JSON.stringify(record), {headers: self.headers})

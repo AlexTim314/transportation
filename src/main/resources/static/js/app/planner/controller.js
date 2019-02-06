@@ -25,6 +25,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appointments = [];
         self.transportDeps = [];
         self.vehicleModels = [];
+        self.places = [];
         self.today = false;
         self.week = false;
         self.all = false;
@@ -38,10 +39,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.inProgress;
         self.canceled;
         self.ready;
-        self.newStartTime;
-        self.newEndTime;
-        self.newEntranceTime;
-
+        self.workName = null;
+        self.tIds = 0;
         var expandedHeaders = [];
 
         self.fetchAllDepartments = function () {
@@ -247,6 +246,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleModels');
+                            }
+                    );
+        };
+
+        self.fetchPlaces = function () {
+            PlannerService.fetchPlaces()
+                    .then(
+                            function (d) {
+                                self.places = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Places');
                             }
                     );
         };
@@ -559,7 +570,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 var rec = d;
                                 var l = -1;
                                 var k = -1;
-                                ;
                                 for (var i = 0; i < self.headers.length; i++) {
                                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                                         if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
@@ -613,37 +623,138 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.correctingTime = function (rec) {
-            formOpen('correctTime');
+            console.log(rec);
             self.record = rec;
-           // self.newStartTime = new Date(rec.startDate);
-            //self.newEntranceTime = new Date(rec.entranceDate);
-           // self.newEndTime = new Date(rec.endDate);
-          //  console.log(self.newStartTime);
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            self.record.endDate = new Date(rec.endDate);
+            formOpen('correctTime');
         };
-        
+
         self.correctingRoute = function (clm) {
+            self.claim = clm;
             formOpen('formRoute');
 
         };
 
         self.updateTime = function () {
-            PlannerService.updateTime(rec)
+            console.log(self.record)
+            PlannerService.updateTime(self.record)
                     .then(
-                            
+                            function (d) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                for (var i = 0; i < self.headers.length; i++) {
+                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.headers[l].compositeClaimRecords[k].record = d;
+                            },
                             function (errResponse) {
                                 console.error('Error while updating Time');
                             }
                     );
         };
-        
+
         self.updateRoute = function () {
             PlannerService.updateRoute(clm)
                     .then(
-                            
                             function (errResponse) {
                                 console.error('Error while updating Route.');
                             }
                     );
+        };
+
+//        self.resetRTaskForm = function () {
+//            self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+//        };
+//        
+//        self.submitRTask = function () {
+//            if (self.routeTask.id === null && self.routeTask.orderNum === '') {
+//                self.addRTask();
+//            } else {
+//                self.updateRTask();
+//            }
+//            self.resetRTaskForm();
+//        };
+//        
+//        self.removeRTask = function (routeTask) {
+//            var k = -1;
+//            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+//                if (routeTask === self.claim.routeTasks[i]) {
+//                    k = i;
+//                    break;
+//                }
+//            }
+//            self.claim.routeTasks.splice(k, 1);
+//        };
+//        
+//        self.tryToUpdateRTask = function (routeTask) {
+//            self.routeTask.id = routeTask.id;
+//            self.routeTask.orderNum = routeTask.orderNum;
+//            self.routeTask.workName = routeTask.workName;
+//            self.routeTask.place = routeTask.place;
+//            self.routeTask.routeTemplate = routeTask.routeTemplate;
+//            self.temporaryRTask = routeTask;
+//        };
+//        
+//        self.addRTask = function () {
+//            var rt = {id: null};
+//            rt.orderNum = self.claim.routeTasks.length;
+//            rt.workName = self.routeTask.workName;
+//            rt.place = self.routeTask.place;
+//            rt.routeTemplate = self.routeTask.routeTemplate;
+//            self.claim.routeTasks.push(rt);
+//        };
+//        
+//        self.updateRTask = function () {
+//            self.removeRTask(self.temporaryRTask);
+//            var rt = {id: null};
+//            rt.orderNum = self.routeTask.orderNum;
+//            rt.workName = self.routeTask.workName;
+//            rt.place = self.routeTask.place;
+//            rt.routeTemplate = self.routeTask.routeTemplate;
+//            self.claim.routeTasks.push(rt);
+//        };
+
+        self.addTask = function (p) {
+            self.claim.routeTasks.push({id: null, place: p, workName: self.workName, tIds: self.tIds});
+            self.tIds++;
+            self.workName = null;
+        };
+        
+        self.removeTask = function (tsk) {
+            var k = -1;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (tsk.tIds === self.claim.routeTasks[i].tIds) {
+                    k = i;
+                    break;
+                }
+            }
+            self.claim.routeTasks.splice(k, 1);
+        };
+        
+        self.submit = function () {
+            if (self.routeTemplate.id === null) {
+                self.createRouteTemplate();
+            } else {
+                self.updateRouteTemplate();
+            }
+        };
+        
+        self.resetForm = function () {
+            self.workName = null;
+            self.routeTemplate = {id: null, name: null, routeTasks: []};
+            formClose('formRouteTemplate');
         };
 
     }]);

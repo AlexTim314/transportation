@@ -138,7 +138,7 @@ public class DispatcherService {
         return result;
     }
 
-    public Appointment updateAppointment(Appointment appointment) {
+    public Appointment updateAppointment(Principal principal,Appointment appointment) {
 //        appointment.setStatus(AppointmentStatus.READY);
 //        appointment.setNote("Транспорт и водитель назначены");
         appointmentRepository.save(appointment);
