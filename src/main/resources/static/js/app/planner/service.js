@@ -102,7 +102,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
             
-            printPlan: function (date) {
+           /* printPlan: function (date) {
                 return $http.post('/transportation/planner/plandownload',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
@@ -116,7 +116,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },            
-            
+            */
             
             fetchAllCompletePlanRecords: function () {
                 return $http.get('/transportation/planner/plannedClaims')

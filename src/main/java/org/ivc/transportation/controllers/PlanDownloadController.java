@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -51,6 +52,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -68,11 +70,12 @@ public class PlanDownloadController {
     @Autowired
     private ServletContext servletContext;
 
-    @GetMapping("planner/plandownload/")
+    @GetMapping("planner/plandownload/{date}")
     @ResponseBody
-    public FileSystemResource download(HttpServletResponse response) throws FileNotFoundException, IOException {
-        ZonedDateTime date = ZonedDateTime.now();
-        ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1);
+    public FileSystemResource download(HttpServletResponse response, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
+        
+        ZonedDateTime today = ZonedDateTime.now();        
+        ZonedDateTime purposeDate = ZonedDateTime.of(LocalDateTime.parse(strDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME), today.getZone());        
 
         System.out.println("plan.docx write");
 
@@ -121,7 +124,7 @@ public class PlanDownloadController {
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО        
-        textToParagraph(cell.addParagraph(), formateDate(date.toLocalDate()), 12, ParagraphAlignment.LEFT);
+        textToParagraph(cell.addParagraph(), formateDate(today.toLocalDate()), 12, ParagraphAlignment.LEFT);
         row.getCell(0).setWidth("65.00%");
         row.getCell(1).setWidth("35.00%");
 
@@ -130,7 +133,7 @@ public class PlanDownloadController {
         XWPFParagraph paragraph = document.createParagraph();
         paragraph.setSpacingBefore(200);
         textToParagraph(paragraph, "ПЛАН", "Times New Roman", 12, true, ParagraphAlignment.CENTER);
-        String planeDate = formateDate(tomorrow.toLocalDate());//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
+        String planeDate = formateDate(purposeDate.toLocalDate());//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
         textToParagraph(document.createParagraph(), "выхода автомобилей Комплекса автотранспортного обеспечения на "
                 + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
 
@@ -172,7 +175,7 @@ public class PlanDownloadController {
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, tomorrow);
+        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
 
         List<RowData> rowDataList = new LinkedList<>();
         for (Appointment a : appointments) {
@@ -370,7 +373,7 @@ public class PlanDownloadController {
 
         //-------------- отправка файла
         MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-        String fileName = "plan" + date.toLocalDate().toString() + ".docx";
+        String fileName = "plan" + today.toLocalDate().toString() + ".docx";
         MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
         response.setContentType(mediaType.getType());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
