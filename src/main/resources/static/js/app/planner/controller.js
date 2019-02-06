@@ -383,6 +383,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
+            console.log(self.compClRec);
             formOpen('more-claim-status');
         };
 
