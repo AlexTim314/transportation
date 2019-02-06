@@ -8,9 +8,6 @@ import org.ivc.transportation.entities.Place;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
-import org.ivc.transportation.repositories.ClaimRepository;
-import org.ivc.transportation.repositories.DepartmentRepository;
-import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.services.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,15 +22,6 @@ public class CommonController {
 
     @Autowired
     private CommonService commonService;
-
-    @Autowired
-    private RecordRepository rr;
-
-    @Autowired
-    private ClaimRepository cr;
-
-    @Autowired
-    private DepartmentRepository dr;
 
     @GetMapping("/transportDep")
     public TransportDep getTransportDep(Principal principal) {

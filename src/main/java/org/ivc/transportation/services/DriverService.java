@@ -71,11 +71,11 @@ public class DriverService {
     }
 
     private TransportDep getTransportDep(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
+        if (principal == null) {
+            return null;
         }
-        return null;
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
     }
 
 }
