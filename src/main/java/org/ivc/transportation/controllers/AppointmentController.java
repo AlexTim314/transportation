@@ -64,7 +64,7 @@ public class AppointmentController {
 
     @PutMapping("/dispatcher/appointment_update")
     public Appointment updateAppointment(Principal principal, @RequestBody Appointment appointment) {
-        return dispatcherService.updateAppointment(appointment);
+        return dispatcherService.updateAppointment(principal, appointment);
     }
 
     @PutMapping("/dispatcher/recordCancel")

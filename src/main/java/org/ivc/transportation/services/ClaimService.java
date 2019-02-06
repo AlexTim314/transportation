@@ -120,7 +120,7 @@ public class ClaimService {
         }
         app.setStatus(AppointmentStatus.CANCELED_BY_USER);
         app = appointmentRepository.save(app);
-        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
         record.getAppointments().add(app);
         return recordRepository.save(record);

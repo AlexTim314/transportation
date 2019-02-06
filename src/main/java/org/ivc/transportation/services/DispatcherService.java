@@ -125,6 +125,7 @@ public class DispatcherService {
         appointments.forEach(appt -> {
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
+            appt.setModificator(getUser(principal));
             appt = appointmentRepository.save(appt);
             updateClaimActual(appt);
             result.add(appt);
@@ -132,7 +133,7 @@ public class DispatcherService {
                     .save(new AppointmentInfo(LocalDateTime.now(),
                             appt.getStatus(),
                             appt.getNote(),
-                            appt));
+                            appt, getUser(principal)));
         });
         return result;
     }
@@ -145,7 +146,7 @@ public class DispatcherService {
                 .save(new AppointmentInfo(LocalDateTime.now(),
                         appointment.getStatus(),
                         appointment.getNote(),
-                        appointment));
+                        appointment, getUser(principal)));
         updateClaimActual(appointment);
         return appointment;
     }
@@ -170,7 +171,7 @@ public class DispatcherService {
         }
         app.setStatus(AppointmentStatus.CANCELED_BY_DISPATCHER);
         app = appointmentRepository.save(app);
-        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
         record.getAppointments().add(app);
         return recordRepository.save(record);
