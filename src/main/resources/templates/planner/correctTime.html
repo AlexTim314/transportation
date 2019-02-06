@@ -1,0 +1,20 @@
+<div class="formTransport" id="correctTime" style="width: 10%; min-width: 200px;"  xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('correctTime')"></i>
+    <div class="container" >
+        <div>
+            <label>Время подачи</label>
+            <input type="time" ng-model="plctrl.record.entranceDate">	
+        </div>	
+        <div>
+            <label>Время выезда</label>
+            <input type="time" ng-model="plctrl.record.startDate">
+        </div> 
+        <div> 	
+            <label>Время Возвращения</label>
+            <input type="time" ng-model="plctrl.record.endDate">
+        </div>  	
+    </div>
+    <div class="container">
+        <button type="button" class="btn edit" ng-click="plctrl.updateTime()"><i class="fas fa-edit"></i>Корректировать</button>
+    </div>
+</div>

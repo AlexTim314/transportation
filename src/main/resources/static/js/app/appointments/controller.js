@@ -154,7 +154,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        
+
         self.fetchVacantDrivers = function (app) {
             DispatcherService.fetchVacantDrivers(app)
                     .then(
@@ -178,7 +178,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        
+
         self.fetchVacantVehicles = function (app) {
             DispatcherService.fetchVacantVehicles(app)
                     .then(
@@ -214,7 +214,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
-        
+
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -302,23 +302,23 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.appoint = function (clrec) {
             self.clrec = clrec;
             self.fetchVacantDrivers(self.clrec.appointment);
-           // self.fetchVacantVehicles(self.clrec.appointment);
+            self.fetchVacantVehicles(self.clrec.appointment);
             formOpen('formAppointment');
         };
 
         self.downloadWaybill = function (appointment) {
-            
+
             window.open("/transportation/dispatcher/waybilldownload/" + appointment.id, "_self");
             //self.appointment = appointment;
-          /*  DispatcherService.downloadWaybill(appointment)
-                    .then(
-                            function (response) {
-                                return response.data;
-                            },
-                            function (errResponse) {
-                                console.error('Error while download waybill');
-                            }
-                    );*/
+            /*  DispatcherService.downloadWaybill(appointment)
+             .then(
+             function (response) {
+             return response.data;
+             },
+             function (errResponse) {
+             console.error('Error while download waybill');
+             }
+             );*/
         };
 
         self.moreInfoOpen = function (clrec) {
@@ -364,7 +364,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
