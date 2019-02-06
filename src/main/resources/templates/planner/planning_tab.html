@@ -31,9 +31,9 @@
                             <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
-                            <div title="Обработано"><i class="fas fa-check"></i>23</div>
-                            <div title="Не обработано"><i class="fas fa-clock"></i>12</div>
-                            <div title="Отменено"><i class="fas fa-ban"></i>3</div>
+                            <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
+                            <div title="Обрабатывается"><i class="fas fa-clock"></i>{{plctrl.amountInProgress(header)}}</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>{{plctrl.amountCanceled(header)}}</div>
                         </div>  
                     </td>
                 </tr>
@@ -51,7 +51,8 @@
                                 <th style="width:10% ">ОТС</th>
                                 <th style="width:15% ">Марка</th>
                                 <th style="width:5% ">Статус</th>
-                                <th style="width:5% "> </th>
+                                <th style="width:2.5% "> </th>
+                                <th style="width:2.5% "> </th>
                             </tr>
                             <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: 'startDate' | filter: searchClaim">
                                 <td class="td-relative">
@@ -76,6 +77,7 @@
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
+                                <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
                                 <td> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
                                 </td>

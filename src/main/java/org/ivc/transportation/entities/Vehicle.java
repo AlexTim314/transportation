@@ -58,10 +58,6 @@ public class Vehicle implements Serializable {
     @Column(name = "note", length = 255)
     private String note;
 
-    @Transient
-    @Column(name = "vacant", nullable = false)
-    private boolean vacant;
-
     @ManyToOne
     private VehicleModel model;
 
@@ -78,7 +74,6 @@ public class Vehicle implements Serializable {
         this.odometr = odometr;
         this.motohours = motohours;
         this.status = status;
-        this.vacant = vacant;
         this.model = model;
         this.transportDep = transportDep;
         this.note = note;

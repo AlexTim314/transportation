@@ -68,10 +68,6 @@ public class Driver implements Serializable {
     @Column(name = "note", length = 255)
     private String note;
 
-    @Transient
-    @Column(name = "vacant", nullable = false)
-    private boolean vacant;
-
     @ManyToOne
     private TransportDep transportDep;
 
@@ -81,7 +77,6 @@ public class Driver implements Serializable {
         this.birthday = birthday;
         this.address = address;
         this.phone = phone;
-        this.vacant = Boolean.TRUE;
         this.name = name;
         this.note = note;
         this.transportDep = transportDep;

@@ -31,9 +31,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.ctoday = false;
         self.cweek = false;
         self.call = false;
+        self.cancelNote = '';
         self.selectedIcon;
         self.type;
         self.date;
+        self.inProgress;
+        self.canceled;
+        self.ready;
 
         var expandedHeaders = [];
 
@@ -315,10 +319,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
                     var appointment = self.headers[i].compositeClaimRecords[j].appointment;
                     var recId = self.headers[i].compositeClaimRecords[j].record.id;
-                    if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") < 0) {
+                    if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -397,6 +401,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
+            console.log(self.compClRec);
             formOpen('more-claim-status');
         };
 
@@ -427,7 +432,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -435,8 +442,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
@@ -453,7 +464,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -471,7 +486,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -496,10 +515,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
-            if (appointment.status === 'CANCELED' && appointment.status.indexOf("Отменено пользователем. ") >= 0) {
+            if (appointment.status !== 'CANCELED_BY_DISPATCHER' && appointment.id !== null) {
                 return true;
             }
-            return appointment.status !== 'CANCELED' && appointment.id !== null;
         };
 
         var expandHeaders = function () {
@@ -518,6 +536,95 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.apptStatus = function () {
             var status = self.appt.status;
             return self.selectStatus(status);
+        };
+
+        self.prepareToCancel = function (rec) {
+            self.record.id = rec.id;
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            self.record.endDate = new Date(rec.endDate);
+            self.record.appointments = rec.appointments;
+
+            console.log(self.record);
+            formOpen('formCancel');
+        };
+
+        self.cancelRecord = function () {
+            var canceledApp = {};
+            if (self.record.appointments.length !== 0) {
+                var id = self.record.appointments[0].id;
+                canceledApp = self.record.appointments[0];
+                for (var i = 1; i < self.record.appointments.length; i++) {
+                    if (id < self.record.appointments[i].id) {
+                        id = self.record.appointments[i].id;
+                        canceledApp = self.record.appointments[i];
+                    }
+                }
+                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.note = self.cancelNote;
+            } else {
+                canceledApp = {id: null, creationDate: '', status: '', note: ''};
+                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.note = self.cancelNote;
+            }
+            console.log(canceledApp);
+            PlannerService.cancelRecord({recordId: self.record.id, appointment: canceledApp})
+                    .then(
+                            function (d) {
+                                var rec = d;
+                                var l = -1;
+                                var k = -1;
+                                ;
+                                for (var i = 0; i < self.headers.length; i++) {
+                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.headers[l].compositeClaimRecords[k].record = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while canceled Record.');
+                            }
+                    );
+        };
+
+        self.amountReady = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'READY') {
+                    k = k + 1;
+                }
+            }
+            return k;
+        };
+
+        self.amountInProgress = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
+                    k = k + 1;
+                }
+            }
+            return k;
+        };
+
+        self.amountCanceled = function (header) {
+            var k = 0;
+            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
+                if (header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
+                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_PLANNER' ||
+                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
+                    k = k + 1;
+                }
+            }
+            return k;
         };
 
     }]);

@@ -96,7 +96,9 @@ public class Claim implements Serializable {
         this.carBoss = claim.carBoss;
         this.creationDate = claim.creationDate;
         this.creator = claim.creator;
+        this.department = null;
         this.purpose = claim.purpose;
+        this.records = null;
         this.routeTasks = claim.routeTasks;
         this.specialization = claim.specialization;
         this.templateName = claim.templateName;

@@ -93,7 +93,7 @@
                     </label>
 
                     <div class="inp-btn clearfix">
-                        <input type="date"  name="date-begin" ng-model="ctrl.record.startDate" id="startDate" required >
+                        <input type="date"  name="date-begin" ng-model="ctrl.startDate" id="startDate" required >
                         <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "ctrl.addRec()"></span>
                     </div>							 		
                 </div>
@@ -130,8 +130,6 @@
             </div> 					
 
         </section>
-
-
         <div class="form-item">
             <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
         </div>

@@ -21,7 +21,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchAllClaims: function () {
                 return $http.get('/transportation/planner/claims')
                         .then(
@@ -34,7 +34,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchAllAppointments: function () {
                 return $http.get('/transportation/planner/appointments')
                         .then(
@@ -47,7 +47,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchAllPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims')
                         .then(
@@ -60,7 +60,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchWeekPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims/Week')
                         .then(
@@ -73,7 +73,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchTomorrowPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
                         .then(
@@ -86,14 +86,14 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchDatePlanRecords: function (date) {
                 return $http.post('/transportation/planner/affirmedClaims/Date',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Recs of date');
@@ -108,7 +108,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Recs of date');
@@ -130,7 +130,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchWeekCompletePlanRecords: function () {
                 return $http.get('/transportation/planner/plannedClaims/Week')
                         .then(
@@ -143,7 +143,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchTomorrowCompletePlanRecords: function () {
                 return $http.get('/transportation/planner/plannedClaims/Tomorrow')
                         .then(
@@ -156,14 +156,14 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchDateCompletePlanRecords: function (date) {
                 return $http.post('/transportation/planner/plannedClaims/Date',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Recs of date');
@@ -171,9 +171,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-            
-            
+
             fetchTransportDeps: function () {
                 return $http.get('/transportation/transportDeps')
                         .then(
@@ -186,7 +184,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchAllVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')
                         .then(
@@ -206,7 +204,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating appointments');
@@ -228,8 +226,21 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 //                                }
 //                        );
 //            },
-            
 
+            cancelRecord: function (cmpRec) {
+                console.log(cmpRec);
+                return $http.put('/transportation/planner/recordCancel',
+                        JSON.stringify(cmpRec), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while canceled record');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             deleteAppointment: function (appointment) {
                 console.log(appointment);

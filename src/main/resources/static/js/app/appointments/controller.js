@@ -22,6 +22,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.complHeaders = [];
         self.vehicles = [];
         self.drivers = [];
+        self.vacantDrivers = [];
+        self.vacantVehicles = [];
         self.claims = [];
         self.records = [];
         self.appointments = [];
@@ -152,6 +154,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+        
+        self.fetchVacantDrivers = function (app) {
+            DispatcherService.fetchVacantDrivers(app)
+                    .then(
+                            function (d) {
+                                self.vacantDrivers = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vacant Drivers');
+                            }
+                    );
+        };
 
         self.fetchVehicles = function () {
             DispatcherService.fetchVehicles()
@@ -161,6 +175,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vehicles');
+                            }
+                    );
+        };
+        
+        self.fetchVacantVehicles = function (app) {
+            DispatcherService.fetchVacantVehicles(app)
+                    .then(
+                            function (d) {
+                                self.vacantVehicles = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vacant Vehicles');
                             }
                     );
         };
@@ -188,6 +214,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
+        
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -274,6 +301,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.appoint = function (clrec) {
             self.clrec = clrec;
+            self.fetchVacantDrivers(self.clrec.appointment);
+           // self.fetchVacantVehicles(self.clrec.appointment);
             formOpen('formAppointment');
         };
 
@@ -324,7 +353,9 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -332,8 +363,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
@@ -350,7 +385,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -368,7 +407,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
