@@ -219,7 +219,6 @@ insert into Vehicle_Type(type_name, specialization) values('Внедорожни
     insert into Vehicle_Model(model_name, vehicle_type_id) values('SSANGYONG REXTON', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI SANTA FE', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('КИА СПОРТЭЙДЖ', (select id from Vehicle_Type where type_name='Внедорожник'));
-insert into Vehicle_Type(type_name, specialization) values('Представительский', 1);
 insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-2217', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN TEANA', (select id from Vehicle_Type where type_name='Городской'));
