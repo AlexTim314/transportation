@@ -34,6 +34,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.claimFromTemplateDate = '';
         self.cancelNote = '';
         self.minDate;
+        self.startDate;
 
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -174,6 +175,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             document.getElementById('entranceTime').value = "00:00";
             document.getElementById('startTime').value = "00:00";
             document.getElementById('endTime').value = "00:00";
+            self.startDate = new Date(today);
         };
 
         self.fetchNewClaims();
@@ -403,7 +405,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
         self.addRec = function () {
-            var sd = new Date(self.record.startDate);
+            var sd = new Date(self.startDate);
             if (sd === null) {
                 return;
             }
@@ -411,7 +413,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = new Date(sd);
+                    rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.record.endDate);
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
@@ -421,7 +423,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = new Date(sd);
+                rec.startDate = self.frmtDate(sd, self.record.startDate);
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
