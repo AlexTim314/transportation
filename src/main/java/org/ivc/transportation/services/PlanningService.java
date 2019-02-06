@@ -129,7 +129,7 @@ public class PlanningService {
             app.setNote("Заявка передана в транспортный отдел");
             app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
             app = appointmentRepository.save(app);
-            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
+            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app, getUser(principal)));
             Record rd = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
             rd.getAppointments().add(app);
             recordRepository.save(rd);
@@ -148,7 +148,7 @@ public class PlanningService {
         }
         app.setStatus(AppointmentStatus.CANCELED_BY_PLANNER);
         app = appointmentRepository.save(app);
-        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
         record.getAppointments().add(app);
         return recordRepository.save(record);
