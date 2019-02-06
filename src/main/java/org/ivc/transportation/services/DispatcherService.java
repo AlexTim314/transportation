@@ -142,7 +142,7 @@ public class DispatcherService {
         return result;
     }
 
-    public Appointment updateAppointment(Appointment appointment) {
+    public Appointment updateAppointment(Principal principal, Appointment appointment) {
 //        appointment.setStatus(AppointmentStatus.READY);
 //        appointment.setNote("Транспорт и водитель назначены");
         appointmentRepository.save(appointment);
@@ -155,9 +155,9 @@ public class DispatcherService {
         return appointment;
     }
 
-    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, ZonedDateTime date) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, LocalDate date) {
+        ZonedDateTime dStart = ZonedDateTime.of(date, LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(date, LocalTime.of(23, 59), ZoneId.systemDefault());
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
     }
 
