@@ -198,9 +198,11 @@ public class DispatcherService {
     public List<Vehicle> getVacantVehicles(Principal principal, Appointment appointment) {
         ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
         ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
-        Long modelId = appointment.getVehicleModel().getId();
-        List<Vehicle> vl = vehicleRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), modelId, dateStart, dateEnd);
-        return vl;
+        if (appointment.getVehicleModel() != null)
+            return vehicleRepository.findVacantByTransportDepIdWithModel(findTransportDepByUser(principal).getId(),
+                    appointment.getVehicleModel().getId(), dateStart, dateEnd);
+        else
+            return vehicleRepository.findVacantByTransportDepIdWithoutModel(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
     }
 
 }
