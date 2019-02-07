@@ -48,8 +48,8 @@ public class VehicleController {
     }
 
     @PostMapping("/dispatcher/vehicle_updateState")
-    public VehicleInfo updateVehicleStatus(@RequestBody VehicleInfo vehicleInfo) {
-        return vehicleService.updateVehicleStatus(vehicleInfo);
+    public VehicleInfo updateVehicleStatus(Principal principal, @RequestBody VehicleInfo vehicleInfo) {
+        return vehicleService.updateVehicleStatus(principal, vehicleInfo);
     }
 
     @PostMapping("/dispatcher/vehicle_refueling")
