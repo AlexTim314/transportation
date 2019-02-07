@@ -10,7 +10,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 
         return {
             fetchAllDepartments: function () {
-                return $http.get('/transportation/planner/departments')
+                return $http.get('/transportation/departments')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -60,6 +60,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchWeekPlanRecords: function () {
                 return $http.get('/transportation/planner/affirmedClaims/Week')
@@ -82,6 +95,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching tomorrowRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchBosses: function () {
+                return $http.get('/transportation/user/carBosses')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching bosses');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -277,6 +303,21 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 },
                                 function (errResponse) {
                                     console.error('Error while updating time');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            createClaim: function (claim) {
+                return $http.post('/transportation/planner/claim_create',
+                        JSON.stringify(claim), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating claim');
                                     return $q.reject(errResponse);
                                 }
                         );
