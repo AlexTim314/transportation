@@ -569,6 +569,9 @@ i{
 .route-tag span:hover{
 	color:black;
 }
+.ready-route .active-color{
+	background: #ff8989; 
+}
 .fuel-tag{
 	display: inline-block;
 }
@@ -770,7 +773,16 @@ i{
 	margin:5px; 
 	margin-bottom: 10px;
 	color:white;
-
+}
+.ready-route div{
+	display: inline-block;
+	background: var(--edit-btn-color1);
+	border-radius: 3px;
+	font-size: 0.8em;
+	padding:2px;
+	margin:5px; 
+	margin-bottom: 10px;
+	color:white;
 }
 .ready-route span i{
 	padding-left: 5px;
@@ -778,8 +790,7 @@ i{
 }
 .ready-route span i:hover{
 	color: #333;
-	cursor: pointer;
-	
+	cursor: pointer;	
 }
 .list-point li{
 	padding-top:5px;
