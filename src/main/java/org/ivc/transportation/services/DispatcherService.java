@@ -166,7 +166,6 @@ public class DispatcherService {
     }
 
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
-        System.out.println(compositeRecordIdAppointment);
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
             app.setCreationDate(LocalDateTime.now());
@@ -192,11 +191,7 @@ public class DispatcherService {
     public List<Driver> getVacantDrivers(Principal principal, Appointment appointment) {
         ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
         ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
-        System.out.println(dateStart);
-        System.out.println(dateEnd);
         List<Driver> dl = driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
-        dl.forEach(System.out::println);
-        System.out.println();
         return dl;
     }
 
@@ -204,11 +199,7 @@ public class DispatcherService {
         ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
         ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
         Long modelId = appointment.getVehicleModel().getId();
-        System.out.println(dateStart);
-        System.out.println(dateEnd);
         List<Vehicle> vl = vehicleRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), modelId, dateStart, dateEnd);
-        vl.forEach(System.out::println);
-        System.out.println();
         return vl;
     }
 

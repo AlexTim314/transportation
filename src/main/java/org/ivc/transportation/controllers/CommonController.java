@@ -1,6 +1,10 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
@@ -69,6 +73,11 @@ public class CommonController {
     @GetMapping("/vehicleModelsByTransportDep")
     public List<CompositeTransportDepVehicleModels> getVehicleModelsByTransportDep() {
         return commonService.findVehicleModelsByTransportDep();
+    }
+    
+    @GetMapping("/getNow")
+    public ZonedDateTime getNow() {
+        return ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
     }
 
 }

@@ -54,8 +54,11 @@ public class VehicleInfo implements Serializable {
 
     @ManyToOne
     private Vehicle vehicle;
+    
+    @ManyToOne
+    private AppUser modificator;
 
-    public VehicleInfo(LocalDateTime modificationDate, double fuel, double odometr, int motohours, VehicleStatus status, String note, Vehicle vehicle) {
+    public VehicleInfo(LocalDateTime modificationDate, double fuel, double odometr, int motohours, VehicleStatus status, String note, Vehicle vehicle, AppUser modificator) {
         this.modificationDate = modificationDate;
         this.fuel = fuel;
         this.odometr = odometr;
@@ -63,6 +66,7 @@ public class VehicleInfo implements Serializable {
         this.status = status;
         this.note = note;
         this.vehicle = vehicle;
+        this.modificator = modificator;
     }
 
 }

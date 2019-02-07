@@ -10,6 +10,7 @@ import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -93,6 +94,16 @@ public class PlanningController {
     @PutMapping("/planner/recordCancel")
     public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
         return planningService.recordCancel(principal, compositeRecordIdAppointment);
+    }
+    
+    @PutMapping("/planner/route_update")
+    public Claim updateRoute(@RequestBody Claim claim) {
+        return planningService.updateRoute(claim);
+    }
+
+    @PutMapping("/planner/time_update")
+    public Record updateTime(@RequestBody Record record) {
+        return planningService.updateTime(record);
     }
 
 }

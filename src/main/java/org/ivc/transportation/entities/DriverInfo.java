@@ -46,4 +46,8 @@ public class DriverInfo implements Serializable {
 
     @ManyToOne
     private Driver driver;
+    
+    @ManyToOne
+    private AppUser modificator;
+
 }

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.TransportDep;
@@ -75,7 +76,7 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
-    public VehicleInfo updateVehicleStatus(VehicleInfo vehicleInfo) {
+    public VehicleInfo updateVehicleStatus(Principal principal, VehicleInfo vehicleInfo) {
         Vehicle vehicle = vehicleInfo.getVehicle();
         vehicle.setFuel(vehicleInfo.getFuel());
         vehicle.setMotohours(vehicleInfo.getMotohours());
@@ -83,6 +84,7 @@ public class VehicleService {
         vehicle.setOdometr(vehicleInfo.getOdometr());
         vehicle.setStatus(vehicleInfo.getStatus());
         vehicleInfo.setModificationDate(LocalDateTime.now());
+        vehicleInfo.setModificator(getUser(principal));
         vehicleRepository.save(vehicle);
         return vehicleInfoRepository.save(vehicleInfo);
     }
@@ -103,6 +105,14 @@ public class VehicleService {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
+        }
+        return null;
+    }
+    
+    private AppUser getUser(Principal principal) {
+        if (principal != null) {
+            User loginedUser = (User) ((Authentication) principal).getPrincipal();
+            return userRepository.findByUsername(loginedUser.getUsername());
         }
         return null;
     }

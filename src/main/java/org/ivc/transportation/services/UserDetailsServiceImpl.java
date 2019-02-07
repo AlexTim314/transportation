@@ -28,11 +28,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         AppUser appUser = this.userRepository.findByUsername(username);
 
         if (appUser == null) {
-//            System.out.println("User not found! " + userName);
             throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
 
-//        System.out.println("Found User: " + appUser);
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (appUser.getRoles() != null) {
             appUser.getRoles().forEach(r -> {

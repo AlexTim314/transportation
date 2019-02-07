@@ -25,6 +25,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appointments = [];
         self.transportDeps = [];
         self.vehicleModels = [];
+        self.rTasks = [];
+        self.complRTasks = [];
         self.places = [];
         self.today = false;
         self.week = false;
@@ -41,6 +43,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.ready;
         self.workName = null;
         self.tIds = 0;
+        self.checkedTskNumb = 0;
         var expandedHeaders = [];
 
         self.fetchAllDepartments = function () {
@@ -309,6 +312,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
         self.getToday();
+        self.fetchPlaces();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -328,7 +332,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -633,7 +637,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.correctingTime = function (rec) {
-            console.log(rec);
             self.record = rec;
             self.record.startDate = new Date(rec.startDate);
             self.record.entranceDate = new Date(rec.entranceDate);
@@ -648,7 +651,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateTime = function () {
-            console.log(self.record)
             PlannerService.updateTime(self.record)
                     .then(
                             function (d) {
@@ -676,95 +678,87 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateRoute = function () {
-            PlannerService.updateRoute(clm)
+            PlannerService.updateRoute(self.claim)
                     .then(
+                            function (d) {
+                                var clm = d;
+                                var l = -1;
+                                var k = -1;
+                                for (var i = 0; i < self.headers.length; i++) {
+                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                                        if (self.headers[i].compositeClaimRecords[j].claim.id === clm.id) {
+                                            l = i;
+                                            k = j;
+                                            break;
+                                        }
+                                    }
+                                    if (k >= 0) {
+                                        break;
+                                    }
+                                }
+                                self.headers[l].compositeClaimRecords[k].claim = d;
+                            },
                             function (errResponse) {
-                                console.error('Error while updating Route.');
+                                console.error('Error while updating Claim.');
                             }
                     );
         };
 
-//        self.resetRTaskForm = function () {
-//            self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
-//        };
-//        
-//        self.submitRTask = function () {
-//            if (self.routeTask.id === null && self.routeTask.orderNum === '') {
-//                self.addRTask();
-//            } else {
-//                self.updateRTask();
-//            }
-//            self.resetRTaskForm();
-//        };
-//        
-//        self.removeRTask = function (routeTask) {
-//            var k = -1;
-//            for (var i = 0; i < self.claim.routeTasks.length; i++) {
-//                if (routeTask === self.claim.routeTasks[i]) {
-//                    k = i;
-//                    break;
-//                }
-//            }
-//            self.claim.routeTasks.splice(k, 1);
-//        };
-//        
-//        self.tryToUpdateRTask = function (routeTask) {
-//            self.routeTask.id = routeTask.id;
-//            self.routeTask.orderNum = routeTask.orderNum;
-//            self.routeTask.workName = routeTask.workName;
-//            self.routeTask.place = routeTask.place;
-//            self.routeTask.routeTemplate = routeTask.routeTemplate;
-//            self.temporaryRTask = routeTask;
-//        };
-//        
-//        self.addRTask = function () {
-//            var rt = {id: null};
-//            rt.orderNum = self.claim.routeTasks.length;
-//            rt.workName = self.routeTask.workName;
-//            rt.place = self.routeTask.place;
-//            rt.routeTemplate = self.routeTask.routeTemplate;
-//            self.claim.routeTasks.push(rt);
-//        };
-//        
-//        self.updateRTask = function () {
-//            self.removeRTask(self.temporaryRTask);
-//            var rt = {id: null};
-//            rt.orderNum = self.routeTask.orderNum;
-//            rt.workName = self.routeTask.workName;
-//            rt.place = self.routeTask.place;
-//            rt.routeTemplate = self.routeTask.routeTemplate;
-//            self.claim.routeTasks.push(rt);
-//        };
-
         self.addTask = function (p) {
-            self.claim.routeTasks.push({id: null, place: p, workName: self.workName, tIds: self.tIds});
-            self.tIds++;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (self.claim.routeTasks[i].orderNum > self.checkedTskNumb) {
+                    self.claim.routeTasks[i].orderNum = self.claim.routeTasks[i].orderNum + 1;
+                }
+            }
+            self.claim.routeTasks.push({id: null, place: p, workName: self.workName, orderNum: self.checkedTskNumb + 1});
             self.workName = null;
         };
-        
+
         self.removeTask = function (tsk) {
             var k = -1;
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
-                if (tsk.tIds === self.claim.routeTasks[i].tIds) {
+                if (tsk.orderNum === self.claim.routeTasks[i].orderNum) {
                     k = i;
                     break;
                 }
             }
             self.claim.routeTasks.splice(k, 1);
         };
-        
+
         self.submit = function () {
-            if (self.routeTemplate.id === null) {
-                self.createRouteTemplate();
-            } else {
-                self.updateRouteTemplate();
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                self.complRTasks.push(self.claim.routeTasks[i]);
+                for (var j = 0; j < self.rTasks.length; j++) {
+                    if (self.claim.routeTasks[i].orderNum === self.rTasks[j].orderNum) {
+                        self.complRTasks.push(self.rTasks[j]);
+                    }
+                }
             }
+            self.updateRoute();
+            formClose('formRoute');
         };
-        
+
         self.resetForm = function () {
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
-            formClose('formRouteTemplate');
+            formClose('formRoute');
+        };
+
+        self.checkTsk = function (tsk) {
+            self.checkedTskNumb = tsk.orderNum;
+            for (var i = 0; i < self.claim.routeTasks.length; i++) {
+                if (self.claim.routeTasks[i].checked) {
+                    self.claim.routeTasks[i].checked = false;
+                    break;
+                }
+            }
+            for (var j = 0; j < self.claim.routeTasks.length; j++) {
+                if (self.claim.routeTasks[j] === tsk) {
+                    self.claim.routeTasks[j].checked = true;
+                    self.claim.routeTasks[j] = tsk;
+                    break;
+                }
+            }
         };
 
     }]);
