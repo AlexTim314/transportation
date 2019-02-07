@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -73,9 +72,9 @@ public class PlanDownloadController {
     @GetMapping("planner/plandownload/{date}")
     @ResponseBody
     public FileSystemResource download(HttpServletResponse response, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
-        
-        ZonedDateTime today = ZonedDateTime.now();        
-        LocalDate purposeDate = LocalDate.parse(strDate, DateTimeFormatter.BASIC_ISO_DATE);        
+
+        ZonedDateTime today = ZonedDateTime.now();
+        LocalDate purposeDate = LocalDate.parse(strDate, DateTimeFormatter.BASIC_ISO_DATE);
 
         System.out.println("plan.docx write");
 
@@ -113,7 +112,7 @@ public class PlanDownloadController {
         table.setTopBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
         table.setLeftBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
         table.setRightBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
-        table.setInsideHBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
+        table.setInsideVBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
 
         XWPFTableRow row = table.getRow(0);
         XWPFTableCell cell = row.addNewTableCell();
@@ -152,7 +151,7 @@ public class PlanDownloadController {
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Гос. номер автомобиля",
                 "Times New Roman", fontSize, isBold, parAligCenter);
-        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "№\n ОТС",
+        textToParagraph(row.addNewTableCell().getParagraphs().get(0), "№ ОТС",
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Цели и задачи поездки",
                 "Times New Roman", fontSize, isBold, parAligCenter);
@@ -167,15 +166,13 @@ public class PlanDownloadController {
 
         setCellsWidth(row);
 
-        System.out.println("table widthtype " + table.getWidthType());
-        System.out.println("table width " + table.getWidth());
-
         CTHMerge hMergeRestart = CTHMerge.Factory.newInstance();
         hMergeRestart.setVal(STMerge.RESTART);
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
         List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
+        
 
         List<RowData> rowDataList = new LinkedList<>();
         for (Appointment a : appointments) {
@@ -215,114 +212,13 @@ public class PlanDownloadController {
 
         //-----------тестовые данные для проверки отображения
         if (appointments.isEmpty()) {
-            RowData rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-1";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Перевозка пассажиров";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "1";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-1";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Перевозка грузов";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "2";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-2";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Нужно поездить туда-сюда";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "4";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-2";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Нужно поездить туда-сюда";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "5";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-1";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Перевозка грузов";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "3";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-2";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Нужно поездить туда-сюда";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "6";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-2";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Нужно поездить туда-сюда";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "7";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-
-            rd = new RowData();
-            rd.carBoss = "Старший машины С.М.";
-            rd.departmentName = "ЦИ-2";
-            rd.driver = "Водитель В.В.";
-            rd.purposes = "Нужно поездить туда-сюда";
-            rd.route = "Пл.10, Пл. 95";
-            rd.time = "8:00-19:00";
-            rd.transportDepNumber = "8";
-            rd.vehicleModelName = "Газ 2121";
-            rd.vehicleNumber = "Е777КХ";
-
-            rowDataList.add(rd);
-        }//end-----------тестовые данные для проверки
-        rowDataList.sort((r1, r2) -> {
+            fullfillTestData(rowDataList);
+        }
+        //end-----------тестовые данные для проверки
+    /*    rowDataList.sort((r1, r2) -> {
             return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы формировала традиционный порядок
         });
-
+*/
         String currentDepName = "";
         int number = 1;
         for (RowData rowData : rowDataList) {
@@ -331,7 +227,7 @@ public class PlanDownloadController {
                 XWPFTableRow mergingRow = table.createRow();
                 System.out.println("mergingRow.isCantSplitRow" + mergingRow.isCantSplitRow());
                 textToParagraph(mergingRow.getCell(0).getParagraphs().get(0),
-                        currentDepName, "Times New Roman", 8, true, ParagraphAlignment.CENTER);                
+                        currentDepName, "Times New Roman", 8, true, ParagraphAlignment.CENTER);
                 mergingRow.getCell(0).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
                 for (int i = 1; i < mergingRow.getTableCells().size(); i++) {
                     mergingRow.getCell(i).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
@@ -340,7 +236,7 @@ public class PlanDownloadController {
 
             row = table.createRow();
             setCellsWidth(row);
-            setRowColor(row, getStrColorByTransportDep(rowData.transportDepNumber));
+           // setRowColor(row, getStrColorByTransportDep(rowData.transportDepNumber));
             isBold = true;
             fontSize = 8;
             ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
@@ -363,6 +259,16 @@ public class PlanDownloadController {
             textToParagraph(row.getCell(8).getParagraphs().get(0), rowData.driver,
                     "Times New Roman", fontSize, false, parAligLeft);
         }
+        
+        paragraph = document.createParagraph();
+        paragraph.setSpacingBefore(200);
+        textToParagraph(paragraph, "Заместитель начальника Комплекса АТО - начальник Службы"
+                + "                                                                              "
+                + "В.В. Гольц", "Times New Roman", 12, false, ParagraphAlignment.CENTER);
+       
+
+        
+        
 
         File file = File.createTempFile("plan", LocalDate.now().toString());
         FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -439,6 +345,114 @@ public class PlanDownloadController {
             default:
                 return "FFFFFF";
         }
+    }
+
+    private void fullfillTestData(List<RowData> rowDataList ) {
+
+        RowData rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-1";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Перевозка пассажиров";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "1";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-1";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Перевозка грузов";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "2";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "4";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "5";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-1";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Перевозка грузов";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "3";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "6";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "7";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
+        rd = new RowData();
+        rd.carBoss = "Старший машины С.М.";
+        rd.departmentName = "ЦИ-2";
+        rd.driver = "Водитель В.В.";
+        rd.purposes = "Нужно поездить туда-сюда";
+        rd.route = "Пл.10, Пл. 95";
+        rd.time = "8:00-19:00";
+        rd.transportDepNumber = "8";
+        rd.vehicleModelName = "Газ 2121";
+        rd.vehicleNumber = "Е777КХ";
+
+        rowDataList.add(rd);
+
     }
 
     private class RowData {

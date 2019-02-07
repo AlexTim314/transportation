@@ -285,17 +285,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             */
             var strDate = year + "" + month + "" + day;
             window.open("/transportation/planner/plandownload/" + strDate, "_self");
-
-
-            /*var datePlan = new Date(document.getElementById('date-plan').value);
-             PlannerService.printPlan(datePlan)
-             .then(
-             function () {                                
-             },
-             function (errResponse) {
-             console.error('Error while fetching Records of Day');
-             }
-             );*/
         };
 
         self.getToday = function () {
@@ -309,6 +298,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 day = "0" + day;
             var today = year + "-" + month + "-" + day;
             document.getElementById('date-plan').value = today;
+            document.getElementById('compl-date-plan').value = today;
             self.date = day + "." + month + "." + year;
         };
 
