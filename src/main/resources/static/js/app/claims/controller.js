@@ -639,10 +639,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (record.appointments.length === 0) {
                 return '-';
             }
-            var inProgress = 'Обрабатывается';
-            var ready = 'Готово';
-            var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var inProgress = ' обрабатывается';
+            var ready = ' готово';
+            var completed = ' завершено';
+            var canceled = ' отменено';
             var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {

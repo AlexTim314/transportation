@@ -27,7 +27,7 @@
                     </td>
                     <td>{{tmpl.name}}</td>
                     <td>
-                        <span class="route-tag" title="{{tsk.workName}}" ng-repeat="tsk in tmpl.routeTasks">{{tsk.place.name}}</span>
+                        <span class="route-tag" title="{{tsk.workName}}" ng-repeat="tsk in tmpl.routeTasks| orderBy: 'orderNum'">{{tsk.place.name}}</span>
                     <td>
                         <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(tmpl)" title="Изменить"></i>	
                     </td>
