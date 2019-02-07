@@ -266,8 +266,28 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.downloadPlan = function () {
-
-            window.open("/transportation/planner/plandownload/", "_self");
+            var datePlan = new Date(document.getElementById('compl-date-plan').value);            
+            var day = datePlan.getDate();
+            var month = datePlan.getMonth() + 1;
+            var year = datePlan.getFullYear();
+            
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            /*var hour = datePlan.getHours();
+            var minute = datePlan.getMinutes();            
+            var seconds = datePlan.getSeconds();
+            if (hour < 10)
+                hour = "0" + hour;
+            if (minute < 10)
+                minute = "0" + minute;
+            if (seconds < 10)
+                seconds = "0" + seconds;
+            var strDate = year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + seconds;
+            */
+            var strDate = year + "" + month + "" + day;
+            window.open("/transportation/planner/plandownload/" + strDate, "_self");
 
 
             /*var datePlan = new Date(document.getElementById('date-plan').value);

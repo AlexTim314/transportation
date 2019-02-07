@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -77,51 +78,54 @@ public class DispatcherService {
 
     public List<CompositeClaimRecord> getAppointments(Principal principal) {
         List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDep(findTransportDepByUser(principal).getId());
-        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        appointmentList.forEach(u -> result.add(
-                new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(u.getId())),
-                        recordRepository.findRecordByAppointmentId(u.getId()), u)
-        ));
-        return result;
+        return appointmentList.stream().map((app) -> {
+            return new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(app.getId())),
+                    recordRepository.findRecordByAppointmentId(app.getId()), app);
+        }).collect(Collectors.toList());
     }
 
     public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
-        List<Appointment> appointmentList = appointmentRepository.findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
-        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-        appointmentList.forEach(u -> result.add(
-                new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(u.getId())),
-                        recordRepository.findRecordByAppointmentId(u.getId()), u)
-        ));
-        return result;
+        List<Appointment> appointmentList = appointmentRepository
+                .findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+        return appointmentList.stream().map((app) -> {
+            return new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(app.getId())),
+                    recordRepository.findRecordByAppointmentId(app.getId()), app);
+        }).collect(Collectors.toList());
     }
 
     private TransportDep findTransportDepByUser(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
+        if (principal == null) {
+            return null;
         }
-        return null;
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
     }
 
+    /**
+     * Метод проверяет остались ли в заявке (Claim) невыполненные назначения
+     * (Appointment).
+     *
+     * @param appointment назначение по которому ищется заявка для проверки
+     */
     private void updateClaimActual(Appointment appointment) {
         Claim claim = claimRepository.findClaimByAppointmentId(appointment.getId());
-        List<Appointment> appList = new ArrayList<Appointment>();
-        claim.getRecords().forEach(u -> appList.add(appointmentRepository.getLastByRecordId(u.getId())));
-        boolean fl = true;
-        for (Appointment appt : appList) {
-            if (appt == null || appt.getStatus() != AppointmentStatus.COMPLETED) {
-                fl = false;
-                break;
-            }
+
+        if (claim.getRecords().stream().anyMatch(
+                (record) -> {
+                    Appointment appt = appointmentRepository.getLastByRecordId(record.getId());
+                    return (appt == null || appt.getStatus() != AppointmentStatus.COMPLETED);
+                }
+        )) { //если в заявке нашлось хоть одно назначение со статусом отличным от COMPLETED (или равная null), то  метод завершается
+            return;
         }
-        if (fl) {
-            claim.setActual(false);
-            claimRepository.save(claim);
-        }
+        //если все COMPLETED, то меняем статус Claim и обновляем базу.
+        claim.setActual(false);
+        claimRepository.save(claim);
+
     }
 
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
-        List<Appointment> result = new ArrayList<Appointment>();
+        List<Appointment> result = new ArrayList<>();
         appointments.forEach(appt -> {
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
@@ -138,7 +142,7 @@ public class DispatcherService {
         return result;
     }
 
-    public Appointment updateAppointment(Principal principal,Appointment appointment) {
+    public Appointment updateAppointment(Principal principal, Appointment appointment) {
 //        appointment.setStatus(AppointmentStatus.READY);
 //        appointment.setNote("Транспорт и водитель назначены");
         appointmentRepository.save(appointment);
@@ -151,9 +155,9 @@ public class DispatcherService {
         return appointment;
     }
 
-    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, ZonedDateTime date) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+    public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, LocalDate date) {
+        ZonedDateTime dStart = ZonedDateTime.of(date, LocalTime.of(0, 0), ZoneId.systemDefault());
+        ZonedDateTime dEnd = ZonedDateTime.of(date, LocalTime.of(23, 59), ZoneId.systemDefault());
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
     }
 

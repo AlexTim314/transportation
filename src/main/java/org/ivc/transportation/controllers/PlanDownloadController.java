@@ -5,15 +5,13 @@
  */
 package org.ivc.transportation.controllers;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -54,6 +52,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -71,11 +70,12 @@ public class PlanDownloadController {
     @Autowired
     private ServletContext servletContext;
 
-    @GetMapping("planner/plandownload/")
+    @GetMapping("planner/plandownload/{date}")
     @ResponseBody
-    public FileSystemResource download(HttpServletResponse response) throws FileNotFoundException, IOException {
-        ZonedDateTime date = ZonedDateTime.now();
-        ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1);
+    public FileSystemResource download(HttpServletResponse response, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
+        
+        ZonedDateTime today = ZonedDateTime.now();        
+        LocalDate purposeDate = LocalDate.parse(strDate, DateTimeFormatter.BASIC_ISO_DATE);        
 
         System.out.println("plan.docx write");
 
@@ -111,26 +111,29 @@ public class PlanDownloadController {
         XWPFTable table = document.createTable(1, 1);
         table.setBottomBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
         table.setTopBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
+        table.setLeftBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
+        table.setRightBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
+        table.setInsideHBorder(XWPFTable.XWPFBorderType.NONE, 0, 0, "FFFFFF");
 
         XWPFTableRow row = table.getRow(0);
         XWPFTableCell cell = row.addNewTableCell();
-        TableWidthType widthType = TableWidthType.DXA;
+        TableWidthType widthType = TableWidthType.PCT;
         table.setWidthType(widthType);
-        row.getCell(0).setWidth("20");
-        row.getCell(1).setWidth("10");
 
         textToParagraph(cell.getParagraphs().get(0), "УТВЕРЖДАЮ", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО        
-        textToParagraph(cell.addParagraph(), formateDate(date.toLocalDate()), 12, ParagraphAlignment.LEFT);
+        textToParagraph(cell.addParagraph(), formateDate(today.toLocalDate()), 12, ParagraphAlignment.LEFT);
+        row.getCell(0).setWidth("65.00%");
+        row.getCell(1).setWidth("35.00%");
 
         //END------------------ Шапка
         //---------------- Заполнение файла
         XWPFParagraph paragraph = document.createParagraph();
         paragraph.setSpacingBefore(200);
         textToParagraph(paragraph, "ПЛАН", "Times New Roman", 12, true, ParagraphAlignment.CENTER);
-        String planeDate = formateDate(tomorrow.toLocalDate());//TODO: Дата вычисляется прибавкой 1го дня, что не правильно для пятницы и для других назначений не на завтра
+        String planeDate = formateDate(purposeDate);
         textToParagraph(document.createParagraph(), "выхода автомобилей Комплекса автотранспортного обеспечения на "
                 + planeDate, "Times New Roman", 12, true, ParagraphAlignment.CENTER);
 
@@ -139,7 +142,7 @@ public class PlanDownloadController {
         table.setCellMargins(0, -10, 0, -10);
 
         row = table.getRow(0);
-        
+
         boolean isBold = true;
         int fontSize = 8;
         ParagraphAlignment parAligCenter = ParagraphAlignment.CENTER;
@@ -160,11 +163,7 @@ public class PlanDownloadController {
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Время выхода",
                 "Times New Roman", fontSize, isBold, parAligCenter);
         textToParagraph(row.addNewTableCell().getParagraphs().get(0), "Фамилия водителя",
-                "Times New Roman", fontSize, isBold, parAligCenter);        
-        
-
-        System.out.println("table widthtype " + table.getWidthType());
-        System.out.println("table width " + table.getWidth());
+                "Times New Roman", fontSize, isBold, parAligCenter);
 
         setCellsWidth(row);
 
@@ -176,9 +175,8 @@ public class PlanDownloadController {
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, tomorrow);
+        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
 
-        //TODO: оценить возможность формирования сущности запросом, или хоть разобраться с сортировкой средствами БД/JPA
         List<RowData> rowDataList = new LinkedList<>();
         for (Appointment a : appointments) {
             RowData rowData = new RowData();
@@ -224,7 +222,7 @@ public class PlanDownloadController {
             rd.purposes = "Перевозка пассажиров";
             rd.route = "Пл.10, Пл. 95";
             rd.time = "8:00-19:00";
-            rd.transportDepNumber = "4";
+            rd.transportDepNumber = "1";
             rd.vehicleModelName = "Газ 2121";
             rd.vehicleNumber = "Е777КХ";
 
@@ -237,7 +235,7 @@ public class PlanDownloadController {
             rd.purposes = "Перевозка грузов";
             rd.route = "Пл.10, Пл. 95";
             rd.time = "8:00-19:00";
-            rd.transportDepNumber = "4";
+            rd.transportDepNumber = "2";
             rd.vehicleModelName = "Газ 2121";
             rd.vehicleNumber = "Е777КХ";
 
@@ -263,15 +261,66 @@ public class PlanDownloadController {
             rd.purposes = "Нужно поездить туда-сюда";
             rd.route = "Пл.10, Пл. 95";
             rd.time = "8:00-19:00";
-            rd.transportDepNumber = "4";
+            rd.transportDepNumber = "5";
             rd.vehicleModelName = "Газ 2121";
             rd.vehicleNumber = "Е777КХ";
 
             rowDataList.add(rd);
 
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-1";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Перевозка грузов";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "3";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
+
+            rowDataList.add(rd);
+
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-2";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Нужно поездить туда-сюда";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "6";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
+
+            rowDataList.add(rd);
+
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-2";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Нужно поездить туда-сюда";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "7";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
+
+            rowDataList.add(rd);
+
+            rd = new RowData();
+            rd.carBoss = "Старший машины С.М.";
+            rd.departmentName = "ЦИ-2";
+            rd.driver = "Водитель В.В.";
+            rd.purposes = "Нужно поездить туда-сюда";
+            rd.route = "Пл.10, Пл. 95";
+            rd.time = "8:00-19:00";
+            rd.transportDepNumber = "8";
+            rd.vehicleModelName = "Газ 2121";
+            rd.vehicleNumber = "Е777КХ";
+
+            rowDataList.add(rd);
         }//end-----------тестовые данные для проверки
         rowDataList.sort((r1, r2) -> {
-            return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы сначала те, что должны быть первыми, потом алфавитный
+            return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы формировала традиционный порядок
         });
 
         String currentDepName = "";
@@ -280,16 +329,18 @@ public class PlanDownloadController {
             if (!currentDepName.equalsIgnoreCase(rowData.departmentName)) {
                 currentDepName = rowData.departmentName.toUpperCase();
                 XWPFTableRow mergingRow = table.createRow();
-                int index = mergingRow.getTableCells().size() - 1;
-
-                mergingRow.getCell(0).getCTTc().addNewTcPr().setHMerge(hMergeRestart);
-                mergingRow.getCell(index).getCTTc().addNewTcPr().setHMerge(hMergeContinue);
+                System.out.println("mergingRow.isCantSplitRow" + mergingRow.isCantSplitRow());
                 textToParagraph(mergingRow.getCell(0).getParagraphs().get(0),
-                        currentDepName, "Times New Roman", 8, true, ParagraphAlignment.CENTER);
-            };
+                        currentDepName, "Times New Roman", 8, true, ParagraphAlignment.CENTER);                
+                mergingRow.getCell(0).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
+                for (int i = 1; i < mergingRow.getTableCells().size(); i++) {
+                    mergingRow.getCell(i).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
+                }
+            }
 
             row = table.createRow();
             setCellsWidth(row);
+            setRowColor(row, getStrColorByTransportDep(rowData.transportDepNumber));
             isBold = true;
             fontSize = 8;
             ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
@@ -322,7 +373,7 @@ public class PlanDownloadController {
 
         //-------------- отправка файла
         MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-        String fileName = "plan" + date.toLocalDate().toString() + ".docx";
+        String fileName = "plan" + today.toLocalDate().toString() + ".docx";
         MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
         response.setContentType(mediaType.getType());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
@@ -352,15 +403,42 @@ public class PlanDownloadController {
     }
 
     private void setCellsWidth(XWPFTableRow row) {
-        row.getTableCells().get(0).setWidth("70");
-        row.getTableCells().get(1).setWidth("365");
-        row.getTableCells().get(2).setWidth("202");
-        row.getTableCells().get(3).setWidth("72");
-        row.getTableCells().get(4).setWidth("899");
-        row.getTableCells().get(5).setWidth("368");
-        row.getTableCells().get(6).setWidth("350");
-        row.getTableCells().get(7).setWidth("254");
-        row.getTableCells().get(8).setWidth("271");
+        row.getTableCells().get(0).setWidth("02.45%");
+        row.getTableCells().get(1).setWidth("12.80%");
+        row.getTableCells().get(2).setWidth("07.09%");
+        row.getTableCells().get(3).setWidth("02.53%");
+        row.getTableCells().get(4).setWidth("31.54%");
+        row.getTableCells().get(5).setWidth("12.91%");
+        row.getTableCells().get(6).setWidth("12.28%");
+        row.getTableCells().get(7).setWidth("08.91%");
+        row.getTableCells().get(8).setWidth("09.50%");
+    }
+
+    private void setRowColor(XWPFTableRow row, String color) {
+        row.getTableCells().forEach((cell) -> {
+            cell.setColor(color);
+        });
+    }
+
+    private String getStrColorByTransportDep(String transportDepNumber) {
+        switch (transportDepNumber) {
+            case "1":
+                return "00B040";
+            case "2":
+                return "90B0FF";
+            case "3":
+                return "FFB010";
+            case "4":
+                return "E0E010";
+            case "5":
+                return "90EE90";
+            case "6":
+            case "7":
+            case "8":
+                return "EEA0A0";
+            default:
+                return "FFFFFF";
+        }
     }
 
     private class RowData {
@@ -381,6 +459,7 @@ public class PlanDownloadController {
             ParagraphAlignment paragraphAlignment) {
         XWPFRun run = paragraph.createRun();
         paragraph.setAlignment(paragraphAlignment);
+        paragraph.setSpacingAfter(0);
         run.setFontFamily(fontFamily);
         run.setFontSize(fontSize);
         run.setBold(isBold);
@@ -389,11 +468,7 @@ public class PlanDownloadController {
 
     private void textToParagraph(XWPFParagraph paragraph, String text,
             int fontSize, ParagraphAlignment paragraphAlignment) {
-        XWPFRun run = paragraph.createRun();
-        paragraph.setAlignment(paragraphAlignment);
-        run.setFontFamily("Times New Roman");
-        run.setFontSize(fontSize);
-        run.setText(text);
+        textToParagraph(paragraph, text, "Times New Roman", fontSize, true, paragraphAlignment);
     }
 
 }
