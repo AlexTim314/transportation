@@ -35,8 +35,6 @@ public class ClaimController {
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
-//        System.out.println(dStart);
-//        System.out.println(dEnd);
         return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
     
@@ -44,10 +42,6 @@ public class ClaimController {
     public List<Claim> getAffirmedClaimsWeek(Principal principal) {
         ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
-//        System.out.println(dStart);
-//        System.out.println(dEnd);
-        System.out.println("Недельные подтвержденные заявки");
-        claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd).forEach(System.out::println);
         return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
     

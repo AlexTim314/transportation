@@ -110,7 +110,6 @@ public class ClaimService {
     }
 
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
-        System.out.println(compositeRecordIdAppointment);
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
             app.setCreationDate(LocalDateTime.now());
