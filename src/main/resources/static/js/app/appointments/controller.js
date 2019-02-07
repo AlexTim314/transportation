@@ -296,6 +296,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.resetAppForm = function () {
+            self.clrec.appointment.vehicle = null;
+            self.clrec.appointment.driver = null;
             formClose('formAppointment');
         };
 

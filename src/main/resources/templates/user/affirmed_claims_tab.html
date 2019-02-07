@@ -79,7 +79,7 @@
                                     {{ctrl.showDriver(record.appointments[record.appointments.length - 1])}}
                                 </td>
                                 <td>
-                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}" ng-click = "ctrl.showNote(record)"></i>
+                                    <i class="{{ctrl.statusClass(record)}}" title="{{ctrl.selectStatus(record)}}" ng-click = "ctrl.showNote(record)"></i> {{ctrl.selectStatus(record)}}
                                 </td> 
                                 <td><i class="fas fa-times" title="Отменить" ng-click="ctrl.prepareToCancel(record)" ng-show = "ctrl.showCancelIcon(record)"></i></td>          
                             </tr>

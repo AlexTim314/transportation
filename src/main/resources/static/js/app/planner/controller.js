@@ -298,17 +298,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
              */
             var strDate = year + "" + month + "" + day;
             window.open("/transportation/planner/plandownload/" + strDate, "_self");
-
-
-            /*var datePlan = new Date(document.getElementById('date-plan').value);
-             PlannerService.printPlan(datePlan)
-             .then(
-             function () {                                
-             },
-             function (errResponse) {
-             console.error('Error while fetching Records of Day');
-             }
-             );*/
         };
 
         self.getToday = function () {
@@ -384,7 +373,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.vehicleModel !== null && appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -685,7 +674,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.correctingTime = function (rec) {
-            console.log(rec);
             self.record = rec;
             self.record.startDate = new Date(rec.startDate);
             self.record.entranceDate = new Date(rec.entranceDate);
@@ -700,7 +688,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateTime = function () {
-            console.log(self.record)
             PlannerService.updateTime(self.record)
                     .then(
                             function (d) {
