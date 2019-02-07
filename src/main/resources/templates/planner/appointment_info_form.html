@@ -3,6 +3,27 @@
         <i class="fas fa-times" onclick="formClose('more-claim-status')"></i>
     </div>
     <fieldset>
+        <legend>Цель</legend>
+        <p>{{plctrl.compClRec.claim.purpose}}</p>
+    </fieldset>
+    <fieldset>
+        <legend>Водитель</legend>
+        <ul>
+            <li><label> ФИО<span>{{plctrl.compClRec.appointment.driver.firstname}} {{plctrl.compClRec.appointment.driver.name[0]}}.{{plctrl.compClRec.appointment.driver.surname[0]}}.</span></label></li>
+            <li><label> Телефон<span>{{plctrl.compClRec.appointment.driver.phone}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Транспортное средство</legend>
+        <ul>
+            <li><label> Модель<span>{{plctrl.compClRec.appointment.vehicleModel.modelName}}</span></label></li>
+            <li><label> Гос.№<span>{{plctrl.compClRec.appointment.vehicle.number}}</span></label></li>
+            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{plctrl.compClRec.appointment.vehicle.fuel}}</span></label></li>
+            <li><label><b class="fas fa-road"></b> Одометр,км:<span>{{plctrl.compClRec.appointment.vehicle.odometr}}</span></label></li>
+            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{plctrl.compClRec.appointment.vehicle.motohours}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
         <legend>Параметры</legend>
         <ul>
             <li><label></i> Дата Выезда<span>{{plctrl.compClRec.record.startDate| date:'dd.MM.yyyy'}}</span></label></li>
@@ -13,14 +34,10 @@
         </ul>
     </fieldset>
     <fieldset>
-        <legend>Цель</legend>
-        <p>{{plctrl.compClRec.claim.purpose}}</p>
-    </fieldset>
-    <fieldset>
         <legend>Назначено</legend>
         <ul>
-            <li><label > ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
-            <li><label > Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
+            <li><label> ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
+            <li><label> Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
         </ul>
     </fieldset>
 </div>

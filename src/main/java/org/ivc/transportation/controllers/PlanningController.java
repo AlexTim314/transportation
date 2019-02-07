@@ -2,17 +2,25 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
+import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,6 +89,21 @@ public class PlanningController {
     @PostMapping("/planner/appointments_create")
     public List<Record> createAppointments(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
         return planningService.createAppointments(principal, compositeRecordIdAppointment);
+    }
+    
+    @PutMapping("/planner/recordCancel")
+    public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        return planningService.recordCancel(principal, compositeRecordIdAppointment);
+    }
+    
+    @PutMapping("/planner/route_update")
+    public Claim updateRoute(@RequestBody Claim claim) {
+        return planningService.updateRoute(claim);
+    }
+
+    @PutMapping("/planner/time_update")
+    public Record updateTime(@RequestBody Record record) {
+        return planningService.updateTime(record);
     }
 
 }

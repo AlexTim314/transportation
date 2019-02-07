@@ -1,7 +1,5 @@
 package org.ivc.transportation.controllers;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,7 +43,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -129,6 +126,7 @@ public class WaybillFileDownloadController {
                         Cell c = getCell(workbook, name);
                         switch (namedCell) {
                             case серия:
+                                //TODO: узнать как формировать номер серии
                                 //c.setCellValue(waybill.getSeries());
                                 c.setCellValue("1 - ");
                                 break;
@@ -215,10 +213,9 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
-
-            // workbook.createSheet("доплер");
-            //String fileName = waybill.getSeries() + "_" + waybill.getNumber() + ".xls";
-            String fileName = "DownloadWaybill.xls";
+            
+            String fileName = "Путевой_" + dateTime.format(DateTimeFormatter.ofPattern("YYYY.MM.dd")) + "_id" + appointment.getId() + ".xls";
+            
             File file = File.createTempFile("waybill", specialization.name());
             
             FileOutputStream fileOutputStream = new FileOutputStream(file);

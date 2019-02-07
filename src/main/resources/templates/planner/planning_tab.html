@@ -19,7 +19,10 @@
             <table class="table-record"  id="tbl1" >
                 <tr class="header-level">
                     <th style="width: 3%;"></th>
-                    <th style="width: 97%;">ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ</th>
+                    <th style="width: 97%;">
+                        ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ 
+                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" style="float: right;margin-right: 1%;" onclick="formOpen('form-add')"></i>
+                    </th>
                 </tr>
                 <tr>                           
                 <tr style = "cursor: pointer" ng-click="plctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in plctrl.headers| filter: searchClaim">
@@ -31,9 +34,9 @@
                             <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
-                            <div title="Обработано"><i class="fas fa-check"></i>23</div>
-                            <div title="Не обработано"><i class="fas fa-clock"></i>12</div>
-                            <div title="Отменено"><i class="fas fa-ban"></i>3</div>
+                            <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
+                            <div title="Обрабатывается"><i class="fas fa-clock"></i>{{plctrl.amountInProgress(header)}}</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>{{plctrl.amountCanceled(header)}}</div>
                         </div>  
                     </td>
                 </tr>
@@ -51,7 +54,8 @@
                                 <th style="width:10% ">ОТС</th>
                                 <th style="width:15% ">Марка</th>
                                 <th style="width:5% ">Статус</th>
-                                <th style="width:5% "> </th>
+                                <th style="width:2.5% "> </th>
+                                <th style="width:2.5% "> </th>
                             </tr>
                             <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: 'startDate' | filter: searchClaim">
                                 <td class="td-relative">
@@ -60,10 +64,11 @@
                                 </td> 
                                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
-                                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
                                 <td >
+                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
                                     <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                                 </td>                                                         
 
@@ -76,6 +81,7 @@
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
+                                <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
                                 <td> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
                                 </td>
@@ -91,7 +97,7 @@
                     <i class="fas fa-times" onclick="formClose('appt-note')"></i>
                 </div>
                 <fieldset style="min-height: 50px;">
-                    <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(ctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
+                    <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(plctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
                     <p>{{plctrl.appt.note}}</p>
                 </fieldset>                        
             </div>

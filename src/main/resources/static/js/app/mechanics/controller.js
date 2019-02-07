@@ -87,9 +87,24 @@ App.controller('MechanicsController', ['$scope', 'MechanicsService',
             }
         };
 
+        self.setBirthday = function () {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear() - 18;
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            var maxDay = year + "-" + month + "-" + day;
+            document.getElementById('birthday').value = maxDay;
+            document.getElementById('birthday').max = maxDay;
+        };
+
         self.tryToCreate = function () {
             self.mechanic = {id: null};
             formOpen('formMechanic');
+            self.setBirthday();
         };
 
         self.tryToUpdate = function (mechanic) {

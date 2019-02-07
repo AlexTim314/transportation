@@ -33,6 +33,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.allday = false;
         self.claimFromTemplateDate = '';
         self.cancelNote = '';
+        self.minDate;
+        self.startDate;
 
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
@@ -169,6 +171,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 day = "0" + day;
             var today = year + "-" + month + "-" + day;
             document.getElementById('startDate').value = today;
+            document.getElementById('startDate').min = today;
+            document.getElementById('entranceTime').value = "00:00";
+            document.getElementById('startTime').value = "00:00";
+            document.getElementById('endTime').value = "00:00";
+            self.startDate = new Date(today);
         };
 
         self.fetchNewClaims();
@@ -344,11 +351,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         canceledApp = self.record.appointments[i];
                     }
                 }
-                canceledApp.status = 'CANCELED';
+                canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             } else {
                 canceledApp = {id: null, creationDate: '', status: '', note: ''};
-                canceledApp.status = 'CANCELED';
+                canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
             console.log(canceledApp);
@@ -398,7 +405,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             return result;
         };
         self.addRec = function () {
-            var sd = new Date(self.record.startDate);
+            var sd = new Date(self.startDate);
             if (sd === null) {
                 return;
             }
@@ -406,7 +413,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = new Date(sd);
+                    rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.record.endDate);
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
@@ -416,7 +423,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = new Date(sd);
+                rec.startDate = self.frmtDate(sd, self.record.startDate);
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
@@ -630,7 +637,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
@@ -639,10 +650,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (record.appointments.length === 0) {
                 return '-';
             }
-            var inProgress = ' обрабатывается';
-            var ready = ' готово';
-            var completed = ' завершено';
-            var canceled = ' отменено';
+            var inProgress = 'Обрабатывается';
+            var ready = 'Готово';
+            var completed = 'Завершено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
@@ -658,8 +671,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 
@@ -675,10 +692,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
+                case 'CANCELED_BY_USER':
+                    return canceled;
+                case 'CANCELED_BY_PLANNER':
+                    return canceled;
+                case 'CANCELED_BY_DISPATCHER':
                     return canceled;
             }
         };
+        
 
         self.statusClass = function (record) {
             if (record.appointments.length === 0) {
@@ -701,7 +723,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
             var completed = 'Завершено';
-            var canceled = 'Отменено';
+            var canceledByUser = 'Отменено пользователем';
+            var canceledByPlanner = 'Отменено планировщиком';
+            var canceledByDispatcher = 'Отменено диспетчером';
             var stat = self.appt.status;
             switch (stat) {
                 case 'IN_PROGRESS':
@@ -710,8 +734,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return ready;
                 case 'COMPLETED':
                     return completed;
-                case 'CANCELED':
-                    return canceled;
+                case 'CANCELED_BY_USER':
+                    return canceledByUser ;
+                case 'CANCELED_BY_PLANNER':
+                    return canceledByPlanner;
+                case 'CANCELED_BY_DISPATCHER':
+                    return canceledByDispatcher;
             }
         };
 

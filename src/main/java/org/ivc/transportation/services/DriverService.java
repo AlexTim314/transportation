@@ -3,6 +3,7 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.DriverInfo;
@@ -56,10 +57,11 @@ public class DriverService {
         return driverRepository.save(driver);
     }
 
-    public DriverInfo updateDriverStatus(DriverInfo driverInfo) {
+    public DriverInfo updateDriverStatus(Principal principal, DriverInfo driverInfo) {
         Driver driver = driverInfo.getDriver();
         driver.setNote(driverInfo.getNote());
         driver.setStatus(driverInfo.getStatus());
+        driverInfo.setModificator(getUser(principal));
         driverInfo.setModificationDate(LocalDateTime.now());
         driverRepository.save(driver);
         return driverInfoRepository.save(driverInfo);
@@ -71,11 +73,18 @@ public class DriverService {
     }
 
     private TransportDep getTransportDep(Principal principal) {
+        if (principal == null) {
+            return null;
+        }
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
+    }
+    
+    private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getTransportDep();
+            return userRepository.findByUsername(loginedUser.getUsername());
         }
         return null;
     }
-
 }

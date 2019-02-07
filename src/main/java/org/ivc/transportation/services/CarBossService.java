@@ -43,11 +43,10 @@ public class CarBossService {
     }
 
     private Department getDepartment(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
-        }
-        return null;
+        if (principal == null) { return null; }
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+
     }
 
 }

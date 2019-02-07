@@ -2,7 +2,7 @@ package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,11 +73,11 @@ public class Claim implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "claim_id")
-    private Set<Record> records;
+    private List<Record> records;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "claim_id")
-    private Set<RouteTask> routeTasks;
+    private List<RouteTask> routeTasks;
 
     public Claim(VehicleSpecialization specialization, CarBoss carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
         this.specialization = specialization;
@@ -90,13 +90,16 @@ public class Claim implements Serializable {
     }
     
     public Claim(Claim claim) {
+        this.id = claim.id;
         this.actual = claim.actual;
         this.affirmationDate = claim.affirmationDate;
         this.affirmator = claim.affirmator;
         this.carBoss = claim.carBoss;
         this.creationDate = claim.creationDate;
         this.creator = claim.creator;
+        this.department = null;
         this.purpose = claim.purpose;
+        this.records = null;
         this.routeTasks = claim.routeTasks;
         this.specialization = claim.specialization;
         this.templateName = claim.templateName;

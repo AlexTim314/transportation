@@ -41,8 +41,8 @@ public class DriverController {
     }
 
     @PostMapping("/dispatcher/driver_updateState")
-    public DriverInfo updateDriverStatus(@RequestBody DriverInfo driverInfo) {
-        return driverService.updateDriverStatus(driverInfo);
+    public DriverInfo updateDriverStatus(Principal principal, @RequestBody DriverInfo driverInfo) {
+        return driverService.updateDriverStatus(principal, driverInfo);
     }
 
     @DeleteMapping("/dispatcher/driver_delete")

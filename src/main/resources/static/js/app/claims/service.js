@@ -170,7 +170,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             }, 
 
             affirmClaims: function (affIds) {
-                return $http.put('/transportation/user/claims_affirm',
+                return $http.put('/transportation/manager/claims_affirm',
                         JSON.stringify(affIds), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -185,7 +185,7 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             
             cancelAffRecord:  function (cmpRec) {
                 console.log(cmpRec);
-                return $http.put('/transportation/user/recordCancel',
+                return $http.put('/transportation/manager/recordCancel',
                         JSON.stringify(cmpRec), {headers: self.headers})
                         .then(
                                 function (response) {

@@ -1,40 +1,13 @@
 <div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
     <i class="fas fa-times" ng-click="ctrl.resetClaimForm()" onclick="menu_close()"></i>
     <form>
-        <!-- Для создания по шаблону -->
-        <section  class="section-template">
-            <div class="form-item clearfix" >
-
-                <div class="left-block">
-                    <label>Название шаблона</label>                    
-                    <select name="template" ng-options="tn.templateName for tn in ctrl.claimTemplates"   ng-model="tn" ng-change="ctrl.prepearClaimFromTemplate(tn)">
-                        <option value="" disabled selected><--Не выбрано--></option>
-                    </select>
-                </div>
-
-
-                <div class="right-block-tempate" >
-                    <label>Дата</label>
-                    <input type="date"  ng-model="ctrl.claimFromTemplateDate" ng-change="ctrl.prepearClaimFromTemplate(tn)"></input>
-                </div>
-
-            </div> 
-        </section>
-        <section  class="section-template">
-            <div class="form-item clearfix" >
-                <label>Название шаблона</label>
-                <input type="text" ng-model="ctrl.claim.templateName"></input>
-            </div> 
-        </section>
-
         <section class="section-type">
             <div class="form-item">
                 <div class="check-item" > 
-                    <label class="custom-checkbox">
-                        по требованию
-                        <input type="checkbox" id="check-hidden1" onclick="checkHidden()">
-                        <span class="checkmark"></span>
-                    </label>
+                     <label for="department">Подразделение</label>
+                         <select name="department" ng-options="dep as dep.shortname for dep in plctrl.departments" ng-model="plctrl.department" required>
+                        <option value="" disabled selected><--Выберите подразделение--></option>
+                    </select>
                 </div>	
             </div>
             <div class="form-item clearfix" >
@@ -131,7 +104,7 @@
 
         </section>
         <div class="form-item">
-            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
+            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()">Добавить</button>
         </div>
 
     </form>

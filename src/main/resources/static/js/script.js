@@ -301,6 +301,7 @@ for (i = 1; i < elements.length; i++) {
 //    });
 //}
 
+
 fasttab = function () {
     var fast_element = getElementsByClassName('fast-filter');
     var elements = fast_element.getElementsByClassName('filter-elem');

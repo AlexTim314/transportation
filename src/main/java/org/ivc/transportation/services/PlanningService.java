@@ -11,17 +11,20 @@ import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
+import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -53,6 +56,9 @@ public class PlanningService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+    @Autowired
+    private RouteTaskRepository routeTaskRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -128,7 +134,7 @@ public class PlanningService {
             app.setNote("Заявка передана в транспортный отдел");
             app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
             app = appointmentRepository.save(app);
-            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app));
+            appointmentInfoRepository.save(new AppointmentInfo(app.getCreationDate(), app.getStatus(), app.getNote(), app, getUser(principal)));
             Record rd = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
             rd.getAppointments().add(app);
             recordRepository.save(rd);
@@ -136,7 +142,23 @@ public class PlanningService {
         }
         return result;
     }
-
+    
+    public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        System.out.println(compositeRecordIdAppointment);
+        Appointment app = compositeRecordIdAppointment.getAppointment();
+        if (app.getId() == null) {
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(getUser(principal));
+            app.setNote(PLANNER_CANCEL_STR + app.getNote());
+        }
+        app.setStatus(AppointmentStatus.CANCELED_BY_PLANNER);
+        app = appointmentRepository.save(app);
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
+        Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
+        record.getAppointments().add(app);
+        return recordRepository.save(record);
+    }
+    
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -145,4 +167,20 @@ public class PlanningService {
         return null;
     }
 
+    public Claim updateRoute(Claim claim) {
+        routeTaskRepository.deleteByClaimId(claim.getId());
+        Claim tempClaim = claimRepository.findById(claim.getId()).get();
+        List<RouteTask> tempRouteTasks = routeTaskRepository.saveAll(claim.getRouteTasks());
+        tempClaim.setRouteTasks(tempRouteTasks);
+        claimRepository.save(tempClaim);
+        return new Claim(tempClaim);
+    }
+
+    public Record updateTime(Record record) {
+        Record tempRecord = recordRepository.findById(record.getId()).get();
+        tempRecord.setEntranceDate(record.getEntranceDate());
+        tempRecord.setStartDate(record.getStartDate());
+        tempRecord.setEndDate(record.getEndDate());
+        return recordRepository.save(tempRecord);
+    }
 }

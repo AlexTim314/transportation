@@ -76,7 +76,7 @@ public class ClaimController {
         return claimService.saveClaim(principal, claim);
     }
     
-    @PutMapping("/user/claims_affirm")
+    @PutMapping("/manager/claims_affirm")
     public ResponseEntity<String> affirmClaims(Principal principal, @RequestBody List<Long> claimIds) {
         claimService.affirmClaims(principal, claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -88,7 +88,7 @@ public class ClaimController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/user/recordCancel")
+    @PutMapping("/manager/recordCancel")
     public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
         return claimService.recordCancel(principal, compositeRecordIdAppointment);
     }

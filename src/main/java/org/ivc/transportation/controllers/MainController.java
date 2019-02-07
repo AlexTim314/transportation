@@ -94,7 +94,7 @@ public class MainController {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
 
             Department department = userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
-            if (department.getId() != id) {
+            if (Long.compare(department.getId(), id) != 0) {
                 return accessDenied(model, principal);
             }
             String userInfo = WebUtils.toString(loginedUser);
@@ -117,6 +117,7 @@ public class MainController {
     @RequestMapping(value = "/transportDepsShow", method = RequestMethod.GET)
     public String getAllTransportDeps(Model model, Principal principal) {
         if (principal != null) {
+            //TODO: выяснить, нужно ли тут это присваивание
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return "transportDepPage";
         }
@@ -126,6 +127,7 @@ public class MainController {
     @RequestMapping(value = "/addDepClaimShow", method = RequestMethod.GET)
     public String getDepClaims(Model model, Principal principal) {
         if (principal != null) {
+            //TODO: выяснить, нужно ли тут это присваивание
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return "addingClaimsPage";
         }
@@ -135,6 +137,7 @@ public class MainController {
     @RequestMapping(value = "/addWaypointsShow", method = RequestMethod.GET)
     public String getWaypointsShow(Model model, Principal principal) {
         if (principal != null) {
+            //TODO: выяснить, нужно ли тут это присваивание
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return "waypointsPage";
         }
@@ -153,6 +156,7 @@ public class MainController {
     @RequestMapping(value = "/plan", method = RequestMethod.GET)
     public String getPlanPage(Model model, Principal principal) {
         if (principal != null) {
+            //TODO: выяснить, нужно ли тут это присваивание
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return "plan";
         }

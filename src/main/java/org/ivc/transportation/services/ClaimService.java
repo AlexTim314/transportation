@@ -18,7 +18,6 @@ import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
-import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.USER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,15 +110,16 @@ public class ClaimService {
     }
 
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
+        System.out.println(compositeRecordIdAppointment);
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
             app.setCreationDate(LocalDateTime.now());
             app.setCreator(getUser(principal));
             app.setNote(USER_CANCEL_STR + app.getNote());
         }
-        app.setStatus(AppointmentStatus.CANCELED);
+        app.setStatus(AppointmentStatus.CANCELED_BY_USER);
         app = appointmentRepository.save(app);
-        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app));
+        appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
         Record record = recordRepository.findById(compositeRecordIdAppointment.getRecordId()).get();
         record.getAppointments().add(app);
         return recordRepository.save(record);
@@ -142,19 +142,19 @@ public class ClaimService {
     }
 
     private Department getDepartment(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+        if (principal == null) {
+            return null;
         }
-        return null;
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
     }
 
     private AppUser getUser(Principal principal) {
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-            return userRepository.findByUsername(loginedUser.getUsername());
+        if (principal == null) {
+            return null;
         }
-        return null;
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername());
     }
 
 }
