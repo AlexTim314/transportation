@@ -194,7 +194,7 @@ public class PlanDownloadController {
             rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
 
             String route = "";
-            Set<RouteTask> routeTasks = claim.getRouteTasks();
+            List<RouteTask> routeTasks = claim.getRouteTasks();
             if (!routeTasks.isEmpty()) {
                 List<RouteTask> routeTaskList = routeTasks.stream().sorted((t1, t2) -> {
                     return Integer.compare(t1.getOrderNum(), t2.getOrderNum());

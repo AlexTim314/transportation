@@ -11,11 +11,13 @@ import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -54,6 +56,9 @@ public class PlanningService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
+    @Autowired
+    private RouteTaskRepository routeTaskRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -162,4 +167,20 @@ public class PlanningService {
         return null;
     }
 
+    public Claim updateRoute(Claim claim) {
+        routeTaskRepository.deleteByClaimId(claim.getId());
+        Claim tempClaim = claimRepository.findById(claim.getId()).get();
+        List<RouteTask> tempRouteTasks = routeTaskRepository.saveAll(claim.getRouteTasks());
+        tempClaim.setRouteTasks(tempRouteTasks);
+        claimRepository.save(tempClaim);
+        return new Claim(tempClaim);
+    }
+
+    public Record updateTime(Record record) {
+        Record tempRecord = recordRepository.findById(record.getId()).get();
+        tempRecord.setEntranceDate(record.getEntranceDate());
+        tempRecord.setStartDate(record.getStartDate());
+        tempRecord.setEndDate(record.getEndDate());
+        return recordRepository.save(tempRecord);
+    }
 }
