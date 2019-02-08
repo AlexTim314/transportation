@@ -572,7 +572,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         }
                     }
                     var date = new Date(claim.records[index].startDate);
-                    var datesDiff = self.claimFromTemplateDate.getDate() - date.getDate();
+                    var timeDiff = self.claimFromTemplateDate.getTime()- date.getTime();
+                    var datesDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
                     self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
                     self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
