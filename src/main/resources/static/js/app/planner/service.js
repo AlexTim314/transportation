@@ -223,6 +223,18 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            fetchDateFromServer: function () {
+                return $http.get('/transportation/getNow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching date from server');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             fetchPlaces: function () {
                 return $http.get('/transportation/places')
                         .then(

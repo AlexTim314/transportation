@@ -9,6 +9,7 @@ App.controller('DriversController', ['$scope', 'DriversService',
         self.driver = {id: null};
         self.driverInfo = {id: null};
         self.drivers = [];
+        self.today;
 
         self.fetchTransportDep = function () {
             DriversService.fetchTransportDep()
@@ -34,8 +35,20 @@ App.controller('DriversController', ['$scope', 'DriversService',
                     );
         };
 
+        self.getDateFromServer = function () {
+            ClaimsService.fetchDateFromServer()
+                    .then(
+                            function (d) {
+                                self.today = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching NewClaims');
+                            }
+                    );
+        };
+
         self.setBirthday = function () {
-            var date = new Date();
+            var date = new Date(self.today);
             var day = date.getDate();
             var month = date.getMonth() + 1;
             var year = date.getFullYear() - 18;
