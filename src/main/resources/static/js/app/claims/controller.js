@@ -36,6 +36,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.minDate;
         self.startDate;
 
+        self.permit = false;
+
+        self.getPermit = function () {
+            ClaimsService.getPermit()
+                    .then(
+                            function (d) {
+                                self.permit = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Permit');
+                            }
+                    );
+        };
+
+        self.getPermit();
+
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -580,7 +596,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 templateEditOpen();
             }
         };
-        
+
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
@@ -589,7 +605,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
-        
+
         self.updateRTask = function () {
             self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
@@ -599,7 +615,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.claim.routeTasks.push(rt);
         };
-        
+
         self.submitRTask = function () {
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
@@ -608,7 +624,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetRTaskForm();
         };
-        
+
         self.submitClaim = function () {
             if (self.validateForm()) {
                 return;
@@ -620,7 +636,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
-        
+
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -672,7 +688,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
@@ -700,7 +716,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
             }
         };
-        
+
 
         self.statusClass = function (record) {
             if (record.appointments.length === 0) {
@@ -735,7 +751,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
@@ -800,6 +816,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.showCancelIcon = function (record) {
+            if (!self.permit) {
+                return false;
+            }
             if (record.appointments.length === 0) {
                 return true;
             }

@@ -46,26 +46,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        http.csrf().disable();
         // The pages does not require login        
-        http.authorizeRequests().antMatchers("/login", "/logout", "/claims/byDepartment").permitAll();
+        http.authorizeRequests().antMatchers("/", "/welcome", "/login", "/logout", "/resources/**").permitAll();
 
-        // /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
-        // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')");
 
-        //следующие две строки кода обеспечивают лишь авторизованный доступ по
-        //адресам начинающимся с departments. При этом роль Администратора имеет
-        //доступ ко всем возможным адресам, а роль Пользователя лишь к прописанным "/departments", "/departments/claims".
-        //Если переставить строчки местами, то роль Пользователь потеряет доступ.
-        //Возможно таким образом можно перекрыть неавторизованный доступ ко всему transportation/**
-        //предварительно отметив куда таки можно
-        http.authorizeRequests().antMatchers("/departments", "/departments/claims").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')");
-        http.authorizeRequests().antMatchers("/departments/**").access("hasAnyRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/manager/**").access("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')");
 
-        http.authorizeRequests().antMatchers("/transportDeps").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-        http.authorizeRequests().antMatchers("/transportDeps/**").access("hasAnyRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/planner/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
+
+        http.authorizeRequests().antMatchers("/dispatcher/**").access("hasAnyRole('ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
         // For ADMIN only.
-        http.authorizeRequests().antMatchers("/**", "/admin/**", "/transportDepsShow", "/management/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/management/**").access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,
@@ -77,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Submit URL of login page.
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
                 .loginPage("/login")//
-                .defaultSuccessUrl("/userAccountInfo")//
+                //                .defaultSuccessUrl("/userAccountInfo")//
                 .failureUrl("/login?error=true")//
                 .usernameParameter("username")//
                 .passwordParameter("password")

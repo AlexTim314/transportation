@@ -21,7 +21,7 @@
                 <th>
                     <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" ng-click="ctrl.getToday()" onclick="menu_open()"></i>
                     <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
-                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()"></i>
+                    <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()" ng-show="ctrl.permit"></i>
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
                 </th>
             </tr>
