@@ -12,6 +12,7 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -129,6 +130,11 @@ public class PlanningController {
     public ResponseEntity<String> deleteCarBoss(@RequestBody CarBoss carBoss) {
         planningService.deleteCarBoss(carBoss);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/planner/claim_create")
+    public Claim createClaim(Principal principal, @RequestBody Claim claim) {
+        return planningService.saveClaim(principal, claim);
     }
 
 }

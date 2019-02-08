@@ -200,4 +200,12 @@ public class PlanningService {
     public void deleteCarBoss(CarBoss carBoss) {
         carBossRepository.delete(carBoss);
     }
+
+    public Claim saveClaim(Principal principal, Claim claim) {
+        claim.setCreationDate(LocalDateTime.now());
+        claim.setCreator(getUser(principal));
+        claim.setAffirmator(getUser(principal));
+        claim.setAffirmationDate(LocalDateTime.now());
+        return claimRepository.save(claim);
+    }
 }

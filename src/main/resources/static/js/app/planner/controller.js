@@ -6,7 +6,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: '', claims: []};
         self.specDepartment = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, routeTasks: []};
-        self.newClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.newClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, department: {}, records: [], routeTasks: [], };
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
@@ -346,18 +346,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
-//        self.fetchBosses = function () {
-//            PlannerService.fetchBosses()
-//                    .then(
-//                            function (d) {
-//                                self.bosses = d;
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while fetching Bosses');
-//                            }
-//                    );
-//        };
-
 
         self.fetchTomorrowPlanRecords();
         self.fetchTomorrowCompletePlanRecords();
@@ -368,7 +356,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchPlaces();
         self.fetchAllSpecDepartments();
         self.fetchVehicleTypes();
-//        self.fetchBosses();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -458,7 +445,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
-            console.log(self.compClRec);
             formOpen('more-claim-status');
         };
 
@@ -606,8 +592,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.record.entranceDate = new Date(rec.entranceDate);
             self.record.endDate = new Date(rec.endDate);
             self.record.appointments = rec.appointments;
-
-            console.log(self.record);
             formOpen('formCancel');
         };
 
@@ -629,7 +613,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 canceledApp.status = 'CANCELED_BY_PLANNER';
                 canceledApp.note = self.cancelNote;
             }
-            console.log(canceledApp);
             PlannerService.cancelRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
@@ -836,7 +819,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
-                    console.log(rec);
+                    if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                        alert("Необходимо указать время подачи, выезда и возвращения!");
+                        return;
+                    }
                     self.newClaim.records.push(rec);
                 }
             } else {
@@ -845,6 +831,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
+                if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                    alert("Необходимо указать время подачи, выезда и возвращения!");
+                    return;
+                }
                 self.newClaim.records.push(rec);
             }
         };
@@ -894,7 +884,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             if (self.newClaim.id === null) {
                 self.createClaim(self.newClaim);
+//                formClose('plannerCarBoss');
+//                formClose('formRoute');
             }
+
             self.resetClaimForm();
         };
 
@@ -903,12 +896,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.newClaim.routeTasks[i].id = null;
             }
             formClose('form-add');
-            console.log(self.specDepartment);
-            console.log(self.newClaim);
-            PlannerService.createClaim(self.newClaim, self.specDepartment)
+            self.newClaim.department = self.specDepartment;
+            PlannerService.createClaim(self.newClaim)
                     .then(
                             function (d) {
                                 //self.newClaims.push(d);
+                                self.fetchTomorrowPlanRecords();
+                                self.fetchTomorrowCompletePlanRecords();
                                 self.resetClaimForm();
                             },
                             function (errResponse) {
@@ -935,6 +929,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             };
             self.getToday();
             self.newRecord = {id: null, startDate: null, endDate: null, entranceDate: null};
+            formClose('plannerCarBoss');
+            formClose('formRoute');
+            formClose('newFormTask');
         };
 
         self.submitRTask = function () {
@@ -992,11 +989,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.createCarBoss = function () {
             self.carBoss.department = self.specDepartment;
-            console.log(self.carBoss);
             PlannerService.createCarBoss(self.carBoss)
                     .then(
                             function (d) {
-//                                self.carBosses.push(d);
                                 self.fetchCarBosses();
                                 self.resetForm();
                             },
@@ -1010,7 +1005,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             PlannerService.updateCarBoss(self.carBoss)
                     .then(
                             function (d) {
-//                                self.carBosses.push(d);
                                 self.fetchCarBosses();
                                 self.resetForm();
                             },
@@ -1024,7 +1018,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             PlannerService.deleteCarBoss(carBoss)
                     .then(
                             function (d) {
-                               // self.carBoss = {id: null};
                                 var k = -1;
                                 for (var i = 0; i < self.carBosses.length; i++) {
                                     if (carBoss === self.carBosses[i]) {

@@ -366,9 +366,9 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            createClaim: function (claim, department) {
+            createClaim: function (claim) {
                 return $http.post('/transportation/planner/claim_create',
-                        JSON.stringify(claim, department), {headers: self.headers})
+                        JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

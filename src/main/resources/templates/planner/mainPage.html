@@ -63,7 +63,11 @@
                         <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			
                     </nav>
 
-                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-user"></i>Выход</button>
+
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out"/>
+                    </form>
                 </div>
                 <!--Sidebar-->
                 <th:block th:include="planner/slidebar"></th:block> 
