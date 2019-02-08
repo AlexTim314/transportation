@@ -60,7 +60,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
@@ -99,19 +99,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-            fetchBosses: function () {
-                return $http.get('/transportation/user/carBosses')
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching bosses');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
+
+//            fetchBosses: function () {
+//                return $http.get('/transportation/user/carBosses')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching bosses');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
 
             fetchDatePlanRecords: function (date) {
                 return $http.post('/transportation/planner/affirmedClaims/Date',
@@ -127,23 +127,23 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-           /* printPlan: function (date) {
-                return $http.post('/transportation/planner/plandownload',
-                        JSON.stringify(date), {headers: self.headers})
-                        .then(
-                                function (response) {
-                                    return response.data;
 
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching Recs of date');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },            
-            */
-            
+            /* printPlan: function (date) {
+             return $http.post('/transportation/planner/plandownload',
+             JSON.stringify(date), {headers: self.headers})
+             .then(
+             function (response) {
+             return response.data;
+             
+             },
+             function (errResponse) {
+             console.error('Error while fetching Recs of date');
+             return $q.reject(errResponse);
+             }
+             );
+             },            
+             */
+
             fetchAllCompletePlanRecords: function () {
                 return $http.get('/transportation/planner/plannedClaims')
                         .then(
@@ -236,6 +236,64 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
+            fetchCarBosses: function () {
+                return $http.get('/transportation/planner/carBosses')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            createCarBoss: function (carBoss) {
+                return $http.post('/transportation/planner/carBoss_create',
+                        JSON.stringify(carBoss), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating carBoss');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            updateCarBoss: function (carBoss) {
+                return $http.put('/transportation/planner/carBoss_update',
+                        JSON.stringify(carBoss), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating carBoss');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            deleteCarBoss: function (carBoss) {
+                return $http({method: 'DELETE',
+                    url: '/transportation/planner/carBoss_delete',
+                    data: JSON.stringify(carBoss),
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting carBoss');
+                            return $q.reject(errResponse);
+                        }
+                );
+            },
+
             createAppointments: function (appointments) {
                 return $http.post('/transportation/planner/appointments_create',
                         JSON.stringify(appointments), {headers: self.headers})
@@ -307,10 +365,10 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-            createClaim: function (claim) {
+
+            createClaim: function (claim, department) {
                 return $http.post('/transportation/planner/claim_create',
-                        JSON.stringify(claim), {headers: self.headers})
+                        JSON.stringify(claim, department), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

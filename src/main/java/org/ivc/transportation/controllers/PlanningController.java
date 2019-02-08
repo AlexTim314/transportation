@@ -10,6 +10,7 @@ import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
@@ -18,6 +19,9 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -104,6 +108,27 @@ public class PlanningController {
     @PutMapping("/planner/time_update")
     public Record updateTime(@RequestBody Record record) {
         return planningService.updateTime(record);
+    }
+    
+    @GetMapping("/planner/carBosses")
+    public List<CarBoss> getCarBosses(Principal principal) {
+        return planningService.findCarBossesByDepartment(principal);
+    }
+
+    @PostMapping("/planner/carBoss_create")
+    public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return planningService.saveCarBoss(principal, carBoss);
+    }
+
+    @PutMapping("/planner/carBoss_update")
+    public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
+        return planningService.saveCarBoss(principal, carBoss);
+    }
+
+    @DeleteMapping("/planner/carBoss_delete")
+    public ResponseEntity<String> deleteCarBoss(@RequestBody CarBoss carBoss) {
+        planningService.deleteCarBoss(carBoss);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
