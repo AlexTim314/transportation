@@ -86,7 +86,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Affirmed Claims Week');
@@ -101,7 +100,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Affirmed Claims Tomorrow');
@@ -350,8 +348,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.entranceDate = new Date(rec.entranceDate);
             self.record.endDate = new Date(rec.endDate);
             self.record.appointments = rec.appointments;
-
-            console.log(self.record);
             formOpen('formCancel');
         };
 
@@ -374,7 +370,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
-            console.log(canceledApp);
             ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
@@ -396,7 +391,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 }
                                 self.affirmedClaims[l].records[k] = d;
                             },
-                            console.log('Отмененное назначение:'),
                             function (errResponse) {
                                 console.error('Error while canceled Record.');
                             }

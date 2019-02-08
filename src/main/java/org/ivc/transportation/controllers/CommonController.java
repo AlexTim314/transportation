@@ -25,6 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CommonController {
 
+    public static final String[] COMMON_PATHES = {"/transportDep", "/department",
+        "/departments", "/transportDeps", "/vehicleTypes", "/vehicleModels",
+        "/places", "/fuels", "/vehicleModelsByTransportDep", "getNow"};
+
     @Autowired
     private CommonService commonService;
 
@@ -67,12 +71,12 @@ public class CommonController {
     public List<Fuel> getAllFuels() {
         return commonService.findAllFuels();
     }
-    
+
     @GetMapping("/vehicleModelsByTransportDep")
     public List<CompositeTransportDepVehicleModels> getVehicleModelsByTransportDep() {
         return commonService.findVehicleModelsByTransportDep();
     }
-    
+
     @GetMapping("/getNow")
     public ZonedDateTime getNow() {
         return ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());

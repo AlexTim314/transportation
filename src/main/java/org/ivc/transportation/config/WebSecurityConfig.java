@@ -1,6 +1,7 @@
 package org.ivc.transportation.config;
 
 import javax.sql.DataSource;
+import org.ivc.transportation.controllers.CommonController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,8 +57,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/dispatcher/**").access("hasAnyRole('ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
+        http.authorizeRequests().antMatchers(CommonController.COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER','ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
+
         // For ADMIN only.
-        http.authorizeRequests().antMatchers("/management/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/management/**", "/admin/**").access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,
