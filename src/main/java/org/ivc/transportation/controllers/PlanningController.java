@@ -11,6 +11,7 @@ import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -104,6 +105,11 @@ public class PlanningController {
     @PutMapping("/planner/time_update")
     public Record updateTime(@RequestBody Record record) {
         return planningService.updateTime(record);
+    }
+    
+    @PostMapping("/planner/claim_create")
+    public Claim createClaim(Principal principal, @RequestBody Claim claim, Department department) {
+        return planningService.saveClaim(principal, claim, department);
     }
 
 }

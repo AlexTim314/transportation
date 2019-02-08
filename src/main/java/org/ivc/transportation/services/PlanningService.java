@@ -182,4 +182,13 @@ public class PlanningService {
         tempRecord.setEndDate(record.getEndDate());
         return recordRepository.save(tempRecord);
     }
+
+    public Claim saveClaim(Principal principal, Claim claim, Department department) {
+        claim.setCreationDate(LocalDateTime.now());
+        claim.setCreator(getUser(principal));
+        claim.setDepartment(department);
+        claim.setAffirmator(getUser(principal));
+        claim.setAffirmationDate(LocalDateTime.now());
+        return claimRepository.save(claim);
+    }
 }
