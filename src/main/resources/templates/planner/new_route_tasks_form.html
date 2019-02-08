@@ -2,7 +2,7 @@
     <i class="fas fa-times i-close" onclick="formClose('newFormTask')"></i>
     <div class="form-item">
         <label for="type">Место</label>
-        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in ctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "plctrl.routeTask.place">
+        <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in plctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "plctrl.routeTask.place">
             <option value="" disabled selected><--Выберите место--></option>
         </select>
     </div>	
@@ -26,7 +26,7 @@
                 <th>Задание</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="routeTask in plctrl.claim.routeTasks| orderBy: 'orderNum'">
+            <tr ng-repeat="routeTask in plctrl.newClaim.routeTasks| orderBy: 'orderNum'">
                 <td>{{routeTask.place.name}}</td>
                 <td>{{routeTask.workName}}</td>
                 <td>
