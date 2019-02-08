@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -54,6 +55,16 @@ public class ClaimService {
 
     @Autowired
     private RouteTaskRepository routeTaskRepository;
+
+    public Boolean getPermit(Principal principal) {
+        AppUser user = getUser(principal);
+        for (AppRole role : user.getRoles()) {
+            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);

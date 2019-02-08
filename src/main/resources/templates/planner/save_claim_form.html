@@ -5,7 +5,7 @@
             <div class="form-item">
                 <div class="check-item" > 
                      <label for="department">Подразделение</label>
-                         <select name="department" ng-options="dep as dep.shortname for dep in plctrl.departments" ng-model="plctrl.department" required>
+                         <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" required>
                         <option value="" disabled selected><--Выберите подразделение--></option>
                     </select>
                 </div>	
@@ -14,7 +14,7 @@
 
                 <div class=" left-block">
                     <label for="type">Тип транспорта</label>
-                    <select name="type" ng-model="ctrl.claim.specialization" required>
+                    <select name="type" ng-model="plctrl.claim.specialization" required>
                         <option value="" disabled selected><--Выберите специализацию--></option>
                         <option value="пассажирский">Пассажирский</option>
                         <option value="легковой">Легковой</option>
@@ -23,10 +23,9 @@
                     </select>
                 </div>
 
-
                 <div class="right-block" >
                     <label for="criterion">Вид техники</label>
-                    <select name="criterion" ng-options="vt as vt.typeName for vt in ctrl.vehicleTypes| filter:ctrl.claim.specialization track by vt.id"   ng-model="ctrl.claim.vehicleType">
+                    <select name="criterion" ng-options="vt as vt.typeName for vt in plctrl.vehicleTypes| filter:plctrl.claim.specialization track by vt.id"   ng-model="plctrl.claim.vehicleType">
                         <option value="" disabled selected><--Выберите тип--></option>
                     </select>	
                 </div>
@@ -35,11 +34,11 @@
 
             <div class="form-item">
                 <label for="purpose">Цель</label>
-                <textarea name="purpose" rows="10" ng-model="ctrl.claim.purpose"></textarea>
+                <textarea name="purpose" rows="10" ng-model="plctrl.claim.purpose"></textarea>
             </div>
             <div class="form-item clearfix">
                 <label for="carBoss">Старший</label>
-                <select name="carBoss" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
+                <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.bosses track by cb.firstname" ng-model="plctrl.claim.carBoss" required>
                     <option value="" disabled selected>Выберите старшего машины</option>
                 </select>
             </div>	
@@ -48,11 +47,12 @@
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-options="route.routeTasks as route.name for route in ctrl.routeTemplates track by route.id" ng-model="ctrl.claim.routeTasks">
+                    <select name="route">
+                    <option value="" disabled selected><--По указанию--></option>
                     </select> 
                 </div>
                 <div class="right-block-route">
-                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('newFormTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
                 </div>
             </div>	
         </section>
@@ -61,34 +61,34 @@
                 <div class="form-item-date ">
                     <label for="date-begin">Дата:</label>
                     <label class="custom-checkbox">
-                        <input type="checkbox" ng-model = "ctrl.onWeek">на неделю
+                        <input type="checkbox" ng-model = "plctrl.onWeek">на неделю
                         <span class="checkmark"></span>
                     </label>
 
                     <div class="inp-btn clearfix">
-                        <input type="date"  name="date-begin" ng-model="ctrl.startDate" id="startDate" required >
-                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "ctrl.addRec()"></span>
+                        <input type="date"  name="date-begin" ng-model="plctrl.startDate" id="startDate" required >
+                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "plctrl.addRec()"></span>
                     </div>							 		
                 </div>
 
                 <div class="right-block ">
                     <label for="time-begin">Время подачи</label>
-                    <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" id="entranceTime" required>
+                    <input type="time"  name="time-begin" ng-model="plctrl.newRecord.entranceDate" id="entranceTime" required>
 
 
                     <label for="time-begin">Время выезда</label>
-                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" id="startTime" required>
+                    <input type="time"  name="time-begin" ng-model="plctrl.newRecord.startDate" id="startTime" required>
 
                     <div class="check-hidden">
                         <label for="time-end">Время возвращения</label>
-                        <input type="time"  name="time-end" ng-model="ctrl.record.endDate" id="endTime" required>
+                        <input type="time"  name="time-end" ng-model="plctrl.newRecord.endDate" id="endTime" required>
                     </div>
                     <div class="check-hidden">
                         <label class="custom-checkbox">
                             
                             
                             
-                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="ctrl.isOtherDay">другой день
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
                             <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
                         <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
@@ -96,15 +96,15 @@
 
                 </div>
                 <div class="left-block-tag">
-                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in ctrl.claim.records| orderBy:'startDate'" ng-click="ctrl.checkRec(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
-                        <span class="fas fa-times" ng-click = "ctrl.removeRec(rec)"></span>
+                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in plctrl.newClaim.records| orderBy:'startDate'" ng-click="plctrl.checkRecord(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
+                        <span class="fas fa-times" ng-click = "plctrl.removeRec(rec)"></span>
                     </div>
                 </div>
             </div> 					
 
         </section>
         <div class="form-item">
-            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()">Добавить</button>
+            <button class="btn submit" id="btn-add-edit" ng-click="plctrl.submitClaim()">Добавить</button>
         </div>
 
     </form>

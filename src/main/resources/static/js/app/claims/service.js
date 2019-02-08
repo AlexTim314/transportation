@@ -10,6 +10,19 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
+            getPermit: function () {
+                return $http.get('/transportation/user/permit')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching permit');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchNewClaims: function () {
                 return $http.get('/transportation/user/newClaims')
                         .then(
@@ -184,7 +197,6 @@ App.factory('ClaimsService', ['$http', '$q', '$document', function ($http, $q, $
             },
             
             cancelAffRecord:  function (cmpRec) {
-                console.log(cmpRec);
                 return $http.put('/transportation/manager/recordCancel',
                         JSON.stringify(cmpRec), {headers: self.headers})
                         .then(

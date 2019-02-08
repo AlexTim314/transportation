@@ -73,7 +73,11 @@
                         <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)" >Старшие машин</div>  
                     </nav>
 
-                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-user"></i>Выход</button>
+
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out"/>
+                    </form>
                 </div>
                 <!--Sidebar-->
                 <th:block th:include="user/slidebar"></th:block>  

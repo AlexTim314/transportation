@@ -36,6 +36,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.minDate;
         self.startDate;
 
+        self.permit = false;
+
+        self.getPermit = function () {
+            ClaimsService.getPermit()
+                    .then(
+                            function (d) {
+                                self.permit = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Permit');
+                            }
+                    );
+        };
+
+        self.getPermit();
+
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -70,7 +86,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Affirmed Claims Week');
@@ -85,7 +100,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Affirmed Claims Tomorrow');
@@ -190,18 +204,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-            }
-            menu_close();
+            }            
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                                if (self.claim.templateName === null) {
+                                if (d.templateName === null) {
                                     self.newClaims.push(d);
                                 } else {
                                     self.claimTemplates.push(d);
                                 }
                                 self.resetClaimForm();
-                                //self.fetchNewClaims;
+                                menu_close();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -334,8 +347,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.entranceDate = new Date(rec.entranceDate);
             self.record.endDate = new Date(rec.endDate);
             self.record.appointments = rec.appointments;
-
-            console.log(self.record);
             formOpen('formCancel');
         };
 
@@ -358,7 +369,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
-            console.log(canceledApp);
             ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
@@ -380,7 +390,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 }
                                 self.affirmedClaims[l].records[k] = d;
                             },
-                            console.log('Отмененное назначение:'),
                             function (errResponse) {
                                 console.error('Error while canceled Record.');
                             }
@@ -419,6 +428,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
+                    if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                        alert("Необходимо указать время подачи, выезда и возвращения!");
+                        return;
+                    }
                     self.claim.records.push(rec);
                 }
             } else {
@@ -427,6 +440,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                    alert("Необходимо указать время подачи, выезда и возвращения!");
+                    return;
+                }
                 self.claim.records.push(rec);
             }
         };
@@ -556,7 +573,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         }
                     }
                     var date = new Date(claim.records[index].startDate);
-                    var timeDiff = self.claimFromTemplateDate.getTime()- date.getTime();
+                    var timeDiff = self.claimFromTemplateDate.getTime() - date.getTime();
                     var datesDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
                     //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
@@ -582,7 +599,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 templateEditOpen();
             }
         };
-        
+
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
@@ -591,7 +608,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
-        
+
         self.updateRTask = function () {
             self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
@@ -601,7 +618,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.claim.routeTasks.push(rt);
         };
-        
+
         self.submitRTask = function () {
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
@@ -610,7 +627,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetRTaskForm();
         };
-        
+
         self.submitClaim = function () {
             if (self.validateForm()) {
                 return;
@@ -622,7 +639,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetClaimForm();
         };
-        
+
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -674,7 +691,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
@@ -702,7 +719,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
             }
         };
-        
+
 
         self.statusClass = function (record) {
             if (record.appointments.length === 0) {
@@ -737,7 +754,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'COMPLETED':
                     return completed;
                 case 'CANCELED_BY_USER':
-                    return canceledByUser ;
+                    return canceledByUser;
                 case 'CANCELED_BY_PLANNER':
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
@@ -802,6 +819,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.showCancelIcon = function (record) {
+            if (!self.permit) {
+                return false;
+            }
             if (record.appointments.length === 0) {
                 return true;
             }
