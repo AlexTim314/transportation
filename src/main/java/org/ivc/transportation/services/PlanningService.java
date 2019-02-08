@@ -8,12 +8,14 @@ import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
+import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
@@ -46,6 +48,9 @@ public class PlanningService {
 
     @Autowired
     private ClaimRepository claimRepository;
+    
+    @Autowired
+    private CarBossRepository carBossRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -187,11 +192,23 @@ public class PlanningService {
         tempRecord.setEndDate(record.getEndDate());
         return recordRepository.save(tempRecord);
     }
+    
+    
+    public List<CarBoss> findCarBossesByDepartment(Principal principal) {
+            return carBossRepository.findAll();
+    }
 
-    public Claim saveClaim(Principal principal, Claim claim, Department department) {
+    public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
+        return carBossRepository.save(carBoss);
+    }
+
+    public void deleteCarBoss(CarBoss carBoss) {
+        carBossRepository.delete(carBoss);
+    }
+
+    public Claim saveClaim(Principal principal, Claim claim) {
         claim.setCreationDate(LocalDateTime.now());
         claim.setCreator(getUser(principal));
-        claim.setDepartment(department);
         claim.setAffirmator(getUser(principal));
         claim.setAffirmationDate(LocalDateTime.now());
         return claimRepository.save(claim);
