@@ -18,6 +18,7 @@ import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
+import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -25,6 +26,7 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
+import org.ivc.transportation.utils.OtsInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -59,6 +61,9 @@ public class PlanningService {
     
     @Autowired
     private RouteTaskRepository routeTaskRepository;
+    
+    @Autowired
+    private TransportDepRepository transportDepRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -190,5 +195,9 @@ public class PlanningService {
         claim.setAffirmator(getUser(principal));
         claim.setAffirmationDate(LocalDateTime.now());
         return claimRepository.save(claim);
+    }
+
+    public List<OtsInfo> getOtsInfo() {
+        return transportDepRepository.findOtsInfo();
     }
 }
