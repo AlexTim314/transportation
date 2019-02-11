@@ -60,7 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(CommonController.COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER','ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
         // For ADMIN only.
-        http.authorizeRequests().antMatchers("/management/**", "/admin/**").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/management/**", "/admin/**",
+                "/usersManagement", "/departmentsManagement",
+                "/transportDepsManagement", "/placesManagement",
+                "/vehicleTypesManagement", "/fuelsManagement", "/claims",
+                "/planner", "/dispatcher")
+                .access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,

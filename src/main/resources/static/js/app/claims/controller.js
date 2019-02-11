@@ -204,18 +204,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-            }
-            menu_close();
+            }            
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
-                                if (self.claim.templateName === null) {
+                                if (d.templateName === null) {
                                     self.newClaims.push(d);
                                 } else {
                                     self.claimTemplates.push(d);
                                 }
                                 self.resetClaimForm();
-                                //self.fetchNewClaims;
+                                menu_close();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -429,6 +428,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
+                    if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                        alert("Необходимо указать время подачи, выезда и возвращения!");
+                        return;
+                    }
                     self.claim.records.push(rec);
                 }
             } else {
@@ -437,6 +440,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                    alert("Необходимо указать время подачи, выезда и возвращения!");
+                    return;
+                }
                 self.claim.records.push(rec);
             }
         };
@@ -566,7 +573,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         }
                     }
                     var date = new Date(claim.records[index].startDate);
-                    var timeDiff = self.claimFromTemplateDate.getTime()- date.getTime();
+                    var timeDiff = self.claimFromTemplateDate.getTime() - date.getTime();
                     var datesDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
                     //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
