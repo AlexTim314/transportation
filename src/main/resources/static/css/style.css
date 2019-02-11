@@ -1034,7 +1034,7 @@ input[type="search"]:hover{
 	padding-top: 1%;
 	padding-bottom:1%;
 	height: 50px;
-	text-transform: uppercase;
+/*	text-transform: uppercase;*/
 	overflow: hidden;	
 }
 
@@ -1111,7 +1111,7 @@ input[type="search"]:hover{
 	top:30%;
 	right: 10px;
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	flex-direction: row;
 	color: #333;
 	font-size: 0.8em;
@@ -1572,12 +1572,15 @@ td{
 .dialog-window p{
 	color:white;
 	padding-top:30px;
+	text-align: center;
 }
+
 .dialog-window div{
+	cursor: pointer;
 	float: left;
 	margin-top:20px;
 	margin-bottom: 20px;
-	margin-left:25px;	
+	margin-left:10px;	
 
 }
 .dialog-window .i-close{

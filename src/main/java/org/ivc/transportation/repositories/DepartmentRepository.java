@@ -17,6 +17,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
 Department findByShortname(String shortname);
 
+List<Department> findDepartmentsBySuperManagerId(Long id);
+
     @Query(value = "select department.* from department, claim, record " +
             "where record.start_date between :start_date and :end_date and " +
             "claim.id = record.claim_id and " +
