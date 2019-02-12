@@ -36,6 +36,19 @@ App.factory('DriversService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
+            fetchDateFromServer: function () {
+                return $http.get('/transportation/getNow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching date from server');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
             createDriver: function (driver) {
                 return $http.post('/transportation/dispatcher/driver_create',
                         JSON.stringify(driver), {headers: self.headers})
@@ -50,7 +63,7 @@ App.factory('DriversService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             createDriverInfo: function (driverInfo) {
                 return $http.post('/transportation/dispatcher/driver_updateState',
                         JSON.stringify(driverInfo), {headers: self.headers})

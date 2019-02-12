@@ -288,6 +288,15 @@ insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE-325 J', (select id from Vehicle_Type where type_name='Экскаватор'));
 
 insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'supermanager',
+    'Р‘Р»СЋРј РЎРµСЂРіРµР№ РРІР°РЅРѕРІРёС‡',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='РЈРїСЂР°РІР»РµРЅРёРµ'),
+    (select id from transport_dep where shortname='РћРўРЎ 1'));
+insert into app_role(role_name) values('ROLE_SUPERMANAGER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
     'user',
     'Соколов Вячеслав Владимирович',
     '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
