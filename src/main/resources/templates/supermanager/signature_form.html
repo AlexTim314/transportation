@@ -119,7 +119,7 @@
                                                 <div style="float: right; margin-right: 10px;">
                                                     <label class="custom-checkbox" style=" text-decoration: none;">
                                                         Только неподписанные
-                                                        <input type="checkbox" >
+                                                        <input type="checkbox" ng-model="ctrl.unsignedChecked" checked="false" ng-change="ctrl.fetchAllUnsignedRecords()">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>
@@ -183,7 +183,7 @@
                                                             {{ctrl.showDriver(clrec.appointment)}}
                                                         </td>
                                                         <td >
-                                                            <i class="{{ctrl.selectStatusIco(clrec.appointment.status) + ' ' + ctrl.selectStatusColor(clrec.appointment.status)}}" title="{{ctrl.apptStatus(clrec.appointment.status)}}"></i>
+                                                            <i class="{{ctrl.selectStatusIco(clrec.record,clrec.appointment.status) + ' ' + ctrl.selectStatusColor(clrec.record,clrec.appointment.status)}}" title="{{ctrl.apptStatus(clrec.appointment.status)}}"></i>
                                                         </td>     
                                                     </tr>
 

@@ -120,16 +120,6 @@ public class ClaimService {
         });
     }
     
-     public void signRecords(Principal principal, List<Long> recIds) {
-        AppUser affirmator = getUser(principal);
-        recIds.forEach(id -> {
-            Record record = recordRepository.findById(id).get();
-            record.setAffirmator(affirmator);
-            record.setAffirmationDate(LocalDateTime.now());
-            recordRepository.save(record);
-        });
-    }
-
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
