@@ -1,202 +1,210 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Комплекс автотраспортного обеспечения</title>
-	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
-	<link href="assets/fontawesome/css/all.css" rel="stylesheet">
-	<link rel="stylesheet" href="assets/style/style.css">
-	
-	<script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="assets/app/app.js"></script>
-	<script src="assets/app/directives/firstDirective.js"></script>
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Управление</title>
+        <!--	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
+                <link href="assets/fontawesome/css/all.css" rel="stylesheet">
+                <link rel="stylesheet" href="assets/style/style.css">
+                
+                <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+                <script src="assets/app/app.js"></script>
+                <script src="assets/app/directives/firstDirective.js"></script>-->
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
 
-</head>
-<body ng-app="myApp" >
-	<div class="wrapper">
-		<!-- Login Form-->
-		<div class="sidebar-vertical" id="sb-v-id">
-		<!-- 	<i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i> -->
-		</div>
-		<form action="#" class="formLogin" id="formLogin">
-			<i class="fas fa-times i-close" onclick="formLogin_close()"></i>
-			<div class="container">
-				<label for="uname"><b>Логин</b></label>
-				<input type="text" placeholder="Введите Логин" name="uname" required>
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
 
-				<label for="psw"><b>Пароль</b></label>
-				<input type="password" placeholder="Введите Пароль" name="psw" required>
+        <script src="js/app/supermanager/service.js"></script>
+        <script src="js/app/supermanager/controller.js"></script>
 
-				<button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
-				<label class="custom-checkbox">Запомнить меня
-					<input type="checkbox" checked="checked">
-					<span class="checkmark"></span>
-				</label>
-			</div>
+    </head>
+    <body ng-app="Transportation" ng-controller="SuperManagerController as ctrl" >
+        <div class="wrapper">
+            <!-- Login Form-->
+            <div class="sidebar-vertical" id="sb-v-id">
+                <!-- 	<i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i> -->
+            </div>
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите Логин" name="uname" required>
 
-			<div class="container container-underline" style="">
-				<button type="button" class="btn delete">Отмена</button>
-				<span class="psw">Забыли <a href="#">Пароль?</a></span>
-			</div>
-		</form>
-		   <div class="dialog-window" id="dialog-ban">
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите Пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+            <div class="dialog-window" id="dialog-ban">
                 <i class="fas fa-times i-close " onclick="formClose('dialog-ban')"></i>
                 <p>Вы уверены, что хотите отменить?</p>
-                  <section style="display: flex; justify-content: center;">
-                    <div class="btn edit">Отмена</div>
-               	    <div class="btn delete">ОК</div>
-               	   </section> 
+                <section style="display: flex; justify-content: center;">
+                    <div class="btn edit" onclick="formClose('dialog-ban')">Отмена</div>
+               	    <div class="btn delete" ng-click="ctrl.cancelRecords()">ОК</div>
+                </section> 
             </div>
-               <div class="dialog-window" id="dialog-signature">
+            <div class="dialog-window" id="dialog-signature">
                 <i class="fas fa-times i-close " onclick="formClose('dialog-signature')"></i>
                 <p>Вы уверены, что хотите подписать?</p>
                 <section style="display: flex; justify-content: center;">
-	                <div class="btn edit">Отмена</div>
-	                <div class="btn delete"><i class="fas fa-signature"></i>Подписать</div>
-                 </section> 
+                    <div class="btn edit" onclick="formClose('dialog-signature')">Отмена</div>
+                    <div class="btn delete" ng-click="ctrl.affirmRecords()"><i class="fas fa-signature"></i>Подписать</div>
+                </section> 
 
             </div>
 
 
-		
 
 
 
-		<div class="main clearfix">
-			<div class="header clearfix">
-				<!--Logo -->
-				<div class="logo">
-				</div>
-				<!--Text header -->
 
-				<h1>Комплекс Автотранспортного Обеспечения</h1>
-				<h3>Контроль подачи заявок</h3>
+            <div class="main clearfix">
+                <div class="header clearfix">
+                    <!--Logo -->
+                    <div class="logo">
+                    </div>
+                    <!--Text header -->
 
-				<button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
-				
-			</div>
-			<!--Sidebar-->
-		
-				<div id="claim-create" class="tabcontent">
+                    <h1>Комплекс Автотранспортного Обеспечения</h1>
+                    <h3>Контроль подачи заявок</h3>
+
+                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
+
+                </div>
+                <!--Sidebar-->
+
+                <div id="claim-create" class="tabcontent">
 
 
-					<div class="clearfix" style="overflow-x:auto;"  >
+                    <div class="clearfix" style="overflow-x:auto;"  >
 
-						<div style="overflow-x:auto;" id="tab-list1">
-							<div class="clearfix" style="overflow-x:auto;" id="tab-list1">
-								<div class="table-header clearfix">
-									<div class="fast-filter clearfix">                                    
-										<span class="filter-elem edit active-color">Завтра</span>
-										<span class="filter-elem edit">За неделю</span>
-										<span class="filter-elem edit">Все</span>
-									</div>
-									<input type="search" placeholder="Поиск">						  						  		
-									<ul class="plan-date" >
-										<li>Дата планирования</li>
-										<li>22.12.2018
-											<input type="date" name="date-plan" placeholder="22.12.2018">
-										</li>
-									</ul>
-									<button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn">Показать</button>	
-								</div>	
-								<div class="height-wrapper"> 
-									<table class="table-record"  id="tbl1" >
-										<tr class="header-level">
-											<th style="width: 3%;"></th>
-											<th style="width: 97%;">
-												ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ
-												<div style="float: right; margin-right: 10px;">
-													<label class="custom-checkbox" style=" text-decoration: none;">
-														Только неподписанные
-														<input type="checkbox" >
-														<span class="checkmark"></span>
-													</label>
-												</div>
+                        <div style="overflow-x:auto;" id="tab-list1">
+                            <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
+                                <div class="table-header clearfix">
+                                    <div class="fast-filter clearfix">                                    
+                                        <span class="filter-elem edit {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchTomorrowRecords()">Завтра</span>
+                                        <span class="filter-elem edit {{ctrl.week?'active-color':''}}" ng-click="ctrl.fetchWeekRecords()">За неделю</span>
+                                        <span class="filter-elem edit {{ctrl.all?'active-color':''}}" ng-click="ctrl.fetchAllRecords()">Все</span>
+                                    </div>
+                                    <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
+                                    <ul class="plan-date" >
+                                        <li>Дата планирования</li>
+                                        <li id="filter-date">{{ctrl.date}}
+                                            <input type="date" name="date-plan" id="date-plan" ng-click="ctrl.changeDate()">
+                                        </li>
+                                    </ul>
+                                    <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="ctrl.fetchDateRecords()">Показать</button>	
+                                </div>	
+                                <div class="height-wrapper"> 
+                                    <table class="table-record"  id="tbl1" >
+                                        <tr class="header-level">
+                                            <th style="width: 3%;"></th>
+                                            <th style="width: 97%;">
+                                                ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ
+                                                <div style="float: right; margin-right: 10px;">
+                                                    <label class="custom-checkbox" style=" text-decoration: none;">
+                                                        Только неподписанные
+                                                        <input type="checkbox" >
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
 
-											</th>
-										</tr>
-										<tr ng-repeat="claim in ctrl.claims">                           
-											<tr style = "cursor: pointer" ng-click="ctrl.addRowHandlers(claim)" class="activeRow">
-												<td>
-													<i class="fas  fa-2x fa-caret-right"></i>		
-												</td>
-												<td >Название подразделения 
-                                            <!-- 	<span>
-                                          		<i title="Новые заявки" class="far fa-lg fa-envelope message-info"> 3</i>
-                                          	</span> -->
-                                            	<div class="record-status" style="width: 6%;">
-                                                	<div title="Подписано"><i class="fas fa-clipboard-check"></i>23</div>
-                                                	<div title="Отменено"><i class="fas fa-ban"></i>3</div>
-                                                
+                                            </th>
+                                        </tr>
+                                        <tr>                           
+                                        <tr style = "cursor: pointer"  ng-click="ctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in ctrl.headers| filter: searchClaim">
+                                            <td>
+                                                <i class="{{header.isVisible !== undefined && header.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>	
+                                            </td>
+                                            <td >{{header.department.fullname}}
+
+                                                <div class="record-status" style="width: 6%;">
+                                                    <div title="Подписано"><i class="fas fa-clipboard-check"></i>{{ctrl.amountReady(header)}}</div>
+                                                    <div title="Отменено"><i class="fas fa-ban"></i>{{ctrl.amountCanceled(header)}}</div>
+
                                                 </div>  
                                             </td>
                                         </tr>
-                                        <tr class="hiddenRow collapseRow" >
-                                        	<td colspan="2">
-                                        		<table class="table-claim">
-                                        			<tr>	
-                                        				<th style="width: 7%;">
-                                        					<label class="custom-checkbox">
-                                        						<input type="checkbox" >
-                                        						<span class="checkmark"></span>
-                                        					</label>
-                                        				</th>
-                                        				<th style="width: 10%;">Дата выезда</th>
-                                        				<th style="width: 10%;">Время</th>
-                                        				<th style="width: 13%;">Цель</th>
-                                        				<th style="width: 15%;">Маршрут</th>
-                                        				<th style="width: 10%;">Марка</th>
-                                        				<th style="width: 10%;">Гос.номер</th>
-                                        				<th style="width: 10%;">Водитель</th>         
-                                        				<th style="width: 7%; min-width: 100px;">
-                                        					<i class="fas fa-2x fa-file-contract" title="Подписать" onclick="formOpen('dialog-signature')"></i>
-                                        					<i class="fas fa-lg fa-ban" title="Отменить" onclick="formOpen('dialog-ban')"></i>
-                                        				</th>		  				
-                                        			</tr>
-                                        			<tr> 
-                                        				<td>                                                	<label class="custom-checkbox">
-                                        						<input type="checkbox" >
-                                        						<span class="checkmark"></span>
-                                        				</label>
-                                        			</td>
-                                        			<td>22.12.2018</td>
-                                        			<td>{{record.datetime}}</td>
-                                        			<td>{{record.timeDelivery}}</td>
-                                        			<td><span class="route-tag">Пл.10</span></td>
-                                        			<td>{{record.carBoss}}</td>  
-                                        			<td>{{record.datetime}}
-
-                                        			</td>
-                                        			<td class="td-relative"> 
-                                        				<i class="fa fa-lg fa-mobile-alt"> <span class="phone-info">87773332211</span></i>
-                                        				Серикбай С.С.                                
-                                        			</td>
-                                        			<td >
-                                        				<i class="fas fa-lg fa-clipboard-check status-ready" title="Подписано"></i>
-                                        			</td>     
-                                        		</tr>
-
-
-                                        	</table>
-                                        </td>
-                                    </tr>
-
-                                </td> 
-                            </tr>	                                                
-                        </table>
-                    </div>  
-                    <!--  -->
+                                        <tr class="hiddenRow" ng-show="header.isVisible !== undefined && header.isVisible" ng-repeat-end>
+                                            <td colspan="2">
+                                                <table class="table-claim">
+                                                    <tr>	
+                                                        <th style="width: 7%;">
+                                                            <label class="custom-checkbox">
+                                                               <input type="checkbox" ng-model="ctrl.allChecked" checked="false" ng-change="ctrl.checkAll(header.compositeClaimRecords)">
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                        </th>
+                                                        <th style="width: 10%;">Дата выезда</th>
+                                                        <th style="width: 10%;">Время</th>
+                                                        <th style="width: 13%;">Цель</th>
+                                                        <th style="width: 15%;">Маршрут</th>
+                                                        <th style="width: 10%;">Марка</th>
+                                                        <th style="width: 10%;">Гос.номер</th>
+                                                        <th style="width: 10%;">Водитель</th>         
+                                                        <th style="width: 7%; min-width: 100px;">
+                                                            <i class="fas fa-2x fa-file-contract" title="Подписать" ng-click="ctrl.prepareToAffirm(header.compositeClaimRecords)"></i>
+                                                            <i class="fas fa-lg fa-ban" title="Отменить" ng-click="ctrl.prepareToCancel(header.compositeClaimRecords)"></i>
+                                                        </th>		  				
+                                                    </tr>
+                                                    <tr ng-repeat="clrec in header.compositeClaimRecords| orderBy: 'startDate' | filter: searchClaim"> 
+                                                        <td>
+                                                            <label class="custom-checkbox">
+                                                                <input type="checkbox" ng-model="clrec.record.checked">
+                                                                <span class="checkmark"></span>
+                                                            </label>
+                                                        </td>
+                                                        <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                                                        <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                                        <td>{{clrec.claim.purpose}}
+                                                        </td>
+                                                        <td >
+                                                            <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                                                        </td>
+                                                        <td>{{clrec.appointment.vehicleModel.modelName}}</td>
+                                                        <td>{{clrec.appointment.vehicle.number}}</td>
+                                                        <td class="td-relative">
+                                                            <i class="fa fa-lg fa-mobile-alt" ng-show="ctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                                                            {{ctrl.showDriver(clrec.appointment)}}
+                                                        </td>
+                                                        <td >
+                                                            <i class="{{ctrl.selectStatusIco(clrec.appointment.status) + ' ' + ctrl.selectStatusColor(clrec.appointment.status)}}" title="{{ctrl.apptStatus(clrec.appointment.status)}}"></i>
+                                                        </td>     
+                                                    </tr>
 
 
-                </div>	
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        	                                                
+                                    </table>
+                                </div>  
+                                <!--  -->
 
-            </div>
 
-        </div>
-    </div>
-</div>		
-</div>                 
-<script type="text/javascript" src="assets/script/script.js"></script>	
-</body>
+                            </div>	
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>		
+        </div>                 
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
 </html>
