@@ -236,17 +236,15 @@ fasttab=function(){
 
 
 
-  var block= document.getElementById('bar-block1');
-  var items= block.getElementsByClassName('info-bar-btn');
-  var i;
-    for (i = 0; i < items.length; i++){
-    items[i].addEventListener("click", function() {
-    this.classList.toggle('subActive');
-    var sub = this.nextElementSibling;
-    sub.style.display = 'block';    
-  });
-
-}
+//  var block= document.getElementById('bar-block1');
+//  var items= block.getElementsByClassName('info-bar-btn');
+//  var i;
+//    for (i = 0; i < items.length; i++){
+//    items[i].addEventListener("click", function() {
+//    this.classList.toggle('subActive');
+//  });
+//
+//}
 
 
 

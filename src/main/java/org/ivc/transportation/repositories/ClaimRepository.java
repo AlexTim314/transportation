@@ -38,9 +38,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.affirmation_date is not null and "
             + "claim.actual = true "
             + "group by claim.id", nativeQuery = true)
-    List<Claim> findAffirmedClaimsByDepartmentTimeFilter(@Param("department_id") Long departmentId,
+    List<Claim> findAffirmedClaimsByDepartmentTimeFilter(
+            @Param("department_id") Long departmentId,
             @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate);
+            @Param("end_date") ZonedDateTime endDate
+    );
 
     void deleteByIdAndAffirmationDateIsNull(Long id);
 

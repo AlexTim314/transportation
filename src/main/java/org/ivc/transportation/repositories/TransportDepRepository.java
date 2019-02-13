@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @author Sokolov Slava
  */
 @Repository("transportDepRepository")
-public interface TransportDepRepository extends JpaRepository<TransportDep, Long>{
+public interface TransportDepRepository extends JpaRepository<TransportDep, Long> {
 
     @Query(value = "select "
             + "transport_dep.id as id, "
@@ -27,4 +27,7 @@ public interface TransportDepRepository extends JpaRepository<TransportDep, Long
             + "transport_dep "
             + "group by transport_dep.id order by transport_dep.shortname", nativeQuery = true)
     public List<OtsInfo> findOtsInfo();
+    
 }
+
+
