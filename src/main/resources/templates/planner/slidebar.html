@@ -1,49 +1,56 @@
-<div class="sidebar clearfix" id="sidenav-id" xmlns:th="http://www.thymeleaf.org">
-    <div class="thin-strip">
+<div class="sidebar clearfix" id="sidenav-id"  xmlns:th="http://www.thymeleaf.org">
+
+    <div class="thin-strip-header">
         <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
+        <i class="fas fa-info-circle"></i>Информация
     </div>
+    <div class="nav-sidebar">
+        <div class="btn active" id="side-btn1" onclick="open_sidetab('bar-block1', 'side-btn1', 2)"><i class="fas fa-bus-alt"></i>Транспорт</div>
+        <div class="btn" id="side-btn2" onclick="open_sidetab('bar-block2', 'side-btn2', 2)"><i class="fas fa-user"></i>Водители</div>
+    </div>
+    <ul class="info-bar-block" id="bar-block1">
 
-    <div class="menu" id="menu">
-        <li class="menu-item" id="new">
-            <div  class="menu-btn clearfix" ><i class="fas fa-cog"></i>Параметры</div>
-            <div class="filter ">
-                <div class="filter-container tab1 tab2" >
-
-                    <p>Фильтрация</p>
-                    <div class="filter-type"><i class="fas fa-car"></i></div>
-                    <div class="filter-type"><i class="fas fa-bus-alt"></i></div>
-                    <div class="filter-type"><i class="fas fa-truck"></i></div>
-                    <div class="filter-type"><i class="fas fa-tractor"></i></div>
-                </div>
-                <div class="filter-container tab1 tab2">
-                    <label for="route-filter">Маршрут</label>
-                    <select name="route-filter">
-                        <option value="1">Пл.10-Пл.23</option>
-                    </select>
-                </div>
-                <div class="filter-container tab1 ">
-                    <label for="declarer-filter">ОТС</label>
-                    <select name="declarer-filter">
-                        <option value="1"></option>
-                    </select>
-                </div>
-                <div class="filter-container tab1 tab2">
-                    <label for="mark-filter">Марка</label>
-                    <select name="mark-filter">
-                        <option value="1"></option>
-                    </select>
-                </div>
-                <div class="filter-container tab1 tab2">
-                    <label for="date-filter">Дата выезда</label>
-                    <input type="date" name="date-filter">
-                    </select>
-                </div>
-                <div class="filter-container">
-                    <button class="btn apply ">Применить</button>	
-                </div>
-
+        <li class="info-bar-item" ng-repeat-start="ots in plctrl.transportDeps">						
+            <div class="info-bar-btn">
+                <span>{{ots.shortname}}</span>
+                <section class="info-bar-sub-type">
+                    <div><i class="fas fa-car" title="Легковой"></i><span>{{}}</span></div>
+                    <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{}}</span></div>
+                    <div><i class="fas fa-truck" title="Грузовой"></i><span>{{}}</span></div>
+                    <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{}}</span></div>
+                </section>
             </div>
-        </li>		
-    </div>
 
+            <div class="{{plctrl.selectIcon()}}" ng-show="ots.isVisible !== undefined && ots.isVisible" ng-repeat-end>
+                <ul>
+
+                    <li ng-repeat="">
+                        <span><i class="fas fa-bus-alt"></i>{{}}ПАЗ 3312</span>
+                        <span>{{}}3</span>
+                    </li>
+
+                </ul>
+            </div>						
+        </li>
+
+    </ul>
+
+    <div class="info-bar-sub" style="max-height: 520px; width: 90%; margin-left: 5%; " id="bar-block2">
+        <ul>
+
+            <li ng-repeat="">
+                <span>{{}}ОТС 1</span>
+                <span>
+                    <i class="fas fa-user" title="Количество водителей"></i>{{}}22
+                </span>
+            </li>
+            <li>
+                <span>Всего</span>
+                <span><i class="fas fa-user" title="Количество водителей"></i>{{}}112</span>
+            </li>
+
+
+
+        </ul>
+    </div>			
 </div>

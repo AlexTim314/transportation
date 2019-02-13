@@ -52,6 +52,32 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.getPermit();
 
+        self.getDateFromServer = function () {
+            ClaimsService.fetchDateFromServer()
+                    .then(
+                            function (d) {
+                                var date = new Date(d);
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                if (month < 10)
+                                    month = "0" + month;
+                                if (day < 10)
+                                    day = "0" + day;
+                                var today = year + "-" + month + "-" + day;
+                                document.getElementById('startDate').value = today;
+                                document.getElementById('startDate').min = today;
+                                document.getElementById('entranceTime').value = "00:00";
+                                document.getElementById('startTime').value = "00:00";
+                                document.getElementById('endTime').value = "00:00";
+                                self.startDate = new Date(today);
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching NewClaims');
+                            }
+                    );
+        };
+
         self.fetchNewClaims = function () {
             ClaimsService.fetchNewClaims()
                     .then(
@@ -174,23 +200,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
-        self.getToday = function () {
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            var today = year + "-" + month + "-" + day;
-            document.getElementById('startDate').value = today;
-            document.getElementById('startDate').min = today;
-            document.getElementById('entranceTime').value = "00:00";
-            document.getElementById('startTime').value = "00:00";
-            document.getElementById('endTime').value = "00:00";
-            self.startDate = new Date(today);
-        };
+//        self.getToday = function () {
+//            var date = new Date();
+//            var day = date.getDate();
+//            var month = date.getMonth() + 1;
+//            var year = date.getFullYear();
+//            if (month < 10)
+//                month = "0" + month;
+//            if (day < 10)
+//                day = "0" + day;
+//            var today = year + "-" + month + "-" + day;
+//            document.getElementById('startDate').value = today;
+//            document.getElementById('startDate').min = today;
+//            document.getElementById('entranceTime').value = "00:00";
+//            document.getElementById('startTime').value = "00:00";
+//            document.getElementById('endTime').value = "00:00";
+//            self.startDate = new Date(today);
+//        };
 
         self.fetchNewClaims();
         self.fetchAffirmedClaimsTomorrow();
@@ -199,12 +225,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.fetchRouteTemplates();
         self.fetchPlaces();
         self.fetchBosses();
-        self.getToday();
+        self.getDateFromServer();
 
         self.createClaim = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.claim.routeTasks[i].id = null;
-            }            
+            }
             ClaimsService.createClaim(self.claim)
                     .then(
                             function (d) {
@@ -506,7 +532,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 routeTasks: [],
                 claimFromTemplateDate: null
             };
-            self.getToday();
+            self.getDateFromServer();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
             self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
         };

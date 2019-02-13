@@ -313,6 +313,33 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var strDate = year + "" + month + "" + day;
             window.open("/transportation/planner/plandownload/" + strDate, "_self");
         };
+
+        self.getDateFromServer = function () {
+            PlannerService.fetchDateFromServer()
+                    .then(
+                            function (d) {
+                                var date = new Date(d);
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1;
+                                var year = date.getFullYear();
+                                if (month < 10)
+                                    month = "0" + month;
+                                if (day < 10)
+                                    day = "0" + day;
+                                var today = year + "-" + month + "-" + day;
+                                document.getElementById('date-plan').value = today;
+                                document.getElementById('startDate').value = today;
+                                document.getElementById('startDate').min = today;
+                                document.getElementById('entranceTime').value = "00:00";
+                                document.getElementById('startTime').value = "00:00";
+                                document.getElementById('endTime').value = "00:00";
+                                self.startDate = new Date(today);
+                                self.date = day + "." + month + "." + year;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching NewClaims');
+                            }
+                    );
         
         self.getFormatedDate = function(date, separator, yearAtBeginning){
             var day = date.getDate();
@@ -347,6 +374,26 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             document.getElementById('compl-date-plan').value = tomorrow;
         };
 
+//        self.getToday = function () {
+//            var date = new Date();
+//            var day = date.getDate();
+//            var month = date.getMonth() + 1;
+//            var year = date.getFullYear();
+//            if (month < 10)
+//                month = "0" + month;
+//            if (day < 10)
+//                day = "0" + day;
+//            var today = year + "-" + month + "-" + day;
+//            document.getElementById('date-plan').value = today;
+//            document.getElementById('startDate').value = today;
+//            document.getElementById('startDate').min = today;
+//            document.getElementById('entranceTime').value = "00:00";
+//            document.getElementById('startTime').value = "00:00";
+//            document.getElementById('endTime').value = "00:00";
+//            self.startDate = new Date(today);
+//            self.date = day + "." + month + "." + year;
+//        };
+
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
@@ -364,7 +411,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchTomorrowCompletePlanRecords();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
-        self.getToday();
+        self.getDateFromServer();
         self.fetchCarBosses();
         self.fetchPlaces();
         self.fetchAllSpecDepartments();
@@ -940,7 +987,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 routeTasks: [],
                 claimFromTemplateDate: null
             };
-            self.getToday();
+            self.getDateFromServer();
             self.newRecord = {id: null, startDate: null, endDate: null, entranceDate: null};
             formClose('plannerCarBoss');
             formClose('formRoute');
