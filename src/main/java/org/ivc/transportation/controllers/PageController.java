@@ -56,4 +56,9 @@ public class PageController {
         return "dispatcher/mainPage";
     }
 
+    @RequestMapping(value = "/supermanager", method = RequestMethod.GET)
+    public String superManagerPage() {
+        return "supermanager/signature_form";
+    }
+
 }

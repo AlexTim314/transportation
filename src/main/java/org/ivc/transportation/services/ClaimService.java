@@ -119,7 +119,7 @@ public class ClaimService {
             claimRepository.save(claim);
         });
     }
-
+    
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {

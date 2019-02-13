@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,6 +44,10 @@ public class Department implements Serializable {
 
     @Column(name = "phone", unique = true, length = 16)
     private String phone;
+    
+    @ManyToOne
+    @JoinColumn(name = "super_manager_id")
+    private AppUser superManager;
 
     public Department(String shortname) {
         this.shortname = shortname;

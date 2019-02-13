@@ -80,7 +80,7 @@ public class ClaimController {
         claimService.affirmClaims(principal, claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
     @DeleteMapping("/user/claims_delete")
     public ResponseEntity<String> deleteClaims(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);

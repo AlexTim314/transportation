@@ -374,26 +374,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             document.getElementById('compl-date-plan').value = tomorrow;
         };
 
-//        self.getToday = function () {
-//            var date = new Date();
-//            var day = date.getDate();
-//            var month = date.getMonth() + 1;
-//            var year = date.getFullYear();
-//            if (month < 10)
-//                month = "0" + month;
-//            if (day < 10)
-//                day = "0" + day;
-//            var today = year + "-" + month + "-" + day;
-//            document.getElementById('date-plan').value = today;
-//            document.getElementById('startDate').value = today;
-//            document.getElementById('startDate').min = today;
-//            document.getElementById('entranceTime').value = "00:00";
-//            document.getElementById('startTime').value = "00:00";
-//            document.getElementById('endTime').value = "00:00";
-//            self.startDate = new Date(today);
-//            self.date = day + "." + month + "." + year;
-//        };
-
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
