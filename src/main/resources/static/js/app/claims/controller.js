@@ -580,7 +580,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.endDate = new Date(claim.records[0].endDate);
         };
         self.prepearClaimFromTemplate = function (claim) {
-            if (claim !== null) {
+            if (claim !== null) {//TODO: проверку на undefinite
                 self.copyClaimProperties(claim);
                 self.claim.id = null;
                 self.claim.templateName = null;

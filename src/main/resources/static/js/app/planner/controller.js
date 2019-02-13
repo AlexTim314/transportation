@@ -348,7 +348,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     month = "0" + month;
                                 if (day < 10)
                                     day = "0" + day;
-                                var today = year + "-" + month + "-" + day;
+                                var today = self.getFormatedDate(date, "-", true);
                                 document.getElementById('date-plan').value = today;
                                 document.getElementById('startDate').value = today;
                                 document.getElementById('startDate').min = today;
@@ -356,7 +356,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
-                                self.date = day + "." + month + "." + year;
+                                self.date = self.getFormatedDate(date, ".", false);
+
+                                date.setDate(date.getDate() + 1);
+                                var tomorrow = self.getFormatedDate(date, "-", true);
+                                document.getElementById('compl-date-plan').value = tomorrow;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching NewClaims');
@@ -364,6 +368,40 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+
+        self.getFormatedDate = function (date, separator, yearAtBeginning) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            if (yearAtBeginning) {
+                return year + separator + month + separator + day;
+            }
+            return day + separator + month + separator + year;
+        };
+
+      /*  self.getToday = function () {
+            var date = new Date();
+            var today = self.getFormatedDate(date, "-", true);
+
+            document.getElementById('date-plan').value = today;
+            document.getElementById('startDate').value = today;
+            document.getElementById('startDate').min = today;
+            document.getElementById('entranceTime').value = "00:00";
+            document.getElementById('startTime').value = "00:00";
+            document.getElementById('endTime').value = "00:00";
+
+            self.startDate = new Date(today);
+            self.date = self.getFormatedDate(date, ".", false);
+
+            date.setDate(date.getDate() + 1);
+            var tomorrow = self.getFormatedDate(date, "-", true);
+            document.getElementById('compl-date-plan').value = tomorrow;
+        };
+*/
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
