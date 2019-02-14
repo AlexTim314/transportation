@@ -1,7 +1,9 @@
 package org.ivc.transportation.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
@@ -77,6 +79,12 @@ public class UsersManagementService {
         edittingUser.setTransportDep(transportDep);
         edittingUser.setRoles(roles);
         return userRepository.saveAndFlush(edittingUser);
+    }
+
+    public List<Department> updateDepartmentsWithUser(List<Department> departments) {
+        List<Department> result = new ArrayList<>();
+        departments.forEach(dep -> result.add(departmentRepository.save(dep)));
+        return result;
     }
 
     public void deleteUser(AppUser user) {
