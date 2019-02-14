@@ -62,6 +62,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.isDelete = false;
         self.startDate;
         self.allChecked = false;
+        self.vehicles = [];
+        self.filteredVehicleModels = [];
 
 
         self.fetchAllSpecDepartments = function () {
@@ -270,6 +272,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchVehicles = function () {
+            PlannerService.fetchVehicles()
+                    .then(
+                            function (d) {
+                                self.vehicles = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vehicles');
+                            }
+                    );
+        };
+
         self.fetchAllVehicleModels = function () {
             PlannerService.fetchAllVehicleModels()
                     .then(
@@ -281,6 +295,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+
+
 
         self.fetchPlaces = function () {
             PlannerService.fetchPlaces()
@@ -383,25 +399,25 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             return day + separator + month + separator + year;
         };
 
-      /*  self.getToday = function () {
-            var date = new Date();
-            var today = self.getFormatedDate(date, "-", true);
-
-            document.getElementById('date-plan').value = today;
-            document.getElementById('startDate').value = today;
-            document.getElementById('startDate').min = today;
-            document.getElementById('entranceTime').value = "00:00";
-            document.getElementById('startTime').value = "00:00";
-            document.getElementById('endTime').value = "00:00";
-
-            self.startDate = new Date(today);
-            self.date = self.getFormatedDate(date, ".", false);
-
-            date.setDate(date.getDate() + 1);
-            var tomorrow = self.getFormatedDate(date, "-", true);
-            document.getElementById('compl-date-plan').value = tomorrow;
-        };
-*/
+        /*  self.getToday = function () {
+         var date = new Date();
+         var today = self.getFormatedDate(date, "-", true);
+         
+         document.getElementById('date-plan').value = today;
+         document.getElementById('startDate').value = today;
+         document.getElementById('startDate').min = today;
+         document.getElementById('entranceTime').value = "00:00";
+         document.getElementById('startTime').value = "00:00";
+         document.getElementById('endTime').value = "00:00";
+         
+         self.startDate = new Date(today);
+         self.date = self.getFormatedDate(date, ".", false);
+         
+         date.setDate(date.getDate() + 1);
+         var tomorrow = self.getFormatedDate(date, "-", true);
+         document.getElementById('compl-date-plan').value = tomorrow;
+         };
+         */
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
@@ -425,6 +441,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchAllSpecDepartments();
         self.fetchVehicleTypes();
         self.fetchOtsInfo();
+        self.fetchVehicles();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -572,6 +589,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var canceledByUser = 'Отменено пользователем';
             var canceledByPlanner = 'Отменено планировщиком';
             var canceledByDispatcher = 'Отменено диспетчером';
+            var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -585,6 +603,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceledByDispatcher;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceledBySupermanager;
             }
         };
 
@@ -607,6 +627,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceled;
             }
         };
 
@@ -628,6 +650,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 'CANCELED_BY_PLANNER':
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
+                    return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
                     return canceled;
             }
         };
@@ -1169,6 +1193,36 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
 
+        self.getUniqueModels = function (arr) {
+            var i = 0,
+                    current,
+                    length = arr.length,
+                    unique = [];
+            for (; i < length; i++) {
+                current = arr[i];
+                if (!~unique.indexOf(current)) {
+                    unique.push(current);
+                }
+            }
+            return unique;
+        };
+
+        self.filterModelsByselectedTransportDep = function (td) {
+            self.filteredVehicleModels = [];
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].transportDep.id === td.id) {
+                    for (var j = 0; j < self.vehicleModels.length; j++) {
+                        if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
+                            if (self.vehicles[i].model.modelName === self.vehicleModels[j].modelName) {
+                                self.filteredVehicleModels.push(self.vehicleModels[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            self.filteredVehicleModels = self.getUniqueModels(self.filteredVehicleModels);
+        };
+
         self.changeCheckedTD = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
@@ -1179,6 +1233,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     }
                 }
             }
+
+            self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep);
+
         };
 
         self.changeCheckedVM = function (compositeClaimRecord) {

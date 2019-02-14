@@ -210,6 +210,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchVehicles: function () {
+                return $http.get('/transportation/planner/vehicles')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicles');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchAllVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')

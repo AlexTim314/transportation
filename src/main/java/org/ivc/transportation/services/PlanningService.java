@@ -13,6 +13,7 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.CarBossRepository;
@@ -22,6 +23,7 @@ import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -69,6 +71,9 @@ public class PlanningService {
     
     @Autowired
     private TransportDepRepository transportDepRepository;
+    
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -216,5 +221,9 @@ public class PlanningService {
 
     public List<OtsInfo> getOtsInfo() {
         return transportDepRepository.findOtsInfo();
+    }
+    
+    public List<Vehicle> getAllVehicles(Principal principal) {
+        return vehicleRepository.findAll();
     }
 }

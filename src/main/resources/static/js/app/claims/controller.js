@@ -688,6 +688,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceled;
             }
         };
 
@@ -701,6 +703,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var canceledByUser = 'Отменено пользователем';
             var canceledByPlanner = 'Отменено планировщиком';
             var canceledByDispatcher = 'Отменено диспетчером';
+            var canceledBySupermanager = 'Отменено управлением';
             var stat = record.appointments[0].status;
             var id = record.appointments[0].id;
             for (var i = 1; i < record.appointments.length; i++) {
@@ -722,6 +725,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceledByDispatcher;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceledBySupermanager;
             }
         };
 
@@ -742,6 +747,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 case 'CANCELED_BY_PLANNER':
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
+                    return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
                     return canceled;
             }
         };
@@ -771,6 +778,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var canceledByUser = 'Отменено пользователем';
             var canceledByPlanner = 'Отменено планировщиком';
             var canceledByDispatcher = 'Отменено диспетчером';
+            var canceledBySupermanager = 'Отменено управлением';
             var stat = self.appt.status;
             switch (stat) {
                 case 'IN_PROGRESS':
@@ -785,6 +793,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceledByDispatcher;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceledBySupermanager;
             }
         };
 

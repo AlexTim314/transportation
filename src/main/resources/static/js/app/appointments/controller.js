@@ -39,6 +39,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.type;
         self.date;
         self.tempAppoints = [];
+        self.filteredVacantVehicles = [];
 
 
         self.selectIcon = function (spec) {
@@ -135,7 +136,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vehicleModels = d;
-                                console.log(d);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleModels');
@@ -172,6 +172,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vehicles = d;
+                                self.filteringVehicles(self.clrec.appointment.vehicleModel);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vehicles');
@@ -184,6 +185,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vacantVehicles = d;
+                                self.filteringVehicles(self.clrec.appointment.vehicleModel);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vacant Vehicles');
@@ -358,6 +360,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var canceledByUser = 'Отменено пользователем';
             var canceledByPlanner = 'Отменено планировщиком';
             var canceledByDispatcher = 'Отменено диспетчером';
+            var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -371,6 +374,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceledByDispatcher;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceledBySupermanager;
             }
         };
 
@@ -392,6 +397,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                 case 'CANCELED_BY_PLANNER':
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
+                    return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
                     return canceled;
             }
         };
@@ -415,6 +422,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceled;
             }
         };
 
@@ -434,6 +443,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.showDriver = function (appointment) {
             return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
+        };
+
+        self.filteringVehicles = function (model) {
+            self.filteredVacantVehicles = [];
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
+                    if (self.vehicles[i].model.modelName === model.modelName) {
+                        self.filteredVacantVehicles.push(self.vehicles[i]);
+                    }
+                }
+            }
+            console.log(self.filteredVacantVehicles);
         };
 
     }]);

@@ -9,7 +9,9 @@ import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
+import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -34,6 +36,8 @@ public class PlanningController {
 
     @Autowired
     private PlanningService planningService;
+    
+    private VehicleService vehicleService;
 
     @GetMapping("/planner/affirmedClaims")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
@@ -115,6 +119,11 @@ public class PlanningController {
     @GetMapping("/planner/carBosses")
     public List<CarBoss> getCarBosses(Principal principal) {
         return planningService.findCarBossesByDepartment(principal);
+    }
+    
+    @GetMapping("/planner/vehicles")
+    public List<Vehicle> getAllVehicles(Principal principal) {
+        return planningService.getAllVehicles(principal);
     }
 
     @PostMapping("/planner/carBoss_create")
