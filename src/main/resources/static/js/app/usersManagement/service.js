@@ -83,6 +83,19 @@ App.factory('UsersManagementService', ['$http', '$q', '$document', function ($ht
                                 }
                         );
             },
+            updateDepartments: function (departments) {
+                return $http.put('/transportation/management/user_update_departments',
+                        JSON.stringify(departments), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating departments');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             deleteUser: function (user) {
                 console.log(user);
                 return $http({method: 'DELETE',
