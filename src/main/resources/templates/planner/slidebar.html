@@ -10,23 +10,23 @@
     </div>
     <ul class="info-bar-block" id="bar-block1">
 
-        <li class="info-bar-item" ng-repeat-start="ots in plctrl.transportDeps">						
-            <div class="info-bar-btn">
-                <span>{{ots.shortname}}</span>
+        <li class="info-bar-item">						
+            <div class="info-bar-btn" ng-click="plctrl.rowOtsInfoClick(ots,$event.currentTarget)" ng-repeat-start="ots in plctrl.otsInfos">
+                <span>{{ots.name}}</span>
                 <section class="info-bar-sub-type">
-                    <div><i class="fas fa-car" title="Легковой"></i><span>{{}}</span></div>
-                    <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{}}</span></div>
-                    <div><i class="fas fa-truck" title="Грузовой"></i><span>{{}}</span></div>
-                    <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{}}</span></div>
+                    <div><i class="fas fa-car" title="Легковой"></i><span>{{ots.type2count}}</span></div>
+                    <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{ots.type1count}}</span></div>
+                    <div><i class="fas fa-truck" title="Грузовой"></i><span>{{ots.type3count}}</span></div>
+                    <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{ots.type4count}}</span></div>
                 </section>
             </div>
 
-            <div class="{{plctrl.selectIcon()}}" ng-show="ots.isVisible !== undefined && ots.isVisible" ng-repeat-end>
+            <div class="info-bar-sub" ng-show="ots.isVisible !== undefined && ots.isVisible" ng-repeat-end>
                 <ul>
 
-                    <li ng-repeat="">
-                        <span><i class="fas fa-bus-alt"></i>{{}}ПАЗ 3312</span>
-                        <span>{{}}3</span>
+                    <li >
+                        <span><i class="fas fa-bus-alt"></i>ПАЗ 3312</span>
+                        <span>3</span>
                     </li>
 
                 </ul>
@@ -35,18 +35,18 @@
 
     </ul>
 
-    <div class="info-bar-sub" style="max-height: 520px; width: 90%; margin-left: 5%; " id="bar-block2">
+    <div class="info-bar-sub info-bar-driver" style="max-height: 520px; width: 90%; margin-left: 5%; " id="bar-block2">
         <ul>
 
-            <li ng-repeat="">
-                <span>{{}}ОТС 1</span>
+            <li ng-repeat="otsDr in plctrl.otsInfos">
+                <span>{{otsDr.name}}</span>
                 <span>
-                    <i class="fas fa-user" title="Количество водителей"></i>{{}}22
+                    <i class="fas fa-user" title="Количество водителей"></i>{{otsDr.drivercount}}
                 </span>
             </li>
             <li>
                 <span>Всего</span>
-                <span><i class="fas fa-user" title="Количество водителей"></i>{{}}112</span>
+                <span><i class="fas fa-user" title="Количество водителей"></i>{{plctrl.allCountDrivers}}</span>
             </li>
 
 

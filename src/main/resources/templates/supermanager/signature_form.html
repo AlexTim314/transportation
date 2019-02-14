@@ -6,13 +6,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Управление</title>
-        <!--	<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">
-                <link href="assets/fontawesome/css/all.css" rel="stylesheet">
-                <link rel="stylesheet" href="assets/style/style.css">
-                
-                <script  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-                <script src="assets/app/app.js"></script>
-                <script src="assets/app/directives/firstDirective.js"></script>-->
         <link href="fontawesome/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css">
 
@@ -83,8 +76,10 @@
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
                     <h3>Контроль подачи заявок</h3>
 
-                    <button class="login btn" onclick="formLogin_open()"><i class="fas fa-user"></i>Пользователь</button>
-
+                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-user"></i>Выход</button>
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out"/>
+                    </form>
                 </div>
                 <!--Sidebar-->
 
@@ -119,7 +114,7 @@
                                                 <div style="float: right; margin-right: 10px;">
                                                     <label class="custom-checkbox" style=" text-decoration: none;">
                                                         Только неподписанные
-                                                        <input type="checkbox" >
+                                                        <input type="checkbox" ng-model="ctrl.unsignedChecked" checked="false" ng-change="ctrl.fetchAllUnsignedRecords()">
                                                         <span class="checkmark"></span>
                                                     </label>
                                                 </div>
@@ -146,7 +141,7 @@
                                                     <tr>	
                                                         <th style="width: 7%;">
                                                             <label class="custom-checkbox">
-                                                               <input type="checkbox" ng-model="ctrl.allChecked" checked="false" ng-change="ctrl.checkAll(header.compositeClaimRecords)">
+                                                                <input type="checkbox" ng-model="ctrl.allChecked" checked="false" ng-change="ctrl.checkAll(header.compositeClaimRecords)">
                                                                 <span class="checkmark"></span>
                                                             </label>
                                                         </th>
@@ -183,7 +178,7 @@
                                                             {{ctrl.showDriver(clrec.appointment)}}
                                                         </td>
                                                         <td >
-                                                            <i class="{{ctrl.selectStatusIco(clrec.appointment.status) + ' ' + ctrl.selectStatusColor(clrec.appointment.status)}}" title="{{ctrl.apptStatus(clrec.appointment.status)}}"></i>
+                                                            <i class="{{ctrl.selectStatusIco(clrec.record, clrec.appointment.status) + ' ' + ctrl.selectStatusColor(clrec.record, clrec.appointment.status)}}" title="{{ctrl.apptStatus(clrec.appointment.status)}}"></i>
                                                         </td>     
                                                     </tr>
 
@@ -191,7 +186,7 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                        	                                                
+
                                     </table>
                                 </div>  
                                 <!--  -->

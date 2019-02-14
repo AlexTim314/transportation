@@ -65,8 +65,22 @@ App.factory('SuperManagerService', ['$http', '$q', '$document', function ($http,
             },
             
             affirmRecords: function (affIds) {
-                return $http.put('/transportation/supermanager/records_affirm',
+                return $http.put('/transportation/supermanager/sign_records',
                         JSON.stringify(affIds), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating records');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            cancelRecords: function (Ids) {
+                return $http.put('/transportation/supermanager/cancel_records',
+                        JSON.stringify(Ids), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

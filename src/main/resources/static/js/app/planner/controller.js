@@ -21,6 +21,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.clrec = {record: {}, claim: {}};
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.carBoss = {id: null};
+        self.otsInfo = {id: null, type1count: 0, type4count: 0, type2count: 0, drivercount: 0, type3count: 0, name: ''};
+        self.otsInfos = [];
+        self.allCountDrivers = 0;
         self.carBosses = [];
         self.departments = [];
         self.specDepartments = [];
@@ -58,6 +61,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.isOtherDay = false;
         self.isDelete = false;
         self.startDate;
+        self.allChecked = false;
+
 
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
@@ -289,6 +294,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchOtsInfo = function () {
+            PlannerService.fetchOtsInfo()
+                    .then(
+                            function (d) {
+                                self.otsInfos = d;
+                                var k = 0;
+                                for (var i = 0; i < self.otsInfos.length; i++) {
+                                    k = k + self.otsInfos[i].drivercount;
+                                }
+                                self.allCountDrivers = k;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching OtsInfo');
+                            }
+                    );
+        };
+
         self.downloadPlan = function () {
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
             var day = datePlan.getDate();
@@ -326,7 +348,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     month = "0" + month;
                                 if (day < 10)
                                     day = "0" + day;
-                                var today = year + "-" + month + "-" + day;
+                                var today = self.getFormatedDate(date, "-", true);
                                 document.getElementById('date-plan').value = today;
                                 document.getElementById('startDate').value = today;
                                 document.getElementById('startDate').min = today;
@@ -334,7 +356,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
-                                self.date = day + "." + month + "." + year;
+                                self.date = self.getFormatedDate(date, ".", false);
+
+                                date.setDate(date.getDate() + 1);
+                                var tomorrow = self.getFormatedDate(date, "-", true);
+                                document.getElementById('compl-date-plan').value = tomorrow;
                             },
                             function (errResponse) {
                                 console.error('Error while fetching NewClaims');
@@ -342,6 +368,40 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+
+        self.getFormatedDate = function (date, separator, yearAtBeginning) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            if (yearAtBeginning) {
+                return year + separator + month + separator + day;
+            }
+            return day + separator + month + separator + year;
+        };
+
+      /*  self.getToday = function () {
+            var date = new Date();
+            var today = self.getFormatedDate(date, "-", true);
+
+            document.getElementById('date-plan').value = today;
+            document.getElementById('startDate').value = today;
+            document.getElementById('startDate').min = today;
+            document.getElementById('entranceTime').value = "00:00";
+            document.getElementById('startTime').value = "00:00";
+            document.getElementById('endTime').value = "00:00";
+
+            self.startDate = new Date(today);
+            self.date = self.getFormatedDate(date, ".", false);
+
+            date.setDate(date.getDate() + 1);
+            var tomorrow = self.getFormatedDate(date, "-", true);
+            document.getElementById('compl-date-plan').value = tomorrow;
+        };
+*/
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
@@ -364,6 +424,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchPlaces();
         self.fetchAllSpecDepartments();
         self.fetchVehicleTypes();
+        self.fetchOtsInfo();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -411,7 +472,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 }
                                 self.fetchDatePlanRecords();
                                 self.fetchDateCompletePlanRecords();
-//                                open_tab1('tab-list2', 'tab-btn2', 2);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -443,6 +503,32 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 dep.isVisible = true;
             } else {
                 dep.isVisible = !dep.isVisible;
+            }
+        };
+
+        self.clearBacklight = function (element) {
+            var block = document.getElementById('bar-block1');
+            var items = block.getElementsByClassName('info-bar-btn');
+            var i;
+            for (i = 0; i < items.length; i++) {
+                if (element !== items[i]) {
+                    items[i].classList.remove('subActive');
+                }
+            }
+        };
+
+        self.rowOtsInfoClick = function (ots, element) {
+            self.clearBacklight(element);
+            element.classList.toggle('subActive');
+            for (var i = 0; i < self.otsInfos.length; i++) {
+                if (self.otsInfos[i] !== ots) {
+                    self.otsInfos[i].isVisible = false;
+                }
+            }
+            if (ots.isVisible === undefined) {
+                ots.isVisible = true;
+            } else {
+                ots.isVisible = !ots.isVisible;
             }
         };
 
@@ -1076,4 +1162,35 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carBoss = {id: null};
             formClose('formCarBoss');
         };
+
+        self.checkAll = function (compositeClaimRecords) {
+            for (var i = 0; i < compositeClaimRecords.length; i++) {
+                compositeClaimRecords[i].record.checked = self.allChecked;
+            }
+        };
+
+        self.changeCheckedTD = function (compositeClaimRecord) {
+            if (compositeClaimRecord.record.checked) {
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
+                            self.headers[i].compositeClaimRecords[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
+                        }
+                    }
+                }
+            }
+        };
+
+        self.changeCheckedVM = function (compositeClaimRecord) {
+            if (compositeClaimRecord.record.checked) {
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
+                            self.headers[i].compositeClaimRecords[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
+                        }
+                    }
+                }
+            }
+        };
+
     }]);

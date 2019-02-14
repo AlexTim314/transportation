@@ -30,6 +30,7 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
         self.all = false;
         self.date;
         self.allChecked = false;
+        self.unsignedChecked = false;
 
 
 
@@ -41,6 +42,9 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                if (self.unsignedChecked) {
+                                    self.fetchUnsignedRecords();
+                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -57,6 +61,9 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                if (self.unsignedChecked) {
+                                    self.fetchUnsignedRecords();
+                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -73,6 +80,9 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                if (self.unsignedChecked) {
+                                    self.fetchUnsignedRecords();
+                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -91,6 +101,9 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
                     .then(
                             function (d) {
                                 self.headers = d;
+                                if (self.unsignedChecked) {
+                                    self.fetchUnsignedRecords();
+                                }
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -101,6 +114,42 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
 
         self.fetchAllRecords();
 
+        self.fetchAllUnsignedRecords = function () {
+            if (!self.unsignedChecked) {
+                if (self.all === false &&
+                        self.today === false &&
+                        self.week === false) {
+                    self.fetchDateRecords();
+                }
+                if (self.all === true) {
+                    self.fetchAllRecords();
+                }
+                if (self.today === true) {
+                    self.fetchTomorrowRecords();
+                }
+                if (self.week === true) {
+                    self.fetchWeekRecords();
+                }
+            } else {
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        if (self.headers[i].compositeClaimRecords[j].record.affirmator !== null) {
+                            self.headers[i].compositeClaimRecords.splice(j, 1);
+                        }
+                    }
+                }
+            }
+        };
+
+        self.fetchUnsignedRecords = function () {
+            for (var i = 0; i < self.headers.length; i++) {
+                for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                    if (self.headers[i].compositeClaimRecords[j].record.affirmator !== null) {
+                        self.headers[i].compositeClaimRecords.splice(j, 1);
+                    }
+                }
+            }
+        };
 
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);
@@ -219,7 +268,10 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
         self.amountReady = function (header) {
             var k = 0;
             for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].record.affirmator !== null && header.compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
+                if (header.compositeClaimRecords[j].record.affirmator !== null && header.compositeClaimRecords[j].appointment.status !== 'CANCELED_BY_USER' &&
+                        header.compositeClaimRecords[j].appointment.status !== 'CANCELED_BY_PLANNER' &&
+                        header.compositeClaimRecords[j].appointment.status !== 'CANCELED_BY_SUPERMANAGER' &&
+                        header.compositeClaimRecords[j].appointment.status !== 'CANCELED_BY_DISPATCHER') {
                     k = k + 1;
                 }
             }
@@ -239,37 +291,45 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
             return k;
         };
 
-        self.selectStatusIco = function (stat) {
+        self.selectStatusIco = function (record, stat) {
             var ready = 'fas fa-lg fa-clipboard-check';
             var canceled = 'fas fa-lg fa-ban';
-            switch (stat) {
-                case 'READY':
+            if (stat === 'CANCELED_BY_USER' || stat === 'CANCELED_BY_PLANNER' || stat === 'CANCELED_BY_DISPATCHER' || stat === 'CANCELED_BY_SUPERMANAGER') {
+                switch (stat) {
+                    case 'CANCELED_BY_USER':
+                        return canceled;
+                    case 'CANCELED_BY_PLANNER':
+                        return canceled;
+                    case 'CANCELED_BY_DISPATCHER':
+                        return canceled;
+                    case 'CANCELED_BY_SUPERMANAGER':
+                        return canceled;
+                }
+            } else {
+                if (record.affirmator !== null) {
                     return ready;
-                case 'CANCELED_BY_USER':
-                    return canceled;
-                case 'CANCELED_BY_PLANNER':
-                    return canceled;
-                case 'CANCELED_BY_DISPATCHER':
-                    return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
-                    return canceled;
+                }
             }
         };
 
-        self.selectStatusColor = function (stat) {
+        self.selectStatusColor = function (record, stat) {
             var ready = 'status-ready';
             var canceled = 'cancel-status';
-            switch (stat) {
-                case 'READY':
+            if (stat === 'CANCELED_BY_USER' || stat === 'CANCELED_BY_PLANNER' || stat === 'CANCELED_BY_DISPATCHER' || stat === 'CANCELED_BY_SUPERMANAGER') {
+                switch (stat) {
+                    case 'CANCELED_BY_USER':
+                        return canceled;
+                    case 'CANCELED_BY_PLANNER':
+                        return canceled;
+                    case 'CANCELED_BY_DISPATCHER':
+                        return canceled;
+                    case 'CANCELED_BY_SUPERMANAGER':
+                        return canceled;
+                }
+            } else {
+                if (record.affirmator !== null) {
                     return ready;
-                case 'CANCELED_BY_USER':
-                    return canceled;
-                case 'CANCELED_BY_PLANNER':
-                    return canceled;
-                case 'CANCELED_BY_DISPATCHER':
-                    return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
-                    return canceled;
+                }
             }
         };
 

@@ -81,12 +81,6 @@ public class ClaimController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @PutMapping("/supermanager/sign_records")
-    public ResponseEntity<String> signRecords(Principal principal, @RequestBody List<Long> recIds) {
-        claimService.signRecords(principal, recIds);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @DeleteMapping("/user/claims_delete")
     public ResponseEntity<String> deleteClaims(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);

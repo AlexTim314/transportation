@@ -2,17 +2,12 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import org.ivc.transportation.entities.AppUser;
-import org.ivc.transportation.entities.Appointment;
-import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
-import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
@@ -45,7 +40,7 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
 
-    @GetMapping("/planner/otsInfo")
+    @GetMapping("/planner/ots_info")
     public List<OtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
     }

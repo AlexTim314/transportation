@@ -55,15 +55,15 @@
 
                         <table class="table-claim">
                             <tr>	
-                                <th>Дата выезда</th>
-                                <th>Время подачи</th>
-                                <th>Время выезда</th>
-                                <th>Время возвращения</th>
-                                <th>Марка транспорта</th>
-                                <th>Номер транспорта</th>
-                                <th>Водитель</th>
-                                <th>Статус</th>	
-                                <th></th>			  				
+                                <th style="width:10%">Дата выезда</th>
+                                <th style="width:10%">Время подачи</th>
+                                <th style="width:10%">Время выезда</th>
+                                <th style="width:15%">Время возвращения</th>
+                                <th style="width:15%">Марка транспорта</th>
+                                <th style="width:15%">Номер транспорта</th>
+                                <th style="width:15%">Водитель</th>
+                                <th style="width:5%">Статус</th>	
+                                <th style="width:5%"></th>			  				
                             </tr>
                             <tr ng-repeat="record in affirmedClaim.records| orderBy: 'startDate'">
                                 <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>

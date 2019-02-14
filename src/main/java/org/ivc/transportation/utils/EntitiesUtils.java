@@ -9,6 +9,7 @@ public class EntitiesUtils {
     public static final String USER_CANCEL_STR = "Отменено пользователем. ";
     public static final String PLANNER_CANCEL_STR = "Отменено планировщиком. ";
     public static final String DISPATCHER_CANCEL_STR = "Отменено диспетчером. ";
+    public static final String SUPERMANAGER_CANCEL_STR = "Отменено управлением. ";
 
     public static enum VehicleSpecialization {
         пассажирский,

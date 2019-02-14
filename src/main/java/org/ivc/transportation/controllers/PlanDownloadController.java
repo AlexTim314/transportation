@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -255,7 +254,7 @@ public class PlanDownloadController {
             row = table.createRow();
             setCellsWidth(row);
 
-            if (false) { // в отчётной версии плана цвета не нужны. Нужнали будет рабочая версия пока не ясно
+            if (false) { // в отчётной версии плана цвета не нужны. Нужна ли будет рабочая версия пока не ясно
                 setRowColor(row, getStrColorByTransportDep(rowData.transportDepNumber));
             }
 
@@ -290,7 +289,7 @@ public class PlanDownloadController {
         paragraph.setSpacingBefore(200);
         textToParagraph(paragraph, "Заместитель начальника Комплекса АТО - начальник Службы"
                 + "                                                                              "
-                + "В.В. Гольц", "Times New Roman", 12, false, ParagraphAlignment.CENTER);
+                + "В.В. Гольц", "Times New Roman", 12, false, ParagraphAlignment.CENTER); //TODO: вытаскивать из данных КАТО     
 
         File file = File.createTempFile("plan", LocalDate.now().toString());
         FileOutputStream fileOutputStream = new FileOutputStream(file);

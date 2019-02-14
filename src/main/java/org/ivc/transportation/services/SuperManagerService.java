@@ -1,13 +1,17 @@
 package org.ivc.transportation.services;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
+import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
@@ -15,6 +19,9 @@ import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.EntitiesUtils;
+import static org.ivc.transportation.utils.EntitiesUtils.SUPERMANAGER_CANCEL_STR;
+import static org.ivc.transportation.utils.EntitiesUtils.USER_CANCEL_STR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -43,6 +50,9 @@ public class SuperManagerService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private AppointmentInfoRepository appointmentInfoRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -82,36 +92,40 @@ public class SuperManagerService {
         return result;
     }
 
-//    public List<CompositeClaimRecord> getCompositeClaimRecordsAll(Principal principal) {
-//        List<Department> departments = departmentRepository.findDepartmentsBySuperManagerId(getUser(principal).getId());
-//        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-//        if (!departments.isEmpty()) {
-//            for (int i = 0; i < departments.size(); i++) {
-//                recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(departments.get(i).getId())
-//                        .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
-//                        prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
-//            }
-//        }
-//        return result;
-//    }
-//
-//    public List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
-//        List<Department> departments = departmentRepository.findDepartmentsBySuperManagerId(getUser(principal).getId());
-//        List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
-//        if (!departments.isEmpty()) {
-//            for (int i = 0; i < departments.size(); i++) {
-//                recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(departments.get(i).getId(), dateStart, dateEnd)
-//                        .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
-//                        prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
-//            }
-//        }
-//        return result;
-//    }
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
             return userRepository.findByUsername(loginedUser.getUsername());
         }
         return null;
+    }
+
+    public void signRecords(Principal principal, List<Long> recIds) {
+        AppUser affirmator = getUser(principal);
+        recIds.forEach(id -> {
+            Record record = recordRepository.findById(id).get();
+            record.setAffirmator(affirmator);
+            record.setAffirmationDate(LocalDateTime.now());
+            recordRepository.save(record);
+        });
+    }
+
+    public void cancelRecords(Principal principal, List<Long> recIds) {
+        recIds.forEach(id -> {
+            Record record = recordRepository.findById(id).get();
+            Appointment app = appointmentRepository.getLastByRecordId(id);
+            if (app == null) {
+                app = appointmentRepository.save(new Appointment(LocalDateTime.now(), EntitiesUtils.AppointmentStatus.CANCELED_BY_SUPERMANAGER, SUPERMANAGER_CANCEL_STR, getUser(principal)));
+                appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
+                record.getAppointments().add(app);
+            } else {
+                app.setNote(SUPERMANAGER_CANCEL_STR + app.getNote());
+                app.setStatus(EntitiesUtils.AppointmentStatus.CANCELED_BY_SUPERMANAGER);
+                app = appointmentRepository.save(app);
+                appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
+                record.getAppointments().add(app);
+            }
+            recordRepository.save(record);
+        });
     }
 }

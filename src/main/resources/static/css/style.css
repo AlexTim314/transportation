@@ -797,7 +797,7 @@ i{
 }
 .info-bar-sub{
 	position: relative;
-	display: none;
+	//display: none;
  	max-height: 300px;
  	overflow-y: auto;
 }
@@ -851,6 +851,9 @@ i{
 }
 .info-bar-sub-type div span{
 
+}
+.info-bar-driver{
+    display: none;
 }
 
 .info-bar-sub .subHeadBg:hover{
