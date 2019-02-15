@@ -1207,13 +1207,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             return unique;
         };
 
-        self.filterModelsByselectedTransportDep = function (td) {
+        self.filterModelsByselectedTransportDep = function (td, spec) {
             self.filteredVehicleModels = [];
             for (var i = 0; i < self.vehicles.length; i++) {
                 if (self.vehicles[i].transportDep.id === td.id) {
                     for (var j = 0; j < self.vehicleModels.length; j++) {
                         if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
-                            if (self.vehicles[i].model.modelName === self.vehicleModels[j].modelName) {
+                            if (self.vehicles[i].model.modelName === self.vehicleModels[j].modelName && self.vehicles[i].model.vehicleType.specialization === spec) {
                                 self.filteredVehicleModels.push(self.vehicleModels[j]);
                             }
                         }
@@ -1234,7 +1234,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
 
-            self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep);
+            self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
 
         };
 
