@@ -317,7 +317,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 self.otsInfos = d;
                                 var k = 0;
                                 for (var i = 0; i < self.otsInfos.length; i++) {
-                                    k = k + self.otsInfos[i].drivercount;
+                                    k = k + self.otsInfos[i].otsInfo.drivercount;
                                 }
                                 self.allCountDrivers = k;
                             },
