@@ -44,6 +44,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             @Param("date_start") ZonedDateTime dateStart,
             @Param("date_end") ZonedDateTime dateEnd);
 
-    @Query(value = "select * from vehicle where status = :status", nativeQuery = true)
+    @Query(value = "select * from vehicle where status = :status order by note", nativeQuery = true)
     public List<Vehicle> findVehiclesForPlan(@Param("status") int status);
 }
