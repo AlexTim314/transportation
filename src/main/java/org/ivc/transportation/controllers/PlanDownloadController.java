@@ -37,6 +37,7 @@ import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.services.VehicleService;
+import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
@@ -288,7 +289,7 @@ public class PlanDownloadController {
         }
 
         //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
-        List<Vehicle> vehicles = vehicleService.findVehiclesByTransportDepDirectly(appointments.get(0).getTransportDep());
+        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое);
         //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
         vehicles = vehicles.stream().filter((t) -> {
             return t.getModel() != null;
@@ -297,7 +298,9 @@ public class PlanDownloadController {
         }).collect(Collectors.toList());
         vehicles.stream().filter((t) -> {
             return (t.getNote() == null) || (t.getNote().equals(""));
-        }).findAny().get().setNote("Не введён в эксплуатацию");
+        }).findAny().ifPresent((t) -> {
+            t.setNote("Не введён в эксплуатацию");
+        });
         for (Vehicle vehicle : vehicles) {
             row = table.createRow();
             isBold = true;
