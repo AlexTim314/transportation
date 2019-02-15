@@ -23,14 +23,15 @@ import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
-import org.ivc.transportation.utils.OtsInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -74,6 +75,9 @@ public class PlanningService {
     
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private VehicleModelRepository vehicleModelRepository;
 
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
@@ -219,8 +223,10 @@ public class PlanningService {
         return claimRepository.save(claim);
     }
 
-    public List<OtsInfo> getOtsInfo() {
-        return transportDepRepository.findOtsInfo();
+    public List<CompositeOtsInfo> getOtsInfo() {
+        List<CompositeOtsInfo> result = new ArrayList<CompositeOtsInfo>();
+        transportDepRepository.findOtsInfo().forEach(u -> result.add(new CompositeOtsInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
+        return result;
     }
     
     public List<Vehicle> getAllVehicles(Principal principal) {

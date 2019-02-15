@@ -13,10 +13,8 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
-import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
-import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
-import org.ivc.transportation.utils.OtsInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +43,7 @@ public class PlanningController {
     }
 
     @GetMapping("/planner/ots_info")
-    public List<OtsInfo> getOtsInfo() {
+    public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
     }
 
