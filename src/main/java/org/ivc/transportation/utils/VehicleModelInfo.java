@@ -13,4 +13,5 @@ package org.ivc.transportation.utils;
 public interface VehicleModelInfo {
     String getModel();
     int getCount();
+    int getSpecialization();
 }

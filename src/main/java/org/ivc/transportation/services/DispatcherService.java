@@ -29,6 +29,7 @@ import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
+import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -159,6 +160,10 @@ public class DispatcherService {
         ZonedDateTime dStart = ZonedDateTime.of(date, LocalTime.of(0, 0), ZoneId.systemDefault());
         ZonedDateTime dEnd = ZonedDateTime.of(date, LocalTime.of(23, 59), ZoneId.systemDefault());
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
+    }
+
+    public List<Vehicle> getVehiclesForPlan(VehicleStatus status) {
+        return vehicleRepository.findVehiclesForPlan(status.ordinal());
     }
 
     public Appointment getAppointmentById(Long apptId) {
