@@ -94,6 +94,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return tractor;
             }
         };
+        
+        self.selectSmallIcon = function (spec) {
+            var bus = 'fas fa-bus-alt';
+            var car = 'fas fa-car';
+            var truck = 'fas fa-truck';
+            var tractor = 'fas fa-tractor';
+            switch (spec) {
+                case 0:
+                    return bus;
+                case 1:
+                    return car;
+                case 2:
+                    return truck;
+                case 3:
+                    return tractor;
+            }
+        };
 
         self.fetchAllAppointments = function () {
             PlannerService.fetchAllAppointments()

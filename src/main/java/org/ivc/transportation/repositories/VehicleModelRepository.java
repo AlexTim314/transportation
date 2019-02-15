@@ -27,7 +27,8 @@ public interface VehicleModelRepository extends JpaRepository<VehicleModel, Long
             + "count(vehicle_model.model_name) as count "
             + "from vehicle_model, vehicle_type, vehicle "
             + "where vehicle.transport_dep_id = :transport_dep_id and vehicle_type.id = vehicle_model.vehicle_type_id and vehicle_model.id = vehicle.model_id "
-            + "group by vehicle_model.model_name, vehicle_type.specialization", nativeQuery = true)
+            + "group by vehicle_type.specialization, vehicle_model.model_name "
+            + "order by vehicle_type.specialization, vehicle_model.model_name", nativeQuery = true)
     public List<VehicleModelInfo> findVehicleModelInfos(@Param("transport_dep_id") Long transportDepId);
 
 }

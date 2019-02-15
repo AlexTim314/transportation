@@ -14,8 +14,8 @@
             <div class="info-bar-btn" ng-click="plctrl.rowOtsInfoClick(ots, $event.currentTarget)" ng-repeat-start="ots in plctrl.otsInfos">
                 <span>{{ots.otsInfo.name}}</span>
                 <section class="info-bar-sub-type">
-                    <div><i class="fas fa-car" title="Легковой"></i><span>{{ots.otsInfo.type2count}}</span></div>
                     <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{ots.otsInfo.type1count}}</span></div>
+                    <div><i class="fas fa-car" title="Легковой"></i><span>{{ots.otsInfo.type2count}}</span></div>
                     <div><i class="fas fa-truck" title="Грузовой"></i><span>{{ots.otsInfo.type3count}}</span></div>
                     <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{ots.otsInfo.type4count}}</span></div>
                 </section>
@@ -23,8 +23,8 @@
 
             <div class="info-bar-sub" ng-show="ots.isVisible !== undefined && ots.isVisible" ng-repeat-end>
                 <ul>
-                    <li ng-repeat="info in ots.vehicleModelInfos| orderBy: 'model'">
-                        <span><i class="fas fa-bus-alt"></i>{{info.model}}</span>
+                    <li ng-repeat="info in ots.vehicleModelInfos">
+                        <span><i class="{{plctrl.selectSmallIcon(info.specialization)}}"></i>{{info.model}}</span>
                         <span>{{info.count}}</span>
                     </li>
 
@@ -36,7 +36,6 @@
 
     <div class="info-bar-sub info-bar-driver" style="max-height: 520px; width: 90%; margin-left: 5%; " id="bar-block2">
         <ul>
-
             <li ng-repeat="otsDr in plctrl.otsInfos">
                 <span>{{otsDr.otsInfo.name}}</span>
                 <span>

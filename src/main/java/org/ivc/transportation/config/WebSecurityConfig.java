@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/usersManagement", "/departmentsManagement",
                 "/transportDepsManagement", "/placesManagement",
                 "/vehicleTypesManagement", "/fuelsManagement", "/claims",
-                "/planner", "/dispatcher")
+                "/planner", "/dispatcher", "/supermanager")
                 .access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.
