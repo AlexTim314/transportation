@@ -53,6 +53,19 @@
                 </td>
             </tr>
             <tr>
+                <td>Подчинены:</td>
+                <td><span ng-repeat="dep in ctrl.user.departments" class="role-span">{{dep.shortname}} </span></td>
+                <td>
+                    <select ng-model="ctrl.subDep" >
+                        <option ng-repeat="d in ctrl.departments" ng-value="d">{{d.shortname}}</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="delete-button" ng-click="ctrl.removeDep()"> - </button>
+                    <button type="button" class="submit-button" ng-click="ctrl.addDep()">+</button>
+                </td>
+            </tr>
+            <tr>
                 <td>Права доступа:</td>
                 <td><span ng-repeat="role in ctrl.user.roles" class="role-span">{{role.roleName}} </span></td>
                 <td>
@@ -88,6 +101,7 @@
             <th>Должность</th>
             <th>Подразделение</th>
             <th>Транспортный отдел</th>
+            <th>Подчинённые подразделения</th>
             <th>Права доступа</th>
             <th></th>
         </tr>
@@ -98,7 +112,8 @@
             <td> {{user.post}}</td>
             <td> {{user.department.shortname}}</td>
             <td> {{user.transportDep.shortname}}</td>
-            <td ><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
+            <td><span ng-repeat="d in user.departments" class="role-span">{{d.shortname}} </span></td>
+            <td><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
             <td>
                 <button ng-click="ctrl.editUser(user)" class="edit-button">изменить</button>
                 <button ng-click="ctrl.deleteUser(user)" class="delete-button">удалить</button>

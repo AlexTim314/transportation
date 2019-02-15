@@ -21,6 +21,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.clrec = {record: {}, claim: {}};
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.carBoss = {id: null};
+        self.otsInfo = {id: null, type1count: 0, type4count: 0, type2count: 0, drivercount: 0, type3count: 0, name: ''};
+        self.otsInfos = [];
+        self.allCountDrivers = 0;
         self.carBosses = [];
         self.departments = [];
         self.specDepartments = [];
@@ -58,6 +61,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.isOtherDay = false;
         self.isDelete = false;
         self.startDate;
+        self.allChecked = false;
+        self.vehicles = [];
+        self.filteredVehicleModels = [];
+
 
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
@@ -265,6 +272,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchVehicles = function () {
+            PlannerService.fetchVehicles()
+                    .then(
+                            function (d) {
+                                self.vehicles = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Vehicles');
+                            }
+                    );
+        };
+
         self.fetchAllVehicleModels = function () {
             PlannerService.fetchAllVehicleModels()
                     .then(
@@ -277,6 +296,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+
+
         self.fetchPlaces = function () {
             PlannerService.fetchPlaces()
                     .then(
@@ -285,6 +306,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Places');
+                            }
+                    );
+        };
+
+        self.fetchOtsInfo = function () {
+            PlannerService.fetchOtsInfo()
+                    .then(
+                            function (d) {
+                                self.otsInfos = d;
+                                var k = 0;
+                                for (var i = 0; i < self.otsInfos.length; i++) {
+                                    k = k + self.otsInfos[i].drivercount;
+                                }
+                                self.allCountDrivers = k;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching OtsInfo');
                             }
                     );
         };
@@ -361,25 +399,25 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             return day + separator + month + separator + year;
         };
 
-      /*  self.getToday = function () {
-            var date = new Date();
-            var today = self.getFormatedDate(date, "-", true);
-
-            document.getElementById('date-plan').value = today;
-            document.getElementById('startDate').value = today;
-            document.getElementById('startDate').min = today;
-            document.getElementById('entranceTime').value = "00:00";
-            document.getElementById('startTime').value = "00:00";
-            document.getElementById('endTime').value = "00:00";
-
-            self.startDate = new Date(today);
-            self.date = self.getFormatedDate(date, ".", false);
-
-            date.setDate(date.getDate() + 1);
-            var tomorrow = self.getFormatedDate(date, "-", true);
-            document.getElementById('compl-date-plan').value = tomorrow;
-        };
-*/
+        /*  self.getToday = function () {
+         var date = new Date();
+         var today = self.getFormatedDate(date, "-", true);
+         
+         document.getElementById('date-plan').value = today;
+         document.getElementById('startDate').value = today;
+         document.getElementById('startDate').min = today;
+         document.getElementById('entranceTime').value = "00:00";
+         document.getElementById('startTime').value = "00:00";
+         document.getElementById('endTime').value = "00:00";
+         
+         self.startDate = new Date(today);
+         self.date = self.getFormatedDate(date, ".", false);
+         
+         date.setDate(date.getDate() + 1);
+         var tomorrow = self.getFormatedDate(date, "-", true);
+         document.getElementById('compl-date-plan').value = tomorrow;
+         };
+         */
         self.fetchVehicleTypes = function () {
             PlannerService.fetchVehicleTypes()
                     .then(
@@ -402,6 +440,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchPlaces();
         self.fetchAllSpecDepartments();
         self.fetchVehicleTypes();
+        self.fetchOtsInfo();
+        self.fetchVehicles();
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -449,7 +489,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 }
                                 self.fetchDatePlanRecords();
                                 self.fetchDateCompletePlanRecords();
-//                                open_tab1('tab-list2', 'tab-btn2', 2);
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -481,6 +520,32 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 dep.isVisible = true;
             } else {
                 dep.isVisible = !dep.isVisible;
+            }
+        };
+
+        self.clearBacklight = function (element) {
+            var block = document.getElementById('bar-block1');
+            var items = block.getElementsByClassName('info-bar-btn');
+            var i;
+            for (i = 0; i < items.length; i++) {
+                if (element !== items[i]) {
+                    items[i].classList.remove('subActive');
+                }
+            }
+        };
+
+        self.rowOtsInfoClick = function (ots, element) {
+            self.clearBacklight(element);
+            element.classList.toggle('subActive');
+            for (var i = 0; i < self.otsInfos.length; i++) {
+                if (self.otsInfos[i] !== ots) {
+                    self.otsInfos[i].isVisible = false;
+                }
+            }
+            if (ots.isVisible === undefined) {
+                ots.isVisible = true;
+            } else {
+                ots.isVisible = !ots.isVisible;
             }
         };
 
@@ -524,6 +589,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var canceledByUser = 'Отменено пользователем';
             var canceledByPlanner = 'Отменено планировщиком';
             var canceledByDispatcher = 'Отменено диспетчером';
+            var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
                 case 'IN_PROGRESS':
                     return inProgress;
@@ -537,6 +603,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return canceledByPlanner;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceledByDispatcher;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceledBySupermanager;
             }
         };
 
@@ -559,6 +627,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
                     return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
+                    return canceled;
             }
         };
 
@@ -580,6 +650,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 'CANCELED_BY_PLANNER':
                     return canceled;
                 case 'CANCELED_BY_DISPATCHER':
+                    return canceled;
+                case 'CANCELED_BY_SUPERMANAGER':
                     return canceled;
             }
         };
@@ -1114,4 +1186,68 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carBoss = {id: null};
             formClose('formCarBoss');
         };
+
+        self.checkAll = function (compositeClaimRecords) {
+            for (var i = 0; i < compositeClaimRecords.length; i++) {
+                compositeClaimRecords[i].record.checked = self.allChecked;
+            }
+        };
+
+        self.getUniqueModels = function (arr) {
+            var i = 0,
+                    current,
+                    length = arr.length,
+                    unique = [];
+            for (; i < length; i++) {
+                current = arr[i];
+                if (!~unique.indexOf(current)) {
+                    unique.push(current);
+                }
+            }
+            return unique;
+        };
+
+        self.filterModelsByselectedTransportDep = function (td, spec) {
+            self.filteredVehicleModels = [];
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].transportDep.id === td.id) {
+                    for (var j = 0; j < self.vehicleModels.length; j++) {
+                        if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
+                            if (self.vehicles[i].model.modelName === self.vehicleModels[j].modelName && self.vehicles[i].model.vehicleType.specialization === spec) {
+                                self.filteredVehicleModels.push(self.vehicleModels[j]);
+                            }
+                        }
+                    }
+                }
+            }
+            self.filteredVehicleModels = self.getUniqueModels(self.filteredVehicleModels);
+        };
+
+        self.changeCheckedTD = function (compositeClaimRecord) {
+            if (compositeClaimRecord.record.checked) {
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
+                            self.headers[i].compositeClaimRecords[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
+                        }
+                    }
+                }
+            }
+
+            self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
+
+        };
+
+        self.changeCheckedVM = function (compositeClaimRecord) {
+            if (compositeClaimRecord.record.checked) {
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
+                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
+                            self.headers[i].compositeClaimRecords[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
+                        }
+                    }
+                }
+            }
+        };
+
     }]);

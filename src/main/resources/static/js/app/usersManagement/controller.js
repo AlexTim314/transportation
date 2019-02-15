@@ -3,19 +3,22 @@
 App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
     function ($scope, UsersManagementService) {
         var self = this;
-        self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: []};
+        self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: [], departments: []};
         self.role = {roleName: null};
         self.department = {name: null};
+        self.subDep = {name: null};
         self.departments = [];
         self.users = [];
         self.roles = [];
         self.transportDeps = [];
 
         self.fetchAllUsers = function () {
+            self.isUserFetching = true;
             UsersManagementService.fetchAllUsers()
                     .then(
                             function (d) {
                                 self.users = d;
+                                self.fetchAllDepartments();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Users');
@@ -40,6 +43,18 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
                     .then(
                             function (d) {
                                 self.departments = d;
+                                for (var i = 0; i < self.departments.length; i++) {
+                                    var dpt = self.departments[i];
+                                    for (var j = 0; j < self.users.length; j++) {
+                                        var u = self.users[j];
+                                        if (u.departments === undefined) {
+                                            u.departments = [];
+                                        }
+                                        if (dpt.superManager !== null && dpt.superManager !== undefined && dpt.superManager.id === u.id) {
+                                            u.departments.push(dpt);
+                                        }
+                                    }
+                                }
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Departments');
@@ -61,7 +76,6 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
 
         self.fetchAllUsers();
         self.fetchAllRoles();
-        self.fetchAllDepartments();
         self.fetchAllTransportDeps();
 
         self.createUser = function (user) {
@@ -84,6 +98,17 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
                     );
         };
 
+        self.updateDepartments = function (departments) {
+            UsersManagementService.updateDepartments(departments)
+                    .then(
+                            function (d) {
+                            },
+                            function (errResponse) {
+                                console.error('Error while updating Departments.');
+                            }
+                    );
+        };
+
         self.deleteUser = function (user) {
             UsersManagementService.deleteUser(user)
                     .then(
@@ -95,6 +120,9 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.submit = function () {
+            var depArr = self.user.departments;
+            self.user.departments = null;
+            self.updateDepartments(depArr);
             if (self.user.id === null) {
                 self.createUser(self.user);
             } else {
@@ -111,6 +139,7 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.department = user.department;
             self.user.transportDep = user.transportDep;
             self.user.roles = user.roles.slice();
+            self.user.departments = user.departments.slice();
         };
 
         self.addRole = function () {
@@ -121,8 +150,17 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.roles.pop();
         };
 
+        self.addDep = function () {
+            self.subDep.superManager = self.user;
+            self.user.departments.push(self.subDep);
+        };
+
+        self.removeDep = function () {
+            self.user.departments.pop();
+        };
+
         self.reset = function () {
-            self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: []};
+            self.user = {id: null, username: '', fullName: '', post: '', department: null, transportDep: null, roles: [], departments: []};
             self.role = {roleName: null};
         };
 

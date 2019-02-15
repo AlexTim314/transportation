@@ -9,12 +9,12 @@ import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
+import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
-import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
-import static org.ivc.transportation.utils.EntitiesUtils.PLANNER_CANCEL_STR;
-import org.ivc.transportation.utils.OtsInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +34,16 @@ public class PlanningController {
 
     @Autowired
     private PlanningService planningService;
+    
+    private VehicleService vehicleService;
 
     @GetMapping("/planner/affirmedClaims")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
         return planningService.getAffirmedClaimsAll();
     }
 
-    @GetMapping("/planner/otsInfo")
-    public List<OtsInfo> getOtsInfo() {
+    @GetMapping("/planner/ots_info")
+    public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
     }
 
@@ -115,6 +117,11 @@ public class PlanningController {
     @GetMapping("/planner/carBosses")
     public List<CarBoss> getCarBosses(Principal principal) {
         return planningService.findCarBossesByDepartment(principal);
+    }
+    
+    @GetMapping("/planner/vehicles")
+    public List<Vehicle> getAllVehicles(Principal principal) {
+        return planningService.getAllVehicles(principal);
     }
 
     @PostMapping("/planner/carBoss_create")

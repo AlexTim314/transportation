@@ -2,6 +2,7 @@ package org.ivc.transportation.repositories;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +43,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     List<Vehicle> findVacantByTransportDepIdWithoutModel(@Param("transport_dep_id") Long transportDepId,
             @Param("date_start") ZonedDateTime dateStart,
             @Param("date_end") ZonedDateTime dateEnd);
+
+    @Query(value = "select * from vehicle where status = :status order by note", nativeQuery = true)
+    public List<Vehicle> findVehiclesForPlan(@Param("status") int status);
 }

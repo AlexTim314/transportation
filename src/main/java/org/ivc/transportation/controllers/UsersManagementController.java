@@ -1,8 +1,10 @@
 package org.ivc.transportation.controllers;
 
 import java.util.Collection;
+import java.util.List;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.services.UsersManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,11 @@ public class UsersManagementController {
     @PutMapping("/management/user_update")
     public AppUser updateUser(@RequestBody AppUser user) {
         return usersManagementService.updateUser(user);
+    }
+
+    @PutMapping("/management/user_update_departments")
+    public List<Department> updateDepartmentsWithUser(@RequestBody List<Department> departments) {
+        return usersManagementService.updateDepartmentsWithUser(departments);
     }
 
     @DeleteMapping("/management/user_delete")
