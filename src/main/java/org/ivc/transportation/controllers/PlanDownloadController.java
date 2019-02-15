@@ -34,7 +34,9 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
+import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.DispatcherService;
+import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
@@ -65,6 +67,9 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
+    
+    @Autowired
+    private VehicleService vehicleService;
 
     @Autowired
     private ServletContext servletContext;
@@ -183,7 +188,7 @@ public class PlanDownloadController {
                 //есть два назначения на одну дату, то у них могут различаться только
                 //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
                 //!Надо выяснить как происходит подача заявок в таком случае.
-                //и пердполагается что назначения отсортированы так, что на одну машину они идут подряд.
+                //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
                 String time = record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
                         + "-"
                         + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -206,12 +211,12 @@ public class PlanDownloadController {
 
                 String route = "";
                 List<RouteTask> routeTasks = claim.getRouteTasks();
-                //TODO: оптимизировать после замены routeTasks с Set на List
+
                 if (!routeTasks.isEmpty()) {
-                    List<RouteTask> routeTaskList = routeTasks.stream().sorted((t1, t2) -> {
+                    routeTasks.sort((t1, t2) -> {
                         return Integer.compare(t1.getOrderNum(), t2.getOrderNum());
-                    }).collect(Collectors.toList());
-                    for (RouteTask routeTask : routeTaskList) {
+                    });
+                    for (RouteTask routeTask : routeTasks) {
                         route = route + routeTask.getPlace().getName() + ", ";
                     }
                     route = route.substring(0, route.length() - 2);
@@ -232,10 +237,7 @@ public class PlanDownloadController {
             fullfillTestData(rowDataList);
         }
         //end-----------тестовые данные для проверки
-        /*    rowDataList.sort((r1, r2) -> {
-            return r1.departmentName.compareTo(r2.departmentName); //TODO: написать специальную сортировку, чтобы формировала традиционный порядок
-        });
-         */
+
         String currentDepName = "";
         int number = 1;
         for (RowData rowData : rowDataList) {
@@ -274,7 +276,7 @@ public class PlanDownloadController {
             textToParagraph(row.getCell(5).getParagraphs().get(0), rowData.carBoss,
                     "Times New Roman", fontSize, false, parAligLeft);
             textToParagraph(row.getCell(6).getParagraphs().get(0), rowData.route,
-                    "Times New Roman", 7, false, parAligCenter);            
+                    "Times New Roman", 7, false, parAligCenter);
             listToCell(row.getCell(7), rowData.time,
                     "Times New Roman", fontSize, false, parAligLeft);
             listToCell(row.getCell(8), rowData.driver,
@@ -283,6 +285,43 @@ public class PlanDownloadController {
             row.getTableCells().forEach((cl) -> {
                 cl.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
             });
+        }
+
+        //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
+        List<Vehicle> vehicles = vehicleService.findVehiclesByTransportDepDirectly(appointments.get(0).getTransportDep());
+        //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
+        vehicles = vehicles.stream().filter((t) -> {
+            return t.getModel() != null;
+        }).filter((t) -> {
+            return t.getNumber() != null;
+        }).collect(Collectors.toList());
+        vehicles.stream().filter((t) -> {
+            return (t.getNote() == null) || (t.getNote().equals(""));
+        }).findAny().get().setNote("Не введён в эксплуатацию");
+        for (Vehicle vehicle : vehicles) {
+            row = table.createRow();
+            isBold = true;
+            fontSize = 8;
+            ParagraphAlignment parAligLeft = ParagraphAlignment.LEFT;
+            textToParagraph(row.getCell(0).getParagraphs().get(0), Integer.toString(number++),
+                    "Times New Roman", fontSize, isBold, parAligCenter);
+            textToParagraph(row.getCell(1).getParagraphs().get(0), vehicle.getModel().getModelName(),
+                    "Times New Roman", fontSize, isBold, parAligLeft);
+            textToParagraph(row.getCell(2).getParagraphs().get(0), vehicle.getNumber(),
+                    "Times New Roman", fontSize, isBold, parAligCenter);
+            String[] tmpArr = vehicle.getTransportDep().getShortname().split(" ");
+            textToParagraph(row.getCell(3).getParagraphs().get(0), tmpArr[tmpArr.length - 1],
+                    "Times New Roman", fontSize, isBold, parAligCenter);
+            textToParagraph(row.getCell(4).getParagraphs().get(0), vehicle.getNote(),
+                    "Times New Roman", fontSize, false, parAligLeft);
+            
+
+            int cellIndex = 4;
+            row.getCell(cellIndex).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
+            for (int i = cellIndex; i < row.getTableCells().size(); i++) {
+                row.getCell(i).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
+            }
+
         }
 
         paragraph = document.createParagraph();
@@ -489,11 +528,10 @@ public class PlanDownloadController {
         }
         textToParagraph(cell.getParagraphs().get(0), list.get(0),
                 "Times New Roman", fontSize, isBold, paragraphAlignment);
-        for(int i = 1; i < list.size(); i++){
+        for (int i = 1; i < list.size(); i++) {
             textToParagraph(cell.addParagraph(), list.get(i),
-                "Times New Roman", fontSize, isBold, paragraphAlignment);
+                    "Times New Roman", fontSize, isBold, paragraphAlignment);
         }
     }
 
 }
-
