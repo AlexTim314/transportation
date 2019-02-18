@@ -36,7 +36,7 @@
                     </td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.specialization}}</td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.vehicleType.typeName}}</td>
-                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.carBoss.firstname}} {{affirmedClaim.carBoss.name}} {{affirmedClaim.carBoss.surname}}</td>
+                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{ctrl.carBossToString(affirmedClaim.carBoss)}}</td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">
                         <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
                     </td>

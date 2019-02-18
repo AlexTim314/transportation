@@ -30,7 +30,8 @@
                 </div>
                 <div th:if="${#request.getParameter('error') == 'true'}"
                      style="color:red;margin:10px 0px;">
-                    В доступе отказано! Неверная пара логин-пароль.
+                    В доступе отказано! 
+                    <br>Неверная пара логин-пароль.
                 </div>
                 <button type="submit"><i class="fas fa-sign-in-alt"></i>Войти</button>
             </form>
