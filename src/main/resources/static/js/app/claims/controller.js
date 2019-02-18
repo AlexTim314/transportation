@@ -34,6 +34,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.claimFromTemplateDate = '';
         self.cancelNote = '';
         self.minDate;
+        self.onDemand = false;
         self.startDate;
 
         self.permit = false;
@@ -504,11 +505,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     var rec = {id: null};
                     rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
-                    rec.endDate = self.frmtDate(sd, self.record.endDate);
-                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                    if (self.onDemand) {
+                        rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
+                        rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                    } else {
+                        rec.endDate = self.frmtDate(sd, self.record.endDate);
+                        rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                    }
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
-
                     if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
                         return;
@@ -518,8 +523,13 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             } else {
                 var rec = {id: null};
                 rec.startDate = self.frmtDate(sd, self.record.startDate);
-                rec.endDate = self.frmtDate(sd, self.record.endDate);
-                rec.endDate.setDate(rec.endDate.getDate() + inc);
+                if (self.onDemand) {
+                    rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
+                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                } else {
+                    rec.endDate = self.frmtDate(sd, self.record.endDate);
+                    rec.endDate.setDate(rec.endDate.getDate() + inc);
+                }
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
