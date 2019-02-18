@@ -508,7 +508,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
-                    if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+
+                    if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
                         return;
                     }
@@ -520,7 +521,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 rec.endDate = self.frmtDate(sd, self.record.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
-                if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
                 }
