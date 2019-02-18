@@ -411,6 +411,23 @@ insert into app_user(username, full_name, encrypted_password, enabled, departmen
 insert into app_role(role_name) values('ROLE_DISPATCHER');
 insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
 
+insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
+    'supermanager',
+    'Блюм Сергей Иванович',
+    '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', true,
+    (select id from department where shortname='Управление'),
+    null);
+insert into app_role(role_name) values('ROLE_SUPERMANAGER');
+insert into user_role(user_id, role_id) values(currval('app_user_id_seq'), currval('app_role_id_seq'));
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИП ИК';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИ-1';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИ-2';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИ-3';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИ ТК';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦИ КЗ';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'ЦОКИ РКТ';
+update department set super_manager_id = currval('app_user_id_seq') where shortname = 'УКОРИ';
+
 insert into car_boss(firstname, name, surname, birthday, address, phone, post, department_id) values(
     'Яковлев', 'Василий', 'Семёнович',
     null,
