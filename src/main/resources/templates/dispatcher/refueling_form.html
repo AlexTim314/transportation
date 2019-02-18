@@ -1,33 +1,30 @@
 <form class="formTransport" id="formRefueling" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close" onclick="formClose('formRefueling')"></i>
+    <i class="fas fa-times i-close" ng-click="ctrl.cancelRefueling()"></i>
     <div class="container">
         <div>
             <label for="fuel_type">Тип топлива</label>
-            <select name="fuel_type">					
-                <option value="1">Выберите Тип</option>
-                <option value="2">Бензин</option>
-                <option value="3">Дизель</option>
+             <select name="fuel" ng-options="f as f.type + ' ' + f.mark for f in ctrl.fuels track by f.id" ng-model="ctrl.refueling.fuel">					
             </select>
         </div>
         <div>
             <label for="fuel">Заправка топлива,л.</label>
-            <input type="text" name="fuel" placeholder="Объем Топлива">	
+            <input type="text" name="fuel" ng-model="ctrl.refueling.volume" placeholder="Объем Топлива">	
         </div>	
         <div style="display: flex; justify-content: space-between;">
             <div style="width: 45%;">
                 <label for="date-refueling">Дата заправки</label>
-                <input type="date" name="date-refueling" date="current">	
+                <input type="date" name="date-refueling" ng-model="ctrl.refueling.refuelingDate" date="current">	
             </div> 
             <div style="width:45%;">
                 <label for="time-refueling">Время заправки</label>
-                <input type="time" name="time-refueling" date="current">	
+                <input type="time" name="time-refueling" ng-model="ctrl.refueling.refuelingDate" date="current">	
             </div> 
         </div>
         	
         
     </div>
     <div class="container " >
-        <button type="button" class="btn delete">Отмена</button>
-        <button type="button" class="btn edit"><i class="far  fa-save"></i>Сохранить</button>
+        <button type="button" class="btn delete" ng-click="ctrl.cancelRefueling()">Отмена</button>
+        <button type="button" class="btn edit" ng-click="ctrl.refuelingVehicle()"><i class="far  fa-save"></i>Сохранить</button>
     </div>
 </form>

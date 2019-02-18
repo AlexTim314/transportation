@@ -14,6 +14,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
         self.vehicles = [];
         self.vehicleInfo = {id: null};
+        self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null}
         
         self.history = [];
 
@@ -269,6 +270,30 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                 result += nameArr[2].charAt(0) + "."
             }
             return result;
+        };
+        
+        self.tryToRefuelingVehicle = function (vehicle) {
+            self.refueling.vehicle = vehicle;
+            formOpen('formRefueling');
+        };
+        
+        self.refuelingVehicle = function () {
+            console.log(self.refueling);
+            VehiclesService.refulingVehicle(self.refueling)
+                    .then(
+                            function (d) {
+                                console.log('Refueling Sucsessible');
+                                formClose('formRefueling');
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Refueling.');
+                            }
+                    );
+        };
+        
+        self.cancelRefueling = function () {
+            self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null};
+            formClose('formRefueling');
         };
 
     }]);

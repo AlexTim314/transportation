@@ -131,6 +131,21 @@ App.factory('VehiclesService', ['$http', '$q', '$document', function ($http, $q,
                                 }
                         );
             },
+            
+            refulingVehicle: function (ref) {
+                return $http.post('/transportation/dispatcher/vehicle_refueling',
+                        JSON.stringify(ref), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating refueling');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             deleteVehicles: function (ids) {
                 return $http({method: 'DELETE',
