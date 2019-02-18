@@ -51,6 +51,13 @@ public class VehicleService {
         }
         return null;
     }
+    
+    public List<Vehicle> findVehiclesByTransportDepDirectly(TransportDep transportDep) {
+        
+            return vehicleRepository.findByTransportDep(transportDep);
+       
+    }
+
 
     public List<VehicleInfo> findVehicleHistoryById(Long vehicleId) {
         return vehicleInfoRepository.findByVehicleId(vehicleId);
