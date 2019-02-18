@@ -34,6 +34,7 @@
 body{
     background: #efefef;
     font-size: 18px;
+    overflow: hidden;
 }
 .wrapper {
     margin: 0 auto;
@@ -1602,6 +1603,15 @@ td{
 .phone-info{
     opacity: 0;
     transition: 0.3s ease;
+}
+.sign-icon{
+    background:var(--edit-btn-color1);
+    color:#5A5454;
+    padding: 3px;
+    border-radius: 2px;
+    position: absolute;
+    right: -7px;
+    top:1px;
 }
 .td-relative i:hover .phone-info{
     opacity: 1;
