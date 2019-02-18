@@ -4,7 +4,7 @@
         <label for="type">Место</label>
         <div class="custom-select">
             <i class="fas fa-caret-down" style="top: 5px; margin-right: 5px;" ng-click="ctrl.clickPlaceNameInput()"></i>
-            <input type="text" ng-click="ctrl.clickPlaceNameInput()" ng-change="ctrl.changePlaceNameInput()" name="carBoss" ng-model="ctrl.placeName" placeholder="Выберите место">
+            <input type="text" ng-click="ctrl.clickPlaceNameInput()" ng-change="ctrl.changePlaceNameInput()" name="carBoss" ng-model="ctrl.placeName" placeholder="Выберите место" autocomplete="off">
             <div class="list-point list-absolute" id="cst-sel-down" ng-show="ctrl.displayPlaces">			    		
                 <ul>
                     <li ng-repeat="p in ctrl.places| orderBy: 'name' | filter: ctrl.placeName" ng-click="ctrl.selectPlace(p)">{{ctrl.placeToString(p)}}</li>
