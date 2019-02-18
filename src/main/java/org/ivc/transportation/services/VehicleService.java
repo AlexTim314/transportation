@@ -98,7 +98,6 @@ public class VehicleService {
 
     public Refueling vehicleRefueling(Refueling refueling) {
         Vehicle vehicle = refueling.getVehicle();
-        vehicle.setFuel(vehicle.getFuel() + refueling.getVolume());
         vehicleRepository.save(vehicle);
         return refuelingRepository.save(refueling);
     }

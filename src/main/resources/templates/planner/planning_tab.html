@@ -94,8 +94,9 @@
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
                                 <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
-                                <td> 
+                                <td class="td-relative"> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
+                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="{{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
                                 </td>
                             </tr>
                         </table>

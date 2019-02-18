@@ -79,9 +79,18 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         self.fetchAllTransportDeps();
 
         self.createUser = function (user) {
+            var depArr = self.user.departments;
+            self.user.departments = null;
             UsersManagementService.createUser(user)
                     .then(
-                            self.fetchAllUsers,
+                            function (d) {
+                                for (var i = 0; i < depArr.length; i++) {
+                                    depArr[i].superManager = d;
+                                }
+                                self.fetchAllUsers();
+                                self.updateDepartments(depArr);
+                                self.reset();
+                            },
                             function (errResponse) {
                                 console.error('Error while creating User.');
                             }
@@ -89,9 +98,18 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.updateUser = function (user) {
+            var depArr = self.user.departments;
+            self.user.departments = null;
             UsersManagementService.updateUser(user)
                     .then(
-                            self.fetchAllUsers,
+                            function (d) {
+                                for (var i = 0; i < depArr.length; i++) {
+                                    depArr[i].superManager = d;
+                                }
+                                self.fetchAllUsers();
+                                self.updateDepartments(depArr);
+                                self.reset();
+                            },
                             function (errResponse) {
                                 console.error('Error while updating User.');
                             }
@@ -120,15 +138,11 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.submit = function () {
-            var depArr = self.user.departments;
-            self.user.departments = null;
-            self.updateDepartments(depArr);
             if (self.user.id === null) {
                 self.createUser(self.user);
             } else {
                 self.updateUser(self.user);
             }
-            self.reset();
         };
 
         self.editUser = function (user) {

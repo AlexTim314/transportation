@@ -94,7 +94,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return tractor;
             }
         };
-        
+
         self.selectSmallIcon = function (spec) {
             var bus = 'fas fa-bus-alt';
             var car = 'fas fa-car';
@@ -679,7 +679,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.personToString = function (person) {
+            if (person === null) {
+                return null;
+            }
             var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
+            return result;
+        };
+        
+        self.affirmatorToString = function (user) {
+            var nameArr = user.fullName.split(' ');
+            var result = nameArr[0];
+            if (nameArr.length > 1) {
+                result += " " + nameArr[1].charAt(0) + ".";
+            }
+            if (nameArr.length > 2) {
+                result += nameArr[2].charAt(0) + "."
+            }
             return result;
         };
 

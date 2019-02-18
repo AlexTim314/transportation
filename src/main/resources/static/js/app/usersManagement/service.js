@@ -97,7 +97,6 @@ App.factory('UsersManagementService', ['$http', '$q', '$document', function ($ht
                         );
             },
             deleteUser: function (user) {
-                console.log(user);
                 return $http({method: 'DELETE',
                     url: '/transportation/management/user_delete',
                     data: JSON.stringify(user),
