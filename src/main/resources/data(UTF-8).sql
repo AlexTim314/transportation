@@ -183,47 +183,78 @@ CREATE TABLE IF NOT EXISTS Vehicle_Type (
 );
 
 insert into Vehicle_Type(type_name, specialization) values('Автобус', 0);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-3205', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32050R', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32053', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-320530', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32050S', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32053S', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-32054', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-4234', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-4254', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЛАЗ-695Д', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЛИАЗ-52564-0000010-01', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЛИАЗ-525633-01', (select id from Vehicle_Type where type_name='Автобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-231062', (select id from Vehicle_Type where type_name='Автобус'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ О350', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ O350', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('SETRA S415UL', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('YUTONG ZK6122H9', (select id from Vehicle_Type where type_name='Автобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('HIGER KLQ 6886Q', (select id from Vehicle_Type where type_name='Автобус'));
 insert into Vehicle_Type(type_name, specialization) values('Микроавтобус', 0);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-2206', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220602', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-22069', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220694', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-220695', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-37419-210', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-3909', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-390902', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-39099', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-390992', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-396252', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-3962', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-39629', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-22171', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3221', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-32213', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-32214', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-32214-0000010-01', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-322132', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3240', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI STAREX', (select id from Vehicle_Type where type_name='Микроавтобус'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('IVECO 2227UR', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('IVECO-2227UR', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ 223237', (select id from Vehicle_Type where type_name='Микроавтобус'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ПАЗ-320401-01', (select id from Vehicle_Type where type_name='Микроавтобус'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('VOLKSWAGEN 2EKZ CRAFTER', (select id from Vehicle_Type where type_name='Микроавтобус'));
 insert into Vehicle_Type(type_name, specialization) values('Внедорожник', 1);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN PATROL 5.6', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA ALPHARD', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LC 100', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LC 200', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LC PRADO', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER 100', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER 120', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER 150 (PRADO)', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER 200', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA LAND CRUISER PRADO', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('TOYOTA HILUX', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TREIL', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TREIL 2.0', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TREIL 2.5', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TRAIL', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TRAIL 2.0', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN X-TRAIL 2.5', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN PATHFINDER', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN PATROL 5.6', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('SSANGYONG REXTON', (select id from Vehicle_Type where type_name='Внедорожник'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI SANTA FE', (select id from Vehicle_Type where type_name='Внедорожник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('КИА СПОРТЭЙДЖ', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI SANTA FE 2.4', (select id from Vehicle_Type where type_name='Внедорожник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КИА Спортейдж', (select id from Vehicle_Type where type_name='Внедорожник'));
 insert into Vehicle_Type(type_name, specialization) values('Городской', 1);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-2217', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('FORD FOCUS', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN TEANA', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN TEANA 3.5', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN ALMERA', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN ALMERA CLASSIC', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN MAXIMA', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN MAXIMA 3.0 SE', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('NISSAN PRIMERA 2.0', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI ACCENT', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI SONATA', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('FORD TRANSIT CONNECT', (select id from Vehicle_Type where type_name='Городской'));
@@ -234,11 +265,19 @@ insert into Vehicle_Type(type_name, specialization) values('Городской',
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-31514', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-315142', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-31519', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-315192', (select id from Vehicle_Type where type_name='Городской'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-315194', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УАЗ-315195', (select id from Vehicle_Type where type_name='Городской'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ВАЗ-21213', (select id from Vehicle_Type where type_name='Городской'));
 insert into Vehicle_Type(type_name, specialization) values('Грузовая газель', 2);
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-2705', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-27527', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-2704e6', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-2834NF', (select id from Vehicle_Type where type_name='Грузовая газель'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330202', (select id from Vehicle_Type where type_name='Грузовая газель'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3302', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33023', (select id from Vehicle_Type where type_name='Грузовая газель'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330230', (select id from Vehicle_Type where type_name='Грузовая газель'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330232', (select id from Vehicle_Type where type_name='Грузовая газель'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33021', (select id from Vehicle_Type where type_name='Грузовая газель'));
 insert into Vehicle_Type(type_name, specialization) values('Грузовая газель (для перевозки опасных грузов)', 2);
@@ -246,30 +285,45 @@ insert into Vehicle_Type(type_name, specialization) values('Грузовая г�
 insert into Vehicle_Type(type_name, specialization) values('Грузовой', 2);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-53', (select id from Vehicle_Type where type_name='Грузовой'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-33090', (select id from Vehicle_Type where type_name='Грузовой'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-5301 АО', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-330900-0212', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-6601', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-131', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-133Г42', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-5301АО', (select id from Vehicle_Type where type_name='Грузовой'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-534330', (select id from Vehicle_Type where type_name='Грузовой'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('Амур-48442В', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('АМУР-48442В', (select id from Vehicle_Type where type_name='Грузовой'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-4320', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ 4320-0011-02', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-4320-0911-40', (select id from Vehicle_Type where type_name='Грузовой'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('УРАЛ-375', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('HYUNDAI-27990А', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-43118', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-43118-46', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-43502-45', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-630300-2121', (select id from Vehicle_Type where type_name='Грузовой'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МЕРСЕДЕС-БЕНЦ АСТРОС 2535', (select id from Vehicle_Type where type_name='Грузовой'));
 insert into Vehicle_Type(type_name, specialization) values('Самосвал', 2);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-4502', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-ММЗ 4502', (select id from Vehicle_Type where type_name='Самосвал'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-450650', (select id from Vehicle_Type where type_name='Самосвал'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-3518', (select id from Vehicle_Type where type_name='Самосвал'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-5551', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-5551-020', (select id from Vehicle_Type where type_name='Самосвал'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-555102-223', (select id from Vehicle_Type where type_name='Самосвал'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-6520', (select id from Vehicle_Type where type_name='Самосвал'));
 insert into Vehicle_Type(type_name, specialization) values('Длинномер', 2);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-630300 2121 (с тентом)', (select id from Vehicle_Type where type_name='Длинномер'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-441510', (select id from Vehicle_Type where type_name='Длинномер'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('DAEWOOSUPER', (select id from Vehicle_Type where type_name='Длинномер'));
 insert into Vehicle_Type(type_name, specialization) values('Ассенизаторская машина', 3);
-        insert into Vehicle_Model(model_name, vehicle_type_id) values('КО-503В-2 (вакуумная)', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
+        insert into Vehicle_Model(model_name, vehicle_type_id) values('КО-503В-3', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
+        insert into Vehicle_Model(model_name, vehicle_type_id) values('КО-503В-2', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
         insert into Vehicle_Model(model_name, vehicle_type_id) values('КО-503В', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
-        insert into Vehicle_Model(model_name, vehicle_type_id) values('ГАЗ-3307 (КО-503В-3)', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
         insert into Vehicle_Model(model_name, vehicle_type_id) values('КАМАЗ-4672А6', (select id from Vehicle_Type where type_name='Ассенизаторская машина'));
 insert into Vehicle_Type(type_name, specialization) values('Мусоровоз', 3);
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('КО 440-4К', (select id from Vehicle_Type where type_name='Мусоровоз'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('КО-440-4К', (select id from Vehicle_Type where type_name='Мусоровоз'));
 insert into Vehicle_Type(type_name, specialization) values('Автозаправщик', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('АТ3-7-433362', (select id from Vehicle_Type where type_name='Автозаправщик'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ЗИЛ-433362 АТЗ', (select id from Vehicle_Type where type_name='Автозаправщик'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('MERCEDES BENZ ACT.', (select id from Vehicle_Type where type_name='Автозаправщик'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-631705-370', (select id from Vehicle_Type where type_name='Автозаправщик'));
 insert into Vehicle_Type(type_name, specialization) values('Автокран', 3);
@@ -277,15 +331,16 @@ insert into Vehicle_Type(type_name, specialization) values('Автокран', 3
     insert into Vehicle_Model(model_name, vehicle_type_id) values('КС-35715', (select id from Vehicle_Type where type_name='Автокран'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('КС-5579.2', (select id from Vehicle_Type where type_name='Автокран'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('CNT 650', (select id from Vehicle_Type where type_name='Автокран'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('LIBHERR LTM 1130-5.1', (select id from Vehicle_Type where type_name='Автокран'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('LIEBHERR LTM 1130-5.1', (select id from Vehicle_Type where type_name='Автокран'));
 insert into Vehicle_Type(type_name, specialization) values('Гидроподъемник', 3);
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('АГП-22.04 (на базе ЗИЛа)', (select id from Vehicle_Type where type_name='Гидроподъемник'));
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПМС-328-02 (на базе КАМАЗа)', (select id from Vehicle_Type where type_name='Гидроподъемник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('АГП-2204', (select id from Vehicle_Type where type_name='Гидроподъемник'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('ПМС-328-02', (select id from Vehicle_Type where type_name='Гидроподъемник'));
 insert into Vehicle_Type(type_name, specialization) values('Водовоз', 3);
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МАЗ-635', (select id from Vehicle_Type where type_name='Водовоз'));
     insert into Vehicle_Model(model_name, vehicle_type_id) values('МДК-433362', (select id from Vehicle_Type where type_name='Водовоз'));
 insert into Vehicle_Type(type_name, specialization) values('Экскаватор', 3);
-    insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE-325 J', (select id from Vehicle_Type where type_name='Экскаватор'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE 318D', (select id from Vehicle_Type where type_name='Экскаватор'));
+    insert into Vehicle_Model(model_name, vehicle_type_id) values('JOHN DEERE 325J', (select id from Vehicle_Type where type_name='Экскаватор'));
 
 insert into app_user(username, full_name, encrypted_password, enabled, department_id, transport_dep_id) values(
     'user',
@@ -408,7 +463,7 @@ VALUES (111, 333, null, 'К 178 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 431 КК 94', 222, 0, (select id from Vehicle_Model where model_name='HYUNDAI Accent' limit 1), 1);
+VALUES (111, 333, null, 'К 431 КК 94', 222, 0, (select id from Vehicle_Model where model_name='HYUNDAI ACCENT' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -460,7 +515,7 @@ VALUES (111, 333, null, 'Х 111 ХХ 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 207 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN PRIMERA 2,0 ' limit 1), 1);
+VALUES (111, 333, null, 'К 207 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN PRIMERA 2.0' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -468,15 +523,15 @@ VALUES (111, 333, null, 'К 001 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 109 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5 ' limit 1), 1);
+VALUES (111, 333, null, 'Е 109 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 110 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5 ' limit 1), 1);
+VALUES (111, 333, null, 'Е 110 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 112 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5 ' limit 1), 1);
+VALUES (111, 333, null, 'Е 112 АА 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN TEANA 3.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -484,27 +539,27 @@ VALUES (111, 333, null, 'К 432 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 202 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2,5' limit 1), 1);
+VALUES (111, 333, null, 'К 202 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 249 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2,5' limit 1), 1);
+VALUES (111, 333, null, 'К 249 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 250 КК 94 ', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2,5' limit 1), 1);
+VALUES (111, 333, null, 'К 250 КК 94 ', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Х 003 ХХ 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.0 ' limit 1), 1);
+VALUES (111, 333, null, 'Х 003 ХХ 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.0' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 090 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5 ' limit 1), 1);
+VALUES (111, 333, null, 'К 090 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 005 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5 ' limit 1), 1);
+VALUES (111, 333, null, 'К 005 КК 94', 222, 0, (select id from Vehicle_Model where model_name='NISSAN X-TRAIL 2.5' limit 1), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -664,7 +719,7 @@ VALUES (111, 333, null, 'К 594 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 625 АА 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-2704D6' limit 1), 2);
+VALUES (111, 333, null, 'Е 625 АА 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-2704e6' limit 1), 2);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -976,7 +1031,7 @@ VALUES (111, 333, null, 'К 582 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 395 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-32214 ' limit 1), 3);
+VALUES (111, 333, null, 'К 395 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-32214' limit 1), 3);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1152,7 +1207,7 @@ VALUES (111, 333, null, 'Н 845 АВ 99', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'С 792 ХК 777', 222, 0, (select id from Vehicle_Model where model_name='МЕРСЕДЕС-БЕНЦ-223237' limit 1), 4);
+VALUES (111, 333, null, 'С 792 ХК 777', 222, 0, (select id from Vehicle_Model where model_name='МЕРСЕДЕС-БЕНЦ 223237' limit 1), 4);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1304,10 +1359,6 @@ VALUES (111, 333, null, 'М 215 АН 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'ВЕ 6339 77', 222, 0, (select id from Vehicle_Model where model_name='DITCH WITCH RT 115' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 653 КК 94', 222, 0, (select id from Vehicle_Model where model_name='HYUNDAI-27990А' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
@@ -1324,11 +1375,7 @@ VALUES (111, 333, null, 'К 479 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Н 880 АВ 99', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ (32597J)' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 430 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ 32214' limit 1), 5);
+VALUES (111, 333, null, 'К 430 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-32214' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1344,14 +1391,6 @@ VALUES (111, 333, null, 'О 937 АВ 99', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 025 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-32611А' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Р 451 АВ 99', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-32611С' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 349 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-33021' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
@@ -1361,10 +1400,6 @@ insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'С 795 АА 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-6601' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Х0000031', 222, 0, (select id from Vehicle_Model where model_name='ДВ-1792' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1380,16 +1415,11 @@ VALUES (111, 333, null, 'К 604 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Р 229 РВ 71', 222, 0, (select id from Vehicle_Model where model_name='КАМАЗ 43118-46' limit 1), 5);
+VALUES (111, 333, null, 'Р 229 РВ 71', 222, 0, (select id from Vehicle_Model where model_name='КАМАЗ-43118-46' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'Е 321 НН 750', 222, 0, (select id from Vehicle_Model where model_name='КАМАЗ-43118' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 420 КА 777', 222, 0, (select id from Vehicle_Model where model_name='КАМАЗ-43118
-мобильный узел связи' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1405,23 +1435,15 @@ VALUES (111, 333, null, 'К 502 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АМ 0130 94', 222, 0, (select id from Vehicle_Model where model_name='КЗАП 89944' limit 1), 5);
+VALUES (111, 333, null, 'К 423 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КО-440-4К' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 423 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КО-440-4К (мусоровоз)' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 424 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КО-440-4К (мусоровоз)' limit 1), 5);
+VALUES (111, 333, null, 'К 424 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КО-440-4К' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 351 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КО-503В-2' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Х 953 ХХ 94', 222, 0, (select id from Vehicle_Model where model_name='КРАЗ-260В' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1430,10 +1452,6 @@ insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'Е 029 АА 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-630300-2121' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АМ 0148 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-83781-012' limit 1), 5);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1449,47 +1467,7 @@ VALUES (111, 333, null, 'К 102 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 425 КК 94', 222, 0, (select id from Vehicle_Model where model_name='НЕФАЗ-4208-03' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АМ 0133 94', 222, 0, (select id from Vehicle_Model where model_name='ОДАЗ-9357' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Х0000118', 222, 0, (select id from Vehicle_Model where model_name='ПКСД-5,25' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АР 7297 77', 222, 0, (select id from Vehicle_Model where model_name='ПС-8934' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АР 7298 77', 222, 0, (select id from Vehicle_Model where model_name='ПС-8934' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АЕ 2855 50', 222, 0, (select id from Vehicle_Model where model_name='СЗАП-8357' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 230 КК 94', 222, 0, (select id from Vehicle_Model where model_name='УРАЛ 4320-0011-02' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'ВЕ 8267 77', 222, 0, (select id from Vehicle_Model where model_name='ХТА-220-1' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'ВЕ 8268 77', 222, 0, (select id from Vehicle_Model where model_name='ЭТЦ-201' limit 1), 5);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'ВЕ 6740 77', 222, 0, (select id from Vehicle_Model where model_name='BALKANKAR BILO ДВ 1788' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 884 КК 94', 222, 0, (select id from Vehicle_Model where model_name='DAEWOO SUPER NOVUS' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1501,19 +1479,15 @@ VALUES (111, 333, null, 'К 415 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АТ 2974 77', 222, 0, (select id from Vehicle_Model where model_name='Амкодор-702В' limit 1), 6);
+VALUES (111, 333, null, 'К 416 КК 94', 222, 0, (select id from Vehicle_Model where model_name='АМУР-48442В' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 416 КК 94', 222, 0, (select id from Vehicle_Model where model_name='АМУР 48442В' limit 1), 6);
+VALUES (111, 333, null, 'К 417 КК 94', 222, 0, (select id from Vehicle_Model where model_name='АТ3-7-433362' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 417 КК 94', 222, 0, (select id from Vehicle_Model where model_name='АТЗ-7 на ш. ЗИЛ-433362' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Р 810 АВ 99', 222, 0, (select id from Vehicle_Model where model_name='АТЗ-7-433362' limit 1), 6);
+VALUES (111, 333, null, 'Р 810 АВ 99', 222, 0, (select id from Vehicle_Model where model_name='АТ3-7-433362' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1537,38 +1511,6 @@ VALUES (111, 333, null, 'Е 006 АА 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400504', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-53-12-016' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400511', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-66' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400514', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-66-14' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400503', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-66-14' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№КС000614', 222, 0, (select id from Vehicle_Model where model_name='ЕК-14' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400519', 222, 0, (select id from Vehicle_Model where model_name='ЗИЛ-431410' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 366 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ЗИЛ-433362' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 266 АА 94', 222, 0, (select id from Vehicle_Model where model_name='ЗИЛ-433362 (РЖМ-52)' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'Х 155 ЕЕ 99 ', 222, 0, (select id from Vehicle_Model where model_name='ЗИЛ-433362 АТЗ' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
@@ -1578,10 +1520,6 @@ insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 347 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ЗИЛ-5301АО' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400516', 222, 0, (select id from Vehicle_Model where model_name='КАМАЗ-43101' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1597,27 +1535,19 @@ VALUES (111, 333, null, 'К 435 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0001181', 222, 0, (select id from Vehicle_Model where model_name='КО-707 на тракторе ЛТЗ 60АВ' limit 1), 6);
+VALUES (111, 333, null, 'НН 1607 52', 222, 0, (select id from Vehicle_Model where model_name='CNT 650' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0001182', 222, 0, (select id from Vehicle_Model where model_name='КО-707 на тракторе ЛТЗ 60АВ' limit 1), 6);
+VALUES (111, 333, null, 'К 373 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-35715' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'НН 1607 52', 222, 0, (select id from Vehicle_Model where model_name='Кран CNT 650 ' limit 1), 6);
+VALUES (111, 333, null, 'К 374 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-35715' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 373 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-35715 НА Ш. МАЗ-5337' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 374 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-35715 НА Ш. МАЗ-5337' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 408 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-5579-2 НА Ш. КАМАЗ-53229С' limit 1), 6);
+VALUES (111, 333, null, 'К 408 КК 94', 222, 0, (select id from Vehicle_Model where model_name='КС-5579.2' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1625,15 +1555,11 @@ VALUES (111, 333, null, 'К 327 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Е 664 АА 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ 631705-370' limit 1), 6);
+VALUES (111, 333, null, 'Е 664 АА 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-631705-370' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 403 КК 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-3518 НА Ш.АМУР-531310' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 483 КК 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-5337-6912 (КС-3577-3)' limit 1), 6);
+VALUES (111, 333, null, 'К 483 КК 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-5337 КС-3577' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1645,31 +1571,19 @@ VALUES (111, 333, null, 'К 295 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'М 396 АН 94', 222, 0, (select id from Vehicle_Model where model_name='МАЗ-630305-250' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 418 КК 94', 222, 0, (select id from Vehicle_Model where model_name='МДК-433362' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0000685', 222, 0, (select id from Vehicle_Model where model_name='МУП 350.ТМ' limit 1), 6);
+VALUES (111, 333, null, 'К 326 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ-32050R' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0000074', 222, 0, (select id from Vehicle_Model where model_name='П/Г-40816' limit 1), 6);
+VALUES (111, 333, null, 'К 319 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ-320530' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 326 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ 32050R' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 319 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ 320530' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 251 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ 32054' limit 1), 6);
+VALUES (111, 333, null, 'К 251 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ПАЗ-32054' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1697,22 +1611,6 @@ VALUES (111, 333, null, 'Е 296 НН 750', 222, 0, (select id from Vehicle_Model
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв.№43-17', 222, 0, (select id from Vehicle_Model where model_name='прицеп одноосный' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'АМ 0128 94', 222, 0, (select id from Vehicle_Model where model_name='ПЦ-7-817М1' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№В0001999', 222, 0, (select id from Vehicle_Model where model_name='ТО-49 Б1' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0001331', 222, 0, (select id from Vehicle_Model where model_name='ТО-49 на МТЗ-82' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 358 КК 94', 222, 0, (select id from Vehicle_Model where model_name='УАЗ-31514' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
@@ -1733,19 +1631,7 @@ VALUES (111, 333, null, 'К 441 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'Инв. № 93400513', 222, 0, (select id from Vehicle_Model where model_name='УАЗ-469' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
 VALUES (111, 333, null, 'К 402 КК 94', 222, 0, (select id from Vehicle_Model where model_name='УРАЛ-4320-0911-40' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0001329', 222, 0, (select id from Vehicle_Model where model_name='ЭО-2621В3' limit 1), 6);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
-insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
-INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'инв.№Б0001330', 222, 0, (select id from Vehicle_Model where model_name='ЭО-3323А' limit 1), 6);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
@@ -1849,7 +1735,7 @@ VALUES (111, 333, null, 'К 601 КК 94', 222, 0, (select id from Vehicle_Model 
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
-VALUES (111, 333, null, 'К 596 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-3240 (2705)' limit 1), 7);
+VALUES (111, 333, null, 'К 596 КК 94', 222, 0, (select id from Vehicle_Model where model_name='ГАЗ-3240' limit 1), 7);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 1);
 insert into vehicle_fuel(vehicle_id, fuel_id) values(currval('vehicle_id_seq'), 2);
 INSERT INTO public.vehicle(fuel, motohours, note, number, odometr, status, model_id, transport_dep_id)
