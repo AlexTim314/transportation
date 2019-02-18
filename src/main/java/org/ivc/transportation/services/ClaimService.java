@@ -8,13 +8,14 @@ import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
+import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
-import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.UserRepository;
@@ -39,7 +40,7 @@ public class ClaimService {
     private UserRepository userRepository;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    private CarBossRepository carBossRepository;
 
     @Autowired
     private ClaimRepository claimRepository;
@@ -99,6 +100,11 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
+        if (claim.getCarBoss() != null && claim.getCarBoss().getId() == null) {
+            claim.getCarBoss().setDepartment(getDepartment(principal));
+            CarBoss boss = carBossRepository.save(claim.getCarBoss());
+            claim.setCarBoss(boss);
+        }
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
         } else {
@@ -119,7 +125,7 @@ public class ClaimService {
             claimRepository.save(claim);
         });
     }
-    
+
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {

@@ -4,7 +4,6 @@ import java.security.Principal;
 import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.repositories.UserRepository;
-import org.ivc.transportation.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -50,36 +49,12 @@ public class MainController {
                 }
             }
         }
-        return accessDenied(model, principal);
+        return loginPage(model);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model) {
         return "loginPage";
-    }
-
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
-    }
-
-    @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public String accessDenied(Model model, Principal principal) {
-
-        if (principal != null) {
-            User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-            String userInfo = WebUtils.toString(loginedUser);
-
-            model.addAttribute("userInfo", userInfo);
-
-            String message = "Здравствуйте " + principal.getName() //
-                    + "<br> У вас нет доступа к этой странице!";
-            model.addAttribute("message", message);
-
-        }
-        return "403Page";
     }
 
 }

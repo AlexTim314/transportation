@@ -38,6 +38,49 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.permit = false;
 
+        self.carBossName = null;
+        self.displayCarBosses = false;
+
+        self.clickCarBossesInput = function () {
+            self.displayCarBosses = !self.displayCarBosses;
+        };
+
+        self.changeCarBossInput = function () {
+            self.displayCarBosses = self.carBossName !== null && self.carBossName !== undefined && self.carBossName.length > 0;
+            self.claim.carBoss = null;
+        };
+
+        self.selectCarBoss = function (carBoss) {
+            self.claim.carBoss = carBoss;
+            self.carBossName = self.carBossToStringFull(carBoss);
+            self.displayCarBosses = false;
+        };
+
+        self.placeName = null;
+        self.displayPlaces = false;
+
+        self.clickPlaceNameInput = function () {
+            self.displayPlaces = !self.displayPlaces;
+        };
+
+        self.changePlaceNameInput = function () {
+            self.displayPlaces = self.placeName !== null && self.placeName !== undefined && self.placeName.length > 0;
+            self.routeTask.place = null;
+        };
+
+        self.selectPlace = function (place) {
+            self.routeTask.place = place;
+            self.placeName = place.name;
+            self.displayPlaces = false;
+        };
+
+        self.placeToString = function (place) {
+            if (place.address !== null) {
+                return place.name + " (" + place.address + ")";
+            }
+            return place.name;
+        };
+
         self.getPermit = function () {
             ClaimsService.getPermit()
                     .then(
@@ -423,7 +466,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.carBossToString = function (boss) {
+            if (boss === null) {
+                return null;
+            }
             var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+            return result;
+        };
+
+        self.carBossToStringFull = function (boss) {
+            if (boss === null) {
+                return null;
+            }
+            var result = boss.firstname + " " + boss.name + " " + (boss.surname !== null && boss.surname !== undefined ? boss.surname : "");
             return result;
         };
 
@@ -558,6 +612,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.id = claim.id;
             self.claim.actual = claim.actual;
             self.claim.carBoss = claim.carBoss;
+            self.carBossName = self.carBossToStringFull(claim.carBoss);
             self.claim.purpose = claim.purpose;
             self.claim.records = [];
             for (var i = 0; i < claim.records.length; i++) {
@@ -631,6 +686,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.orderNum = routeTask.orderNum;
             self.routeTask.workName = routeTask.workName;
             self.routeTask.place = routeTask.place;
+            self.placeName = routeTask.place.name;
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
@@ -656,7 +712,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.submitClaim = function () {
             if (self.validateForm()) {
+                alert("Форма заполнена не полностью!");
                 return;
+            }
+            if (self.claim.carBoss === null
+                    && self.carBossName !== null
+                    && self.carBossName !== undefined
+                    && self.carBossName.length > 0) {
+                var fio = self.carBossName.split(' ');
+                var boss = {};
+                if (fio.length > 1) {
+                    boss.firstname = fio[0];
+                    boss.name = fio[1];
+                    if (fio.length > 2) {
+                        boss.surname = fio[2];
+                    }
+                    self.claim.carBoss = boss;
+                }
             }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
