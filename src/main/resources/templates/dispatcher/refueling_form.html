@@ -13,10 +13,18 @@
             <label for="fuel">Заправка топлива,л.</label>
             <input type="text" name="fuel" placeholder="Объем Топлива">	
         </div>	
-        <div>
-            <label for="date-refueling">Дата заправки</label>
-            <input type="date" name="date-refueling" date="current">	
-        </div> 	
+        <div style="display: flex; justify-content: space-between;">
+            <div style="width: 45%;">
+                <label for="date-refueling">Дата заправки</label>
+                <input type="date" name="date-refueling" date="current">	
+            </div> 
+            <div style="width:45%;">
+                <label for="time-refueling">Время заправки</label>
+                <input type="time" name="time-refueling" date="current">	
+            </div> 
+        </div>
+        	
+        
     </div>
     <div class="container " >
         <button type="button" class="btn delete">Отмена</button>
