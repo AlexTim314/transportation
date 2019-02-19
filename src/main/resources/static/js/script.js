@@ -198,6 +198,61 @@ turn_tabs2 = function () {
     str.style.display = "table";
     str1.style.display = "none";
 }
+//----------inputs masks---------------
+window.addEventListener("DOMContentLoaded", function () {
+    function setCursorPosition(pos, elem) {
+        elem.focus();
+        if (elem.setSelectionRange)
+            elem.setSelectionRange(pos, pos);
+        else if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd("character", pos);
+            range.moveStart("character", pos);
+            range.select();
+        }
+    }
+
+    function mask(event) {
+        var matrix = "+7 (___) ___ ____",
+                i = 0,
+                def = matrix.replace(/\D/g, ""),
+                val = this.value.replace(/\D/g, "");
+        if (def.length >= val.length)
+            val = def;
+        this.value = matrix.replace(/./g, function (a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        });
+        if (event.type === "blur") {
+            if (this.value.length === 2)
+                this.value = "";
+        } else
+            setCursorPosition(this.value.length, this);
+    }
+    ;
+
+    function russ(event) {
+        this.value = this.value.replace(/[^а-яёА-ЯЁ]/ig, "");
+        if (event.type === "blur") {
+            if (this.value.length === 2)
+                this.value = "";
+        } else
+            setCursorPosition(this.value.length, this);
+    };
+
+    var input = document.querySelector("[type='tel']");
+    var surname = document.getElementsByClassName("letter-mask");
+    input.addEventListener("input", mask, false);
+    input.addEventListener("focus", mask, false);
+    input.addEventListener("blur", mask, false);
+    for (var i = 0; i < surname.length; i++) {
+        surname[i].addEventListener("input", russ, false);
+        surname[i].addEventListener("focus", russ, false);
+        surname[i].addEventListener("blur", russ, false);
+    }
+});
+//----------------------------------------------------
+
 open_sidetab = function (tabName, btnName, iEnd) {
     for (var i = 1; i <= iEnd; i++) {
         var str = document.getElementById("bar-block" + i);
