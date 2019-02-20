@@ -51,13 +51,12 @@ public class VehicleService {
         }
         return null;
     }
-    
-    public List<Vehicle> findVehiclesByTransportDepDirectly(TransportDep transportDep) {
-        
-            return vehicleRepository.findByTransportDep(transportDep);
-       
-    }
 
+    public List<Vehicle> findVehiclesByTransportDepDirectly(TransportDep transportDep) {
+
+        return vehicleRepository.findByTransportDep(transportDep);
+
+    }
 
     public List<VehicleInfo> findVehicleHistoryById(Long vehicleId) {
         return vehicleInfoRepository.findByVehicleId(vehicleId);
@@ -80,6 +79,15 @@ public class VehicleService {
             vehicleInfoRepository.save(vehicleInfo);
             return vehicle;
         }
+        VehicleInfo vehicleInfo = new VehicleInfo();
+        vehicleInfo.setVehicle(vehicle);
+        vehicleInfo.setModificationDate(LocalDateTime.now());
+        vehicleInfo.setFuel(vehicle.getFuel());
+        vehicleInfo.setMotohours(vehicle.getMotohours());
+        vehicleInfo.setOdometr(vehicle.getOdometr());
+        vehicleInfo.setNote("Отредактировано");
+        vehicleInfo.setStatus(vehicle.getStatus());
+        vehicleInfoRepository.save(vehicleInfo);
         return vehicleRepository.save(vehicle);
     }
 
@@ -114,7 +122,7 @@ public class VehicleService {
         }
         return null;
     }
-    
+
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();

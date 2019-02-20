@@ -7,118 +7,132 @@
 
         <title>Управление доступом</title>
 
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/usersManagerStyle.css">
+
         <script src="js/lib/angular.min.js" ></script>
         <script src="js/app/app.js"></script>
         <script src="js/app/usersManagement/service.js"></script>
         <script src="js/app/usersManagement/controller.js"></script>
     </head>
 
+
     <body ng-app="Transportation" ng-controller="UsersManagementController as ctrl">
-    <th:block th:include="_menu"></th:block>  
-    <h3>
-        УПРАВЛЕНИЕ ДОСТУПОМ
-    </h3>
-    <form ng-submit="ctrl.submit()">
-        <table border="0">
-            <tr ng-view="false">
-                <td>ФИО:</td>
-                <td><input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.fullName" size="50"/></td>
-            </tr>
-            <tr ng-view="false">
-                <td>Должность:</td>
-                <td><input type="text" ng-model="ctrl.user.post" size="16"/></td>
-            </tr>
-            <tr ng-view="false">
-                <td>Имя пользователя:</td>
-                <td><input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.username" size="16"/></td>
-            </tr>
-            <tr>
-                <td>Пароль:</td>
-                <td><input type='password' name='password' ng-model="ctrl.user.password" size="16"/></td>
-            </tr>
-            <tr>
-                <td>Подразделение:</td>
-                <td>
-                    <select ng-options="dep as dep.shortname for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
-                        <option value="">нет</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Транспортный отдел:</td>
-                <td>
-                    <select ng-options="td as td.shortname for td in ctrl.transportDeps track by td.id" ng-model="ctrl.user.transportDep">
-                        <option value="">нет</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Подчинены:</td>
-                <td><span ng-repeat="dep in ctrl.user.departments" class="role-span">{{dep.shortname}} </span></td>
-                <td>
-                    <select ng-model="ctrl.subDep" >
+    <th:block th:include="_menu"></th:block> 
+    <section>
+        <h3>
+            УПРАВЛЕНИЕ ДОСТУПОМ
+        </h3>
+        <form ng-submit="ctrl.submit()">
+            <div ng-view="false">
+                <label>ФИО</label>
+                <input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.fullName" size="45"/>
+            </div>
+            <div ng-view="false">
+                <label>Должность</label>
+                <input type="text" ng-model="ctrl.user.post" size="20"/>
+            </div>
+            <div ng-view="false">
+                <label>Имя пользователя</label>
+                <input type="text" ng-disabled="ctrl.user.id !== null" ng-model="ctrl.user.username" size="20"/>
+            </div>	
+            <div ng-view="false">
+                <label>Пароль</label>
+                <input type='password' name='password' ng-model="ctrl.user.password" size="20"/>
+            </div>	
+            <div ng-view="false">
+                <label>Подразделение</label>
+                <select ng-options="dep as dep.shortname for dep in ctrl.departments track by dep.id" ng-model="ctrl.user.department">
+                    <option value="">нет</option>
+                </select>
+            </div>
+            <div ng-view="false">
+                <label>Транспортный отдел</label>
+                <select ng-options="td as td.shortname for td in ctrl.transportDeps track by td.id" ng-model="ctrl.user.transportDep">
+                    <option value="">нет</option>
+                </select>    		
+            </div>
+            <div  ng-view="false">
+                <label style="width: 25%">Подчинены</label>
+                <!-- <span  class="role-span">
+                </span> -->
+                <ul class="ulColor">
+                    <li  ng-repeat="dep in ctrl.user.departments">
+                        <span class="tag-d">
+                            {{dep.shortname}}
+                            <i class="fas  fa-times"  ng-click="ctrl.removeDep(dep)"></i>
+                        </span>              
+                    </li>
+                </ul>    
+                <div class="block-control">
+                    <select ng-model="ctrl.subDep">
                         <option ng-repeat="d in ctrl.departments" ng-value="d">{{d.shortname}}</option>
                     </select>
-                </td>
-                <td>
-                    <button type="button" class="delete-button" ng-click="ctrl.removeDep()"> - </button>
-                    <button type="button" class="submit-button" ng-click="ctrl.addDep()">+</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Права доступа:</td>
-                <td><span ng-repeat="role in ctrl.user.roles" class="role-span">{{role.roleName}} </span></td>
-                <td>
-                    <select ng-model="ctrl.role" >
+                    <span>
+                        <i class="fas fa-lg fa-plus-circle" ng-click="ctrl.addDep()"></i>
+                    </span>
+
+                </div>
+
+            </div>
+            <div ng-view="false">
+                <label style="width: 25%">	Права доступа</label>
+                <ul>
+                    <li ng-repeat="role in ctrl.user.roles">
+                        <span class="tag-r">
+                            {{role.roleName}}
+                            <i class="fas  fa-times" ng-click="ctrl.removeRole(role)"></i>
+                        </span>
+                    </li>
+                </ul> 
+                <div class="block-control">
+                    <select ng-model="ctrl.role">
                         <option ng-repeat="r in ctrl.roles" ng-value="r">{{r.roleName}}</option>
                     </select>
-                </td>
-                <td>
-                    <button type="button" class="delete-button" ng-click="ctrl.removeRole()"> - </button>
-                    <button type="button" class="submit-button" ng-click="ctrl.addRole()">+</button>
-                </td>
-            </tr>
+                    <span>
+                        <i class="fas fa-lg fa-plus-circle" ng-click="ctrl.addRole()"></i>
+                    </span>
+
+                </div>
+            </div>
+            <div ng-view="false">
+                <button type="button" class="btn-submit" ng-click="ctrl.reset()">Cброс</button>
+                <input type="submit" class="btn-submit" ng-value="ctrl.user.id===null?'создать':'изменить'"/>
+            </div>
+        </form>
+    </section> 
+    <br/> 
+    <div style="color:#5f5f5f; font-weight: bold;">
+        Поиск: <input type="search" ng-model="search" size="50"/>
+    </div>
+    <br/> 
+    <section class="block-section2">
+        <table>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button type="button" ng-click="ctrl.reset()" class="delete-button">сброс</button></td>
-                <td colspan="2">                        
-                    <input type="submit" ng-value="ctrl.user.id===null?'создать':'изменить'" class="edit-button"/>
+                <th>Имя пользователя</th>
+                <th>ФИО</th>
+                <th>Должность</th>
+                <th>Подразделение</th>
+                <th>Транспортный отдел</th>
+                <th>Подчинённые подразделения</th>
+                <th>Права доступа</th>
+                <th></th>
+            </tr>
+            <!-- $scope.employees -->
+            <tr ng-repeat="user in ctrl.users| filter: search |orderBy: 'username'">
+                <td> {{user.username}}</td>
+                <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
+                <td> {{user.post}}</td>
+                <td> {{user.department.shortname}}</td>
+                <td> {{user.transportDep.shortname}}</td>
+                <td><span ng-repeat="d in user.departments" class="role-span">{{d.shortname}} </span></td>
+                <td><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
+                <td>
+                    <i class="fas  fa-lg fa-edit" ng-click="ctrl.editUser(user)"></i>
+                    <i class="fas  fa-lg fa-trash" ng-click="ctrl.deleteUser(user)"></i>
                 </td>
             </tr>
         </table>
-    </form>
-    <br/> 
-    <div>
-        Поиск: <input type="text" ng-model="search" size="50"/>
-    </div>
-    <br/> 
-    <table border="1">
-        <tr>
-            <th>Имя пользователя</th>
-            <th>ФИО</th>
-            <th>Должность</th>
-            <th>Подразделение</th>
-            <th>Транспортный отдел</th>
-            <th>Подчинённые подразделения</th>
-            <th>Права доступа</th>
-            <th></th>
-        </tr>
-        <!-- $scope.employees -->
-        <tr ng-repeat="user in ctrl.users| filter: search |orderBy: 'username'">
-            <td> {{user.username}}</td>
-            <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
-            <td> {{user.post}}</td>
-            <td> {{user.department.shortname}}</td>
-            <td> {{user.transportDep.shortname}}</td>
-            <td><span ng-repeat="d in user.departments" class="role-span">{{d.shortname}} </span></td>
-            <td><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
-            <td>
-                <button ng-click="ctrl.editUser(user)" class="edit-button">изменить</button>
-                <button ng-click="ctrl.deleteUser(user)" class="delete-button">удалить</button>
-            </td>
-        </tr>
-    </table>
+    </section>
 </body>
 </html>
