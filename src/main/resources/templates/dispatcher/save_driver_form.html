@@ -3,15 +3,15 @@
     <div class="container">
         <div>
             <label for="dsurname">Фамилия</label>
-            <input type="text" name="dsurname" placeholder="Введите Фамилию" ng-model="ctrl.driver.firstname">	
+            <input type="text" class="letter-mask" name="dsurname" placeholder="Введите Фамилию" ng-model="ctrl.driver.firstname" title="Только буквы русского алфавита">
         </div>	
         <div>
             <label for="dfirstname">Имя</label>
-            <input type="text" name="dfirstname" placeholder="Введите Имя" ng-model="ctrl.driver.name">
+            <input type="text" class="letter-mask" name="dfirstname" placeholder="Введите Имя" ng-model="ctrl.driver.name" title="Только буквы русского алфавита">
         </div> 
         <div> 	
             <label for="dsecondname">Отчество</label>
-            <input type="text" name="dsecondname" placeholder="Введите Отчество" ng-model="ctrl.driver.surname">
+            <input type="text" class="letter-mask" name="dsecondname" placeholder="Введите Отчество" ng-model="ctrl.driver.surname" title="Только буквы русского алфавита">
         </div>  
         <div>    
             <label for="birthday">Дата рождения</label>
@@ -19,7 +19,7 @@
         </div>
         <div>
             <label for="number">Номер мобильного</label >
-            <input type="text" name="number" placeholder="Введите Мобильный" ng-model="ctrl.driver.phone">
+            <input type="tel" name="number" ng-model="ctrl.driver.phone">
         </div>	
         <div>	
             <label for="license">Удостоверение</label >

@@ -3,15 +3,15 @@
     <div class="container">
         <div>
             <label for="dsurname">Фамилия</label>
-            <input type="text" name="dsurname" ng-model="ctrl.carBoss.firstname"> 
+            <input type="text" class="letter-mask" name="dsurname" ng-model="ctrl.carBoss.firstname" title="Только буквы русского алфавита"> 
         </div>
         <div>    
             <label for="dfirstname">Имя</label>
-            <input type="text" name="dfirstname" ng-model="ctrl.carBoss.name">
+            <input type="text" class="letter-mask" name="dfirstname" ng-model="ctrl.carBoss.name" title="Только буквы русского алфавита"> 
         </div>
         <div>    
             <label for="dsecondname">Отчество</label>
-            <input type="text" name="dsecondname" ng-model="ctrl.carBoss.surname">
+            <input type="text" class="letter-mask" name="dsecondname" ng-model="ctrl.carBoss.surname" title="Только буквы русского алфавита"> 
         </div>
         <div>    
             <label for="birthday">Дата рождения</label>
@@ -23,7 +23,7 @@
         </div>    
         <div>
             <label for="phone">Номер мобильного</label>
-            <input type="tel" name="phone" ng-model="ctrl.carBoss.phone">
+            <input type="tel" name="phone" id="car" ng-model="ctrl.carBoss.phone">
         </div>  
         <div>
             <label for="address">Адрес</label>
@@ -32,6 +32,6 @@
     </div>
     <div class="container " >
         <button type="button" class="btn delete" ng-click="ctrl.resetForm()">Отмена</button>
-        <button type="button" class="btn edit" ng-click="ctrl.submit()"><i class="far fa-save"></i>{{ctrl.carBoss.id===null?'Сохранить':'Изменить'}}</button>
+        <button type="submit" class="btn edit" ng-click="ctrl.submit()"><i class="far fa-save"></i>{{ctrl.carBoss.id===null?'Сохранить':'Изменить'}}</button>
     </div>
 </form>

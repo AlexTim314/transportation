@@ -4,15 +4,15 @@
 
         <div>
             <label for="dsurname">Фамилия</label>
-            <input type="text" name="dsurname" ng-model="ctrl.mechanic.firstname">
+            <input type="text" class="letter-mask" name="dsurname" ng-model="ctrl.mechanic.firstname" title="Только буквы русского алфавита">
         </div> 
         <div>
             <label for="dfirstname">Имя</label>
-            <input type="text" name="dfirstname" ng-model="ctrl.mechanic.name">
+            <input type="text" class="letter-mask" name="dfirstname" ng-model="ctrl.mechanic.name" title="Только буквы русского алфавита">
         </div>  
         <div>  
             <label for="dsecondname">Отчество</label>
-            <input type="text" name="dsecondname" ng-model="ctrl.mechanic.surname">
+            <input type="text" class="letter-mask" name="dsecondname" ng-model="ctrl.mechanic.surname" title="Только буквы русского алфавита">
         </div>  
         <div>              
             <label for="number">Дата рождения</label>
@@ -24,7 +24,7 @@
         </div>  
         <div>  
             <label for="phone">Номер мобильного</label>
-            <input type="text" name="phone" ng-model="ctrl.mechanic.phone"> 
+            <input type="tel" name="phone" ng-model="ctrl.mechanic.phone"> 
         </div>
         <div>
             <label for="workship">Квалификация</label>
