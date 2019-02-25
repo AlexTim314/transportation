@@ -28,6 +28,7 @@
     </head>
     <body ng-app="Transportation">
         <div class="wrapper">
+
             <!-- Login Form-->
             <form action="#" class="formLogin" id="formLogin">
                 <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
@@ -61,7 +62,11 @@
                     <!--Text header -->
 
                     <h1>Структурное подразделение</h1>
-                    <h3 ng-controller="ClaimsPageController as ctrl">{{ctrl.department.shortname}}</h3>
+                    <div ng-controller="ClaimsPageController as ctrl">
+                        <h3>{{ctrl.department.shortname}}</h3>
+                        <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
+                    </div>
+
                     <nav class="nav-horizontal">
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)" >Подача заявок</div>
                         <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 5)" >Утверждённые заявки</div>
@@ -80,6 +85,7 @@
                 <div id="claim-create" class="tabcontent" style="width: 100%; margin-left: 0px;">
 
                     <div ng-controller="ClaimsController as ctrl">
+                        <!--                        <a href="#" onclick="history.back();" ng-show="ctrl.permit">Возврат на страницу приветствия</a>-->
                         <!--Подробнее-->
                         <th:block th:include="user/cancel_record"></th:block>
                         <th:block th:include="user/info_form"></th:block>  

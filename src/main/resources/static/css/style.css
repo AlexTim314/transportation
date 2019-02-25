@@ -2550,3 +2550,16 @@ span.psw {
 
 
 }
+
+.home{
+	position: absolute;
+	left:10px;
+	top: 10px;
+	color: rgba(255,255,255,0.7);	
+}
+.home:hover{
+	color: rgba(255,255,255,1);
+}
+.home:active{
+	color:var(--edit-btn-color1);
+}

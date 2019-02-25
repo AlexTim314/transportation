@@ -61,10 +61,25 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.isOtherDay = false;
         self.isDelete = false;
         self.startDate;
-        self.allChecked = false;
         self.vehicles = [];
         self.filteredVehicleModels = [];
 
+        self.permit = false;
+
+
+        self.getPermit = function () {
+            PlannerService.getPermit()
+                    .then(
+                            function (d) {
+                                self.permit = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Permit');
+                            }
+                    );
+        };
+
+        self.getPermit();
 
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
@@ -685,7 +700,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
             return result;
         };
-        
+
         self.affirmatorToString = function (user) {
             var nameArr = user.fullName.split(' ');
             var result = nameArr[0];
@@ -1219,9 +1234,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('formCarBoss');
         };
 
-        self.checkAll = function (compositeClaimRecords) {
-            for (var i = 0; i < compositeClaimRecords.length; i++) {
-                compositeClaimRecords[i].record.checked = self.allChecked;
+        self.checkAll = function (header) {
+            for (var i = 0; i < header.compositeClaimRecords.length; i++) {
+                header.compositeClaimRecords[i].record.checked = header.allChecked;
             }
         };
 

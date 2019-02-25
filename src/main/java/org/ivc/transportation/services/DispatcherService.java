@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -209,6 +210,16 @@ public class DispatcherService {
                     appointment.getVehicleModel().getId(), dateStart, dateEnd);
         else
             return vehicleRepository.findVacantByTransportDepIdWithoutModel(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+    }
+    
+    public Boolean getPermit(Principal principal) {
+        AppUser user = getUser(principal);
+        for (AppRole role : user.getRoles()) {
+            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

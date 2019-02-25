@@ -10,6 +10,20 @@ App.factory('ClaimsPageService', ['$http', '$q', '$document', function ($http, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
+            
+            getPermit: function () {
+                return $http.get('/transportation/user/permit')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching permit');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchDepartment: function () {
                 return $http.get('/transportation/department')
                         .then(

@@ -32,6 +32,11 @@ public class SuperManagerController {
 
     @Autowired
     private SuperManagerService superManagerService;
+    
+    @GetMapping("/supermanager/permit")
+    public Boolean getPermit(Principal principal) {
+        return superManagerService.getPermit(principal);
+    }
 
     @GetMapping("/supermanager/records")
     public List<CompositeDepartmentClaimRecords> getRecords(Principal principal) {

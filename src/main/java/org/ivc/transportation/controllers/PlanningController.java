@@ -36,6 +36,12 @@ public class PlanningController {
     private PlanningService planningService;
     
     private VehicleService vehicleService;
+    
+    
+    @GetMapping("/planner/permit")
+    public Boolean getPermit(Principal principal) {
+        return planningService.getPermit(principal);
+    }
 
     @GetMapping("/planner/affirmedClaims")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {

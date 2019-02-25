@@ -41,7 +41,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.tempAppoints = [];
         self.filteredVacantVehicles = [];
 
-
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
             var car = 'fas fa-lg fa-car';

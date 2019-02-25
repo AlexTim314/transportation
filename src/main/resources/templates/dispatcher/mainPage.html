@@ -56,7 +56,7 @@
                     <span class="psw">Забыли <a href="#">Пароль?</a></span>
                 </div>
             </form >
-           
+
 
             <!--Подробнее назначени/заявки----- -->
             <th:block th:include="dispatcher/route_form"></th:block> 
@@ -69,7 +69,10 @@
                     <!--Text header -->
 
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
-                    <h3 ng-controller="DispatcherPageController as ctrl">{{ctrl.transportDep.fullname}}</h3>
+                    <div ng-controller="DispatcherPageController as ctrl">
+                    <h3>{{ctrl.transportDep.fullname}}</h3>
+                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
+                    </div>
 
                     <!--Navigation -->	
                     <nav class="nav-horizontal">
@@ -86,20 +89,21 @@
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
                 </div>
-                <!--Sidebar-->
-                <th:block th:include="dispatcher/slidebar"></th:block> 
-
+                <div ng-controller="DispatcherController as plctrl">
+                    <th:block th:include="dispatcher/sidebar"></th:block>
+                </div>
+                    
+                            
                 <div id="claim-create" class="tabcontent">
 
                     <div class="clearfix" style="overflow-x:auto;">
                         <div ng-controller="DispatcherController as plctrl">
+                            <!--Sidebar-->
                             <th:block th:include="dispatcher/appointment_form"></th:block>
                             <th:block th:include="dispatcher/appointment_status_form"></th:block> 
-
                             <th:block th:include="dispatcher/appointments_tab"></th:block> 
                             <th:block th:include="dispatcher/record_info"></th:block>
                         </div>
-
                         <div ng-controller="VehiclesController as ctrl">
                             <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
                             <th:block th:include="dispatcher/vehicle_status_form"></th:block> 
@@ -108,18 +112,15 @@
                             <th:block th:include="dispatcher/vehicle_info"></th:block> 
                             <th:block th:include="dispatcher/vehicle_history"></th:block> 
                             <th:block th:include="dispatcher/refueling_form"></th:block> 
-                            
+
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>
-
                         <div ng-controller="DriversController as ctrl">
                             <th:block th:include="dispatcher/save_driver_form"></th:block> 
                             <th:block th:include="dispatcher/driver_status_form"></th:block> 
                             <th:block th:include="dispatcher/del_driver_confirm_dlg"></th:block> 
-
                             <th:block th:include="dispatcher/drivers_tab"></th:block> 
                         </div>
-
                         <div ng-controller="MechanicsController as ctrl">
                             <th:block th:include="dispatcher/save_mechanic_form"></th:block> 
                             <th:block th:include="dispatcher/del_mechanic_confirm_dlg"></th:block>

@@ -82,5 +82,10 @@ public class AppointmentController {
     public List<Vehicle> getVacantVehicles(Principal principal, @RequestBody Appointment appointment) {
         return dispatcherService.getVacantVehicles(principal, appointment);
     }
+    
+    @GetMapping("/dispatcher/permit")
+    public Boolean getPermit(Principal principal) {
+        return dispatcherService.getPermit(principal);
+    }
 
 }

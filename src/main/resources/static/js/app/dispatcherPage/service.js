@@ -10,6 +10,18 @@ App.factory('DispatcherPageService', ['$http', '$q', '$document', function ($htt
         self.headers["Content-Type"] = 'application/json';
 
         return {
+            getPermit: function () {
+                return $http.get('/transportation/dispatcher/permit')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching permit');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             fetchTransportDep: function () {
                 return $http.get('/transportation/transportDep')
                         .then(

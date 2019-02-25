@@ -22,6 +22,7 @@
     </head>
     <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
         <div class="wrapper">
+<!--             <a href="#" onclick="history.back();" ng-show="plctrl.permit">Возврат на страницу приветствия</a>-->
             <!-- Login Form-->
             <div class="sidebar-vertical" id="sb-v-id">
                 <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
@@ -56,6 +57,7 @@
 
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
                     <h3>Планирование задействования транспортных средств</h3>
+                    <a href="/transportation" class="home" ng-show="plctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
 
                     <!--Navigation -->	
                     <nav class="nav-horizontal">
