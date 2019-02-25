@@ -18,31 +18,6 @@
     </head>
     <body ng-app="Transportation" ng-controller="SuperManagerController as ctrl" >
         <div class="wrapper">
-            <!-- Login Form-->
-            <div class="sidebar-vertical" id="sb-v-id">
-                <!-- 	<i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i> -->
-            </div>
-            <form action="#" class="formLogin" id="formLogin">
-                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
-                <div class="container">
-                    <label for="uname"><b>Логин</b></label>
-                    <input type="text" placeholder="Введите Логин" name="uname" required>
-
-                    <label for="psw"><b>Пароль</b></label>
-                    <input type="password" placeholder="Введите Пароль" name="psw" required>
-
-                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
-                    <label class="custom-checkbox">Запомнить меня
-                        <input type="checkbox" checked="checked">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-
-                <div class="container container-underline" style="">
-                    <button type="button" class="btn delete">Отмена</button>
-                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
-                </div>
-            </form>
             <div class="dialog-window" id="dialog-ban">
                 <i class="fas fa-times i-close " onclick="formClose('dialog-ban')"></i>
                 <p>Вы уверены, что хотите отменить?</p>
@@ -61,11 +36,6 @@
 
             </div>
 
-
-
-
-
-
             <div class="main clearfix">
                 <div class="header clearfix">
                     <!--Logo -->
@@ -76,14 +46,14 @@
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
                     <h3>Контроль подачи заявок</h3>
 
-                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-user"></i>Выход</button>
+                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
                 </div>
                 <!--Sidebar-->
 
-                <div id="claim-create" class="tabcontent">
+                <div id="claim-create" class="tabcontent" style="width: 100%; margin-left: 0px;">
 
 
                     <div class="clearfix" style="overflow-x:auto;"  >

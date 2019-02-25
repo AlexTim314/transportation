@@ -79,9 +79,18 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         self.fetchAllTransportDeps();
 
         self.createUser = function (user) {
+            var depArr = self.user.departments;
+            self.user.departments = null;
             UsersManagementService.createUser(user)
                     .then(
-                            self.fetchAllUsers,
+                            function (d) {
+                                for (var i = 0; i < depArr.length; i++) {
+                                    depArr[i].superManager = d;
+                                }
+                                self.fetchAllUsers();
+                                self.updateDepartments(depArr);
+                                self.reset();
+                            },
                             function (errResponse) {
                                 console.error('Error while creating User.');
                             }
@@ -89,9 +98,18 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.updateUser = function (user) {
+            var depArr = self.user.departments;
+            self.user.departments = null;
             UsersManagementService.updateUser(user)
                     .then(
-                            self.fetchAllUsers,
+                            function (d) {
+                                for (var i = 0; i < depArr.length; i++) {
+                                    depArr[i].superManager = d;
+                                }
+                                self.fetchAllUsers();
+                                self.updateDepartments(depArr);
+                                self.reset();
+                            },
                             function (errResponse) {
                                 console.error('Error while updating User.');
                             }
@@ -120,15 +138,11 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
         };
 
         self.submit = function () {
-            var depArr = self.user.departments;
-            self.user.departments = null;
-            self.updateDepartments(depArr);
             if (self.user.id === null) {
                 self.createUser(self.user);
             } else {
                 self.updateUser(self.user);
             }
-            self.reset();
         };
 
         self.editUser = function (user) {
@@ -146,8 +160,16 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.roles.push(self.role);
         };
 
-        self.removeRole = function () {
-            self.user.roles.pop();
+        self.removeRole = function (role) {
+            var k = -1;
+            for (var i = 0; i < self.user.roles.length; i++) {
+                var r = self.user.roles[i];
+                if (r.id === role.id) {
+                    k = i;
+                    break;
+                }
+            }
+            self.user.roles.splice(k, 1);
         };
 
         self.addDep = function () {
@@ -155,8 +177,16 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.departments.push(self.subDep);
         };
 
-        self.removeDep = function () {
-            self.user.departments.pop();
+        self.removeDep = function (dep) {
+            var k = -1;
+            for (var i = 0; i < self.user.departments.length; i++) {
+                var dp = self.user.departments[i];
+                if (dp.id === dep.id) {
+                    k = i;
+                    break;
+                }
+            }
+            self.user.departments.splice(k, 1);
         };
 
         self.reset = function () {

@@ -47,30 +47,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        http.csrf().disable();
         // The pages does not require login        
-        http.authorizeRequests().antMatchers("/", "/welcome", "/login", "/logout", "/resources/**").permitAll();
+        http.authorizeRequests().antMatchers("/", "/welcome", "/login", "/logout", "/img", "/resources/**").permitAll();
 
         http.authorizeRequests().antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/manager/**").access("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')");
 
+        http.authorizeRequests().antMatchers("/supermanager/**").access("hasAnyRole('ROLE_SUPERMANAGER', 'ROLE_ADMIN')");
+
         http.authorizeRequests().antMatchers("/planner/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/dispatcher/**").access("hasAnyRole('ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
-        http.authorizeRequests().antMatchers(CommonController.COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER','ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers(CommonController.COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_SUPERMANAGER', 'ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/management/**", "/admin/**",
                 "/usersManagement", "/departmentsManagement",
                 "/transportDepsManagement", "/placesManagement",
                 "/vehicleTypesManagement", "/fuelsManagement", "/claims",
-                "/planner", "/dispatcher")
+                "/planner", "/dispatcher", "/supermanager")
                 .access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,
         // AccessDeniedException will be thrown.
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/login");
 
         // Config for Login Form
         http.authorizeRequests().and().formLogin()//
@@ -82,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")//
                 .passwordParameter("password")
                 // Config for Logout Page
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
 
         // Config Remember Me.
         http.authorizeRequests().and() //

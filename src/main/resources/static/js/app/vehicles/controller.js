@@ -14,6 +14,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
         self.vehicles = [];
         self.vehicleInfo = {id: null};
+        self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null}
         
         self.history = [];
 
@@ -174,6 +175,16 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.tryToUpdate = function (vehicle) {
+            self.vehicle.id = vehicle.id;
+            self.vehicle.model = vehicle.model;
+            self.vehicle.number = vehicle.number;
+            self.vehicle.fuels = vehicle.fuels;
+            self.vehicle.fuel = vehicle.fuel;
+            self.vehicle.ododmetr = vehicle.ododmetr;
+            self.vehicle.motohours = vehicle.motohours;
+            self.vehicle.status = vehicle.status;
+            self.vehicle.note = vehicle.note;
+            self.vehicle.transportDep = vehicle.transportDep;
             formOpen('formTransport');
         };
 
@@ -269,6 +280,30 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                 result += nameArr[2].charAt(0) + "."
             }
             return result;
+        };
+        
+        self.tryToRefuelingVehicle = function (vehicle) {
+            self.refueling.vehicle = vehicle;
+            formOpen('formRefueling');
+        };
+        
+        self.refuelingVehicle = function () {
+            console.log(self.refueling);
+            VehiclesService.refulingVehicle(self.refueling)
+                    .then(
+                            function (d) {
+                                console.log('Refueling Sucsessible');
+                                formClose('formRefueling');
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Refueling.');
+                            }
+                    );
+        };
+        
+        self.cancelRefueling = function () {
+            self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null};
+            formClose('formRefueling');
         };
 
     }]);

@@ -53,7 +53,7 @@ public class CarBoss {
     @Column(name = "phone", length = 16)
     private String phone;
 
-    @Column(name = "post", nullable = false, length = 128)
+    @Column(name = "post", length = 128)
     private String post;
 
     @ManyToOne

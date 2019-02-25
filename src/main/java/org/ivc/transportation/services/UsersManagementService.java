@@ -66,7 +66,9 @@ public class UsersManagementService {
     }
 
     public AppUser updateUser(AppUser user) {
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
         AppUser edittingUser = userRepository.findByUsername(user.getUsername());
+        edittingUser.setPassword(encryptedPassword);
         edittingUser.setPost(user.getPost());
         Set<AppRole> roles = new HashSet<>();
         for (AppRole role : user.getRoles()) {

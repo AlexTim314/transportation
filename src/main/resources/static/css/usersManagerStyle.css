@@ -1,0 +1,151 @@
+*{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	text-decoration: none;
+	font-family:sans-serif;
+
+}
+
+h1,h3{
+	font-family:serif;
+	color:#5f5f5f;
+}
+form{
+	width: 40%;
+	min-width: 480px;
+	-webkit-box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	-moz-box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	overflow: hidden;
+	padding: 20px 20px;
+	border-radius: 5px;
+}
+form div{
+	margin-bottom: 15px;
+	display: flex;
+	justify-content: space-between;
+}
+label{
+	font-weight: bold;
+	color:grey;
+	margin-top: 5px;
+}
+form .btn-submit{
+	cursor: pointer;
+	position: relative;
+	width: 48%;
+	padding: 5px 0;
+	background: #5f5f5f;
+	border: 0;
+	border-radius: 3px;
+	font-size: 1.1em;
+	font-weight: bold;
+	color:white;
+	overflow:hidden;
+
+}
+form input, form select{
+	background:#f0f0f0;
+	padding:5px 0; 
+	border:1px solid grey;
+	border-radius: 3px;
+}
+form input:focus,form select:focus{
+	background:#c0c0c0;
+}
+form .btn-submit:hover{
+	background: #00a2d3;
+}
+
+
+table{
+	width: 100%;
+	border-collapse: collapse;
+} 
+table th{
+	background: #5f5f5f;
+	font-size: 0.7em;
+	padding:10px 5px;
+	color:white;
+	text-transform: uppercase;
+}
+table td{
+	padding:10px 5px;
+	font-weight: bold;
+	font-size: 0.7em;
+	text-align: center;
+	border-bottom: 1px solid grey;
+	color:grey;
+}
+.block-control{
+	width: 35%;
+	margin-bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+.block-control select{
+	width:85%;
+}
+.block-control i{
+	margin-top: 5px;
+	cursor: pointer;
+	color: #5f5f5f;
+}
+.block-control i:hover{
+	color:#333;
+}
+ul{
+	margin:5px;
+	list-style: none;	
+}
+ul li{
+	font-size: 0.7em;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+.tag-r{
+	background:#00a2d3;
+	border-radius: 5px;
+	color: white;
+	padding:3px;
+}
+.tag-d{
+	background: #5f5f5f;
+	border-radius: 5px;
+	color: white;
+	padding:3px;
+}
+.tag-r i{
+	margin-left: 3px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+/*.ulColor li{
+	color:#5f5f5f;
+
+}*/
+article{
+
+	width: 99%;
+	display: flex;
+	justify-content: space-between;
+}
+.block-section2{
+	margin-left: 20px;
+	overflow-y: auto;
+	max-height: 300px;
+}
+table th:first-child{
+
+}
+table th:last-child{
+	min-width: 70px;
+}
+table td i:hover{
+	cursor: pointer;
+	color:#333;
+}

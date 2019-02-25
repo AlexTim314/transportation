@@ -5,15 +5,15 @@
 
         <div>
             <label for="dsurname">Фамилия</label>
-            <input type="text" name="dsurname" ng-model="plctrl.carBoss.firstname"> 
+            <input type="text" class="letter-mask" name="dsurname" ng-model="plctrl.carBoss.firstname" title="Только буквы русского алфавита">
         </div>
         <div>    
             <label for="dfirstname">Имя</label>
-            <input type="text" name="dfirstname" ng-model="plctrl.carBoss.name">
+            <input type="text" class="letter-mask" name="dfirstname" ng-model="plctrl.carBoss.name" title="Только буквы русского алфавита">
         </div>
         <div>    
             <label for="dsecondname">Отчество</label>
-            <input type="text" name="dsecondname" ng-model="plctrl.carBoss.surname">
+            <input type="text" class="letter-mask" name="dsecondname" ng-model="plctrl.carBoss.surname" title="Только буквы русского алфавита">
         </div>
         <div>    
             <label for="number">Должность</label>
@@ -21,7 +21,7 @@
         </div>
         <div>
             <label for="phone">Номер мобильного</label>
-            <input type="text" name="phone" ng-model="plctrl.carBoss.phone">
+            <input type="tel" name="phone" ng-model="plctrl.carBoss.phone">
         </div>  
 
         <div class="left-block" style="margin-top:10px;">	

@@ -95,6 +95,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
 
+        self.selectSmallIcon = function (spec) {
+            var bus = 'fas fa-bus-alt';
+            var car = 'fas fa-car';
+            var truck = 'fas fa-truck';
+            var tractor = 'fas fa-tractor';
+            switch (spec) {
+                case 0:
+                    return bus;
+                case 1:
+                    return car;
+                case 2:
+                    return truck;
+                case 3:
+                    return tractor;
+            }
+        };
+
         self.fetchAllAppointments = function () {
             PlannerService.fetchAllAppointments()
                     .then(
@@ -317,7 +334,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 self.otsInfos = d;
                                 var k = 0;
                                 for (var i = 0; i < self.otsInfos.length; i++) {
-                                    k = k + self.otsInfos[i].drivercount;
+                                    k = k + self.otsInfos[i].otsInfo.drivercount;
                                 }
                                 self.allCountDrivers = k;
                             },
@@ -662,7 +679,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.personToString = function (person) {
+            if (person === null) {
+                return null;
+            }
             var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
+            return result;
+        };
+        
+        self.affirmatorToString = function (user) {
+            var nameArr = user.fullName.split(' ');
+            var result = nameArr[0];
+            if (nameArr.length > 1) {
+                result += " " + nameArr[1].charAt(0) + ".";
+            }
+            if (nameArr.length > 2) {
+                result += nameArr[2].charAt(0) + "."
+            }
             return result;
         };
 
