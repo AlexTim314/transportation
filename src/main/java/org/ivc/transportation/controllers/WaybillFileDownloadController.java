@@ -66,9 +66,9 @@ public class WaybillFileDownloadController {
             throw new NullPrincipalException("Неавторизованный доступ к данной странице закрыт. "
                     + "Пожалуйста <a href=\"/transportation/login\"> войдите в систему</a>.");
         }
-        
+
         Appointment appointment = dispatcherService.getAppointmentById(apptId);
-        
+
         if (appointment == null) {
             unexpectedNull("Назначение");
         }
@@ -84,13 +84,17 @@ public class WaybillFileDownloadController {
         VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
         switch (specialization) {
             case пассажирский:
+                excelFilePath = "form6spec.xls";
+                break;
             case легковой:
-                excelFilePath = "Waybill6.xls";
+                excelFilePath = "form3.xls";
                 break;
             case грузовой:
+                excelFilePath = "form4p.xls";
+                break;
             case спецтехника:
             default:
-                excelFilePath = "Waybill3.xls";
+                excelFilePath = "form3spec.xls";
                 break;
         };
 
@@ -124,78 +128,85 @@ public class WaybillFileDownloadController {
                     try {
                         NamedCell namedCell = NamedCell.valueOf(cellName);
                         Cell c = getCell(workbook, name);
-                        switch (namedCell) {
-                            case серия:
-                                //TODO: узнать как формировать номер серии
-                                //c.setCellValue(waybill.getSeries());
-                                c.setCellValue("1 - ");
-                                break;
-                            case номер:
-                                //c.setCellValue(waybill.getNumber());
-                                c.setCellValue(appointment.getId());
-                                break;
-                            case число:
-                                c.setCellValue(dateTime.getDayOfMonth());
-                                break;
-                            case месяц:
-                                c.setCellValue(dateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru")));
-                                break;
-                            case год:
-                                c.setCellValue(dateTime.getYear());
-                                break;
-                            case организация:
-                                c.setCellValue(claim.getDepartment().getFullname()
-                                        + " " + claim.getDepartment().getAddress());
-                                break;
-                            /* 
+                        try {
+                            switch (namedCell) {
+                                case серия:
+                                    //TODO: узнать как формировать номер серии
+                                    //c.setCellValue(waybill.getSeries());
+                                    c.setCellValue("1 - ");
+                                    break;
+                                case номер:
+                                    //c.setCellValue(waybill.getNumber());
+                                    c.setCellValue(appointment.getId());
+                                    break;
+                                case число:
+                                    c.setCellValue(dateTime.getDayOfMonth());
+                                    break;
+                                case месяц:
+                                    c.setCellValue(dateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("ru")));
+                                    break;
+                                case год:
+                                    c.setCellValue(dateTime.getYear());
+                                    break;
+                                case организация:
+                                    c.setCellValue(claim.getDepartment().getFullname()
+                                            + " " + claim.getDepartment().getAddress());
+                                    break;
+                                /* 
                                 case адрес_телефон:
                                 c.setCellValue();
                                 break;*/
-                            case марка:
-                                c.setCellValue(vehicle.getModel().getModelName());
-                                break;
+                                case марка:
+                                    c.setCellValue(vehicle.getModel().getModelName());
+                                    break;
 
-                            case госномер:
-                                c.setCellValue(vehicle.getNumber());
-                                break;
-                            case водитель:
-                                c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
-                                break;
-                            case удостоверение:
-                                c.setCellValue(driver.getDriverLicense());
-                                break;
-                            case класс:
-                                c.setCellValue(driver.getDriverClass());
-                                break;
-                            case диспетчер:
-                                c.setCellValue(appointment.getCreator().getFullName());
-                                break;
-                            case механик:
-                                String text = appointment.getMechanic() != null ? appointment.getMechanic().getFirstname() : "Не указан";
-                                c.setCellValue(text);
-                                break;
-                            case время_выезда_по_графику:
-                                c.setCellValue(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                                break;
-                            case время_возвращения_по_графику:
-                                c.setCellValue(record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                                break;
-                            case показание_спидометра_при_выезде:
-                                c.setCellValue(vehicle.getOdometr());
-                                break;
-                            case принял:
-                                c.setCellValue(getDriverNameWithInitials(driver));
-                                break;
-                            case сдал:
-                                c.setCellValue(getDriverNameWithInitials(driver));
-                                break;
-                            case остаток_горючего_при_выезде:
-                                c.setCellValue(vehicle.getFuel());
-                                break;
-                            case заказчик:
-                                c.setCellValue(claim.getDepartment().getShortname() + " "
-                                        + getCarBossNameWithInitials(claim.getCarBoss()));
-                                break;
+                                case госномер:
+                                    c.setCellValue(vehicle.getNumber());
+                                    break;
+                                case водитель:
+                                    c.setCellValue(driver.getFirstname() + " " + driver.getName() + " " + driver.getSurname());
+                                    break;
+                                case удостоверение:
+                                    c.setCellValue(driver.getDriverLicense());
+                                    break;
+                                case класс:
+                                    c.setCellValue(driver.getDriverClass());
+                                    break;
+                                case диспетчер:
+                                    c.setCellValue(appointment.getCreator().getFullName());
+                                    break;
+                                case механик:
+                                    String text = appointment.getMechanic() != null ? appointment.getMechanic().getFirstname() : "Не указан";
+                                    c.setCellValue(text);
+                                    break;
+                                case время_выезда_по_графику:
+                                    c.setCellValue(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                    break;
+                                case время_возвращения_по_графику:
+                                    c.setCellValue(record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                    break;
+                                case показание_спидометра_при_выезде:
+                                    c.setCellValue(vehicle.getOdometr());
+                                    break;
+                                case принял:
+                                    c.setCellValue(getDriverNameWithInitials(driver));
+                                    break;
+                                case сдал:
+                                    c.setCellValue(getDriverNameWithInitials(driver));
+                                    break;
+                                case остаток_горючего_при_выезде:
+                                    c.setCellValue(vehicle.getFuel());
+                                    break;
+                                case заказчик:
+                                    c.setCellValue(claim.getDepartment().getShortname() + " "
+                                            + getCarBossNameWithInitials(claim.getCarBoss()));
+                                    break;
+                            }
+                        } catch (NullPointerException ex) {
+                            System.out.println("При заполнении путевого листа"
+                                    + " произошла ошибка. Одно из требуемых"
+                                    + " полей не имеет знаения. Исключение: "
+                                    + ex.toString());
                         }
 
                         expectedNamedCells.remove(namedCell);
@@ -213,11 +224,11 @@ public class WaybillFileDownloadController {
                             + expectedNamedCells.toString());
                 }
             }
-            
+
             String fileName = "Путевой_" + dateTime.format(DateTimeFormatter.ofPattern("YYYY.MM.dd")) + "_id" + appointment.getId() + ".xls";
-            
+
             File file = File.createTempFile("waybill", specialization.name());
-            
+
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             workbook.write(fileOutputStream);
             workbook.close();
@@ -228,10 +239,10 @@ public class WaybillFileDownloadController {
             response.setContentType(mediaType.getType());
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
             response.setContentLength((int) file.length());
-            
+
             FileSystemResource resource = new FileSystemResource(file);
             return resource;
-           /* InputStream inputStream = new FileInputStream(file);
+            /* InputStream inputStream = new FileInputStream(file);
               return outputStream -> {
                 int nRead;
                 byte[] data = new byte[1024];
@@ -240,8 +251,8 @@ public class WaybillFileDownloadController {
                     outputStream.write(data, 0, nRead);
                 }
             };
-*/
-            /*try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
+             */
+ /*try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
             BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
             
             byte[] buffer = new byte[1024];
