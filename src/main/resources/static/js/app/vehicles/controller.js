@@ -175,6 +175,16 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         };
 
         self.tryToUpdate = function (vehicle) {
+            self.vehicle.id = vehicle.id;
+            self.vehicle.model = vehicle.model;
+            self.vehicle.number = vehicle.number;
+            self.vehicle.fuels = vehicle.fuels;
+            self.vehicle.fuel = vehicle.fuel;
+            self.vehicle.ododmetr = vehicle.ododmetr;
+            self.vehicle.motohours = vehicle.motohours;
+            self.vehicle.status = vehicle.status;
+            self.vehicle.note = vehicle.note;
+            self.vehicle.transportDep = vehicle.transportDep;
             formOpen('formTransport');
         };
 

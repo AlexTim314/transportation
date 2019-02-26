@@ -160,8 +160,16 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.roles.push(self.role);
         };
 
-        self.removeRole = function () {
-            self.user.roles.pop();
+        self.removeRole = function (role) {
+            var k = -1;
+            for (var i = 0; i < self.user.roles.length; i++) {
+                var r = self.user.roles[i];
+                if (r.id === role.id) {
+                    k = i;
+                    break;
+                }
+            }
+            self.user.roles.splice(k, 1);
         };
 
         self.addDep = function () {
@@ -169,8 +177,16 @@ App.controller('UsersManagementController', ['$scope', 'UsersManagementService',
             self.user.departments.push(self.subDep);
         };
 
-        self.removeDep = function () {
-            self.user.departments.pop();
+        self.removeDep = function (dep) {
+            var k = -1;
+            for (var i = 0; i < self.user.departments.length; i++) {
+                var dp = self.user.departments[i];
+                if (dp.id === dep.id) {
+                    k = i;
+                    break;
+                }
+            }
+            self.user.departments.splice(k, 1);
         };
 
         self.reset = function () {

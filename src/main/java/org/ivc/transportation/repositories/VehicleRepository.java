@@ -2,7 +2,6 @@ package org.ivc.transportation.repositories;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
