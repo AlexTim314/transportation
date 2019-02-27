@@ -85,13 +85,11 @@
                                 </td>                                                         
 
                                 <td>
-                                    <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.otsInfo.name for td in plctrl.otsInfos track by td.name" ng-model="clrec.appointment.transportDep" ng-change="plctrl.changeCheckedTD(clrec)">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" ng-change="plctrl.changeCheckedTD(clrec)">
                                     </select>           
                                 </td>
                                 <td>
-<!--                                    <select ng-disabled="plctrl.disable(clrec)" ng-mouseenter="plctrl.prepareData(clrec.appointment.transportDep,clrec.claim.specialization)" name="model" ng-options="tm as tm.modelName for tm in plctrl.filteredVehicleModels | filter:plctrl.filterVehicleModels track by tm.id" ng-model="clrec.appointment.vehicleModel" ng-change="plctrl.changeCheckedVM(clrec)">
-                                    </select>  -->
-                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm as tm.model for tm in td.vehicleModelInfos| filter:clrec.appointment.transportDep track by tm.model" ng-model="clrec.appointment.vehicleModel" ng-change="plctrl.changeCheckedVM(clrec)">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs | filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':clrec.claim.specialization} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>

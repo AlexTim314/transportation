@@ -300,7 +300,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             },
             
             fetchOtsVehModels: function () {
-                return $http.get('/transportation/planner/')
+                return $http.get('/transportation/planner/transport_dep_models')
                         .then(
                                 function (response) {
                                     return response.data;
