@@ -13,6 +13,7 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,11 @@ public class PlanningController {
     @GetMapping("/planner/ots_info")
     public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
+    }
+    
+    @GetMapping("/planner/transport_dep_models")
+    public List<CompositeModelTransportDep> getTransportDepModels() {
+        return planningService.getTransportDepModels();
     }
 
     @GetMapping("/planner/affirmedClaims/Tomorrow")

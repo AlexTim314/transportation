@@ -28,6 +28,7 @@ import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
@@ -242,5 +243,9 @@ public class PlanningService {
             }
         }
         return false;
+    }
+
+    public List<CompositeModelTransportDep> getTransportDepModels() {
+        return transportDepRepository.findModels();
     }
 }
