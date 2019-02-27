@@ -38,7 +38,8 @@ public interface TransportDepRepository extends JpaRepository<TransportDep, Long
             + "where vehicle.transport_dep_id = transport_dep.id and "
             + "vehicle.model_id = vehicle_model.id and "
             + "vehicle_model.vehicle_type_id = vehicle_type.id "
-            + "group by vehicle_model.id, transport_dep.id, vehicle_type.specialization", nativeQuery = true)
+            + "group by vehicle_model.id, transport_dep.id, vehicle_type.specialization "
+            + "order by vehicle_model.id", nativeQuery = true)
     public List<CompositeModelTransportDep> findModels();
     
 }
