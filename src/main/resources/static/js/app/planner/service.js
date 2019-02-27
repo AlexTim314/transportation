@@ -298,6 +298,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchOtsVehModels: function () {
+                return $http.get('/transportation/planner/')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching otsVehModels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             createCarBoss: function (carBoss) {
                 return $http.post('/transportation/planner/carBoss_create',

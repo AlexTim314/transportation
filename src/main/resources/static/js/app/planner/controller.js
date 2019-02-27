@@ -22,6 +22,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.carBoss = {id: null};
         self.otsInfo = {id: null, type1count: 0, type4count: 0, type2count: 0, drivercount: 0, type3count: 0, name: ''};
+        self.compVMTDSpec = {};
         self.otsInfos = [];
         self.allCountDrivers = 0;
         self.carBosses = [];
@@ -65,6 +66,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.filteredVehicleModels = [];
         self.selectedModel = {id: null, modelName: '', vehicleType: {}};
         self.permit = false;
+        self.tempTransportDep = {};
+        self.tempVehSpec = '';
 
 
         self.getPermit = function () {
@@ -358,6 +361,20 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        
+        
+        self.fetchOtsVehModels = function () {
+            PlannerService.fetchOtsVehModels()
+                    .then(
+                            function (d) {
+                                self.compVMTDSpec = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching compVMTDSpec');
+                            }
+                    );
+        };
+
 
         self.downloadPlan = function () {
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
@@ -702,17 +719,17 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.affirmatorToString = function (user) {
-            if (user !== null){
-            var nameArr = user.fullName.split(' ');
-            var result = nameArr[0];
-            if (nameArr.length > 1) {
-                result += " " + nameArr[1].charAt(0) + ".";
+            if (user !== null) {
+                var nameArr = user.fullName.split(' ');
+                var result = nameArr[0];
+                if (nameArr.length > 1) {
+                    result += " " + nameArr[1].charAt(0) + ".";
+                }
+                if (nameArr.length > 2) {
+                    result += nameArr[2].charAt(0) + ".";
+                }
+                return result;
             }
-            if (nameArr.length > 2) {
-                result += nameArr[2].charAt(0) + ".";
-            }
-            return result;
-        }
         };
 
         self.carBossToString = function (boss) {
@@ -1255,11 +1272,27 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             return unique;
         };
-        
-                
 
-        self.filterModelsByselectedTransportDep = function (td,spec) {
-            
+        self.prepareData = function (td, spec) {
+            self.tempTransportDep = td;
+            self.tempVehSpec = spec;
+        };
+
+        self.filterVehicleModels = function (vm) {
+            for (var i = 0; i < self.vehicles.length; i++) {
+                if (self.vehicles[i].transportDep.id === self.tempTransportDep.id) {
+                    if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
+                        if (self.vehicles[i].model.modelName === vm.modelName && self.vehicles[i].model.vehicleType.specialization === self.tempVehSpec) {
+                            return vm;
+                        }
+                    }
+                }
+            }
+        };
+
+
+        self.filterModelsByselectedTransportDep = function (td, spec) {
+
 //            self.filteredVehicleModels = [];
 //            for (var i = 0; i < self.vehicles.length; i++) {
 //                if (self.vehicles[i].transportDep.id === td.id) {
@@ -1274,8 +1307,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 //            }
 //            self.filteredVehicleModels = self.getUniqueModels(self.filteredVehicleModels);
             self.filteredVehicleModels = self.getUniqueModels(self.vehicleModels);
-            console.log(self.filteredVehicleModels);
-            
         };
 
         self.changeCheckedTD = function (compositeClaimRecord) {
@@ -1289,11 +1320,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
 
-                    self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
+            self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
 
         };
 
-        self.changeCheckedVM = function (compositeClaimRecord) {           
+        self.changeCheckedVM = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
@@ -1307,4 +1338,4 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
     }]);
 
- 
+
