@@ -7,7 +7,7 @@
 
                 <div class="left-block">
                     <label>Название шаблона</label>                    
-                    <select name="template" ng-options="tn.templateName for tn in ctrl.claimTemplates"   ng-model="tn" ng-change="ctrl.prepearClaimFromTemplate(tn)">
+                    <select name="template" ng-options="tn.templateName for tn in ctrl.claimTemplates"   ng-model="tn" ng-change="ctrl.prepearClaimFromTemplate(tn)" onclick="checkHidden()">
                         <option value="" disabled selected><--Не выбрано--></option>
                     </select>
                 </div>
@@ -141,7 +141,7 @@
 
         </section>
         <div class="form-item">
-            <button class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
+            <button type="submit" class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
         </div>
 
     </form>

@@ -561,9 +561,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.checkRec = function (rec) {
+            console.log(rec);
             self.record.checked = false;
             self.record = rec;
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            if (rec.endDate !== null) {
+                self.record.endDate = new Date(rec.endDate);
+            }
             self.record.checked = true;
+            console.log(self.record);
         };
 
         self.rowClick = function (clm) {
@@ -626,6 +633,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.carBossName = self.carBossToStringFull(claim.carBoss);
             self.claim.purpose = claim.purpose;
             self.claim.records = [];
+            if (claim.records[0].endDate !== null) {
+                    self.onDemand = false;
+                } else {
+                    self.onDemand = true;
+                }
             for (var i = 0; i < claim.records.length; i++) {
                 var rec = {
                     id: null,
@@ -633,8 +645,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     entranceDate: claim.records[i].entranceDate,
                     endDate: claim.records[i].endDate
                 };
+                
                 self.claim.records.push(rec);
             }
+            console.log(self.claim.records);
             self.claim.routeTasks = claim.routeTasks;
             self.claim.specialization = claim.specialization;
             self.claim.templateName = claim.templateName;
@@ -643,7 +657,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.creationDate = new Date(claim.creationDate);
             self.record.startDate = new Date(claim.records[0].startDate);
             self.record.entranceDate = new Date(claim.records[0].entranceDate);
-            self.record.endDate = new Date(claim.records[0].endDate);
+            if (!self.onDemand) {
+                self.record.endDate = new Date(claim.records[0].endDate);
+            }
+            
+            
         };
         self.prepearClaimFromTemplate = function (claim) {
             if (claim !== null) {//TODO: проверку на undefinite
@@ -655,7 +673,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         var date = new Date(this.valueOf());
                         date.setDate(date.getDate() + days);
                         return date;
-                    }
+                    };
 
                     //поиск более ранней записи                    
                     var index = 0;
@@ -670,15 +688,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
                     self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
-                    self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
+                    if (claim.records[index].endDate !== null) {
+                        console.log('дата возвращения не пустая 1');
+                        self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
+                    }
 
                     for (var i = 0; i < claim.records.length; i++) {
                         date = new Date(claim.records[i].startDate);
                         self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
                         date = new Date(claim.records[i].entranceDate);
                         self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
-                        date = new Date(claim.records[i].endDate);
-                        self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                        if (claim.records[index].endDate !== null) {
+                            console.log('дата возвращения не пустая 2');
+                            date = new Date(claim.records[i].endDate);
+                            self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                        }
                     }
                 }
             }
@@ -909,15 +933,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.affirmatorToString = function (user) {
-            var nameArr = user.fullName.split(' ');
-            var result = nameArr[0];
-            if (nameArr.length > 1) {
-                result += " " + nameArr[1].charAt(0) + ".";
+            if (user !== null) {
+                var nameArr = user.fullName.split(' ');
+                var result = nameArr[0];
+                if (nameArr.length > 1) {
+                    result += " " + nameArr[1].charAt(0) + ".";
+                }
+                if (nameArr.length > 2) {
+                    result += nameArr[2].charAt(0) + ".";
+                }
+                return result;
             }
-            if (nameArr.length > 2) {
-                result += nameArr[2].charAt(0) + "."
-            }
-            return result;
         };
 
         self.checkPhone = function (appointment) {
@@ -944,8 +970,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             for (var i = 0; i < self.claim.records.length; i++) {
                 var r = self.claim.records[i];
                 if (r.startDate === null || r.startDate === undefined
-                        || r.entranceDate === null || r.entranceDate === undefined
-                        || r.endDate === null || r.endDate === undefined) {
+                        || r.entranceDate === null || r.entranceDate === undefined) {
                     return true;
                 }
             }

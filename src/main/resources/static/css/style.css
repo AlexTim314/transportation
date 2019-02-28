@@ -443,6 +443,9 @@ i{
     width: 47%;
     float: right;
 }
+.form-item button{
+    margin-bottom:20px;
+}
 
 .form-item .right-block input{
     margin-top:10px;
@@ -1763,8 +1766,8 @@ td{
 
 }
 .more-info{
-    top:15%;
-    right: 15%;
+    top:2%;
+    right: 2%;
     display: none;
     width: 20%;
     position: absolute;
