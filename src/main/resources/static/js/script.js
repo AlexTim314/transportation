@@ -31,7 +31,7 @@ edit_open = function () {
     sec[0].style.display = "none";
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "none";
-}
+    }
 
 formRecord_close = function () {
     var str = document.getElementById("formRecord-id");
@@ -85,7 +85,7 @@ templateEditOpen = function () {
     edit_open();
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "block";
-}
+    }
 open_tab1 = function (tabName, btnName, iEnd) {
     for (var i = 1; i <= iEnd; i++) {
         var str = document.getElementById("tab-list" + i);
@@ -214,7 +214,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     function mask(event) {
-        var matrix = "+7 (___) ___ ____",
+        var matrix = "+7(___)_______",
                 i = 0,
                 def = matrix.replace(/\D/g, ""),
                 val = this.value.replace(/\D/g, "");
