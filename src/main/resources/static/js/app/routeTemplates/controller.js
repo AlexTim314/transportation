@@ -107,6 +107,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             } else {
                 self.updateRouteTemplate();
             }
+            self.fetchRouteTemplates();
         };
 
         self.addTask = function (p) {

@@ -407,13 +407,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 var date = new Date(d);
-                                var day = date.getDate();
-                                var month = date.getMonth() + 1;
-                                var year = date.getFullYear();
-                                if (month < 10)
-                                    month = "0" + month;
-                                if (day < 10)
-                                    day = "0" + day;
                                 var today = self.getFormatedDate(date, "-", true);
                                 document.getElementById('date-plan').value = today;
                                 document.getElementById('startDate').value = today;
@@ -1117,7 +1110,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.newRecord = {id: null, startDate: null, endDate: null, entranceDate: null};
             formClose('plannerCarBoss');
             formClose('formRoute');
-            formClose('newFormTask');
+            formClose('newFormTask');            
         };
 
         self.submitRTask = function () {
