@@ -40,7 +40,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.permit = false;
 
         self.carBossName = null;
-        self.displayCarBosses = false;
+       /* self.displayCarBosses = false;
 
         self.clickCarBossesInput = function () {
             self.displayCarBosses = !self.displayCarBosses;
@@ -55,6 +55,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.carBoss = carBoss;
             self.carBossName = self.carBossToStringFull(carBoss);
             self.displayCarBosses = false;
+        };*/
+        
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
         self.placeName = null;
@@ -252,12 +256,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while fetching Department');
                             }
                     );
-        };
-        self.fetchWhatCouldBeUpdate = function () {
-            self.fetchRouteTemplates();
-            self.fetchPlaces();
-            self.fetchBosses();
-        }
+        };       
 
 //        self.getToday = function () {
 //            var date = new Date();
@@ -485,8 +484,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (boss === null) {
                 return null;
             }
-            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + (boss.post !== null ? boss.post : "");
             return result;
+        };
+        
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
         self.carBossToStringFull = function (boss) {

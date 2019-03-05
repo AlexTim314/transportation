@@ -67,18 +67,9 @@
 
             <div class="form-item clearfix">
                 <label for="carBoss">Старший</label>
-                <div class="custom-select">
-                    <i class="fas fa-caret-down" style="top: 5px; margin-right: 5px;" ng-click="ctrl.clickCarBossesInput()"></i>
-                    <input type="text" ng-click="ctrl.clickCarBossesInput()" ng-change="ctrl.changeCarBossInput()" name="carBoss" ng-model="ctrl.carBossName" placeholder="Выберите старшего машины или введите ФИО" autocomplete="off">
-                    <div class="list-point list-absolute" id="cst-sel-down" ng-show="ctrl.displayCarBosses">			    		
-                        <ul>
-                            <li ng-repeat="cb in ctrl.bosses| orderBy: 'firstname' | filter: ctrl.carBossName" ng-click="ctrl.selectCarBoss(cb)">{{ctrl.carBossToString(cb)}}</li>
-                        </ul>
-                    </div>		
-                </div>
-                <!--                <select name="carBoss" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
-                                    <option value="" disabled selected>Выберите старшего машины</option>
-                                </select>-->
+                <select name="carBoss" ng-mousedown="ctrl.fetchBosses()" ng-options="cb as ctrl.carBossToString(cb) for cb in ctrl.bosses track by cb.firstname" ng-model="ctrl.claim.carBoss" required>
+                    <option value="" disabled selected>Выберите старшего машины</option>
+                </select>
             </div>
 
             <div class="form-item clearfix">
