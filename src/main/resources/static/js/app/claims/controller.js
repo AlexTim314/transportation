@@ -31,12 +31,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.week = false;
         self.all = false;
         self.allday = false;
-        self.claimFromTemplateDate = '';
+        self.claimFromTemplateDate = null;
         self.cancelNote = '';
         self.minDate;
         self.onDemand = false;
         self.startDate;
-
         self.permit = false;
 
         self.carBossName = null;
@@ -580,7 +579,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.checkRec = function (rec) {
-            console.log(rec);
             self.record.checked = false;
             self.record = rec;
             self.record.startDate = new Date(rec.startDate);
@@ -589,7 +587,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.record.endDate = new Date(rec.endDate);
             }
             self.record.checked = true;
-            console.log(self.record);
         };
 
         self.rowClick = function (clm) {
@@ -608,7 +605,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.affirmedClaim = clm;
         };
         self.resetClaimForm = function () {
+            self.onDemand = false;
             self.isOtherDay = false;
+            self.carBossName = '';
             self.claim = {
                 id: null,
                 templateName: null,
@@ -629,6 +628,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+            self.placeName = '';
         };
         self.setClaimForTemp = function (claim) {
             self.copyClaimProperties(claim);
@@ -651,48 +651,47 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.carBoss = claim.carBoss;
             self.carBossName = self.carBossToStringFull(claim.carBoss);
             self.claim.purpose = claim.purpose;
-            self.claim.records = [];
-            if (claim.records[0].endDate !== null) {
-                self.onDemand = false;
-            } else {
-                self.onDemand = true;
-            }
-            for (var i = 0; i < claim.records.length; i++) {
-                var rec = {
-                    id: null,
-                    startDate: claim.records[i].startDate,
-                    entranceDate: claim.records[i].entranceDate,
-                    endDate: claim.records[i].endDate
-                };
-
-                self.claim.records.push(rec);
-            }
-            console.log(self.claim.records);
-            self.claim.routeTasks = claim.routeTasks;
-            self.claim.specialization = claim.specialization;
-            self.claim.templateName = claim.templateName;
-            self.claim.vehicleType = claim.vehicleType;
-            self.claim.affirmationDate = claim.affirmationDate;
-            self.claim.creationDate = new Date(claim.creationDate);
-            self.record.startDate = new Date(claim.records[0].startDate);
-            self.record.entranceDate = new Date(claim.records[0].entranceDate);
-            if (!self.onDemand) {
-                self.record.endDate = new Date(claim.records[0].endDate);
+            if (claim.records.length > 0) {
+                self.claim.records = [];
+                if (claim.records[0].endDate !== null) {
+                    self.onDemand = false;
+                } else {
+                    self.onDemand = true;
+                }
+                for (var i = 0; i < claim.records.length; i++) {
+                    var rec = {
+                        id: null,
+                        startDate: claim.records[i].startDate,
+                        entranceDate: claim.records[i].entranceDate,
+                        endDate: claim.records[i].endDate
+                    };
+                    self.claim.records.push(rec);
+                }
+                self.claim.routeTasks = claim.routeTasks;
+                self.claim.specialization = claim.specialization;
+                self.claim.templateName = claim.templateName;
+                self.claim.vehicleType = claim.vehicleType;
+                self.claim.affirmationDate = claim.affirmationDate;
+                self.claim.creationDate = new Date(claim.creationDate);
+                self.record.startDate = new Date(claim.records[0].startDate);
+                self.record.entranceDate = new Date(claim.records[0].entranceDate);
+                if (!self.onDemand) {
+                    self.record.endDate = new Date(claim.records[0].endDate);
+                }
             }
         };
 
         self.prepearClaimFromTemplate = function (claim) {
-            if (claim !== null) {//TODO: проверку на undefinite
+            if (claim !== null && claim !== undefined) {
                 self.copyClaimProperties(claim);
                 self.claim.id = null;
                 self.claim.templateName = null;
-                if (self.claimFromTemplateDate !== '') {
+                if (self.claimFromTemplateDate !== null) {
                     Date.prototype.addDays = function (days) {
                         var date = new Date(this.valueOf());
                         date.setDate(date.getDate() + days);
                         return date;
                     };
-
                     //поиск более ранней записи                    
                     var index = 0;
                     for (var i = 1; i < claim.records.length; i++) {
@@ -707,17 +706,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     self.record.startDate = date.addDays(datesDiff);
                     self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
                     if (claim.records[index].endDate !== null) {
-                        console.log('дата возвращения не пустая 1');
                         self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
                     }
-
                     for (var i = 0; i < claim.records.length; i++) {
                         date = new Date(claim.records[i].startDate);
                         self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
                         date = new Date(claim.records[i].entranceDate);
                         self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
                         if (claim.records[index].endDate !== null) {
-                            console.log('дата возвращения не пустая 2');
                             date = new Date(claim.records[i].endDate);
                             self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
                         }
@@ -725,6 +721,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             }
         };
+
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
             if (self.claim.templateName === null) {
@@ -732,6 +729,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             } else {
                 templateEditOpen();
             }
+            checkHidden();
         };
 
         self.tryToUpdateRTask = function (routeTask) {
@@ -755,6 +753,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.submitRTask = function () {
+            if (self.validateFormRTask()) {
+                alert("Форма заполнена не полностью!");
+                return;
+            }
+
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
             } else {
@@ -939,7 +942,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return;
             }
             self.appt = appt;
-            formOpen('appt-note')
+            formOpen('appt-note');
         };
 
         self.personToString = function (person) {
@@ -980,17 +983,32 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.validateForm = function () {
             if (self.claim.specialization === null) {
+                console.log('Не выбрана специализация');
                 return true;
             }
             if (self.claim.records.length === 0) {
+                console.log('Незаполнены даты выезда');
                 return true;
             }
             for (var i = 0; i < self.claim.records.length; i++) {
                 var r = self.claim.records[i];
                 if (r.startDate === null || r.startDate === undefined
                         || r.entranceDate === null || r.entranceDate === undefined) {
+                    console.log('Не введено время');
                     return true;
                 }
+            }
+            return false;
+        };
+
+        self.validateFormRTask = function () {
+            if (self.routeTask.place === null) {
+                console.log('Не выбрано место');
+                return true;
+            }
+            if (self.routeTask.workName === '') {
+                console.log('Не заполнены работы');
+                return true;
             }
             return false;
         };
@@ -1016,6 +1034,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return false;
             }
         };
+
+
+        
 
     }]);
 

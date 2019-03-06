@@ -1,6 +1,6 @@
 <div class="tab-list3" id="tab-list3" xmlns:th="http://www.thymeleaf.org">
     <div class="table-header clearfix">
-        <input placeholder="Поиск" type="search">
+        <input placeholder="Поиск" type="search" ng-model="searching">
     </div>
     <div class="height-wrapper"> 
         <table class="table-record" id="tbl3">
@@ -22,7 +22,7 @@
                     <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-template-confirm')"></i>                                        
                 </th>
             </tr>
-            <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates">
+            <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates |filter: searching">
                 <td ng-click="ctrl.rowClick(claim)">
                     <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
                 </td>

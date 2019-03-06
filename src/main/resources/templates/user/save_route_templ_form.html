@@ -23,7 +23,8 @@
             </div>
             <label for="point_begin"><b>Маршрут</b></label>
             <div class="ready-route">
-                <span class="tag-route" title="{{tsk.workName}}" ng-repeat="tsk in ctrl.routeTemplate.routeTasks|orderBy:'orderNum'">{{tsk.place.name}} <i class="fa fa-times" ng-click="ctrl.removeTask(tsk)"></i>
+                <span class="route-tag {{tsk.checked?'active-color':''}}" title="{{tsk.workName}}" ng-repeat="tsk in ctrl.routeTemplate.routeTasks|orderBy:'orderNum'"  ng-click="ctrl.checkTsk(tsk)">{{tsk.place.name}} 
+                    <i class="fa fa-times" ng-click="ctrl.removeTask(tsk)"></i>
                 </span>
             </div>
         </div>

@@ -21,7 +21,7 @@
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
 
         <div class="left-block" style="margin-top:10px;">	
-            <div ng-show="ctrl.routeTask.id !== null" class="btn delete" ng-click="ctrl.resetRTaskForm()">Сброс</div>
+            <div ng-show="ctrl.routeTask.workName !== ''" class="btn delete" ng-click="ctrl.resetRTaskForm()">Сброс</div>
         </div>
 
         <div class="right-block" style="margin-top:10px;">	
