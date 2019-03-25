@@ -195,7 +195,7 @@ public class PlanDownloadController {
                         + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
                 prevRow.time.add(time);
                 prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
-            } else {
+            } else { 
                 RowData rowData = new RowData();
                 rowData.vehicleNumber = vehicleNumber;
 
@@ -289,18 +289,15 @@ public class PlanDownloadController {
         }
 
         //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
-        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое);
+        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.ремонт);
+        vehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
         //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
         vehicles = vehicles.stream().filter((t) -> {
             return t.getModel() != null;
         }).filter((t) -> {
             return t.getNumber() != null;
         }).collect(Collectors.toList());
-        vehicles.stream().filter((t) -> {
-            return (t.getNote() == null) || (t.getNote().equals(""));
-        }).findAny().ifPresent((t) -> {
-            t.setNote("Не введён в эксплуатацию");
-        });
+       
         for (Vehicle vehicle : vehicles) {
             row = table.createRow();
             isBold = true;

@@ -686,7 +686,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.copyClaimProperties(claim);
                 self.claim.id = null;
                 self.claim.templateName = null;
-                if (self.claimFromTemplateDate !== null) {
+                if (self.claimFromTemplateDate !== null) {                    
                     Date.prototype.addDays = function (days) {
                         var date = new Date(this.valueOf());
                         date.setDate(date.getDate() + days);

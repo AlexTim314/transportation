@@ -87,6 +87,10 @@ public class DispatcherService {
     }
 
     public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+        if (findTransportDepByUser(principal) == null) {
+            System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
+            return null;
+        }
         List<Appointment> appointmentList = appointmentRepository
                 .findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         return appointmentList.stream().map((app) -> {

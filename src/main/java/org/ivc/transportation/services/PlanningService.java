@@ -226,7 +226,7 @@ public class PlanningService {
     }
 
     public List<CompositeOtsInfo> getOtsInfo() {
-        List<CompositeOtsInfo> result = new ArrayList<CompositeOtsInfo>();
+        List<CompositeOtsInfo> result = new ArrayList<>();
         transportDepRepository.findOtsInfo().forEach(u -> result.add(new CompositeOtsInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
