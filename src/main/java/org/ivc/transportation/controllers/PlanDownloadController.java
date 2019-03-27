@@ -67,9 +67,6 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
-    
-    @Autowired
-    private VehicleService vehicleService;
 
     @Autowired
     private ServletContext servletContext;
@@ -189,12 +186,12 @@ public class PlanDownloadController {
                 //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
                 //!Надо выяснить как происходит подача заявок в таком случае.
                 //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
-                String time = record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"))
                         + "-"
-                        + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+                        + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
                 prevRow.time.add(time);
                 prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
-            } else { 
+            } else {
                 RowData rowData = new RowData();
                 rowData.vehicleNumber = vehicleNumber;
 
@@ -232,11 +229,9 @@ public class PlanDownloadController {
             }
         }
 
-        //-----------тестовые данные для проверки отображения
         if (appointments.isEmpty()) {
             fullfillTestData(rowDataList);
         }
-        //end-----------тестовые данные для проверки
 
         String currentDepName = "";
         int number = 1;
@@ -296,7 +291,7 @@ public class PlanDownloadController {
         }).filter((t) -> {
             return t.getNumber() != null;
         }).collect(Collectors.toList());
-       
+
         for (Vehicle vehicle : vehicles) {
             row = table.createRow();
             isBold = true;
@@ -313,7 +308,6 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, isBold, parAligCenter);
             textToParagraph(row.getCell(4).getParagraphs().get(0), vehicle.getNote(),
                     "Times New Roman", fontSize, false, parAligLeft);
-            
 
             int cellIndex = 4;
             row.getCell(cellIndex).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
@@ -345,20 +339,6 @@ public class PlanDownloadController {
         response.setContentLength((int) file.length());
         FileSystemResource resource = new FileSystemResource(file);
         return resource;
-
-        /*  try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
-        BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-        
-        byte[] buffer = new byte[1024];
-        int bytesRead = 0;
-        while ((bytesRead = inStream.read(buffer)) != -1) {
-        
-        System.out.println("Plan downloading..(" + bytesRead + "bytes)");
-        outStream.write(buffer, 0, bytesRead);
-        }
-        
-        outStream.flush();
-        }*/
     }
 
     private String formateDate(LocalDate date) {
@@ -526,10 +506,10 @@ public class PlanDownloadController {
             return;
         }
         textToParagraph(cell.getParagraphs().get(0), list.get(0),
-                "Times New Roman", fontSize, isBold, paragraphAlignment);
+                fontFamily, fontSize, isBold, paragraphAlignment);
         for (int i = 1; i < list.size(); i++) {
             textToParagraph(cell.addParagraph(), list.get(i),
-                    "Times New Roman", fontSize, isBold, paragraphAlignment);
+                    fontFamily, fontSize, isBold, paragraphAlignment);
         }
     }
 

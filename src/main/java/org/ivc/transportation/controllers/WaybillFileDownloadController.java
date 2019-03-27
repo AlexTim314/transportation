@@ -290,15 +290,15 @@ public class WaybillFileDownloadController {
     }
 
     public static String getDriverNameWithInitials(Driver driver) {
-        return driver.getFirstname() + " "
-                + driver.getName().charAt(0) + "."
-                + driver.getSurname().charAt(0) + ".";
+        String fi = driver.getFirstname() + " "
+                + driver.getName().charAt(0) + ".";
+        return (driver.getSurname() == null) || (driver.getSurname().isEmpty()) ? fi : fi + driver.getSurname().charAt(0) + ".";
     }
 
     public static String getCarBossNameWithInitials(CarBoss carBoss) {
-        return carBoss.getFirstname() + " "
-                + carBoss.getName().charAt(0) + "."
-                + carBoss.getSurname().charAt(0) + ".";
+        String fi = carBoss.getFirstname() + " "
+                + carBoss.getName().charAt(0) + ".";
+        return (carBoss.getSurname() == null) || (carBoss.getSurname().isEmpty()) ? fi : fi + carBoss.getSurname().charAt(0) + ".";
     }
 
 }
