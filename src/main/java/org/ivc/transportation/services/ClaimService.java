@@ -2,7 +2,7 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+
 import java.util.List;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
@@ -77,7 +77,7 @@ public class ClaimService {
         return null;
     }
 
-    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, LocalDateTime dStart, LocalDateTime dEnd) {
         Department department = getDepartment(principal);
         if (department != null) {
             return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
+//import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +86,7 @@ public class DispatcherService {
         }).collect(Collectors.toList());
     }
 
-    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
         if (findTransportDepByUser(principal) == null) {
             System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
             return null;
@@ -162,8 +162,8 @@ public class DispatcherService {
     }
 
     public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, LocalDate date) {
-        ZonedDateTime dStart = ZonedDateTime.of(date, LocalTime.of(0, 0), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(date, LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.of(date, LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(date, LocalTime.of(23, 59));
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
     }
 
@@ -199,16 +199,16 @@ public class DispatcherService {
     }
 
     public List<Driver> getVacantDrivers(Principal principal, Appointment appointment) {
-        ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
-        ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
+        LocalDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
+        LocalDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
         List<Driver> dl = driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         return dl;
     }
 
     public List<Vehicle> getVacantVehicles(Principal principal, Appointment appointment) {
         Record record = recordRepository.findRecordByAppointmentId(appointment.getId());
-        ZonedDateTime dateStart = record.getStartDate();
-        ZonedDateTime dateEnd = record.getEndDate();
+        LocalDateTime dateStart = record.getStartDate();
+        LocalDateTime dateEnd = record.getEndDate();
         if (appointment.getVehicleModel() != null)
             return vehicleRepository.findVacantByTransportDepIdWithModel(findTransportDepByUser(principal).getId(),
                     appointment.getVehicleModel().getId(), dateStart, dateEnd);

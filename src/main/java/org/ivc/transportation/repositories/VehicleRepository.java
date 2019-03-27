@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
@@ -29,8 +29,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             + "record.id = appointment.record_id)", nativeQuery = true)
     List<Vehicle> findVacantByTransportDepIdWithModel(@Param("transport_dep_id") Long transportDepId,
             @Param("model_id") Long modelId,
-            @Param("date_start") ZonedDateTime dateStart,
-            @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart,
+            @Param("date_end") LocalDateTime dateEnd);
 
     @Query(value = "select * from vehicle where status = 0 and transport_dep_id = :transport_dep_id and id not in ("
             + "select appointment.vehicle_id from appointment, record where "
@@ -40,8 +40,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             + "(record.start_date > :date_start and record.end_date < :date_end)) and "
             + "record.id = appointment.record_id)", nativeQuery = true)
     List<Vehicle> findVacantByTransportDepIdWithoutModel(@Param("transport_dep_id") Long transportDepId,
-            @Param("date_start") ZonedDateTime dateStart,
-            @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart,
+            @Param("date_end") LocalDateTime dateEnd);
 
     @Query(value = "select * from vehicle where status = :status order by note", nativeQuery = true)
     public List<Vehicle> findVehiclesForPlan(@Param("status") int status);

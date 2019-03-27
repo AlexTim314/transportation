@@ -985,6 +985,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.addRec = function () {
             var sd = new Date(self.startDate);
+            
             if (sd === null) {
                 return;
             }

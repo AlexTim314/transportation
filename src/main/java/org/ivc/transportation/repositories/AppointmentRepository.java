@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -26,7 +26,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     
     @Query(value = "select appointment.* from appointment, record where appointment.id in (select idResult from (select max(id) as idResult, record_id from appointment group by record_id) as lastAppointments) and " +
             "appointment.transport_dep_id = :transport_dep_id and record.start_date between :date_start and :date_end and appointment.record_id = record.id", nativeQuery = true)
-    public List<Appointment> findAppointmentsByTransportDepTimeFilter(@Param("transport_dep_id") Long transportDepId, @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+    public List<Appointment> findAppointmentsByTransportDepTimeFilter(@Param("transport_dep_id") Long transportDepId, @Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
     
     @Query(value = "select appointment.* from vehicle, appointment, record, claim where " +
             "record.start_date between :date_start and :date_end and "
@@ -35,5 +35,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             + "record.claim_id = claim.id and "
             + "appointment.status = :status order by claim.department_id, vehicle.number, record.start_date", nativeQuery = true)
     public List<Appointment> findAppointmentsForPlan(@Param("status") int status,
-            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
 }

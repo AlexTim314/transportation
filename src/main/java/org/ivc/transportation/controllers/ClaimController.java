@@ -2,6 +2,7 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -38,15 +39,15 @@ public class ClaimController {
 
     @GetMapping("/user/affirmedClaims/Tomorrow")
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.now();
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
         return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
 
     @GetMapping("/user/affirmedClaims/Week")
     public List<Claim> getAffirmedClaimsWeek(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.now();
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return claimService.findAffirmedClaimsByDepartmentTimeFilter(principal, dStart, dEnd);
     }
 

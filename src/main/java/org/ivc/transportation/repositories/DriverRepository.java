@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.TransportDep;
@@ -26,8 +26,8 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
             + "(record.start_date > :date_start and record.end_date < :date_end)) and "
             + "record.id = appointment.record_id)", nativeQuery = true)
     List<Driver> findVacantByTransportDepId(@Param("transport_dep_id") Long transportDepId,
-            @Param("date_start") ZonedDateTime dateStart,
-            @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart,
+            @Param("date_end") LocalDateTime dateEnd);
 
     void deleteByIdIn(List<Long> ids);
 

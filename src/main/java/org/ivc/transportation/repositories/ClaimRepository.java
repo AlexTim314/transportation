@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
@@ -40,8 +40,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "group by claim.id", nativeQuery = true)
     List<Claim> findAffirmedClaimsByDepartmentTimeFilter(
             @Param("department_id") Long departmentId,
-            @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate
+            @Param("start_date") LocalDateTime startDate,
+            @Param("end_date") LocalDateTime endDate
     );
 
     void deleteByIdAndAffirmationDateIsNull(Long id);
