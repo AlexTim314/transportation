@@ -704,6 +704,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claim.vehicleType = claim.vehicleType;
                 self.claim.affirmationDate = claim.affirmationDate;
                 self.claim.creationDate = new Date(claim.creationDate);
+                self.claim.creationDate.setUTCHours(self.claim.creationDate.getHours());                
                 self.record.startDate = new Date(claim.records[0].startDate);
                 self.record.entranceDate = new Date(claim.records[0].entranceDate);
                 if (!self.onDemand) {
@@ -733,7 +734,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     var date = new Date(claim.records[index].startDate);
                     var timeDiff = self.claimFromTemplateDate.getTime() - date.getTime();
                     var datesDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                    //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
                     self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
                     if (claim.records[index].endDate !== null) {

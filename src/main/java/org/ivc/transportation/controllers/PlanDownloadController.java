@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class PlanDownloadController {
     @ResponseBody
     public FileSystemResource download(HttpServletResponse response, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
 
-        ZonedDateTime today = ZonedDateTime.now();
+        LocalDate today = LocalDate.now();
         LocalDate purposeDate = LocalDate.parse(strDate, DateTimeFormatter.BASIC_ISO_DATE);
 
         System.out.println("plan.docx write");
@@ -129,7 +128,7 @@ public class PlanDownloadController {
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО        
-        textToParagraph(cell.addParagraph(), formateDate(today.toLocalDate()), 12, ParagraphAlignment.LEFT);
+        textToParagraph(cell.addParagraph(), formateDate(today), 12, ParagraphAlignment.LEFT);
         row.getCell(0).setWidth("65.00%");
         row.getCell(1).setWidth("35.00%");
 
@@ -339,7 +338,7 @@ public class PlanDownloadController {
 
         //-------------- отправка файла
         MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-        String fileName = "plan" + today.toLocalDate().toString() + ".docx";
+        String fileName = "plan" + today.toString() + ".docx";
         MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
         response.setContentType(mediaType.getType());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
