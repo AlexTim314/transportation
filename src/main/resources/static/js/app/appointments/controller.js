@@ -159,6 +159,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vacantDrivers = d;
+                                console.log(self.vacantDrivers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vacant Drivers');
@@ -447,13 +448,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.filteringVehicles = function (model) {
             self.filteredVacantVehicles = [];
             for (var i = 0; i < self.vehicles.length; i++) {
-                if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
+                if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined && model !== undefined && model !== null) {
                     if (self.vehicles[i].model.modelName === model.modelName) {
                         self.filteredVacantVehicles.push(self.vehicles[i]);
                     }
                 }
             }
-            console.log(self.filteredVacantVehicles);
+          //  console.log(self.filteredVacantVehicles);
         };
 
     }]);
