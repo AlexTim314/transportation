@@ -183,7 +183,9 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
                                     break;
                                 case время_возвращения_по_графику:
-                                    c.setCellValue(record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                    if (record.getEndDate() != null) {
+                                        c.setCellValue(record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                                    }
                                     break;
                                 case показание_спидометра_при_выезде:
                                     c.setCellValue(vehicle.getOdometr());
@@ -289,16 +291,17 @@ public class WaybillFileDownloadController {
         return r.getCell(cellRef.getCol());
     }
 
-    public static String getDriverNameWithInitials(Driver driver) {        
-        String fi = driver.getFirstname() + " "
-                + driver.getName().charAt(0) + ".";
-        return (driver.getSurname() == null) || (driver.getSurname().isEmpty()) ? fi : fi + driver.getSurname().charAt(0) + ".";
+    public static String getDriverNameWithInitials(Driver driver) {
+        return getNameWithInitials(driver.getFirstname(), driver.getName(), driver.getSurname());
     }
 
     public static String getCarBossNameWithInitials(CarBoss carBoss) {
-        String fi = carBoss.getFirstname() + " "
-                + carBoss.getName().charAt(0) + ".";
-        return (carBoss.getSurname() == null) || (carBoss.getSurname().isEmpty()) ? fi : fi + carBoss.getSurname().charAt(0) + ".";
+        return getNameWithInitials(carBoss.getFirstname(), carBoss.getName(), carBoss.getSurname());
+    }
+    
+    public static String getNameWithInitials(String firstname, String name, String surname) {
+        String fi = firstname + " " + name.charAt(0) + ".";
+        return (surname == null) || (surname.isEmpty()) ? fi : fi + surname.charAt(0) + ".";
     }
 
 }

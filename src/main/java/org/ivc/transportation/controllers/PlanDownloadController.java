@@ -35,7 +35,6 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.DispatcherService;
-import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -186,9 +185,11 @@ public class PlanDownloadController {
                 //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
                 //!Надо выяснить как происходит подача заявок в таком случае.
                 //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
-                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        + "-"
-                        + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+                
+                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")) + "-";
+                if (record.getEndDate() != null) {
+                       time = time + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+                }
                 prevRow.time.add(time);
                 prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
             } else {
@@ -222,9 +223,11 @@ public class PlanDownloadController {
                 }
                 rowData.route = route;
 
-                rowData.time.add(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        + "-"
-                        + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")) + "-";
+                if (record.getEndDate() != null) {
+                       time = time + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+                }
+                rowData.time.add(time);
 
                 prevRow = rowData;
                 rowDataList.add(rowData);
