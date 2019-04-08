@@ -214,6 +214,8 @@ public class PlanDownloadController {
                         return Integer.compare(t1.getOrderNum(), t2.getOrderNum());
                     });
                     for (RouteTask routeTask : routeTasks) {
+                        //System.out.println(routeTask.getId() + " " + routeTask.getPlace() + " " +routeTask.getPlace().getName());
+                        if ((routeTask == null) || (routeTask.getPlace() == null) || (routeTask.getPlace().getName() == null)){break;}
                         route = route + routeTask.getPlace().getName() + ", ";
                     }
                     route = route.substring(0, route.length() - 2);

@@ -289,7 +289,7 @@ public class WaybillFileDownloadController {
         return r.getCell(cellRef.getCol());
     }
 
-    public static String getDriverNameWithInitials(Driver driver) {
+    public static String getDriverNameWithInitials(Driver driver) {        
         String fi = driver.getFirstname() + " "
                 + driver.getName().charAt(0) + ".";
         return (driver.getSurname() == null) || (driver.getSurname().isEmpty()) ? fi : fi + driver.getSurname().charAt(0) + ".";
