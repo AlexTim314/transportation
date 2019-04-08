@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.ZoneId;
 //import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -201,6 +202,10 @@ public class DispatcherService {
     public List<Driver> getVacantDrivers(Principal principal, Appointment appointment) {
         LocalDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
         LocalDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
+        //чтобы sql не ругался на дату null
+        if (dateEnd == null) {
+            dateEnd = LocalDateTime.of(dateStart.getYear(), dateStart.getMonth(), dateStart.getDayOfMonth(), 23, 59);
+        }
         List<Driver> dl = driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         return dl;
     }
@@ -209,13 +214,18 @@ public class DispatcherService {
         Record record = recordRepository.findRecordByAppointmentId(appointment.getId());
         LocalDateTime dateStart = record.getStartDate();
         LocalDateTime dateEnd = record.getEndDate();
-        if (appointment.getVehicleModel() != null)
+        //чтобы sql не ругался на дату null
+        if (dateEnd == null) {
+            dateEnd = LocalDateTime.of(dateStart.getYear(), dateStart.getMonth(), dateStart.getDayOfMonth(), 23, 59);
+        }
+        if (appointment.getVehicleModel() != null) {
             return vehicleRepository.findVacantByTransportDepIdWithModel(findTransportDepByUser(principal).getId(),
                     appointment.getVehicleModel().getId(), dateStart, dateEnd);
-        else
+        } else {
             return vehicleRepository.findVacantByTransportDepIdWithoutModel(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+        }
     }
-    
+
     public Boolean getPermit(Principal principal) {
         AppUser user = getUser(principal);
         for (AppRole role : user.getRoles()) {
