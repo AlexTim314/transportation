@@ -65,7 +65,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
 
             fetchAllVehicleModels: function () {
-                return $http.get('/transportation/vehicleModels')
+                return $http.get('/transportation/dispatcher/vehicleModels')
                         .then(
                                 function (response) {
                                     return response.data;

@@ -9,6 +9,7 @@ import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -85,5 +86,11 @@ public class AppointmentController {
     public Boolean getPermit(Principal principal) {
         return dispatcherService.getPermit(principal);
     }
-
+       
+    @GetMapping("/dispatcher/vehicleModels")
+    public List<VehicleModel> getVehicleModels(Principal principal) {
+        return dispatcherService.findVehicleModelsByTransportDep(principal);
+    }
+    
+    
 }

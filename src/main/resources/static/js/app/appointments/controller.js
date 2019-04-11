@@ -40,6 +40,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.date;
         self.tempAppoints = [];
         self.filteredVacantVehicles = [];
+        self.filteredVehicleModels = [];
 
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
@@ -159,7 +160,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vacantDrivers = d;
-                                console.log(self.vacantDrivers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vacant Drivers');
@@ -248,16 +248,20 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.prepareToUpdateAppointment = function () {
-            for (var i = 0; i < self.tempAppoints.length; i++) {
-                if (self.tempAppoints.length > 0) {
-                    if (self.tempAppoints[i].id === self.clrec.appointment.id) {
-                        self.tempAppoints.splice(i, 1);
-                        console.log('splice appointment');
+            if ((self.clrec.appointment.vehicle === null) || (self.clrec.appointment.driver === null)) {
+                alert('Не заполнены данные');
+            } else {
+                for (var i = 0; i < self.tempAppoints.length; i++) {
+                    if (self.tempAppoints.length > 0) {
+                        if (self.tempAppoints[i].id === self.clrec.appointment.id) {
+                            self.tempAppoints.splice(i, 1);
+                            console.log('splice appointment');
+                        }
                     }
                 }
+                self.tempAppoints.push(self.clrec.appointment);
+                formClose('formAppointment');
             }
-            self.tempAppoints.push(self.clrec.appointment);
-            formClose('formAppointment');
         };
 
         self.prepareToChangeStatus = function (clrec) {
@@ -307,6 +311,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.clrec = clrec;
             self.fetchVacantDrivers(self.clrec.appointment);
             self.fetchVacantVehicles(self.clrec.appointment);
+            self.filteringVehicleModels(self.clrec.claim.vehicleType);
             formOpen('formAppointment');
         };
 
@@ -454,7 +459,22 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     }
                 }
             }
-          //  console.log(self.filteredVacantVehicles);
+        };
+
+        self.filteringVehicleModels = function (vehicleType) {
+            self.filteredVehicleModels = [];
+            if (vehicleType !== undefined && vehicleType !== null) {
+                for (var i = 0; i < self.vehicleModels.length; i++) {
+                    if (self.vehicleModels[i].vehicleType !== null && self.vehicleModels[i].vehicleType !== undefined) {
+                        if (self.vehicleModels[i].vehicleType.specialization === vehicleType.specialization) {
+                            self.filteredVehicleModels.push(self.vehicleModels[i]);
+                        }
+                    }
+                }
+            } else {
+                console.log('В заявке не указан тип автотранспорта')
+                self.filteredVehicleModels = self.vehicleModels;
+            }
         };
 
     }]);
