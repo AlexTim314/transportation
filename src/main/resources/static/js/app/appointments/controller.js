@@ -447,10 +447,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.filteringVehicles = function (model) {
             self.filteredVacantVehicles = [];
-            for (var i = 0; i < self.vehicles.length; i++) {
-                if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined && model !== undefined && model !== null) {
-                    if (self.vehicles[i].model.modelName === model.modelName) {
-                        self.filteredVacantVehicles.push(self.vehicles[i]);
+            for (var i = 0; i < self.vacantVehicles.length; i++) {
+                if (self.vacantVehicles[i].model !== null && self.vacantVehicles[i].model !== undefined && model !== undefined && model !== null) {
+                    if (self.vacantVehicles[i].model.modelName === model.modelName) {
+                        self.filteredVacantVehicles.push(self.vacantVehicles[i]);
                     }
                 }
             }

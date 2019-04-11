@@ -1,7 +1,7 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +34,7 @@ public class Refueling implements Serializable {
     private Long id;
 
     @Column(name = "refueling_date", nullable = false)
-    private ZonedDateTime refuelingDate;
+    private LocalDateTime refuelingDate;
 
     @Column(name = "volume")
     private double volume;

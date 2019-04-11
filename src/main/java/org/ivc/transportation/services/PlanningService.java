@@ -2,7 +2,7 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.ivc.transportation.entities.AppRole;
@@ -93,7 +93,7 @@ public class PlanningService {
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(department.getId(), dateStart, dateEnd)
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
@@ -109,7 +109,7 @@ public class PlanningService {
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(department.getId(), dateStart, dateEnd)
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
@@ -124,7 +124,7 @@ public class PlanningService {
         return result;
     }
 
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithAffirmedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilter(u.getDepartment(), dateStart, dateEnd)));
@@ -138,7 +138,7 @@ public class PlanningService {
         return result;
     }
 
-    public List<CompositeDepartmentClaimRecords> getPlannedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithPlannedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilterPlanned(u.getDepartment(), dateStart, dateEnd)));

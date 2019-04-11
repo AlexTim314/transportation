@@ -8,8 +8,7 @@ package org.ivc.transportation.controllers;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.services.SuperManagerService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
@@ -45,22 +44,22 @@ public class SuperManagerController {
 
     @GetMapping("/supermanager/records/Tomorrow")
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsTomorrow(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
         return superManagerService.getAffirmedClaimsTimeFilter(dStart, dEnd, principal);
     }
 
     @GetMapping("/supermanager/records/Week")
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsWeek(Principal principal) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return superManagerService.getAffirmedClaimsTimeFilter(dStart, dEnd, principal);
     }
 
     @PostMapping("/supermanager/records/Date")
-    public List<CompositeDepartmentClaimRecords> getPlannedClaimsDate(Principal principal, @RequestBody ZonedDateTime date) {
-        ZonedDateTime dStart = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(0, 0), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(LocalDate.from(date), LocalTime.of(23, 59), ZoneId.systemDefault());
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsDate(Principal principal, @RequestBody LocalDateTime date) {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
         return superManagerService.getAffirmedClaimsTimeFilter(dStart, dEnd, principal);
     }
 

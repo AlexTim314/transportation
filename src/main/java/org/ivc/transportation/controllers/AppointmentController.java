@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
@@ -50,7 +49,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/dispatcher/appointments/Date")
-    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody ZonedDateTime date) {        
+    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {        
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);

@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,8 +27,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             + "department.id = claim.department_id "
             + "group by department.id", nativeQuery = true)
     List<Department> findDepartmentsWithAffirmedClaimsByTimeFilter(
-            @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate);
+            @Param("start_date") LocalDateTime startDate,
+            @Param("end_date") LocalDateTime endDate);
 
     @Query(value = "select department.* from department, claim "
             + "where claim.affirmation_date is not null and "
@@ -55,8 +55,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             + "department.id = claim.department_id "
             + "group by department.id", nativeQuery = true)
     List<Department> findDepartmentsBySuperManagerWithAffirmedClaimsByTimeFilter(
-            @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate,
+            @Param("start_date") LocalDateTime startDate,
+            @Param("end_date") LocalDateTime endDate,
             @Param("id") Long id);
 
     @Query(value = "select department.* from department, claim, record "
@@ -66,8 +66,8 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             + "department.id = claim.department_id "
             + "group by department.id", nativeQuery = true)
     List<Department> findDepartmentsWithPlannedClaimsByTimeFilter(
-            @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate);
+            @Param("start_date") LocalDateTime startDate,
+            @Param("end_date") LocalDateTime endDate);
 
     @Query(value = "select department.* from department, claim "
             + "where claim.affirmation_date is not null and "
