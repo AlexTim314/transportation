@@ -28,6 +28,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import static org.ivc.transportation.controllers.WaybillFileDownloadController.getCarBossNameWithInitials;
 import static org.ivc.transportation.controllers.WaybillFileDownloadController.getDriverNameWithInitials;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
@@ -185,12 +186,8 @@ public class PlanDownloadController {
                 //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
                 //!Надо выяснить как происходит подача заявок в таком случае.
                 //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
-                
-                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")) + "-";
-                if (record.getEndDate() != null) {
-                       time = time + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
-                }
-                prevRow.time.add(time);
+
+                prevRow.time.add(getTimeString(record));
                 prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
             } else {
                 RowData rowData = new RowData();
@@ -198,7 +195,7 @@ public class PlanDownloadController {
 
                 Claim claim = dispatcherService.findClaimByRecord(record);
 
-                rowData.carBoss = claim.getCarBoss().getFirstname();
+                rowData.carBoss = getCarBossNameWithInitials(claim.getCarBoss());
                 rowData.driver.add(getDriverNameWithInitials(a.getDriver()));
                 rowData.departmentName = claim.getDepartment().getFullname();
                 rowData.purposes = claim.getPurpose();
@@ -216,18 +213,16 @@ public class PlanDownloadController {
                     });
                     for (RouteTask routeTask : routeTasks) {
                         //System.out.println(routeTask.getId() + " " + routeTask.getPlace() + " " +routeTask.getPlace().getName());
-                        if ((routeTask == null) || (routeTask.getPlace() == null) || (routeTask.getPlace().getName() == null)){break;}
+                        if ((routeTask == null) || (routeTask.getPlace() == null) || (routeTask.getPlace().getName() == null)) {
+                            break;
+                        }
                         route = route + routeTask.getPlace().getName() + ", ";
                     }
                     route = route.substring(0, route.length() - 2);
                 }
                 rowData.route = route;
 
-                String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm")) + "-";
-                if (record.getEndDate() != null) {
-                       time = time + record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
-                }
-                rowData.time.add(time);
+                rowData.time.add(getTimeString(record));
 
                 prevRow = rowData;
                 rowDataList.add(rowData);
@@ -423,7 +418,7 @@ public class PlanDownloadController {
         rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Дежурный";
         rd.route = "Пл.10, Пл. 95";
         rd.time.add("8:00-19:00");
         rd.transportDepNumber = "4";
@@ -432,45 +427,22 @@ public class PlanDownloadController {
 
         rowDataList.add(rd);
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "5";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+    }
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Перевозка грузов";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "3";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "8";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
+    private String getTimeString(Record record) {
+        String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"))
+                + "("
+                + record.getEntranceDate().format(DateTimeFormatter.ofPattern("HH:mm"))
+                + ")- ";
+        if (record.getEndDate() != null) {
+            String endTimeStr = record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+            if (endTimeStr.equalsIgnoreCase("23:59")){
+                endTimeStr = "24:00";
+            }
+            time = time + endTimeStr;
+        }
+        return time;
     }
 
     private class RowData {

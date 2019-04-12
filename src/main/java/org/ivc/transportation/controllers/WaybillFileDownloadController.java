@@ -16,8 +16,11 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -58,6 +61,16 @@ public class WaybillFileDownloadController {
     @Autowired
     private ServletContext servletContext;
 
+    private boolean white = false;
+
+    //временное проверочное решение. Потом интерфейс будет доработан
+    @GetMapping("/dispatcher/whitewaybilldownload/{apptId}")
+    @ResponseBody
+    public FileSystemResource whiteDownload(HttpServletResponse response, Principal principal, @PathVariable("apptId") Long apptId) throws FileNotFoundException, IOException {
+        white = true;
+        return download(response, principal, apptId);
+    }
+
     @GetMapping("/dispatcher/waybilldownload/{apptId}")
     @ResponseBody
     public FileSystemResource download(HttpServletResponse response, Principal principal, @PathVariable("apptId") Long apptId) throws FileNotFoundException, IOException {
@@ -82,21 +95,24 @@ public class WaybillFileDownloadController {
 
         String excelFilePath;
         VehicleSpecialization specialization = appointment.getVehicleModel().getVehicleType().getSpecialization();
+
         switch (specialization) {
             case пассажирский:
-                excelFilePath = "form6spec.xls";
+                excelFilePath = "form6spec";
                 break;
             case легковой:
-                excelFilePath = "form3.xls";
+                excelFilePath = "form3";
                 break;
             case грузовой:
-                excelFilePath = "form4p.xls";
+                excelFilePath = "form4p";
                 break;
             case спецтехника:
             default:
-                excelFilePath = "form3spec.xls";
+                excelFilePath = "form3spec";
                 break;
         };
+        String nameTail = white ? "White.xls" : ".xls";
+        excelFilePath = "waybilltemplates/" + excelFilePath + nameTail;
 
         /*   На данный момент рассматривается возможность исключить сущность Waybill         
         Waybill waybill = appointment.getWaybill();
@@ -115,10 +131,23 @@ public class WaybillFileDownloadController {
         Claim claim = dispatcherService.findClaimByRecord(record);
         LocalDateTime dateTime = appointment.getCreationDate();
 
+        ClassLoader classLoader = getClass().getClassLoader();
+
         try {
             Workbook workbook;
-            try (FileInputStream inputStream = new FileInputStream(new File(excelFilePath))) {
+            try (FileInputStream inputStream = new FileInputStream(new File(classLoader.getResource(excelFilePath).getFile()))) {
                 workbook = WorkbookFactory.create(inputStream);
+                CellStyle cellStyle = workbook.createCellStyle();
+                if (white) {
+                    cellStyle = workbook.createCellStyle();
+                    Cell c = getCell(workbook, workbook.getName("месяц"));
+                    Font insidefont = workbook.getFontAt(c.getCellStyle().getFontIndexAsInt());
+                    Font font = workbook.createFont();
+                    font.setColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
+                    font.setFontName(insidefont.getFontName());
+                    font.setFontHeight(insidefont.getFontHeight());
+                    cellStyle.setFont(font);
+                }
 
                 List<? extends Name> allNames = workbook.getAllNames();
                 List<NamedCell> expectedNamedCells = Arrays.stream(NamedCell.values()).collect(Collectors.toList());
@@ -128,6 +157,10 @@ public class WaybillFileDownloadController {
                     try {
                         NamedCell namedCell = NamedCell.valueOf(cellName);
                         Cell c = getCell(workbook, name);
+                        if (white) {
+                            c.setCellStyle(cellStyle);
+                        }
+                        //System.out.println(cellName + " " + c.getAddress().getColumn()  + " " +  c.getAddress().getRow() + " " + c.getRichStringCellValue());
                         try {
                             switch (namedCell) {
                                 case серия:
@@ -173,7 +206,7 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(driver.getDriverClass());
                                     break;
                                 case диспетчер:
-                                    c.setCellValue(appointment.getCreator().getFullName());
+                                    c.setCellValue(getDispatherNameWithInitials(appointment.getCreator().getFullName()));
                                     break;
                                 case механик:
                                     String text = appointment.getMechanic() != null ? appointment.getMechanic().getFirstname() : "Не указан";
@@ -298,10 +331,30 @@ public class WaybillFileDownloadController {
     public static String getCarBossNameWithInitials(CarBoss carBoss) {
         return getNameWithInitials(carBoss.getFirstname(), carBoss.getName(), carBoss.getSurname());
     }
-    
+
     public static String getNameWithInitials(String firstname, String name, String surname) {
         String fi = firstname + " " + name.charAt(0) + ".";
         return (surname == null) || (surname.isEmpty()) ? fi : fi + surname.charAt(0) + ".";
+    }
+
+    private String getDispatherNameWithInitials(String fullName) {
+        String[] split = fullName.split(" ");
+        String result;
+        switch (split.length) {
+            case 0:
+                result = "";
+                break;
+            case 1:
+                result = split[0];
+                break;
+            case 2:
+                result = split[0] + split[1].charAt(0) + ".";
+                break;
+            default:
+                result = split[0] + split[1].charAt(0) + "." + split[1].charAt(0) + ".";
+                break;
+        }
+        return result;
     }
 
 }
