@@ -4,12 +4,12 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -50,7 +50,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/dispatcher/appointments/Date")
-    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody ZonedDateTime date) {        
+    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {        
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
@@ -86,5 +86,11 @@ public class AppointmentController {
     public Boolean getPermit(Principal principal) {
         return dispatcherService.getPermit(principal);
     }
-
+       
+    @GetMapping("/dispatcher/vehicleModels")
+    public List<VehicleModel> getVehicleModels(Principal principal) {
+        return dispatcherService.findVehicleModelsByTransportDep(principal);
+    }
+    
+    
 }

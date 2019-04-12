@@ -4,9 +4,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
-import java.time.ZoneId;
-//import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +23,7 @@ import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -66,6 +64,9 @@ public class DispatcherService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private VehicleModelRepository vehicleModelRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -234,6 +235,11 @@ public class DispatcherService {
             }
         }
         return false;
+    }
+
+    public List<VehicleModel> findVehicleModelsByTransportDep(Principal principal) {
+        AppUser user = getUser(principal);
+        return vehicleModelRepository.findVehicleModelsByTransportDepId(user.getTransportDep().getId());
     }
 
 }

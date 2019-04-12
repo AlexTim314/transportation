@@ -2,7 +2,7 @@
     <i class="fas fa-times i-close" ng-click="plctrl.resetAppForm()"></i>
     <div class="container">
         <label for="mark"><b>Марка</b></label>
-        <select name="mark" ng-options="m as m.modelName for m in plctrl.vehicleModels track by m.id"   ng-model="plctrl.clrec.appointment.vehicleModel" ng-change="plctrl.filteringVehicles(plctrl.clrec.appointment.vehicleModel)">	
+        <select name="mark" ng-options="m as m.modelName for m in plctrl.filteredVehicleModels track by m.id"   ng-model="plctrl.clrec.appointment.vehicleModel" ng-change="plctrl.filteringVehicles(plctrl.clrec.appointment.vehicleModel)">	
             <option value="" disabled selected>Выберите Марку</option>				
         </select>
         <label for="number"><b>Гос.Номер</b></label>

@@ -1,6 +1,6 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Record;
@@ -44,7 +44,7 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
             "record.start_date between :date_start and :date_end and " +
             "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
     List<Record> findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(@Param("department_id") Long departmentId,
-            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
 
     @Query(value = "select record.* from record, claim where " +
             "claim.department_id = :department_id and " +
@@ -52,5 +52,5 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
             "record.start_date between :date_start and :date_end and " +
             "record.claim_id = claim.id order by record.start_date", nativeQuery = true)
     List<Record> findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(@Param("department_id") Long departmentId,
-            @Param("date_start") ZonedDateTime dateStart, @Param("date_end") ZonedDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
 }
