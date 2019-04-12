@@ -22,7 +22,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.carBoss = {id: null};
         self.otsInfo = {id: null, type1count: 0, type4count: 0, type2count: 0, drivercount: 0, type3count: 0, name: ''};
-        self.compVMTDSpec = {shortname:'',modelname:'',vehiclemodelid: null,transportdepid: null, vehiclespecialization:''};
+        self.compVMTDSpec = {shortname: '', modelname: '', vehiclemodelid: null, transportdepid: null, vehiclespecialization: ''};
         self.compVMTDSpecs = [];
         self.otsInfos = [];
         self.allCountDrivers = 0;
@@ -285,6 +285,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchCarBosses = function () {
+            console.log(self.specDepartment);
             PlannerService.fetchCarBosses()
                     .then(
                             function (d) {
@@ -362,8 +363,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-        
-        
+
+
         self.fetchOtsVehModels = function () {
             PlannerService.fetchOtsVehModels()
                     .then(
@@ -985,7 +986,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.addRec = function () {
             var sd = new Date(self.startDate);
-            
+
             if (sd === null) {
                 return;
             }
@@ -1037,6 +1038,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.validateForm = function () {
+            if (self.specDepartment.id === null){
+                console.log('Department not selected!');
+                return true;
+            }
             if (self.newClaim.specialization === null) {
                 console.log('Specialization not selected!');
                 return true;
@@ -1059,7 +1064,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.submitClaim = function () {
             if (self.validateForm()) {
-                console.log('Validation form is false');
+                alert("Форма заполнена не полностью!");
                 return;
             }
             if (self.newClaim.id === null) {
@@ -1111,7 +1116,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.newRecord = {id: null, startDate: null, endDate: null, entranceDate: null};
             formClose('plannerCarBoss');
             formClose('formRoute');
-            formClose('newFormTask');            
+            formClose('newFormTask');
         };
 
         self.submitRTask = function () {
@@ -1214,6 +1219,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.submitCB = function () {
+            if (self.specDepartment.id === null){
+                alert("Не выбрано подразделение!");
+                return;
+            }
             if (self.carBoss.id === null) {
                 self.createCarBoss();
             } else {
@@ -1316,7 +1325,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
 
-         //   self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
+            //   self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
 
         };
 
@@ -1329,6 +1338,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         }
                     }
                 }
+            }
+        };
+
+        self.carBossToStringInfo = function (boss) {
+            if (boss === null) {
+                return null;
+            }
+            if (boss !== undefined) {
+                var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "");
+                return result;
+            } else {
+                return null;
             }
         };
 
