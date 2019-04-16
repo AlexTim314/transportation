@@ -1104,6 +1104,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
+
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
@@ -1181,6 +1182,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             if (self.newClaim.id === null) {
+                //коррекция времени для хранения без часового пояса
+                for (var i = 0; i < self.newClaim.records.length; i++) {
+                    var rec = self.newClaim.records[i];
+                    var sd = new Date(rec.startDate);                    
+                    
+                    var entranceTime = new Date(rec.entranceDate);
+                    entranceTime.setUTCHours(entranceTime.getHours());
+                    var startTime = new Date(rec.startDate);
+                    startTime.setUTCHours(startTime.getHours());
+                    var endTime = new Date(rec.endDate);
+                    endTime.setUTCHours(endTime.getHours());
+                    
+                    self.newClaim.records[i].startDate = self.frmtDate(sd, startTime);
+                    self.newClaim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
+                    self.newClaim.records[i].endDate = self.frmtDate(sd, endTime);
+                }
                 self.createClaim(self.newClaim);
 //                formClose('plannerCarBoss');
 //                formClose('formRoute');
