@@ -1502,7 +1502,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
-                self.pager = {};
+                //self.pager = {};
                 self.data = [];
                 return;
             }

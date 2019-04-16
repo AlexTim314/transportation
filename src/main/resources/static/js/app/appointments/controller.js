@@ -289,7 +289,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
-                self.pager = {};
+                //self.pager = {};
                 self.headers = [];
                 return;
             }
