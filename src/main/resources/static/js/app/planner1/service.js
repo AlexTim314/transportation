@@ -73,7 +73,7 @@ App.factory('PlannerService1', ['$http', '$q', '$document', function ($http, $q,
             },
 
             fetchMonthPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims1/Month')
+                return $http.get('/transportation/planner/affirmedClaims/Month')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -85,7 +85,7 @@ App.factory('PlannerService1', ['$http', '$q', '$document', function ($http, $q,
                         );
             },
             fetchMonthBeforePlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/monthBefore')
+                return $http.get('/transportation/planner/affirmedClaims1/monthBefore')
                         .then(
                                 function (response) {
                                     return response.data;

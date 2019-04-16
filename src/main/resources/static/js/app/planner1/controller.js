@@ -76,7 +76,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.numRecordsPerPage = 10;
         self.pager = {};
         self.data = [];
-        self.composite = [];
+        self.cmpsts = [];
         self.vehicleTypes = [];
         self.drivers = [];
         self.routeTasks = [];
@@ -127,13 +127,13 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var truck = 'fas fa-lg fa-truck';
             var tractor = 'fas fa-lg fa-tractor';
             switch (spec) {
-                case "пассажирский":
+                case 0:
                     return bus;
-                case "легковой":
+                case 1:
                     return car;
-                case "грузовой":
+                case 2:
                     return truck;
-                case "спецтехника":
+                case 3:
                     return tractor;
             }
         };
@@ -189,7 +189,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             PlannerService1.fetchMonthPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
@@ -210,7 +211,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             PlannerService1.fetchMonthBeforePlanRecords()
                     .then(
                             function (d) {
-                                self.composite = d;
+                                self.cmpsts = d;
+                                console.log(self.cmpsts)
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -234,7 +236,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             PlannerService1.fetchWeekPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
@@ -253,7 +256,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             PlannerService1.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -272,7 +276,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             PlannerService1.fetchDatePlanRecords(datePlan)
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -414,7 +419,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-        
+
         self.fetchDrivers = function () {
             PlannerService1.fetchDrivers()
                     .then(
@@ -591,7 +596,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-        
+
         self.fetchRouteTasks = function () {
             PlannerService1.fetchRouteTasks()
                     .then(
@@ -632,13 +637,13 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 if (self.headers[i].isVisible) {
                     expandedHeaders[i] = true;
                 }
-                for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                    var appointment = self.headers[i].compositeClaimRecords[j].appointment;
-                    var recId = self.headers[i].compositeClaimRecords[j].record.id;
-                    if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
+                for (var j = 0; j < self.headers[i].composite.length; j++) {
+                    var appointment = self.headers[i].composite[j].appointment;
+                    var recId = self.headers[i].composite[j].record.id;
+                    if (appointment.status === '3' || appointment.status === '4') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === '5' || appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -696,7 +701,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 // } else {
                 dep.isVisible = !dep.isVisible;
                 // }
-                self.showRecords(dep.compositeClaimRecords);
+                self.showRecords(dep.composite);
             }
         };
 
@@ -790,19 +795,19 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var canceledByDispatcher = 'Отменено диспетчером';
             var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceledByUser;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceledByPlanner;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceledByDispatcher;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceledBySupermanager;
             }
         };
@@ -814,19 +819,19 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var completed = 'fas fa-lg fa-check-double';
             var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -838,19 +843,19 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var completed = 'status-ready';
             var canceled = 'cancel-status';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -870,7 +875,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
 
         self.affirmatorToString = function (user) {
-            if (user !== null) {
+            if (user !== null && user !== undefined) {
                 var nameArr = user.fullName.split(' ');
                 var result = nameArr[0];
                 if (nameArr.length > 1) {
@@ -884,8 +889,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         };
 
         self.carBossToString = function (boss) {
-            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
-            return result;
+            if (boss !== null && boss !== undefined) {
+                var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+                return result;
+            }
         };
 
         self.checkPhone = function (appointment) {
@@ -898,7 +905,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
-            if (appointment.status !== 'CANCELED_BY_DISPATCHER' && appointment.id !== null) {
+            if (appointment.status !== '5' && appointment.id !== null) {
                 return true;
             }
         };
@@ -942,11 +949,11 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                         canceledApp = self.record.appointments[i];
                     }
                 }
-                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.status = '4';
                 canceledApp.note = self.cancelNote;
             } else {
                 canceledApp = {id: null, creationDate: '', status: '', note: ''};
-                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.status = '4';
                 canceledApp.note = self.cancelNote;
             }
             PlannerService1.cancelRecord({recordId: self.record.id, appointment: canceledApp})
@@ -956,8 +963,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].record.id === rec.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -967,7 +974,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].record = d;
+                                self.headers[l].composite[k].record = d;
                             },
                             function (errResponse) {
                                 console.error('Error while canceled Record.');
@@ -977,9 +984,11 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
         self.amountReady = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'READY') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '1') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -987,9 +996,11 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
         self.amountInProgress = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '0') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -997,11 +1008,13 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
         self.amountCanceled = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
-                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_PLANNER' ||
-                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '3' ||
+                            header.composite[j].appointment.status === '4' ||
+                            header.composite[j].appointment.status === '5') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -1029,8 +1042,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].record.id === rec.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -1040,7 +1053,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].record = d;
+                                self.headers[l].composite[k].record = d;
                             },
                             function (errResponse) {
                                 console.error('Error while updating Time');
@@ -1056,8 +1069,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].claim.id === clm.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].claim.id === clm.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -1067,7 +1080,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].claim = d;
+                                self.headers[l].composite[k].claim = d;
                             },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
@@ -1418,8 +1431,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         };
 
         self.checkAll = function (header) {
-            for (var i = 0; i < header.compositeClaimRecords.length; i++) {
-                header.compositeClaimRecords[i].record.checked = header.allChecked;
+            for (var i = 0; i < header.composite.length; i++) {
+                header.composite[i].record.checked = header.allChecked;
             }
         };
 
@@ -1476,9 +1489,9 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.changeCheckedTD = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
-                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
-                            self.headers[i].compositeClaimRecords[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
+                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                        if (self.headers[i].composite[j].record.checked) {
+                            self.headers[i].composite[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
                         }
                     }
                 }
@@ -1491,9 +1504,9 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.changeCheckedVM = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
-                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
-                            self.headers[i].compositeClaimRecords[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
+                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                        if (self.headers[i].composite[j].record.checked) {
+                            self.headers[i].composite[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
                         }
                     }
                 }
@@ -1585,108 +1598,114 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 //=====================
 
         self.createHeaders = function () {
-            console.log(Date.now());
+            var t1 = Date.now();
             self.headers = [];
-            for (var i = 0; i < self.composite.length; i++) {
-                self.headers[i].appointmentid = self.composite[i].appointmentid;
-                self.headers[i].startdate = self.composite[i].startdate;
-                self.headers[i].claimpurpose = self.composite[i].claimpurpose;
-                self.headers[i].entrancedate = self.composite[i].entrancedate;
-                self.headers[i].recordid = self.composite[i].recordid;
-                self.headers[i].vehicletypename = self.composite[i].vehicletypename;
-                self.headers[i].claimspecialization = self.composite[i].claimspecialization;
-                self.headers[i].appointmentstatus = self.composite[i].appointmentstatus;
-                self.headers[i].appointmentnote = self.composite[i].appointmentnote;
-                self.headers[i].enddate = self.composite[i].enddate;
-                self.headers[i].claimid = self.composite[i].claimid;
-                self.headers[i].departmentId = null;
-                self.headers[i].departmentShortname = null;
-                self.headers[i].departmentFullname = null;
-                self.headers[i].vehicleTypeId = null;
-                self.headers[i].vehicleTypeTypeName = null;
-                self.headers[i].vehicleTypeSpecialization = null;
-                self.headers[i].transportDepId = null;
-                self.headers[i].transportDepShortname = null;
-                self.headers[i].transportDepFullname = null;
-                self.headers[i].vehicleModel.id = null;
-                self.headers[i].vehicleModel.modelName = null;
-                self.headers[i].vehicleModel.vehicleType = null;
-                self.headers[i].driverId = null;
-                self.headers[i].driverFirstname = null;
-                self.headers[i].driverName = null;
-                self.headers[i].driverSurname = null;
-                self.headers[i].driverPhone = null;
-                self.headers[i].vehicle = null;
-                self.headers[i].appcreatorId = null;
-                self.headers[i].appcreatorFullName = null;
-                self.headers[i].appcreatorPost = null;
-                self.headers[i].appmodifId = null;
-                self.headers[i].appmodifFullName = null;
-                self.headers[i].appmodifPost = null;
-                self.headers[i].routeTasks = null;
-
+            var deps = [];
+            var k = 0;
+            deps[k] = self.cmpsts[0].departmentid;
+            for (var i = 1; i < self.cmpsts.length; i++) {
+                if (self.cmpsts[i].departmentid !== deps[k]) {
+                    k++;
+                    deps[k] = self.cmpsts[i].departmentid;
+                }
+            }
+            for (var i = 0; i < deps.length; i++) {
                 for (var j = 0; j < self.departments.length; j++) {
-                    if (self.composite[i].departmentid === self.departments[j].id) {
-                        self.headers[i].departmentId = self.departments[j].id;
-                        self.headers[i].departmentShortname = self.departments[j].shortname;
-                        self.headers[i].departmentFullname = self.departments[j].fullname;
+                    if (deps[i] === self.departments[j].id) {
+                        self.headers[i] = {
+                            department: {
+                                id: self.departments[j].id,
+                                shortname: self.departments[j].shortname,
+                                fullname: self.departments[j].fullname},
+                            composite: []
+                        };
+
                     }
                 }
-                for (var j = 0; j < self.vehicleTypes.length; j++) {
-                    if (self.composite[i].vehicleTypeid === self.vehicleTypes[j].id) {
-                        self.headers[i].vehicleTypeId = self.vehicleTypes[j].id;
-                        self.headers[i].vehicleTypeTypeName = self.vehicleTypes[j].typeName;
-                        self.headers[i].vehicleTypeSpecialization = self.vehicleTypes[j].specialization;
+            }
+            for (var i = 0; i < self.headers.length; i++) {
+                for (var j = 0; j < self.cmpsts.length; j++) {
+                    if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
+                        for (var l = 0; l < self.transportDeps.length; l++) {
+                            if (self.cmpsts[j].transportdepid === self.transportDeps[l].id) {
+                                var transportDep = self.transportDeps[l];
+                            }
+                        }
+                        for (var l = 0; l < self.vehicleModels.length; l++) {
+                            if (self.cmpsts[j].modelid === self.vehicleModels[l].id) {
+                                var vehicleModelId = self.vehicleModels[l].id;
+                                var vehicleModelModelName = self.vehicleModels[l].modelName;
+                                var vehicleModelVehicleType = self.vehicleModels[l].vehicleType;
+                            }
+                        }
+                        for (var l = 0; l < self.drivers.length; l++) {
+                            if (self.cmpsts[j].driverid === self.drivers[l].id) {
+                                var driverId = self.drivers[l].id;
+                                var driverFirstname = self.drivers[l].firstname;
+                                var driverName = self.drivers[l].name;
+                                var driverSurname = self.drivers[l].surname;
+                                var driverPhone = self.drivers[l].phone;
+                            }
+                        }
+                        for (var l = 0; l < self.vehicles.length; l++) {
+                            if (self.cmpsts[j].vehicleid === self.vehicles[l].id) {
+                                var vehicle = self.vehicles[l];
+                            }
+                        }
+
+                        self.headers[i].composite.push({
+                            claim: {
+                                id: self.cmpsts[j].claimid,
+                                specialization: self.cmpsts[j].claimspecialization,
+                                purpose: self.cmpsts[j].claimpurpose,
+                                vehicleType: {typeName: self.cmpsts[j].vehicletypename},
+                                routeTasks: {}
+                            },
+                            record: {
+                                id: self.cmpsts[j].recordid,
+                                startDate: self.cmpsts[j].startdate,
+                                entranceDate: self.cmpsts[j].entrancedate,
+                                endDate: self.cmpsts[j].enddate
+                            },
+                            appointment: {
+                                id: self.cmpsts[j].appointmentid,
+                                status: self.cmpsts[j].appointmentstatus,
+                                note: self.cmpsts[j].appointmentnote,
+                                transportDep: transportDep,
+                                vehicleModel: {
+                                    id: vehicleModelId,
+                                    modelName: vehicleModelModelName,
+                                    vehicleType: vehicleModelVehicleType
+                                },
+                                vehicle: vehicle,
+                                driver: {
+                                    id: driverId,
+                                    firstname: driverFirstname,
+                                    name: driverName,
+                                    surname: driverSurname,
+                                    phone: driverPhone
+                                },
+                                creator: {
+                                    id: null,
+                                    fullName: null,
+                                    post: null
+                                },
+                                modificator: {
+                                    id: null,
+                                    fullName: null,
+                                    post: null
+                                }
+                            }
+                        });
+
                     }
                 }
-                for (var j = 0; j < self.transportDeps.length; j++) {
-                    if (self.composite[i].transportdepid === self.transportDeps[j].id) {
-                        self.headers[i].transportDepId = self.transportDeps[j].id;
-                        self.headers[i].transportDepShortname = self.transportDeps[j].shortname;
-                        self.headers[i].transportDepFullname = self.transportDeps[j].fullname;
-                    }
-                }
-                for (var j = 0; j < self.vehicleModels.length; j++) {
-                    if (self.composite[i].modelid === self.vehicleModels[j].id) {
-                        self.headers[i].vehicleModel.id = self.vehicleModels[j].id;
-                        self.headers[i].vehicleModel.modelName = self.vehicleModels[j].modelName;
-                        self.headers[i].vehicleModel.vehicleType = self.vehicleModels[j].vehicleType;
-                    }
-                }
-                for (var j = 0; j < self.drivers.length; j++) {
-                    if (self.composite[i].driverid === self.drivers[j].id) {
-                        self.headers[i].driverId = self.drivers[j].id;
-                        self.headers[i].driverFirstname = self.drivers[j].firstname;
-                        self.headers[i].driverName = self.drivers[j].name;
-                        self.headers[i].driverSurname = self.drivers[j].surname;
-                        self.headers[i].driverPhone = self.drivers[j].phone;
-                    }
-                }
-                for (var j = 0; j < self.vehicles.length; j++) {
-                    if (self.composite[i].vehicleid === self.vehicles[j].id) {
-                        self.headers[i].vehicle = self.vehicles[j];
-                    }
-                }
-                for (var j = 0; j < self.routeTasks.length; j++) {
-                    if (self.composite[i].claimid === self.routeTasks[j].claim.id) {
-                        self.headers[i].routeTasks = self.routeTasks[j];
-                    }
-                }
-//                for (var j = 0; j < self.users.length; j++) {
-//                    if (self.composite[i].appcreatorid === self.users[j].id) {
-//                        self.headers[i].appcreatorId = self.users[j].id;
-//                        self.headers[i].appcreatorFullName = self.users[j].fullName;
-//                        self.headers[i].appcreatorPost = self.users[j].post;
-//                    }
-//                    if (self.composite[i].appmodifid === self.users[j].id) {
-//                        self.headers[i].appmodifId = self.users[j].id;
-//                        self.headers[i].appmodifFullName = self.users[j].fullName;
-//                        self.headers[i].appmodifPost = self.users[j].post;
-//                    }
-//                }
             }
 
-            console.log(Date.now());
+            var t2 = Date.now();
+            console.log(t1);
+            console.log(t2);
+            console.log(t2 - t1);
             console.log(self.headers);
         };
 

@@ -55,7 +55,7 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
 
-    @GetMapping("/planner/affirmedClaims1/Month")
+    @GetMapping("/planner/affirmedClaims1/monthBefore")
     public List<AffirmedClaim> getAffirmedClaimsAll1() {
         return planningService.getAffirmedClaimsAll1();
     }

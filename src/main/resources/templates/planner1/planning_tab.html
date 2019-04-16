@@ -32,7 +32,7 @@
                     </td>
                     <td >{{header.department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.composite.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
                             <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
@@ -64,7 +64,7 @@
                                 <th style="width:2.5% "> </th>
                                 <th style="width:2.5% "> </th>
                             </tr>
-                            <tr ng-repeat="clrec in header.compositeClaimRecords| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: 'startDate' | filter: searchClaim">
+                            <tr ng-repeat="clrec in header.composite| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: 'startDate' | filter: searchClaim">
                                 <td>
                                     <label class="custom-checkbox">
                                         <input type="checkbox" ng-model="clrec.record.checked">
