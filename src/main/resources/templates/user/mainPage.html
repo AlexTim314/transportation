@@ -55,17 +55,14 @@
             <!--<th:block th:include="user/delete_confirm_dialog"></th:block>--> 
 
             <div class="main clearfix">
-                <div class="header clearfix">
+                <div class="header" ng-controller="ClaimsPageController as ctrl">
                     <!--Logo -->
                     <div class="logo">
+                        <h1>Комплекс </h1>
+                        <h6>автотранспортного обеспечения</h6>
                     </div>
                     <!--Text header -->
-
-                    <h1>Структурное подразделение</h1>
-                    <div ng-controller="ClaimsPageController as ctrl">
-                        <h3>{{ctrl.department.shortname}}</h3>
-                        <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
-                    </div>
+                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
 
                     <nav class="nav-horizontal">
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 5)" >Подача заявок</div>
@@ -74,15 +71,17 @@
                         <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 5)" >Маршруты</div>	
                         <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)" >Старшие машин</div>  
                     </nav>
-
-                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
-
+                    <div class="department-block">{{ctrl.department.shortname}}</div>
+                    <div class="sing-block">
+                        <div class="user-title"><i class="fas fa-user "></i>Имя пользователя</div>
+                        <div class="login" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i></div>
+                    </div>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
                 </div>
 
-                <div id="claim-create" class="tabcontent" style="width: 100%; margin-left: 0px;">
+                <div id="claim-create" class="tabcontent" style="width: 100%; padding-left: 0;">
 
                     <div ng-controller="ClaimsController as ctrl">
                         <!--                        <a href="#" onclick="history.back();" ng-show="ctrl.permit">Возврат на страницу приветствия</a>-->

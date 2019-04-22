@@ -12,21 +12,43 @@
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
-     
+
         <script src="js/app/claimsPage/service.js"></script>
         <script src="js/app/claimsPage/controller.js"></script>
-        
+
         <script src="js/app/planner/service.js"></script>
         <script src="js/app/planner/controller.js"></script>
 
     </head>
     <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
         <div class="wrapper">
-<!--             <a href="#" onclick="history.back();" ng-show="plctrl.permit">Возврат на страницу приветствия</a>-->
-            <!-- Login Form-->
-            <div class="sidebar-vertical" id="sb-v-id">
-                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            <div class="cover-trsp" id="cover-trsp1"></div>
+            <div class="loading-content" id="preloader">
+                <div class="load-wrapp">
+                    <div class="load-4">
+
+                        <div class="ring-1"></div>
+                    </div>
+                    <div class="load-6">	  
+                        <div class="letter-holder">
+                            <div class="l-1 letter">З</div>
+                            <div class="l-2 letter">а</div>
+                            <div class="l-3 letter">г</div>
+                            <div class="l-4 letter">р</div>
+                            <div class="l-5 letter">у</div>
+                            <div class="l-6 letter">з</div>
+                            <div class="l-7 letter">к</div>
+                            <div class="l-8 letter">а</div>
+                            <div class="l-9 letter">.</div>
+                            <div class="l-10 letter">.</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <!--             <a href="#" onclick="history.back();" ng-show="plctrl.permit">Возврат на страницу приветствия</a>-->
+            <!-- Login Form-->
+
             <form action="#" class="formLogin" id="formLogin">
                 <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
                 <div class="container">
@@ -49,14 +71,14 @@
                 </div>
             </form>
             <div class="main clearfix">
-                <div class="header clearfix">
+                <div class="header">
                     <!--Logo -->
                     <div class="logo">
+                        <h1>Комплекс </h1>
+                        <h6>автотранспортного обеспечения</h6>
                     </div>
                     <!--Text header -->
 
-                    <h1>Комплекс Автотранспортного Обеспечения</h1>
-                    <h3>Планирование задействования транспортных средств</h3>
                     <a href="/transportation" class="home" ng-show="plctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
 
                     <!--Navigation -->	
@@ -64,9 +86,11 @@
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 2)">Обработка заявок</div>
                         <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			
                     </nav>
-
-                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
-
+                    <div class="department-block">Отдел планирования</div>
+                    <div class="sing-block">
+                        <div class="user-title"><i class="fas fa-user "></i>Имя пользователя</div>
+                        <div class="login" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i></div>
+                    </div>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
@@ -76,35 +100,37 @@
 
                 <div id="claim-create" class="tabcontent">
 
-
+                    <div class="sidebar-vertical" id="sb-v-id">
+                        <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+                    </div>
                     <div class="clearfix" style="overflow-x:auto;">
                         <th:block th:include="planner/planning_tab"></th:block> 
-                        
+
                         <th:block th:include="planner/archive_tab"></th:block> 
                     </div>
                 </div>
             </div>
 
         </div>
-        <th:block th:include="planner/cancel_record"></th:block>
-        
-        <th:block th:include="planner/record_info_form"></th:block> 
-        
-        <th:block th:include="planner/appointment_info_form"></th:block> 
-        
-        <th:block th:include="planner/save_claim_form"></th:block>
-        
-        <th:block th:include="planner/new_route_tasks_form"></th:block>
-        
-        <th:block th:include="planner/route_tasks_form"></th:block>
-        
-        <th:block th:include="planner/correction_time_form"></th:block>
-        
-        <th:block th:include="planner/status_info_form"></th:block> 
-        
-        <th:block th:include="planner/car_bosses_tab"></th:block> 
-        
-          
-        <script type="text/javascript" src="js/script.js"></script>
-    </body>
+    <th:block th:include="planner/cancel_record"></th:block>
+
+    <th:block th:include="planner/record_info_form"></th:block> 
+
+    <th:block th:include="planner/appointment_info_form"></th:block> 
+
+    <th:block th:include="planner/save_claim_form"></th:block>
+
+    <th:block th:include="planner/new_route_tasks_form"></th:block>
+
+    <th:block th:include="planner/route_tasks_form"></th:block>
+
+    <th:block th:include="planner/correction_time_form"></th:block>
+
+    <th:block th:include="planner/status_info_form"></th:block> 
+
+    <th:block th:include="planner/car_bosses_tab"></th:block> 
+
+
+    <script type="text/javascript" src="js/script.js"></script>
+</body>
 </html>

@@ -1,19 +1,20 @@
 <div style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
     <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
-        <div class="table-header clearfix">
-            <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
-                <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
-                <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
+        <div class="table-header">
+            <div class="fast-filter">                                    
+                <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+                <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
+                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>
             </div>
+            <div class="fast-filter">
+                <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
+            </div>
+            <div class="definite-date">
+                <label for="date-plan">Планируемый день</label>
+                <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
+                <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
+            </div>	
             <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
-            <ul class="plan-date" >
-                <li>Дата планирования</li>
-                <li id="filter-date">{{plctrl.date}}
-                    <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
-                </li>
-            </ul>
-            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>	
         </div>	
         <div class="height-wrapper"> 
             <table class="table-record"  id="tbl1" >
@@ -21,7 +22,7 @@
                     <th style="width: 3%;"></th>
                     <th style="width: 97%;">
                         ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ 
-                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" style="float: right;margin-right: 1%;" onclick="formOpen('form-add')"></i>
+                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" style="float: right;margin-right: 1%;" ng-click="plctrl.prepareToAddClaim()"></i>
                     </th>
                 </tr>
                 <tr>                           
@@ -80,7 +81,7 @@
                                 <td>{{clrec.claim.purpose}}
                                 </td>
                                 <td >
-                                                                        <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
+                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
                                     <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
                                 </td>                                                         
 
@@ -89,7 +90,7 @@
                                     </select>           
                                 </td>
                                 <td>
-                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs | filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':clrec.claim.specialization} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':clrec.claim.specialization} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>

@@ -87,9 +87,11 @@ public class PlanningService {
     
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        LocalDateTime r = LocalDateTime.now();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(department.getId())
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
+        System.out.println(LocalDateTime.now() + " - " + r);
         return result;
     }
 
@@ -118,9 +120,15 @@ public class PlanningService {
     }
 
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        //
+//        System.out.println("START: " + LocalDateTime.now());
+        //
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithAffirmedClaims().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsAll(u.getDepartment())));
+        //
+//        System.out.println("END: " + LocalDateTime.now());
+        //
         return result;
     }
 

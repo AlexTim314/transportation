@@ -10,14 +10,27 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
 
         return {
 
-            fetchAllPlanRecords: function () {
-                return $http.get('/transportation/dispatcher/appointments')
+            fetchMonthPlanRecords: function () {
+                return $http.get('/transportation/dispatcher/appointments/Month')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching allRecs');
+                                    console.error('Error while fetching monthRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchMonthBeforeRecords: function () {
+                return $http.get('/transportation/dispatcher/appointments/monthBefore')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching monthBefRecs');
                                     return $q.reject(errResponse);
                                 }
                         );

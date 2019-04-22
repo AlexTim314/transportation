@@ -1,26 +1,23 @@
 <div class="clearfix"  id="tab-list1" xmlns:th="http://www.thymeleaf.org">
-    <div class="table-header clearfix">
-        <div class="fast-filter clearfix">                                    
-            <span class="filter-elem edit {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
-            <span class="filter-elem edit {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">За неделю</span>
-            <span class="filter-elem edit {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchAllPlanRecords()">Все</span>
+    <div class="table-header">
+        <div class="fast-filter">                                    
+            <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+            <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
+            <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>
         </div>
-        <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  		
-        <ul class="plan-info ">
-            <li>Cостояние Плана</li>
-            <li>Завершено</li>
-        </ul>						  		
-        <ul class="plan-date" >
-            <li>Дата планирования</li>
-            <li>
-                <input type="date" name="date-plan" id="date-plan">
-            </li>
-        </ul>
-        <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn" ng-click="plctrl.fetchDatePlanRecords()">Показать</button>
+        <div class="fast-filter">
+            <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
+        </div>
+        <div class="definite-date">
+            <label for="date-plan">Планируемый день</label>
+            <input type="date" name="date-plan" id="date-plan">
+            <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
+        </div>	
+        <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  							  		
 
     </div>	
     <div class="height-wrapper">            
-        <table class=" table-plan table-claim" >
+        <table class=" table-plan table-claim" style="margin-left: 0;">
             <tr>
                 <th style="width:5%">Тип транспорта</th>
                 <th style="width:7%">Вид техники</th>
@@ -61,4 +58,15 @@
         <button class="btn edit assert" ng-click="plctrl.updateAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
         <span class="btn edit btn-print"><i class="fa fa-lg fa-print"></i></span>
     </div>
+    <div class="paginator">
+        
+        <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n1 - 1)">&lt</div>
+        <!--        <div class="pages {{plctrl.first?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1">{{plctrl.n1}}</div>-->
+        <div class="pages page-active" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1">{{plctrl.n1}}</div>	
+        <!--        <div class="pages {{plctrl.last?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n3)" ng-model="plctrl.n3">{{plctrl.n3}}</div>-->
+        <div class="pages" ng-click="plctrl.showRecordsPage(plctrl.n1+1)">&gt</div>
+        <div class="pages">...</div>	
+        <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n)" ng-model="plctrl.n">{{plctrl.n}}</div>
+    </div>
+    <div 
 </div>

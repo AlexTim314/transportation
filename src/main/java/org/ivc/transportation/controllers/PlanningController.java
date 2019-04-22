@@ -71,6 +71,20 @@ public class PlanningController {
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
     }
+    
+    @GetMapping("/planner/affirmedClaims/Month")
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonth() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
+        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+    }
+    
+    @GetMapping("/planner/affirmedClaims/monthBefore")
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonthBefore() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+    }
 
     @PostMapping("/planner/affirmedClaims/Date")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
@@ -95,6 +109,20 @@ public class PlanningController {
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsWeek() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
+        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+    }
+    
+    @GetMapping("/planner/plannedClaims/Month")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsMonth() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
+        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+    }
+    
+        @GetMapping("/planner/plannedClaims/monthBefore")
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsMonthBefore() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
     }
 
