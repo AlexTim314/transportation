@@ -48,12 +48,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlanningService {
 
+
+
     @Autowired
     private DepartmentRepository departmentRepository;
 
     @Autowired
     private ClaimRepository claimRepository;
-    
+
     @Autowired
     private CarBossRepository carBossRepository;
 
@@ -68,13 +70,13 @@ public class PlanningService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-    
+
     @Autowired
     private RouteTaskRepository routeTaskRepository;
-    
+
     @Autowired
     private TransportDepRepository transportDepRepository;
-    
+
     @Autowired
     private VehicleRepository vehicleRepository;
 
@@ -84,7 +86,7 @@ public class PlanningService {
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
     }
-    
+
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         LocalDateTime r = LocalDateTime.now();
@@ -171,7 +173,7 @@ public class PlanningService {
         }
         return result;
     }
-    
+
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
@@ -186,7 +188,7 @@ public class PlanningService {
         record.getAppointments().add(app);
         return recordRepository.save(record);
     }
-    
+
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -211,10 +213,9 @@ public class PlanningService {
         tempRecord.setEndDate(record.getEndDate());
         return recordRepository.save(tempRecord);
     }
-    
-    
+
     public List<CarBoss> findCarBossesByDepartment(Principal principal) {
-            return carBossRepository.findAll();
+        return carBossRepository.findAll();
     }
 
     public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
@@ -238,11 +239,11 @@ public class PlanningService {
         transportDepRepository.findOtsInfo().forEach(u -> result.add(new CompositeOtsInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
-    
+
     public List<Vehicle> getAllVehicles(Principal principal) {
         return vehicleRepository.findAll();
     }
-    
+
     public Boolean getPermit(Principal principal) {
         AppUser user = getUser(principal);
         for (AppRole role : user.getRoles()) {
@@ -255,5 +256,12 @@ public class PlanningService {
 
     public List<CompositeModelTransportDep> getTransportDepModels() {
         return transportDepRepository.findModels();
+    }
+
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
     }
 }

@@ -24,6 +24,19 @@ App.factory('ClaimsPageService', ['$http', '$q', '$document', function ($http, $
                         );
             },
             
+            getUserName: function () {
+                return $http.get('/transportation/user/username')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching username');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
             fetchDepartment: function () {
                 return $http.get('/transportation/department')
                         .then(

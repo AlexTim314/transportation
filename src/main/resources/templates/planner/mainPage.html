@@ -88,7 +88,7 @@
                     </nav>
                     <div class="department-block">Отдел планирования</div>
                     <div class="sing-block">
-                        <div class="user-title"><i class="fas fa-user "></i>Имя пользователя</div>
+                        <div class="user-title"><i class="fas fa-user "></i>{{plctrl.username}}</div>
                         <div class="login" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i></div>
                     </div>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">

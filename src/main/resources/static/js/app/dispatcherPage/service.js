@@ -22,6 +22,19 @@ App.factory('DispatcherPageService', ['$http', '$q', '$document', function ($htt
                                 }
                         );
             },
+            
+            getUserName: function () {
+                return $http.get('/transportation/dispatcher/username')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching username');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             fetchTransportDep: function () {
                 return $http.get('/transportation/transportDep')
                         .then(

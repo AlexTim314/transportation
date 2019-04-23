@@ -15,7 +15,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.vehicles = [];
         self.vehicleInfo = {id: null};
         self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null}
-        
+
         self.history = [];
 
         self.all = false;
@@ -81,7 +81,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                             }
                     );
         };
-        
+
         self.getVehicleHistory = function (vehicle) {
             self.vehicle = vehicle;
             VehiclesService.fetchVehicleHistory(vehicle)
@@ -89,6 +89,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                             function (d) {
                                 self.history = d;
                                 formOpen('history-transport');
+                                formOpen('cover-trsp1');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vehicle History');
@@ -152,13 +153,17 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             VehiclesService.deleteVehicles(idsArr)
                     .then(
                             function (d) {
-                                formClose('del-vehicle-confirm');
+                                self.closeDeleteForm();
                                 self.fetchVehicles();
                             },
                             function (errResponse) {
                                 console.error('Error while deleting Vehicle.');
                             }
                     );
+        };
+        self.closeDeleteForm = function () {
+            formClose('del-vehicle-confirm');
+            formClose('cover-trsp1');
         };
 
         self.submit = function () {
@@ -185,6 +190,12 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             self.vehicle.status = vehicle.status;
             self.vehicle.note = vehicle.note;
             self.vehicle.transportDep = vehicle.transportDep;
+            formOpen('cover-trsp1');
+            formOpen('formTransport');
+        };
+
+        self.addVehicle = function () {
+            formOpen('cover-trsp1');
             formOpen('formTransport');
         };
 
@@ -196,6 +207,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                 }
             }
             formOpen('del-vehicle-confirm');
+            formOpen('cover-trsp1');
         };
 
         self.tryToUpdateVehicleState = function (vehicle) {
@@ -205,6 +217,7 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             self.vehicleInfo.odometr = vehicle.odometr;
             self.vehicleInfo.motohours = vehicle.motohours;
             formOpen('formCurrentParametr');
+            formOpen('cover-trsp1');
         };
 
         self.tryToUpdateVehicleStatus = function (vehicle) {
@@ -214,12 +227,14 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             self.vehicleInfo.odometr = vehicle.odometr;
             self.vehicleInfo.motohours = vehicle.motohours;
             self.vehicleInfo.note = null;
-            formOpen('formChangeVehicleStatus')
+            formOpen('formChangeVehicleStatus');
+            formOpen('cover-trsp1');
         };
 
         self.resetForm = function () {
             self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
             formClose('formTransport');
+            formClose('cover-trsp1');
         };
 
         self.checkAll = function () {
@@ -248,28 +263,33 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
         self.openInfoForm = function (vehicle) {
             self.vehicle = vehicle;
             formOpen('more-transport');
+            formOpen('cover-trsp1');
         };
 
         self.closeInfoForm = function () {
             self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
             formClose('more-transport');
+            formClose('cover-trsp1');
         };
 
         self.closeStateForm = function () {
             self.vehicleInfo = {id: null};
             formClose('formCurrentParametr');
+            formClose('cover-trsp1');
         };
 
         self.closeStatusForm = function () {
             self.vehicleInfo = {id: null};
             formClose('formChangeVehicleStatus')
+            formClose('cover-trsp1');
         };
-        
+
         self.closeVehicleHistoryForm = function () {
             self.vehicle = {id: null, model: {id: null, vehicleType: {id: null}}, fuels: []};
-            formClose('history-transport')
+            formClose('history-transport');
+            formClose('cover-trsp1');
         };
-        
+
         self.shortFullName = function (user) {
             var nameArr = user.fullName.split(' ');
             var result = nameArr[0];
@@ -281,12 +301,13 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
             }
             return result;
         };
-        
+
         self.tryToRefuelingVehicle = function (vehicle) {
             self.refueling.vehicle = vehicle;
             formOpen('formRefueling');
+            formOpen('cover-trsp1');
         };
-        
+
         self.refuelingVehicle = function () {
             console.log(self.refueling);
             VehiclesService.refulingVehicle(self.refueling)
@@ -300,10 +321,11 @@ App.controller('VehiclesController', ['$scope', 'VehiclesService',
                             }
                     );
         };
-        
+
         self.cancelRefueling = function () {
             self.refueling = {id: null, refuelingDate: '', volume: '', fuel: null, vehicle: null};
             formClose('formRefueling');
+            formClose('cover-trsp1');
         };
 
     }]);

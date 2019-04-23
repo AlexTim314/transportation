@@ -48,7 +48,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.tempDriver;
         self.tempVehicleModel;
         self.pageCount;
-        self.numRecordsPerPage = 10;
+        self.numRecordsPerPage = 15;
         self.data;
         self.listRecordsPerPage = [];
         self.n;
@@ -83,10 +83,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.headers = [];
                                 formClose('cover-trsp1');
                                 formClose('preloader');
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                console.log(self.pageCount);
                                 self.createListPages();
                                 self.showRecordsPage(1);
                             },
@@ -107,10 +107,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.headers = [];
                                 formClose('cover-trsp1');
                                 formClose('preloader');
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                console.log(self.pageCount);
                                 self.createListPages();
                                 self.showRecordsPage(1);
                                 // self.records = d.records;
@@ -132,10 +132,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.headers = [];
                                 formClose('cover-trsp1');
                                 formClose('preloader');
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                console.log(self.pageCount);
                                 self.createListPages();
                                 self.showRecordsPage(1);
                                 // self.records = d.records;
@@ -155,8 +155,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.headers = [];
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                console.log(self.pageCount);
                                 self.createListPages();
                                 self.showRecordsPage(1);
                                 // self.records = d.records;
@@ -179,8 +179,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.headers = [];
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                console.log(self.pageCount);
                                 self.createListPages();
                                 self.showRecordsPage(1);
                                 // self.records = d.records;
@@ -361,6 +361,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                 }
                 self.tempAppoints.push(self.clrec.appointment);
                 formClose('formAppointment');
+                formClose('cover-trsp1');
             }
         };
 
@@ -369,6 +370,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             //temporary save the current status of the claim to return it after canceling changing.
             self.tempStatus = clrec.appointment.status;
             self.tempNote = clrec.appointment.note;
+            formOpen('cover-trsp1');
             formOpen('formChangeStatus');
         };
 
@@ -376,6 +378,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.tempStatus = null;
             self.tempNote = null;
             formClose('formChangeStatus');
+            formClose('cover-trsp1');
             DispatcherService.updateStatusAppointment(self.clrec.appointment)
                     .then(
                             function (d) {
@@ -417,6 +420,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.clrec.appointment.driver = self.tempDriver;
             self.clrec.appointment.vehicle = self.tempVehicle;
             formClose('formAppointment');
+            formClose('cover-trsp1');
         };
 
         self.appoint = function (clrec) {
@@ -430,6 +434,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.fetchVacantVehicles(self.clrec.appointment);
             self.filteringVehicleModels(self.clrec.claim.vehicleType);
             formOpen('formAppointment');
+            formOpen('cover-trsp1');
         };
 
         self.downloadWaybill = function (appointment) {
@@ -605,6 +610,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.clrec.appointment.status = self.tempStatus;
             self.clrec.appointment.note = self.tempNote;
             formClose('formChangeStatus');
+            formClose('cover-trsp1');
         };
 
         self.showRecordsPage = function (page) {
@@ -619,7 +625,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                         k++;
                     }
                 }
-                console.log(self.headers);
             }
         };
 

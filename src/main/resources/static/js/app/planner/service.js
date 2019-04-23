@@ -21,6 +21,18 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            getUserName: function () {
+                return $http.get('/transportation/planner/username')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching username');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             fetchAllDepartments: function () {
                 return $http.get('/transportation/departments')
                         .then(
@@ -180,8 +192,8 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-             fetchMonthBeforeCompletePlanRecords: function () {
+
+            fetchMonthBeforeCompletePlanRecords: function () {
                 return $http.get('/transportation/planner/plannedClaims/monthBefore')
                         .then(
                                 function (response) {

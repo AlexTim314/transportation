@@ -34,13 +34,17 @@ public class PlanningController {
 
     @Autowired
     private PlanningService planningService;
-    
+
     private VehicleService vehicleService;
-    
-    
+
     @GetMapping("/planner/permit")
     public Boolean getPermit(Principal principal) {
         return planningService.getPermit(principal);
+    }
+
+    @GetMapping("/planner/username")
+    public String getUserName(Principal principal) {
+        return planningService.getUserName(principal);
     }
 
     @GetMapping("/planner/affirmedClaims")
@@ -52,7 +56,7 @@ public class PlanningController {
     public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
     }
-    
+
     @GetMapping("/planner/transport_dep_models")
     public List<CompositeModelTransportDep> getTransportDepModels() {
         return planningService.getTransportDepModels();
@@ -71,14 +75,14 @@ public class PlanningController {
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
     }
-    
+
     @GetMapping("/planner/affirmedClaims/Month")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonth() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
         return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
     }
-    
+
     @GetMapping("/planner/affirmedClaims/monthBefore")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonthBefore() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
@@ -111,15 +115,15 @@ public class PlanningController {
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
     }
-    
+
     @GetMapping("/planner/plannedClaims/Month")
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsMonth() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
         return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
     }
-    
-        @GetMapping("/planner/plannedClaims/monthBefore")
+
+    @GetMapping("/planner/plannedClaims/monthBefore")
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsMonthBefore() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
@@ -137,12 +141,12 @@ public class PlanningController {
     public List<Record> createAppointments(Principal principal, @RequestBody List<CompositeRecordIdAppointment> compositeRecordIdAppointment) {
         return planningService.createAppointments(principal, compositeRecordIdAppointment);
     }
-    
+
     @PutMapping("/planner/recordCancel")
     public Record recordCancel(Principal principal, @RequestBody CompositeRecordIdAppointment compositeRecordIdAppointment) {
         return planningService.recordCancel(principal, compositeRecordIdAppointment);
     }
-    
+
     @PutMapping("/planner/route_update")
     public Claim updateRoute(@RequestBody Claim claim) {
         return planningService.updateRoute(claim);
@@ -152,12 +156,12 @@ public class PlanningController {
     public Record updateTime(@RequestBody Record record) {
         return planningService.updateTime(record);
     }
-    
+
     @GetMapping("/planner/carBosses")
     public List<CarBoss> getCarBosses(Principal principal) {
         return planningService.findCarBossesByDepartment(principal);
     }
-    
+
     @GetMapping("/planner/vehicles")
     public List<Vehicle> getAllVehicles(Principal principal) {
         return planningService.getAllVehicles(principal);
@@ -178,7 +182,7 @@ public class PlanningController {
         planningService.deleteCarBoss(carBoss);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("/planner/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return planningService.saveClaim(principal, claim);

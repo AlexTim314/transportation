@@ -1654,7 +1654,7 @@ td{
     top:30%;
     left: 40%;
     width: 260px;
-    z-index: 100;
+    z-index: 1200;
     background:#333;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888;
@@ -2204,7 +2204,7 @@ td{
     top:30%;
     left: 40%;
     width: 20%;
-    z-index: 2;
+    z-index: 1200;
     background:#333;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888888;	

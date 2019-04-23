@@ -101,6 +101,10 @@ public class AppointmentController {
     public Boolean getPermit(Principal principal) {
         return dispatcherService.getPermit(principal);
     }
+    @GetMapping("/dispatcher/username")
+    public String getUserName(Principal principal) {
+        return dispatcherService.getUserName(principal);
+    }
        
     @GetMapping("/dispatcher/vehicleModels")
     public List<VehicleModel> getVehicleModels(Principal principal) {

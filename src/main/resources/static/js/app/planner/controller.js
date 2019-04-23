@@ -71,6 +71,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.permit = false;
         self.tempTransportDep = {};
         self.tempVehSpec = '';
+        self.username;
 
 
         self.getPermit = function () {
@@ -85,7 +86,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.getUserName = function () {
+            PlannerService.getUserName()
+                    .then(
+                            function (d) {
+                                self.username = d.username;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Username');
+                            });
+        };
+
         self.getPermit();
+        self.getUserName();
 
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
