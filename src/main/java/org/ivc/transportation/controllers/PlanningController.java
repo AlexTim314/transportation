@@ -11,6 +11,7 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.services.VehicleService;
+import org.ivc.transportation.utils.AffirmedClaim;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.CompositeOtsInfo;
@@ -37,6 +38,7 @@ public class PlanningController {
 
     private VehicleService vehicleService;
 
+    
     @GetMapping("/planner/permit")
     public Boolean getPermit(Principal principal) {
         return planningService.getPermit(principal);
@@ -50,6 +52,11 @@ public class PlanningController {
     @GetMapping("/planner/affirmedClaims")
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
         return planningService.getAffirmedClaimsAll();
+    }
+
+    @GetMapping("/planner/affirmedClaims1")
+    public List<AffirmedClaim> getAffirmedClaimsAll1() {
+        return planningService.getAffirmedClaimsAll1();
     }
 
     @GetMapping("/planner/ots_info")

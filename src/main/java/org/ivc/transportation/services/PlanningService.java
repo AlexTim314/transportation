@@ -26,6 +26,7 @@ import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
+import org.ivc.transportation.utils.AffirmedClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeModelTransportDep;
@@ -263,5 +264,9 @@ public class PlanningService {
         AppUser user = getUser(principal);
         String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
         return un;
+    }
+    
+    public List<AffirmedClaim> getAffirmedClaimsAll1() {
+        return claimRepository.findAffirmedClaims();
     }
 }
