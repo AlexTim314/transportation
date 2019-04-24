@@ -2,6 +2,7 @@ package org.ivc.transportation.repositories;
 
 import java.util.List;
 import org.ivc.transportation.entities.TransportDep;
+import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.OtsInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,6 +28,19 @@ public interface TransportDepRepository extends JpaRepository<TransportDep, Long
             + "transport_dep "
             + "group by transport_dep.id order by transport_dep.shortname", nativeQuery = true)
     public List<OtsInfo> findOtsInfo();
+
+    @Query(value = "select vehicle_model.id as vehiclemodelid, "
+            + "vehicle_model.model_name as modelname, "
+            + "transport_dep.id as transportdepid, "
+            + "transport_dep.shortname as shortname, "
+            + "vehicle_type.specialization as vehiclespecialization "
+            + "from vehicle_model, transport_dep, vehicle_type, vehicle "
+            + "where vehicle.transport_dep_id = transport_dep.id and "
+            + "vehicle.model_id = vehicle_model.id and "
+            + "vehicle_model.vehicle_type_id = vehicle_type.id "
+            + "group by vehicle_model.id, transport_dep.id, vehicle_type.specialization "
+            + "order by vehicle_model.id", nativeQuery = true)
+    public List<CompositeModelTransportDep> findModels();
     
 }
 

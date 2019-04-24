@@ -1,10 +1,11 @@
 package org.ivc.transportation.repositories;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
+import org.ivc.transportation.utils.AffirmedClaim;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -40,9 +41,37 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "group by claim.id", nativeQuery = true)
     List<Claim> findAffirmedClaimsByDepartmentTimeFilter(
             @Param("department_id") Long departmentId,
-            @Param("start_date") ZonedDateTime startDate,
-            @Param("end_date") ZonedDateTime endDate
+            @Param("start_date") LocalDateTime startDate,
+            @Param("end_date") LocalDateTime endDate
     );
+    
+    @Query(value = "select claim.id as claimid, "
+            + "claim.department_id as departmentid, "
+            + "department.fullname as departmentfullname, "
+            + "record.id as recordid, "
+            + "appointment.id as appointmentid, "
+            + "appointment.status as appointmentstatus, "
+            + "appointment.note as appointmentnote, "
+            + "claim.vehicle_type_id as vehicletypeid, "
+            + "claim.purpose as claimpurpose, "
+            + "vehicle_type.type_name as vehicletypename, "
+            + "vehicle_type.specialization as vehiclespecialization, "
+            + "record.start_date as startdate, "
+            + "record.end_date as enddate, "
+            + "record.entrance_date as entrancedate "
+            + "from department, "
+            + "claim, "
+            + "vehicle_type, "
+            + "record left outer join appointment on appointment.record_id = record.id and appointment.id = (select max(id) from appointment where record_id = record.id) "
+            + "where "
+            + "department.id = claim.department_id and "
+            + "claim.actual = true and "
+            + "claim.affirmation_date is not null and "
+            + "vehicle_type.id = claim.vehicle_type_id and "
+            + "record.claim_id = claim.id "
+            + "order by claim.department_id"
+            , nativeQuery = true)
+    List<AffirmedClaim> findAffirmedClaims();
 
     void deleteByIdAndAffirmationDateIsNull(Long id);
 

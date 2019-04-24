@@ -2,9 +2,8 @@ package org.ivc.transportation.controllers;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
@@ -78,8 +77,8 @@ public class CommonController {
     }
 
     @GetMapping("/getNow")
-    public ZonedDateTime getNow() {
-        return ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+    public LocalDateTime getNow() {
+        return LocalDateTime.of(LocalDate.now(), LocalTime.now());
     }
 
 }

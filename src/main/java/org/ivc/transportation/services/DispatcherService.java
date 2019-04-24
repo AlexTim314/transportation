@@ -4,11 +4,10 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -24,6 +23,7 @@ import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
+import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -65,6 +65,9 @@ public class DispatcherService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private VehicleModelRepository vehicleModelRepository;
+
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
     }
@@ -85,7 +88,11 @@ public class DispatcherService {
         }).collect(Collectors.toList());
     }
 
-    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        if (findTransportDepByUser(principal) == null) {
+            System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
+            return null;
+        }
         List<Appointment> appointmentList = appointmentRepository
                 .findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         return appointmentList.stream().map((app) -> {
@@ -157,8 +164,8 @@ public class DispatcherService {
     }
 
     public List<Appointment> getAppointmentsForPlan(AppointmentStatus status, LocalDate date) {
-        ZonedDateTime dStart = ZonedDateTime.of(date, LocalTime.of(0, 0), ZoneId.systemDefault());
-        ZonedDateTime dEnd = ZonedDateTime.of(date, LocalTime.of(23, 59), ZoneId.systemDefault());
+        LocalDateTime dStart = LocalDateTime.of(date, LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(date, LocalTime.of(23, 59));
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
     }
 
@@ -194,21 +201,52 @@ public class DispatcherService {
     }
 
     public List<Driver> getVacantDrivers(Principal principal, Appointment appointment) {
-        ZonedDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
-        ZonedDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
+        LocalDateTime dateStart = recordRepository.findRecordByAppointmentId(appointment.getId()).getStartDate();
+        LocalDateTime dateEnd = recordRepository.findRecordByAppointmentId(appointment.getId()).getEndDate();
+        //чтобы sql не ругался на дату null
+        if (dateEnd == null) {
+            dateEnd = LocalDateTime.of(dateStart.getYear(), dateStart.getMonth(), dateStart.getDayOfMonth(), 23, 59);
+        }
         List<Driver> dl = driverRepository.findVacantByTransportDepId(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
         return dl;
     }
 
     public List<Vehicle> getVacantVehicles(Principal principal, Appointment appointment) {
         Record record = recordRepository.findRecordByAppointmentId(appointment.getId());
-        ZonedDateTime dateStart = record.getStartDate();
-        ZonedDateTime dateEnd = record.getEndDate();
-        if (appointment.getVehicleModel() != null)
+        LocalDateTime dateStart = record.getStartDate();
+        LocalDateTime dateEnd = record.getEndDate();
+        //чтобы sql не ругался на дату null
+        if (dateEnd == null) {
+            dateEnd = LocalDateTime.of(dateStart.getYear(), dateStart.getMonth(), dateStart.getDayOfMonth(), 23, 59);
+        }
+        if (appointment.getVehicleModel() != null) {
             return vehicleRepository.findVacantByTransportDepIdWithModel(findTransportDepByUser(principal).getId(),
                     appointment.getVehicleModel().getId(), dateStart, dateEnd);
-        else
+        } else {
             return vehicleRepository.findVacantByTransportDepIdWithoutModel(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+        }
+    }
+
+    public Boolean getPermit(Principal principal) {
+        AppUser user = getUser(principal);
+        for (AppRole role : user.getRoles()) {
+            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
+    }
+
+    public List<VehicleModel> findVehicleModelsByTransportDep(Principal principal) {
+        AppUser user = getUser(principal);
+        return vehicleModelRepository.findVehicleModelsByTransportDepId(user.getTransportDep().getId());
     }
 
 }

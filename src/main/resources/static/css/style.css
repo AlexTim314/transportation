@@ -44,7 +44,7 @@ body{
     height: 1000px;
     min-height: 100%;  
 }  
-.header{
+/*.header{
     display: block;
     width: 100%;
     background: -webkit-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
@@ -57,7 +57,7 @@ h1,h3{
     font-family: "Lora",serif;
     color:rgba(255,255,255,1);
     text-align: center;
-    /*	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);*/
+    	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.5);
 }
 h1{
     font-size: 1.5em;
@@ -67,6 +67,79 @@ h1{
 }
 h3{
     margin-bottom:10px;
+}*/
+.header{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 0 2%;
+	width: 100%;
+    background: -webkit-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
+    background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
+    background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
+    background: #463f42;
+}
+.sing-block{
+	min-width: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+}
+.user-title{
+	color:rgba(255,255,255,0.7);
+	font-size: 0.65em;
+	white-space: nowrap;
+
+}
+.user-title:hover i{
+	background: var(--edit-btn-color1);
+
+}
+.user-title:hover{
+	color:white;
+}
+.user-title i{
+	background: grey;
+	width: 20px;
+	height: 20px;
+	padding-top:5px;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 50%;
+	transition: all 0.3s ease-in;
+}
+.login{
+	color:rgba(255,255,255,0.7);
+	transition: all 0.3s ease-in;
+}
+.login:hover{
+	color:white;
+
+}
+.logo{
+	padding:0 5px ;
+}
+.department-block{
+	font-size: 0.7em;
+	color:rgba(255,255,255,0.7);
+	font-weight: bold;
+	align-self: center;
+}
+h1,h6{
+	font-family: "Lora",serif;
+	color:rgba(255,255,255,0.8);
+	text-align: center;	
+}
+h1{
+	font-size: 1.5em;
+	line-height: 0.9em;
+	margin: 0;
+	letter-spacing: 5px;
+}
+h6{	
+	margin:0;
+	font-size: 0.6em;
 }
 button {
     padding: 0;
@@ -105,22 +178,22 @@ button {
     border: none;
 }
 .nav-horizontal{
-    float:left;
-    margin-left:17%;
+    display:flex;
 }
-.nav-horizontal div{
+
+/*.nav-horizontal div{
     display: inline-block;
     cursor: pointer;
 }
 .nav-horizontal div:hover{
     border-bottom: 3px solid #00a2d3;
-}
-.login{
+}*/
+/*.login{
     float: right;
     background: -webkit-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
     background: -o-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
     background: linear-gradient(to top, var(--edit-btn-color1), var(--edit-btn-color2));
-}
+}*/
 .bell-notice{
     position: relative;
     cursor:pointer;
@@ -145,9 +218,9 @@ button {
     padding-top:3px;
     color: white;
 }
-.login:hover{
+/*.login:hover{
     background: var(--main-btn-color);
-}
+}*/
 
 i{
     margin-right: 10px;
@@ -168,15 +241,15 @@ i{
 .sidebar-vertical{
     width: 2%;
     min-width:30px;
-    height: 90vh;
+    height: 95vh;
     position: absolute;
     background: -webkit-linear-gradient(left, var(--main-gradient-color1), var(--main-gradient-color2));
     background: -o-linear-gradient(left, var(--main-gradient-color1), var(--main-gradient-color2));
     background: linear-gradient(to right, var(--main-gradient-color1), var(--main-gradient-color2));
-    top:115px;
+    top:0;
     left:0;
     /*	transition: left 0.33s;*/
-    /*z-index: 50%;*/
+    z-index: 3;
 }
 
 .menu{
@@ -377,7 +450,7 @@ i{
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888888;
     transition: 1s;
-    z-index: 100;
+    z-index: 1000;
 }
 .menu-new-claim i{
     position: absolute;
@@ -443,6 +516,9 @@ i{
     width: 47%;
     float: right;
 }
+.form-item button{
+    margin-bottom:20px;
+}
 
 .form-item .right-block input{
     margin-top:10px;
@@ -498,7 +574,7 @@ i{
     border: 0;
     -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
     box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
-
+    z-index: 1100;
 }
 .new-claim-task{
     position: absolute;
@@ -512,7 +588,7 @@ i{
     color:white;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888888;
-    z-index: 100;
+    z-index: 1100;
 }
 .new-claim-task i{
     cursor: pointer;
@@ -633,31 +709,40 @@ i{
     width:85%;
     float:left;
 }
-
+.cover-trsp{
+	 position: absolute;
+	 width: 100%;
+	 height: 100%;
+	 background: rgba(255,255,255,0.3);
+	 z-index: 200;
+	 display: none;
+}
 .fast-filter{
     display: block;
-    margin-left: 2%;
+/*    margin-left: 2%;
     margin-top: 15px;
     margin-bottom: 15px;
     text-shadow: 1px 1px 1px black;
-    padding:5px 5px;
+    padding:5px 5px;*/
 }
 .fast-filter span:hover{
     cursor:pointer;
     background:#ff8989;
 }
 .filter-elem{
-    display: block;
-    float: left;
-    margin-right: 5px;
-    padding:3px;
-    border-radius: 3px;
-    background: -webkit-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
-    background: -o-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
-    background: linear-gradient(to top, var(--edit-btn-color1), var(--edit-btn-color2));
-    color:rgba(255,255,255,1);
-    font-size: 0.8em;
-    font-weight: bold;
+  	display: block;
+	float: left;
+	padding:5px 15px;
+	border-radius: 2px;
+	margin-right: 1px;
+	/*background: -webkit-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
+	background: -o-linear-gradient(bottom, var(--edit-btn-color1), var(--edit-btn-color2));
+	background: linear-gradient(to top, var(--edit-btn-color1), var(--edit-btn-color2));*/
+	/*border:1px solid white;*/
+	color:white;
+	background: rgba(255,255,255,0.3);
+	font-size: 0.8em;
+	font-weight: bold;
 }
 .week-tab{
     display: block;
@@ -710,11 +795,13 @@ i{
     display: none;
 }
 .tabcontent{
+    position: relative;
     margin-top:10px;
+    padding-left:1%;
     display:block;
     float: right;
-    width:98%;
-    height: 90vh;
+    width:100%;
+    height: 95vh;
     background:#ffffff; 
     overflow: hidden;
     transition: width .3s;
@@ -869,19 +956,22 @@ i{
 
 /*---------------------------------------TABLE-------------------------------------*/
 .table-header{
-    overflow-x: auto;
-    width: 95%;
-    margin-left:2%;
-    height: 60px;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    border-bottom: 1px solid white;
-    background: linear-gradient(to top, var(--maing-radient-color1), var(--main-gradient-color2)); 
-    background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
-    background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
+	overflow-x: auto;
+	display: flex;
+	justify-content: space-between;
+	width: 97%;
+	margin-left:2%;
+	padding:10px 2%;
+	min-height: 60px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-bottom: 1px solid white;
+	background: linear-gradient(to top, var(--maing-radient-color1), var(--main-gradient-color2)); 
+	background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
+	background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
 }
 .table-header div{
-    display: block;
+/*    display: block;*/
     float:left;
     width: 20%;
     height: 25px;
@@ -965,9 +1055,8 @@ i{
 input[type="search"]{
     border-radius: 3px;
     float: right;
-    width: 30%;
-    margin-top:10px;
-    margin-right: 4%;
+    width: 20%;
+    padding-left: 5px;
     height: 23px;
     color: #bbb;
     text-shadow: 1px 1px 1px black;
@@ -1007,9 +1096,8 @@ input[type="search"]:hover{
 }
 
 .table-record{
-    width: 95%;
+    width:100%;
     float: left;
-    margin-left: 2%;
     border-collapse: collapse;
     border-radius: 3px;	
 }
@@ -1191,8 +1279,9 @@ input[type="search"]:hover{
     color:var(--edit-btn-color1);
 }
 .height-wrapper{
-
-    max-height: 65vh;
+    width: 97%;
+    margin-left: 2%;
+    max-height: 78vh;
     overflow: auto;
 
 }
@@ -1253,7 +1342,7 @@ input[type="search"]:hover{
 .table-claim{
     width: 97.5%;
     margin:0;
-    margin-left: 2.5%;
+    margin-left: 2%;
     border-collapse: collapse;
     border-radius: 3px;
 }
@@ -1460,9 +1549,8 @@ td{
 }
 .table-transport{
 
-    width: 95%;
+    width: 100%;
     margin-left:auto;
-    margin-left: 2%;
     margin-right: auto;
     border-collapse: collapse;
     border-radius: 3px;
@@ -1566,7 +1654,7 @@ td{
     top:30%;
     left: 40%;
     width: 260px;
-    z-index: 100;
+    z-index: 1200;
     background:#333;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888;
@@ -1756,21 +1844,41 @@ td{
 }
 
 .assert-block{
-    margin-top: 20px;
+    position: absolute;
     margin-left:2%;
-    float:left;
     width: 30%;
+    bottom: 10px;
 
 }
+.paginator{
+	position: absolute;
+	bottom: 20px;
+	left:45%;
+	display: flex;
+}
+.pages{
+	padding: 5px 10px;
+	background-color:grey;
+	margin-right: 2px;
+	border-radius: 3px;
+	color: white;
+	cursor: pointer;
+}
+.paginator .pages:hover{
+	color:var(--main-gradient-color1);
+}
+.page-active{
+	background-color: var(--edit-btn-color1);
+}
 .more-info{
-    top:15%;
-    right: 15%;
+    top:2%;
+    right: 2%;
     display: none;
     width: 20%;
     position: absolute;
     border-radius: 5px;
     color: #333;
-    z-index: 3;
+    z-index: 1000;
     font-weight: bold;
     font-size: 0.8em;
     background:white;
@@ -2096,7 +2204,7 @@ td{
     top:30%;
     left: 40%;
     width: 20%;
-    z-index: 2;
+    z-index: 1200;
     background:#333;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888888;	
@@ -2130,10 +2238,11 @@ td{
     left: 40%;
     width: 20%;
     min-width:287px;
-    z-index: 2;
+    z-index: 1100;
     background:#333;
     border-radius: 3px;
     box-shadow: 15px 10px 18px #888888;	
+    
 }
 .formTransport .container div{
     margin-bottom: 10px;
@@ -2384,8 +2493,7 @@ span.psw {
     color:#333;
 }
 .table-plan{
-    width: 95%;
-    margin-left: 2%;
+    width: 100%;
     font-size: 0.8em;
 }
 .table-plan tr th{
@@ -2498,6 +2606,21 @@ span.psw {
 .plan-date li:nth-child(2):hover input{
     cursor: pointer;
 }
+.definite-date{
+	min-width: 440px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;	
+}
+.definite-date label{
+	font-size: 0.7em;
+	font-weight: bold;
+	color:white;
+	white-space: nowrap;
+}
+.definite-date input{
+	margin:0 10px;
+}
 .custom-select{
     position: relative;
 }
@@ -2539,9 +2662,90 @@ span.psw {
     left:10px;
     top:30%;
 }
-@keyframes flash{
-    from{color:#333;}
-    to{color:white;}
+.loading-content {
+    display: none;
+    position: absolute;
+    top:30%;
+    left:45%;
+    padding: 15px;
+    overflow: hidden;
+    background-color: #e7e7e7;
+    background-color: rgba(0,0,0,0.06);
+    background-color: transparent;
+    z-index: 1100;
+}
+
+
+
+.load-wrapp {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin: 0 10px 10px 0;
+    padding: 20px 20px 20px;
+    border-radius: 5px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.load-wrapp p {padding: 0 0 20px;}
+.load-wrapp:last-child {margin-right: 0;}
+.letter-holder {padding: 16px; display: flex; justify-content: center;}
+
+.letter {
+    font-size: 1.1em;
+    color: var(--main-gradient-color1);
+    font-weight: bold;
+}
+.load-6 .letter {
+    animation-name: loadingF;
+    animation-duration: 1.6s;
+    animation-iteration-count: infinite;
+    animation-direction: linear;
+}
+
+.l-1 {animation-delay: .48s;}
+.l-2 {animation-delay: .6s;}
+.l-3 {animation-delay: .72s;}
+.l-4 {animation-delay: .84s;}
+.l-5 {animation-delay: .96s;}
+.l-6 {animation-delay: 1.08s;}
+.l-7 {animation-delay: 1.2s;}
+.l-8 {animation-delay: 1.32s;}
+.l-9 {animation-delay: 1.44s;}
+.l-10 {animation-delay: 1.56s;}
+@keyframes loadingF {
+    0% {color:var(--edit-btn-color1);}
+    100% {color:var(--main-gradient-color1);}
+}
+
+.line {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+	background-color:var(--main-gradient-color1);
+}
+
+.ring-1 {
+    width: 10px;
+    height: 10px;
+    margin: 0 auto;
+    padding: 10px;
+
+  border:7px dashed var(--main-gradient-color1);
+    border-radius: 100%;
+}
+
+.load-4 .ring-1 {animation: loadingD 1.6s .3s linear infinite;}
+
+.l-4 {animation-delay: .84s;}
+
+
+@keyframes loadingD {
+    0 {transform: rotate(0deg);}
+    50% {transform: rotate(180deg);}
+    100% {transform: rotate(360deg);}
 }
 @media (min-width: 1200px) and (max-width: 100px) {
     .table-claim button{
@@ -2549,4 +2753,17 @@ span.psw {
     }
 
 
+}
+
+.home{
+	position: absolute;
+	left:10px;
+	top: 10px;
+	color: rgba(255,255,255,0.7);	
+}
+.home:hover{
+	color: rgba(255,255,255,1);
+}
+.home:active{
+	color:var(--edit-btn-color1);
 }

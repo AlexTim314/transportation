@@ -45,7 +45,7 @@
 
                     <h1>Комплекс Автотранспортного Обеспечения</h1>
                     <h3>Контроль подачи заявок</h3>
-
+                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
                     <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>

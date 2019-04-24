@@ -9,21 +9,33 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
         self.headers["Content-Type"] = 'application/json';
 
         return {
-            
-            
-            fetchAllPlanRecords: function () {
-                return $http.get('/transportation/dispatcher/appointments')
+
+            fetchMonthPlanRecords: function () {
+                return $http.get('/transportation/dispatcher/appointments/Month')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching allRecs');
+                                    console.error('Error while fetching monthRecs');
                                     return $q.reject(errResponse);
                                 }
                         );
             },
             
+            fetchMonthBeforeRecords: function () {
+                return $http.get('/transportation/dispatcher/appointments/monthBefore')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching monthBefRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
             fetchWeekPlanRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/Week')
                         .then(
@@ -36,7 +48,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchTomorrowPlanRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/Tomorrow')
                         .then(
@@ -49,14 +61,14 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchDatePlanRecords: function (date) {
                 return $http.post('/transportation/dispatcher/appointments/Date',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Recs of date');
@@ -64,10 +76,9 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
-            
+
             fetchAllVehicleModels: function () {
-                return $http.get('/transportation/vehicleModels')
+                return $http.get('/transportation/dispatcher/vehicleModels')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -78,7 +89,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchDrivers: function () {
                 return $http.get('/transportation/dispatcher/drivers')
                         .then(
@@ -91,14 +102,14 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchVacantDrivers: function (app) {
-               return $http.post('/transportation/dispatcher/vacantDrivers',
+                return $http.post('/transportation/dispatcher/vacantDrivers',
                         JSON.stringify(app), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vacant drivers');
@@ -106,7 +117,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchVehicles: function () {
                 return $http.get('/transportation/dispatcher/vehicles')
                         .then(
@@ -119,14 +130,14 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchVacantVehicles: function (app) {
-               return $http.post('/transportation/dispatcher/vacantVehicles',
+                return $http.post('/transportation/dispatcher/vacantVehicles',
                         JSON.stringify(app), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-                                    
+
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vacant Vehicle');
@@ -151,7 +162,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
 //            },
 
             downloadWaybill: function (appointment) {
-                return $http.get('/transportation/dispatcher/waybilldownload/'+appointment.id)
+                return $http.get('/transportation/dispatcher/waybilldownload/' + appointment.id)
                         .then(
                                 function (response) {
                                     return response.data;
@@ -162,7 +173,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             updateAppointments: function (appointments) {
                 return $http.put('/transportation/dispatcher/appointments_update',
                         JSON.stringify(appointments), {headers: self.headers})
@@ -176,7 +187,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             updateStatusAppointment: function (appointment) {
                 return $http.put('/transportation/dispatcher/appointment_update',
                         JSON.stringify(appointment), {headers: self.headers})

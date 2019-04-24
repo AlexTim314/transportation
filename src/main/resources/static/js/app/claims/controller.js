@@ -31,30 +31,33 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.week = false;
         self.all = false;
         self.allday = false;
-        self.claimFromTemplateDate = '';
+        self.claimFromTemplateDate = null;
         self.cancelNote = '';
         self.minDate;
         self.onDemand = false;
         self.startDate;
-
         self.permit = false;
 
         self.carBossName = null;
-        self.displayCarBosses = false;
+        /* self.displayCarBosses = false;
+         
+         self.clickCarBossesInput = function () {
+         self.displayCarBosses = !self.displayCarBosses;
+         };
+         
+         self.changeCarBossInput = function () {
+         self.displayCarBosses = self.carBossName !== null && self.carBossName !== undefined && self.carBossName.length > 0;
+         self.claim.carBoss = null;
+         };
+         
+         self.selectCarBoss = function (carBoss) {
+         self.claim.carBoss = carBoss;
+         self.carBossName = self.carBossToStringFull(carBoss);
+         self.displayCarBosses = false;
+         };*/
 
-        self.clickCarBossesInput = function () {
-            self.displayCarBosses = !self.displayCarBosses;
-        };
-
-        self.changeCarBossInput = function () {
-            self.displayCarBosses = self.carBossName !== null && self.carBossName !== undefined && self.carBossName.length > 0;
-            self.claim.carBoss = null;
-        };
-
-        self.selectCarBoss = function (carBoss) {
-            self.claim.carBoss = carBoss;
-            self.carBossName = self.carBossToStringFull(carBoss);
-            self.displayCarBosses = false;
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
         self.placeName = null;
@@ -101,25 +104,35 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 var date = new Date(d);
-                                var day = date.getDate();
-                                var month = date.getMonth() + 1;
-                                var year = date.getFullYear();
-                                if (month < 10)
-                                    month = "0" + month;
-                                if (day < 10)
-                                    day = "0" + day;
-                                var today = year + "-" + month + "-" + day;
-                                document.getElementById('startDate').value = today;
+                                var today = self.getFormatedDate(date, "-", true);
+                                date.setDate(date.getDate() + 1);
+                                var tomorrow = self.getFormatedDate(date, "-", true);
+                                document.getElementById('startDate').value = tomorrow;
                                 document.getElementById('startDate').min = today;
                                 document.getElementById('entranceTime').value = "00:00";
                                 document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
-                                self.startDate = new Date(today);
+                                self.startDate = new Date(tomorrow);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching NewClaims');
                             }
                     );
+        };
+
+
+        self.getFormatedDate = function (date, separator, yearAtBeginning) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            if (yearAtBeginning) {
+                return year + separator + month + separator + day;
+            }
+            return day + separator + month + separator + year;
         };
 
         self.fetchNewClaims = function () {
@@ -137,10 +150,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.allday = true;
             self.today = false;
             self.week = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
             ClaimsService.fetchAffirmedClaims()
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AffirmedClaims');
@@ -285,6 +302,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 }
                                 self.resetClaimForm();
                                 menu_close();
+                                formClose('cover-trsp1');
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -303,6 +321,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 claim.routeTasks[i].id = null;
             }
             menu_close();
+            formClose('cover-trsp1');
+            for (var i = 0; i < claim.records.length; i++) {
+                //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
+                var date = new Date(claim.records[i].startDate);
+                date.setUTCHours(date.getHours());
+                self.claim.records[i].startDate = self.frmtDate(date, date);
+                date = new Date(claim.records[i].entranceDate);
+                date.setUTCHours(date.getHours());
+                self.claim.records[i].entranceDate = self.frmtDate(date, date);
+                if (claim.records[i].endDate !== null) {
+                    date = new Date(claim.records[i].endDate);
+                    date.setUTCHours(date.getHours());
+                    self.claim.records[i].endDate = self.frmtDate(date, date);
+                }
+            }
             ClaimsService.updateClaim(claim)
                     .then(
                             function () {
@@ -369,7 +402,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while deleting Claim.');
                             }
                     );
-            formClose('del-claim-confirm');
+            self.closeDeleteForm();
             self.all = false;
         };
 
@@ -387,7 +420,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while deleting ClaimTemplates.');
                             }
                     );
-            formClose('del-claim-template-confirm');
+            self.closeDeleteTemplateForm();
             self.all = false;
         };
 
@@ -417,6 +450,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.entranceDate = new Date(rec.entranceDate);
             self.record.endDate = new Date(rec.endDate);
             self.record.appointments = rec.appointments;
+            formOpen('cover-trsp1');
             formOpen('formCancel');
         };
 
@@ -439,6 +473,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
+            formClose('formCancel');
+            formClose('cover-trsp1');
             ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
@@ -470,8 +506,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (boss === null) {
                 return null;
             }
-            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + (boss.post !== null ? boss.post : "");
             return result;
+        };
+
+        self.pickCarBoss = function (cb) {
+            self.claim.carBoss = cb;
         };
 
         self.carBossToStringFull = function (boss) {
@@ -490,6 +530,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.claim.routeTasks.push(rt);
         };
+
         self.frmtDate = function (date, time) {
             var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
             return result;
@@ -500,19 +541,34 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
+
+            var entranceTime = new Date(self.record.entranceDate);
+            entranceTime.setUTCHours(entranceTime.getHours());
+            var startTime = new Date(self.record.startDate);
+            startTime.setUTCHours(startTime.getHours());
+            var endTime = new Date(self.record.endDate);
+            endTime.setUTCHours(endTime.getHours());
+
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = self.frmtDate(sd, self.record.startDate);
+
+                    // var startTime = new Date(self.record.startDate);
+                    // startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
+                    rec.startDate = self.frmtDate(sd, startTime);
+
+                    //rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     if (self.onDemand) {
                         rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
                         rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     } else {
-                        rec.endDate = self.frmtDate(sd, self.record.endDate);
+                        //rec.endDate = self.frmtDate(sd, self.record.endDate);
+                        rec.endDate = self.frmtDate(sd, endTime);
                         rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     }
-                    rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                    rec.entranceDate = self.frmtDate(sd, entranceTime);
+                    //rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
@@ -522,15 +578,16 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = self.frmtDate(sd, self.record.startDate);
+                rec.startDate = self.frmtDate(sd, startTime);
                 if (self.onDemand) {
                     rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                 } else {
-                    rec.endDate = self.frmtDate(sd, self.record.endDate);
+                    rec.endDate = self.frmtDate(sd, endTime);
                     rec.endDate.setDate(rec.endDate.getDate() + inc);
                 }
-                rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                //rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                rec.entranceDate = self.frmtDate(sd, entranceTime);
                 if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
@@ -563,6 +620,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.checkRec = function (rec) {
             self.record.checked = false;
             self.record = rec;
+            self.record.startDate = new Date(rec.startDate);
+            //self.record.startDate.setUTCHours(self.record.startDate.getHours());
+            self.record.entranceDate = new Date(rec.entranceDate);
+            if (rec.endDate !== null) {
+                self.record.endDate = new Date(rec.endDate);
+            }
             self.record.checked = true;
         };
 
@@ -574,15 +637,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
         self.infoClick = function (clm) {
+            formOpen('cover-trsp1');
             formOpen('more-claim');
             self.claim = clm;
         };
         self.infoAffClick = function (clm) {
             formOpen('more-claim-confirm');
+            formOpen('cover-trsp1');
             self.affirmedClaim = clm;
         };
         self.resetClaimForm = function () {
+            self.onDemand = false;
             self.isOtherDay = false;
+            self.carBossName = '';
             self.claim = {
                 id: null,
                 templateName: null,
@@ -600,13 +667,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.getDateFromServer();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
             self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
+            menu_close();
+            formClose('cover-trsp1');
         };
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+            self.placeName = '';
         };
         self.setClaimForTemp = function (claim) {
             self.copyClaimProperties(claim);
             self.claim.id = null;
+            formOpen('cover-trsp1');
             formOpen('dialog-save');
         };
         self.checkAll = function () {
@@ -625,38 +696,48 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.carBoss = claim.carBoss;
             self.carBossName = self.carBossToStringFull(claim.carBoss);
             self.claim.purpose = claim.purpose;
-            self.claim.records = [];
-            for (var i = 0; i < claim.records.length; i++) {
-                var rec = {
-                    id: null,
-                    startDate: claim.records[i].startDate,
-                    entranceDate: claim.records[i].entranceDate,
-                    endDate: claim.records[i].endDate
-                };
-                self.claim.records.push(rec);
+            if (claim.records.length > 0) {
+                self.claim.records = [];
+                if (claim.records[0].endDate !== null) {
+                    self.onDemand = false;
+                } else {
+                    self.onDemand = true;
+                }
+                for (var i = 0; i < claim.records.length; i++) {
+                    var rec = {
+                        id: null,
+                        startDate: claim.records[i].startDate,
+                        entranceDate: claim.records[i].entranceDate,
+                        endDate: claim.records[i].endDate
+                    };
+                    self.claim.records.push(rec);
+                }
+                self.claim.routeTasks = claim.routeTasks;
+                self.claim.specialization = claim.specialization;
+                self.claim.templateName = claim.templateName;
+                self.claim.vehicleType = claim.vehicleType;
+                self.claim.affirmationDate = claim.affirmationDate;
+                self.claim.creationDate = new Date(claim.creationDate);
+                self.claim.creationDate.setUTCHours(self.claim.creationDate.getHours());
+                self.record.startDate = new Date(claim.records[0].startDate);
+                self.record.entranceDate = new Date(claim.records[0].entranceDate);
+                if (!self.onDemand) {
+                    self.record.endDate = new Date(claim.records[0].endDate);
+                }
             }
-            self.claim.routeTasks = claim.routeTasks;
-            self.claim.specialization = claim.specialization;
-            self.claim.templateName = claim.templateName;
-            self.claim.vehicleType = claim.vehicleType;
-            self.claim.affirmationDate = claim.affirmationDate;
-            self.claim.creationDate = new Date(claim.creationDate);
-            self.record.startDate = new Date(claim.records[0].startDate);
-            self.record.entranceDate = new Date(claim.records[0].entranceDate);
-            self.record.endDate = new Date(claim.records[0].endDate);
         };
+
         self.prepearClaimFromTemplate = function (claim) {
-            if (claim !== null) {//TODO: проверку на undefinite
+            if (claim !== null && claim !== undefined) {
                 self.copyClaimProperties(claim);
                 self.claim.id = null;
                 self.claim.templateName = null;
-                if (self.claimFromTemplateDate !== '') {
+                if (self.claimFromTemplateDate !== null && self.claimFromTemplateDate !== undefined) {
                     Date.prototype.addDays = function (days) {
                         var date = new Date(this.valueOf());
                         date.setDate(date.getDate() + days);
                         return date;
-                    }
-
+                    };
                     //поиск более ранней записи                    
                     var index = 0;
                     for (var i = 1; i < claim.records.length; i++) {
@@ -667,29 +748,39 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     var date = new Date(claim.records[index].startDate);
                     var timeDiff = self.claimFromTemplateDate.getTime() - date.getTime();
                     var datesDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                    //var datesDiff = datesDiff.
                     self.record.startDate = date.addDays(datesDiff);
                     self.record.entranceDate = new Date(claim.records[index].entranceDate).addDays(datesDiff);
-                    self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
-
+                    if (claim.records[index].endDate !== null) {
+                        self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
+                    }
                     for (var i = 0; i < claim.records.length; i++) {
+                        //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
                         date = new Date(claim.records[i].startDate);
+                        date.setUTCHours(date.getHours());
                         self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
                         date = new Date(claim.records[i].entranceDate);
+                        date.setUTCHours(date.getHours());
                         self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
-                        date = new Date(claim.records[i].endDate);
-                        self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                        if (claim.records[index].endDate !== null) {
+                            date = new Date(claim.records[i].endDate);
+                            date.setUTCHours(date.getHours());
+                            self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
+                        }
                     }
                 }
             }
         };
+
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
             if (self.claim.templateName === null) {
+                formOpen('cover-trsp1');
                 edit_open();
             } else {
+                formOpen('cover-trsp1');
                 templateEditOpen();
             }
+            checkHidden();
         };
 
         self.tryToUpdateRTask = function (routeTask) {
@@ -713,6 +804,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.submitRTask = function () {
+            if (self.validateFormRTask()) {
+                alert("Форма заполнена не полностью!");
+                return;
+            }
+
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
             } else {
@@ -897,7 +993,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return;
             }
             self.appt = appt;
-            formOpen('appt-note')
+            formOpen('appt-note');
         };
 
         self.personToString = function (person) {
@@ -909,15 +1005,17 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.affirmatorToString = function (user) {
-            var nameArr = user.fullName.split(' ');
-            var result = nameArr[0];
-            if (nameArr.length > 1) {
-                result += " " + nameArr[1].charAt(0) + ".";
+            if (user !== null) {
+                var nameArr = user.fullName.split(' ');
+                var result = nameArr[0];
+                if (nameArr.length > 1) {
+                    result += " " + nameArr[1].charAt(0) + ".";
+                }
+                if (nameArr.length > 2) {
+                    result += nameArr[2].charAt(0) + ".";
+                }
+                return result;
             }
-            if (nameArr.length > 2) {
-                result += nameArr[2].charAt(0) + "."
-            }
-            return result;
         };
 
         self.checkPhone = function (appointment) {
@@ -936,18 +1034,32 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.validateForm = function () {
             if (self.claim.specialization === null) {
+                console.log('Не выбрана специализация');
                 return true;
             }
             if (self.claim.records.length === 0) {
+                console.log('Незаполнены даты выезда');
                 return true;
             }
             for (var i = 0; i < self.claim.records.length; i++) {
                 var r = self.claim.records[i];
                 if (r.startDate === null || r.startDate === undefined
-                        || r.entranceDate === null || r.entranceDate === undefined
-                        || r.endDate === null || r.endDate === undefined) {
+                        || r.entranceDate === null || r.entranceDate === undefined) {
+                    console.log('Не введено время');
                     return true;
                 }
+            }
+            return false;
+        };
+
+        self.validateFormRTask = function () {
+            if (self.routeTask.place === null) {
+                console.log('Не выбрано место');
+                return true;
+            }
+            if (self.routeTask.workName === '') {
+                console.log('Не заполнены работы');
+                return true;
             }
             return false;
         };
@@ -973,6 +1085,52 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return false;
             }
         };
+
+        self.addNewClaim = function () {
+            formOpen('cover-trsp1');
+            menu_open();
+        };
+
+        self.addClaimFromTemplate = function () {
+            formOpen('cover-trsp1');
+            templateOpen();
+        };
+
+        self.prepToDelete = function () {
+            formOpen('cover-trsp1');
+            formOpen('del-claim-confirm');
+        };
+
+        self.closeDeleteForm = function () {
+            formClose('del-claim-confirm');
+            formClose('cover-trsp1');
+        };
+        
+        self.closeSaveForm = function() {
+            formClose('dialog-save');
+            formClose('cover-trsp1');
+        };
+        
+        self.closeCancelRecord = function(){
+            formClose('formCancel');
+            formClose('cover-trsp1');
+        };
+        
+        self.prepToAddTemplate = function(){
+            formOpen('cover-trsp1');
+            templateAddOpen();
+        };
+        
+        self.prepToDeleteTemplate = function(){
+            formOpen('cover-trsp1');
+            formOpen('del-claim-template-confirm');
+        };
+        
+        self.closeDeleteTemplateForm = function(){
+            formClose('del-claim-template-confirm');
+            formClose('cover-trsp1');
+        };
+
 
     }]);
 

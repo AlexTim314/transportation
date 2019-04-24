@@ -9,6 +9,30 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
         self.headers["Content-Type"] = 'application/json';
 
         return {
+            getPermit: function () {
+                return $http.get('/transportation/planner/permit')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching permit');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            getUserName: function () {
+                return $http.get('/transportation/planner/username')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching username');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
             fetchAllDepartments: function () {
                 return $http.get('/transportation/departments')
                         .then(
@@ -48,8 +72,20 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            fetchAllPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims')
+            fetchMonthPlanRecords: function () {
+                return $http.get('/transportation/planner/affirmedClaims/Month')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching monthRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchMonthBeforePlanRecords: function () {
+                return $http.get('/transportation/planner/affirmedClaims/monthBefore')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -144,14 +180,27 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
              },            
              */
 
-            fetchAllCompletePlanRecords: function () {
-                return $http.get('/transportation/planner/plannedClaims')
+            fetchMonthCompletePlanRecords: function () {
+                return $http.get('/transportation/planner/plannedClaims/Month')
                         .then(
                                 function (response) {
                                     return response.data;
                                 },
                                 function (errResponse) {
-                                    console.error('Error while fetching allRecs');
+                                    console.error('Error while fetching monthRecs');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchMonthBeforeCompletePlanRecords: function () {
+                return $http.get('/transportation/planner/plannedClaims/monthBefore')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching monthBefRecs');
                                     return $q.reject(errResponse);
                                 }
                         );
@@ -210,7 +259,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchVehicles: function () {
                 return $http.get('/transportation/planner/vehicles')
                         .then(
@@ -273,7 +322,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchOtsInfo: function () {
                 return $http.get('/transportation/planner/ots_info')
                         .then(
@@ -282,6 +331,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching otsInfo');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchOtsVehModels: function () {
+                return $http.get('/transportation/planner/transport_dep_models')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching otsVehModels');
                                     return $q.reject(errResponse);
                                 }
                         );

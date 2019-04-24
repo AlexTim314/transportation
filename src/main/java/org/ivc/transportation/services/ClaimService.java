@@ -2,9 +2,8 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+
 import java.util.List;
-import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -59,12 +58,14 @@ public class ClaimService {
 
     public Boolean getPermit(Principal principal) {
         AppUser user = getUser(principal);
-        for (AppRole role : user.getRoles()) {
-            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
-                return true;
-            }
-        }
-        return false;
+        return user.getRoles().stream().anyMatch((role) -> (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")));
+    }
+    
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
     }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
@@ -83,7 +84,7 @@ public class ClaimService {
         return null;
     }
 
-    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, ZonedDateTime dStart, ZonedDateTime dEnd) {
+    public List<Claim> findAffirmedClaimsByDepartmentTimeFilter(Principal principal, LocalDateTime dStart, LocalDateTime dEnd) {
         Department department = getDepartment(principal);
         if (department != null) {
             return claimRepository.findAffirmedClaimsByDepartmentTimeFilter(department.getId(), dStart, dEnd);

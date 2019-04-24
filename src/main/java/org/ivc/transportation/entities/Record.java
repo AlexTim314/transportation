@@ -2,7 +2,6 @@ package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,13 +38,13 @@ public class Record implements Serializable {
     private Long id;
 
     @Column(name = "entrance_date", nullable = false)
-    private ZonedDateTime entranceDate;
+    private LocalDateTime entranceDate;
 
     @Column(name = "start_date", nullable = false)
-    private ZonedDateTime startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private ZonedDateTime endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "affirmation_date")
     private LocalDateTime affirmationDate;

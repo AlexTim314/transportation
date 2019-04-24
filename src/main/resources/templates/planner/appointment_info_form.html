@@ -1,7 +1,14 @@
 <div class="more-info" id="more-claim-status" style="width: 25%" xmlns:th="http://www.thymeleaf.org">
     <div>Дополнительная информация
-        <i class="fas fa-times" onclick="formClose('more-claim-status')"></i>
+        <i class="fas fa-times" ng-click="plctrl.closeInfoAppointments()"></i>
     </div>
+    <fieldset>
+        <legend>Старший машины</legend>
+        <ul>
+            <li><label>ФИО<span>{{plctrl.carBossToStringInfo(plctrl.compClRec.claim.carBoss)}}</span></label></li>
+            <li><label>Должность<span>{{plctrl.compClRec.claim.carBoss.post}}</span></label></li>
+        </ul>
+    </fieldset>  
     <fieldset>
         <legend>Цель</legend>
         <p>{{plctrl.compClRec.claim.purpose}}</p>
@@ -18,9 +25,9 @@
         <ul>
             <li><label> Модель<span>{{plctrl.compClRec.appointment.vehicleModel.modelName}}</span></label></li>
             <li><label> Гос.№<span>{{plctrl.compClRec.appointment.vehicle.number}}</span></label></li>
-            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{plctrl.compClRec.appointment.vehicle.fuel}}</span></label></li>
+<!--            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{plctrl.compClRec.appointment.vehicle.fuel}}</span></label></li>
             <li><label><b class="fas fa-road"></b> Одометр,км:<span>{{plctrl.compClRec.appointment.vehicle.odometr}}</span></label></li>
-            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{plctrl.compClRec.appointment.vehicle.motohours}}</span></label></li>
+            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{plctrl.compClRec.appointment.vehicle.motohours}}</span></label></li>-->
         </ul>
     </fieldset>
     <fieldset>

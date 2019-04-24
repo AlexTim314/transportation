@@ -32,6 +32,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.today = false;
         self.week = false;
         self.all = false;
+        self.archive = false;
         self.ctoday = false;
         self.cweek = false;
         self.call = false;
@@ -40,6 +41,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.date;
         self.tempAppoints = [];
         self.filteredVacantVehicles = [];
+        self.filteredVehicleModels = [];
+        self.tempStatus;
+        self.tempNote;
+        self.tempVehicle;
+        self.tempDriver;
+        self.tempVehicleModel;
+        self.pageCount;
+        self.numRecordsPerPage = 15;
+        self.data;
+        self.listRecordsPerPage = [];
+        self.n;
+        self.n1;
 
 
         self.selectIcon = function (spec) {
@@ -59,19 +72,51 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             }
         };
 
-        self.fetchAllPlanRecords = function () {
+        self.fetchMonthPlanRecords = function () {
             self.all = true;
             self.today = false;
             self.week = false;
-            DispatcherService.fetchAllPlanRecords()
+            self.archive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            DispatcherService.fetchMonthPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
-                                // self.records = d.records;
-                                console.log(self.headers);
+                                self.data = d;
+                                self.headers = [];
+                                formClose('cover-trsp1');
+                                formClose('preloader');
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.createListPages();
+                                self.showRecordsPage(1);
                             },
                             function (errResponse) {
-                                console.error('Error while fetching AllRecords');
+                                console.error('Error while fetching MonthRecords');
+                            }
+                    );
+        };
+
+        self.fetchMonthBeforePlanRecords = function () {
+            self.all = false;
+            self.today = false;
+            self.week = false;
+            self.archive = true;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            DispatcherService.fetchMonthBeforeRecords()
+                    .then(
+                            function (d) {
+                                self.data = d;
+                                self.headers = [];
+                                formClose('cover-trsp1');
+                                formClose('preloader');
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.createListPages();
+                                self.showRecordsPage(1);
+                                // self.records = d.records;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching MonthBeforeRecords');
                             }
                     );
         };
@@ -80,12 +125,20 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.all = false;
             self.today = false;
             self.week = true;
+            self.archive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
             DispatcherService.fetchWeekPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.data = d;
+                                self.headers = [];
+                                formClose('cover-trsp1');
+                                formClose('preloader');
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.createListPages();
+                                self.showRecordsPage(1);
                                 // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -97,12 +150,16 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.all = false;
             self.today = true;
             self.week = false;
+            self.archive = false;
             DispatcherService.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.data = d;
+                                self.headers = [];
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.createListPages();
+                                self.showRecordsPage(1);
                                 // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TodayRecords');
@@ -114,15 +171,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.all = false;
             self.today = false;
             self.week = false;
+            self.archive = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
             console.log(datePlan);
             DispatcherService.fetchDatePlanRecords(datePlan)
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.data = d;
+                                self.headers = [];
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.createListPages();
+                                self.showRecordsPage(1);
                                 // self.records = d.records;
-                                console.log(self.headers);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -160,6 +221,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vacantDrivers = d;
+//                                if (self.tempDrivers !== null) {
+//                                    self.vacantDrivers = d;
+//                                    if (self.vacantDrivers !== null) {
+//                                        for (var i = 0; i < self.tempDrivers.length; i++) {
+//                                            if (self.tempDrivers[i] in d) {
+//                                                self.vacantDrivers.splice(i, 1);
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    self.vacantDrivers = d;
+//                                }
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vacant Drivers');
@@ -185,6 +258,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.vacantVehicles = d;
+//                                 if (self.tempVehicles !== null) {
+//                                    self.vacantVehicles = d;
+//                                    if (self.vacantVehicles !== null) {
+//                                        for (var i = 0; i < self.tempVehicles.length; i++) {
+//                                            if (self.tempVehicles[i] in d) {
+//                                                self.vacantVehicles.splice(i, 1);
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    self.vacantVehicles = d;
+//                                }
+
                                 self.filteringVehicles(self.clrec.appointment.vehicleModel);
                             },
                             function (errResponse) {
@@ -207,7 +293,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.date = day + "." + month + "." + year;
         };
 
-
+        self.createListPages = function () {
+            for (var i = 1; i < self.pageCount + 1; i++) {
+                self.listRecordsPerPage[i - 1] = i;
+            }
+        };
 
         self.fetchTomorrowPlanRecords();
         self.fetchAllVehicleModels();
@@ -216,6 +306,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
+        self.createListPages();
 
 
         self.departFromObj = function (obj) {
@@ -228,7 +319,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             function (d) {
                                 self.tempAppoints = [];
                                 if (self.all) {
-                                    self.fetchAllPlanRecords();
+                                    self.fetchMonthPlanRecords();
                                     return;
                                 }
                                 if (self.week) {
@@ -237,6 +328,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 }
                                 if (self.today) {
                                     self.fetchTomorrowPlanRecords();
+                                    return;
+                                }
+                                if (self.archive) {
+                                    self.fetchMonthBeforePlanRecords();
                                     return;
                                 }
                                 self.fetchDatePlanRecords();
@@ -248,24 +343,42 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.prepareToUpdateAppointment = function () {
-            for (var i = 0; i < self.tempAppoints.length; i++) {
-                if (self.tempAppoints.length > 0) {
-                    if (self.tempAppoints[i].id === self.clrec.appointment.id) {
-                        self.tempAppoints.splice(i, 1);
-                        console.log('splice appointment');
+//            self.tempDrivers.push(self.clrec.appointment.driver);
+//            self.tempVehicle.push(self.clrec.appointment.vehicle);
+            if ((self.clrec.appointment.vehicle === null) || (self.clrec.appointment.driver === null)) {
+                alert('Не заполнены данные');
+            } else {
+                self.tempVehicleModel = null;
+                self.tempDriver = null;
+                self.tempVehicle = null;
+                for (var i = 0; i < self.tempAppoints.length; i++) {
+                    if (self.tempAppoints.length > 0) {
+                        if (self.tempAppoints[i].id === self.clrec.appointment.id) {
+                            self.tempAppoints.splice(i, 1);
+                            console.log('splice appointment');
+                        }
                     }
                 }
+                self.tempAppoints.push(self.clrec.appointment);
+                formClose('formAppointment');
+                formClose('cover-trsp1');
             }
-            self.tempAppoints.push(self.clrec.appointment);
-            formClose('formAppointment');
         };
 
         self.prepareToChangeStatus = function (clrec) {
             self.clrec = clrec;
+            //temporary save the current status of the claim to return it after canceling changing.
+            self.tempStatus = clrec.appointment.status;
+            self.tempNote = clrec.appointment.note;
+            formOpen('cover-trsp1');
             formOpen('formChangeStatus');
         };
 
         self.changeAppStatus = function () {
+            self.tempStatus = null;
+            self.tempNote = null;
+            formClose('formChangeStatus');
+            formClose('cover-trsp1');
             DispatcherService.updateStatusAppointment(self.clrec.appointment)
                     .then(
                             function (d) {
@@ -279,6 +392,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 }
                                 if (self.today) {
                                     self.fetchTomorrowPlanRecords();
+                                    return;
+                                }
+                                if (self.archive) {
+                                    self.fetchMonthBeforePlanRecords();
                                     return;
                                 }
                                 self.fetchDatePlanRecords();
@@ -298,16 +415,26 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.resetAppForm = function () {
-            self.clrec.appointment.vehicle = null;
-            self.clrec.appointment.driver = null;
+            //returning the driver and vehicle of the appointment to its original state
+            self.clrec.appointment.vehicleModel = self.tempVehicleModel;
+            self.clrec.appointment.driver = self.tempDriver;
+            self.clrec.appointment.vehicle = self.tempVehicle;
             formClose('formAppointment');
+            formClose('cover-trsp1');
         };
 
         self.appoint = function (clrec) {
             self.clrec = clrec;
+            //temporary save the current driver and vihicle of the appointment to return it after canceling changing.
+            self.tempVehicleModel = clrec.appointment.vehicleModel;
+            self.tempDriver = clrec.appointment.driver;
+            self.tempVehicle = clrec.appointment.vehicle;
+
             self.fetchVacantDrivers(self.clrec.appointment);
             self.fetchVacantVehicles(self.clrec.appointment);
+            self.filteringVehicleModels(self.clrec.claim.vehicleType);
             formOpen('formAppointment');
+            formOpen('cover-trsp1');
         };
 
         self.downloadWaybill = function (appointment) {
@@ -328,6 +455,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.moreInfoOpen = function (clrec) {
             self.clrec = clrec;
             formOpen('more-claim1');
+            formOpen('cover-trsp1');
+        };
+
+        self.closeInfo = function () {
+            formClose('more-claim1');
+            formClose('cover-trsp1');
         };
 
         self.changeDate = function () {
@@ -447,15 +580,56 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.filteringVehicles = function (model) {
             self.filteredVacantVehicles = [];
-            for (var i = 0; i < self.vehicles.length; i++) {
-                if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
-                    if (self.vehicles[i].model.modelName === model.modelName) {
-                        self.filteredVacantVehicles.push(self.vehicles[i]);
+            for (var i = 0; i < self.vacantVehicles.length; i++) {
+                if (self.vacantVehicles[i].model !== null && self.vacantVehicles[i].model !== undefined && model !== undefined && model !== null) {
+                    if (self.vacantVehicles[i].model.modelName === model.modelName) {
+                        self.filteredVacantVehicles.push(self.vacantVehicles[i]);
                     }
                 }
             }
-            console.log(self.filteredVacantVehicles);
         };
+
+        self.filteringVehicleModels = function (vehicleType) {
+            self.filteredVehicleModels = [];
+            if (vehicleType !== undefined && vehicleType !== null) {
+                for (var i = 0; i < self.vehicleModels.length; i++) {
+                    if (self.vehicleModels[i].vehicleType !== null && self.vehicleModels[i].vehicleType !== undefined) {
+                        if (self.vehicleModels[i].vehicleType.specialization === vehicleType.specialization) {
+                            self.filteredVehicleModels.push(self.vehicleModels[i]);
+                        }
+                    }
+                }
+            } else {
+                console.log('В заявке не указан тип автотранспорта')
+                self.filteredVehicleModels = self.vehicleModels;
+            }
+        };
+
+        self.clearChangeStatusForm = function () {
+            //returning the status of the claim to its original state
+            self.clrec.appointment.status = self.tempStatus;
+            self.clrec.appointment.note = self.tempNote;
+            formClose('formChangeStatus');
+            formClose('cover-trsp1');
+        };
+
+        self.showRecordsPage = function (page) {
+            if ((page > 0) && (page < (self.pageCount + 1))) {
+                self.headers = [];
+                var k = 0;
+                self.n = self.pageCount;
+                self.n1 = page;
+                for (var i = (page * self.numRecordsPerPage) - (self.numRecordsPerPage); i < (page * self.numRecordsPerPage); i++) {
+                    if (self.data[i] !== undefined) {
+                        self.headers[k] = self.data[i];
+                        k++;
+                    }
+                }
+            }
+        };
+
+
+
 
     }]);
 

@@ -31,7 +31,7 @@ edit_open = function () {
     sec[0].style.display = "none";
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "none";
-}
+    }
 
 formRecord_close = function () {
     var str = document.getElementById("formRecord-id");
@@ -85,7 +85,7 @@ templateEditOpen = function () {
     edit_open();
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "block";
-}
+    }
 open_tab1 = function (tabName, btnName, iEnd) {
     for (var i = 1; i <= iEnd; i++) {
         var str = document.getElementById("tab-list" + i);
@@ -162,8 +162,8 @@ open_sidenav = function () {
     var str1 = document.getElementById("claim-create");
     var str2 = document.getElementById("sb-v-id");
     str.style.left = '0';
-    str1.style.width = '82%';
-    str2.style.left = "-2%";
+    str1.style.width = '83%';
+    str2.style.left = "-50%";
     // setTimeout('str2.style.left="-2%"', 900);
 
 }
@@ -172,7 +172,7 @@ close_sidenav = function () {
     var str1 = document.getElementById("claim-create");
     var str2 = document.getElementById("sb-v-id");
     str.style.left = '-17%';
-    str1.style.width = '98%';
+    str1.style.width = '100%';
     str2.style.left = "0";
     // setTimeout('', 900);
 
@@ -214,7 +214,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     function mask(event) {
-        var matrix = "+7 (___) ___ ____",
+        var matrix = "+7(___)_______",
                 i = 0,
                 def = matrix.replace(/\D/g, ""),
                 val = this.value.replace(/\D/g, "");
@@ -229,7 +229,6 @@ window.addEventListener("DOMContentLoaded", function () {
         } else
             setCursorPosition(this.value.length, this);
     }
-    ;
 
     function russ(event) {
         this.value = this.value.replace(/[^а-яёА-ЯЁ]/ig, "");
@@ -238,17 +237,88 @@ window.addEventListener("DOMContentLoaded", function () {
                 this.value = "";
         } else
             setCursorPosition(this.value.length, this);
-    };
+    }
+
+    function fueling(event) {
+        var matrix = "___.__",
+                i = 0,
+                def = matrix.replace(/\D/g, ""),
+                val = this.value.replace(/\D/g, "");
+        if (def.length >= val.length)
+            val = def;
+        this.value = matrix.replace(/./g, function (a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        });
+        if (event.type === "blur") {
+            if (this.value.length === 2)
+                this.value = "";
+        } else
+            setCursorPosition(this.value.length, this);
+    }
+
+    function odometr(event) {
+        var matrix = "_________.__",
+                i = 0,
+                def = matrix.replace(/\D/g, ""),
+                val = this.value.replace(/\D/g, "");
+        if (def.length >= val.length)
+            val = def;
+        this.value = matrix.replace(/./g, function (a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        });
+        if (event.type === "blur") {
+            if (this.value.length === 2)
+                this.value = "";
+        } else
+            setCursorPosition(this.value.length, this);
+    }
+
+    function eHours(event) {
+        var matrix = "_______.__",
+                i = 0,
+                def = matrix.replace(/\D/g, ""),
+                val = this.value.replace(/\D/g, "");
+        if (def.length >= val.length)
+            val = def;
+        this.value = matrix.replace(/./g, function (a) {
+            return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? "" : a;
+        });
+        if (event.type === "blur") {
+            if (this.value.length === 2)
+                this.value = "";
+        } else
+            setCursorPosition(this.value.length, this);
+    }
 
     var input = document.querySelector("[type='tel']");
     var surname = document.getElementsByClassName("letter-mask");
+    var fuel = document.getElementsByClassName("fuel");
+    var odom = document.getElementsByClassName("odometr");
+    var engineHours = document.getElementsByClassName("engineHours");
+
     input.addEventListener("input", mask, false);
     input.addEventListener("focus", mask, false);
     input.addEventListener("blur", mask, false);
+
     for (var i = 0; i < surname.length; i++) {
         surname[i].addEventListener("input", russ, false);
         surname[i].addEventListener("focus", russ, false);
         surname[i].addEventListener("blur", russ, false);
+    }
+    for (var i = 0; i < fuel.length; i++) {
+        fuel[i].addEventListener("input", fueling, false);
+        fuel[i].addEventListener("focus", fueling, false);
+        fuel[i].addEventListener("blur", fueling, false);
+    }
+    for (var i = 0; i < odom.length; i++) {
+        odom[i].addEventListener("input", odometr, false);
+        odom[i].addEventListener("focus", odometr, false);
+        odom[i].addEventListener("blur", odometr, false);
+    }
+    for (var i = 0; i < engineHours.length; i++) {
+        engineHours[i].addEventListener("input", eHours, false);
+        engineHours[i].addEventListener("focus", eHours, false);
+        engineHours[i].addEventListener("blur", eHours, false);
     }
 });
 //----------------------------------------------------

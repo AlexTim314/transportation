@@ -2,9 +2,10 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -67,7 +68,7 @@ public class SuperManagerService {
         return result;
     }
 
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd, Principal principal) {
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd, Principal principal) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         if (!departmentRepository.findDepartmentsBySuperManagerWithAffirmedClaims(getUser(principal).getId()).isEmpty()) {
             departmentRepository.findDepartmentsBySuperManagerWithAffirmedClaimsByTimeFilter(dateStart, dateEnd, getUser(principal).getId()).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
@@ -84,7 +85,7 @@ public class SuperManagerService {
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(department.getId(), dateStart, dateEnd)
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
@@ -127,5 +128,15 @@ public class SuperManagerService {
             }
             recordRepository.save(record);
         });
+    }
+    
+    public Boolean getPermit(Principal principal) {
+        AppUser user = getUser(principal);
+        for (AppRole role : user.getRoles()) {
+            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -8,7 +8,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         self.workName = null;
         self.tIds = 0;
         self.places = [];
-
+        self.checkedTskNumb = 0;
         self.routeTemplates = [];
 
         self.routeTemplate = {id: null, name: null, routeTasks: []};
@@ -107,12 +107,20 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             } else {
                 self.updateRouteTemplate();
             }
+            self.fetchRouteTemplates();
         };
 
         self.addTask = function (p) {
-            self.routeTemplate.routeTasks.push({id: null, place: p, workName: self.workName, tIds: self.tIds});
-            self.tIds++;
+            for (var i = 0; i < self.routeTemplate.routeTasks.length; i++) {
+                if (self.routeTemplate.routeTasks[i].orderNum > self.checkedTskNumb) {
+                    self.routeTemplate.routeTasks[i].orderNum = self.routeTemplate.routeTasks[i].orderNum + 1;
+                }
+            }
+            self.routeTemplate.routeTasks.push({id: null, place: p, workName: self.workName, orderNum: self.checkedTskNumb + 1});
             self.workName = null;
+//            self.routeTemplate.routeTasks.push({id: null, place: p, workName: self.workName, tIds: self.tIds});
+            self.tIds++;
+//            self.workName = null;
         };
 
         self.removeTask = function (tsk) {
@@ -136,6 +144,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         self.tryToCreate = function () {
             self.tIds = 0;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
+            formOpen('cover-trsp1');
             formOpen('formRouteTemplate');
         };
 
@@ -155,6 +164,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                 self.tIds++;
                 self.routeTemplate.routeTasks.push(tsk);
             }
+            formOpen('cover-trsp1');
             formOpen('formRouteTemplate');
         };
 
@@ -165,6 +175,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                     idsArr.push(self.routeTemplates[i].id);
                 }
             }
+            formOpen('cover-trsp1');
             formOpen('del-route-templ-confirm');
         };
 
@@ -172,12 +183,35 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
             formClose('formRouteTemplate');
+            formClose('cover-trsp1');
         };
 
         self.checkAll = function () {
             for (var i = 0; i < self.routeTemplates.length; i++) {
                 self.routeTemplates[i].checked = self.all;
             }
+        };
+
+        self.checkTsk = function (tsk) {
+            self.checkedTskNumb = tsk.orderNum;
+            for (var i = 0; i < self.routeTemplate.routeTasks.length; i++) {
+                if (self.routeTemplate.routeTasks[i].checked) {
+                    self.routeTemplate.routeTasks[i].checked = false;
+                    break;
+                }
+            }
+            for (var j = 0; j < self.routeTemplate.routeTasks.length; j++) {
+                if (self.routeTemplate.routeTasks[j] === tsk) {
+                    self.routeTemplate.routeTasks[j].checked = true;
+                    self.routeTemplate.routeTasks[j] = tsk;
+                    break;
+                }
+            }
+        };
+
+        self.cancelDeleteRouteTempl = function () {
+            formClose('del-route-templ-confirm');
+            formClose('cover-trsp1');
         };
 
     }]);

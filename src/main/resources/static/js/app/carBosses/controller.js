@@ -70,7 +70,7 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
                     .then(
                             function (d) {
                                 self.carBoss = {id: null};
-                                formClose('del-car-boss-confirm');
+                                self.cancelDeleteCarBossForm();
                                 self.fetchCarBosses();
                             },
                             function (errResponse) {
@@ -89,6 +89,7 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
 
         self.tryToCreate = function () {
             self.carBoss = {id: null};
+            formOpen('cover-trsp1');
             formOpen('formCarBoss');
             self.setBirthday();
         };
@@ -103,17 +104,20 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             self.carBoss.address = carBoss.address;
             self.carBoss.phone = carBoss.phone;
             self.carBoss.department = carBoss.department;
+            formOpen('cover-trsp1');
             formOpen('formCarBoss');
         };
 
         self.tryToDelete = function (carBoss) {
             self.carBoss = carBoss;
+            formOpen('cover-trsp1');
             formOpen('del-car-boss-confirm');
         };
 
         self.resetForm = function () {
             self.carBoss = {id: null};
             formClose('formCarBoss');
+            formClose('cover-trsp1');
         };
         
         self.setBirthday = function () {
@@ -128,6 +132,11 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             var maxDay = year + "-" + month + "-" + day;
             document.getElementById('birthday').value = maxDay;
             document.getElementById('birthday').max = maxDay;
+        };
+        
+        self.cancelDeleteCarBossForm = function(){
+            formClose('del-car-boss-confirm');
+            formClose('cover-trsp1');
         };
 
     }]);

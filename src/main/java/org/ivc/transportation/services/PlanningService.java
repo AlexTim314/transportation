@@ -2,9 +2,10 @@ package org.ivc.transportation.services;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
@@ -25,8 +26,10 @@ import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
+import org.ivc.transportation.utils.AffirmedClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
+import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.CompositeOtsInfo;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils;
@@ -46,12 +49,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlanningService {
 
+
+
     @Autowired
     private DepartmentRepository departmentRepository;
 
     @Autowired
     private ClaimRepository claimRepository;
-    
+
     @Autowired
     private CarBossRepository carBossRepository;
 
@@ -66,13 +71,13 @@ public class PlanningService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
-    
+
     @Autowired
     private RouteTaskRepository routeTaskRepository;
-    
+
     @Autowired
     private TransportDepRepository transportDepRepository;
-    
+
     @Autowired
     private VehicleRepository vehicleRepository;
 
@@ -82,16 +87,18 @@ public class PlanningService {
     private Appointment prepareAppointment(Appointment appointment) {
         return appointment == null ? new Appointment() : appointment;
     }
-    
+
     private List<CompositeClaimRecord> getCompositeClaimRecordsAll(Department department) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
+        LocalDateTime r = LocalDateTime.now();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrue(department.getId())
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
                 prepareAppointment(appointmentRepository.getLastByRecordId(u.getId())))));
+        System.out.println(LocalDateTime.now() + " - " + r);
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilter(Department department, LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullAndActualIsTrueTimeFilter(department.getId(), dateStart, dateEnd)
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
@@ -107,7 +114,7 @@ public class PlanningService {
         return result;
     }
 
-    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    private List<CompositeClaimRecord> getCompositeClaimRecordsTimeFilterPlanned(Department department, LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeClaimRecord> result = new ArrayList<CompositeClaimRecord>();
         recordRepository.findByDepartmentIdAndAffirmationDateIsNotNullTimeFilterPlanned(department.getId(), dateStart, dateEnd)
                 .forEach(u -> result.add(new CompositeClaimRecord(new Claim(claimRepository.findByRecordId(u.getId())), u,
@@ -116,13 +123,19 @@ public class PlanningService {
     }
 
     public List<CompositeDepartmentClaimRecords> getAffirmedClaimsAll() {
+        //
+//        System.out.println("START: " + LocalDateTime.now());
+        //
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithAffirmedClaims().forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsAll(u.getDepartment())));
+        //
+//        System.out.println("END: " + LocalDateTime.now());
+        //
         return result;
     }
 
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithAffirmedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilter(u.getDepartment(), dateStart, dateEnd)));
@@ -136,7 +149,7 @@ public class PlanningService {
         return result;
     }
 
-    public List<CompositeDepartmentClaimRecords> getPlannedClaimsTimeFilter(ZonedDateTime dateStart, ZonedDateTime dateEnd) {
+    public List<CompositeDepartmentClaimRecords> getPlannedClaimsTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         List<CompositeDepartmentClaimRecords> result = new ArrayList<CompositeDepartmentClaimRecords>();
         departmentRepository.findDepartmentsWithPlannedClaimsByTimeFilter(dateStart, dateEnd).forEach(u -> result.add(new CompositeDepartmentClaimRecords(u)));
         result.forEach(u -> u.setCompositeClaimRecords(getCompositeClaimRecordsTimeFilterPlanned(u.getDepartment(), dateStart, dateEnd)));
@@ -161,7 +174,7 @@ public class PlanningService {
         }
         return result;
     }
-    
+
     public Record recordCancel(Principal principal, CompositeRecordIdAppointment compositeRecordIdAppointment) {
         Appointment app = compositeRecordIdAppointment.getAppointment();
         if (app.getId() == null) {
@@ -176,7 +189,7 @@ public class PlanningService {
         record.getAppointments().add(app);
         return recordRepository.save(record);
     }
-    
+
     private AppUser getUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -201,10 +214,9 @@ public class PlanningService {
         tempRecord.setEndDate(record.getEndDate());
         return recordRepository.save(tempRecord);
     }
-    
-    
+
     public List<CarBoss> findCarBossesByDepartment(Principal principal) {
-            return carBossRepository.findAll();
+        return carBossRepository.findAll();
     }
 
     public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
@@ -224,12 +236,37 @@ public class PlanningService {
     }
 
     public List<CompositeOtsInfo> getOtsInfo() {
-        List<CompositeOtsInfo> result = new ArrayList<CompositeOtsInfo>();
+        List<CompositeOtsInfo> result = new ArrayList<>();
         transportDepRepository.findOtsInfo().forEach(u -> result.add(new CompositeOtsInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
-    
+
     public List<Vehicle> getAllVehicles(Principal principal) {
         return vehicleRepository.findAll();
+    }
+
+    public Boolean getPermit(Principal principal) {
+        AppUser user = getUser(principal);
+        for (AppRole role : user.getRoles()) {
+            if (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<CompositeModelTransportDep> getTransportDepModels() {
+        return transportDepRepository.findModels();
+    }
+
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
+    }
+    
+    public List<AffirmedClaim> getAffirmedClaimsAll1() {
+        return claimRepository.findAffirmedClaims();
     }
 }

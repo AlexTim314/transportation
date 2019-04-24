@@ -19,10 +19,10 @@
                 <th>Старший</th>
                 <th>Маршрут</th>
                 <th>
-                    <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" ng-click="ctrl.getToday()" onclick="menu_open()"></i>
-                    <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" onclick="templateOpen()"></i>
+                    <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" ng-click="ctrl.addNewClaim()"></i>
+                    <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" ng-click="ctrl.addClaimFromTemplate()"></i>
                     <i title="Утвердить" class="fas fa-clipboard-check fa-lg" ng-click="ctrl.affirmClaims()" ng-show="ctrl.permit"></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-confirm')"></i>                                        
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" ng-click="ctrl.prepToDelete()"></i>                                        
                 </th>
             </tr>
             <tr class="activeRow" ng-repeat-start="claim in ctrl.newClaims| filter: search">

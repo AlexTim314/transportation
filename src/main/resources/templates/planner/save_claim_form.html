@@ -1,15 +1,16 @@
 <div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times" ng-click="plctrl.resetClaimForm()"  onclick="formClose('form-add')"></i>
+    <i class="fas fa-times" ng-click="plctrl.resetClaimForm()"></i>
     <form>
+        <div class="form-item">
+
+            <label for="department">Подразделение</label>
+            <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" ng-change="plctrl.fetchCarBosses()" required>
+                <option value="" disabled selected><--Выберите подразделение--></option>
+            </select>
+
+        </div>
         <section class="section-type">
-            <div class="form-item">
-                <div class="check-item" > 
-                    <label for="department">Подразделение</label>
-                    <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" ng-change="plctrl.fetchCarBosses()" required>
-                        <option value="" disabled selected><--Выберите подразделение--></option>
-                    </select>
-                </div>	
-            </div>
+
             <div class="form-item clearfix" >
 
                 <div class=" left-block">
@@ -39,12 +40,12 @@
             <div class="form-item clearfix">
                 <div class="left-block-route">
                     <label for="carBoss">Старший</label>
-                    <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.carBosses |filter: {department : {id: plctrl.specDepartment.id}} track by cb.firstname" ng-model="plctrl.newClaim.carBoss" required>
+                    <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.carBosses|filter: {department : {id: plctrl.specDepartment.id}} track by cb.firstname" ng-model="plctrl.newClaim.carBoss" required>
                         <option value="" disabled selected>Выберите старшего машины</option>
                     </select>
                 </div>
                 <div class="right-block-route">
-                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('plannerCarBoss')" title="Добавить старшего"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('plannerCarBoss')" title="Добавить старшего"><i class="fas fa-lg fa-user" ></i></div> 						 		
                 </div>
             </div>
             <div class="form-item clearfix">
@@ -94,7 +95,7 @@
                             <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
                             <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
-                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
+<!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
                     </div>
 
                 </div>

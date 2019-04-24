@@ -31,7 +31,22 @@ App.controller('SuperManagerController', ['$scope', 'SuperManagerService',
         self.date;
         self.allChecked = false;
         self.unsignedChecked = false;
+        self.permit = false;
 
+
+        self.getPermit = function () {
+            SuperManagerService.getPermit()
+                    .then(
+                            function (d) {
+                                self.permit = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Permit');
+                            }
+                    );
+        };
+
+        self.getPermit();
 
 
         self.fetchAllRecords = function () {

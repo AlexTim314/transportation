@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import static org.ivc.transportation.controllers.WaybillFileDownloadController.getCarBossNameWithInitials;
 import static org.ivc.transportation.controllers.WaybillFileDownloadController.getDriverNameWithInitials;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Claim;
@@ -36,7 +36,6 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.DispatcherService;
-import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -68,9 +67,6 @@ public class PlanDownloadController {
 
     @Autowired
     private DispatcherService dispatcherService;
-    
-    @Autowired
-    private VehicleService vehicleService;
 
     @Autowired
     private ServletContext servletContext;
@@ -79,7 +75,7 @@ public class PlanDownloadController {
     @ResponseBody
     public FileSystemResource download(HttpServletResponse response, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
 
-        ZonedDateTime today = ZonedDateTime.now();
+        LocalDate today = LocalDate.now();
         LocalDate purposeDate = LocalDate.parse(strDate, DateTimeFormatter.BASIC_ISO_DATE);
 
         System.out.println("plan.docx write");
@@ -129,7 +125,7 @@ public class PlanDownloadController {
         textToParagraph(cell.addParagraph(), "Начальник Комплекса АТО", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "", 12, ParagraphAlignment.CENTER);
         textToParagraph(cell.addParagraph(), "К.К.Мавлютов", 12, ParagraphAlignment.RIGHT); //TODO: вытаскивать из данных КАТО        
-        textToParagraph(cell.addParagraph(), formateDate(today.toLocalDate()), 12, ParagraphAlignment.LEFT);
+        textToParagraph(cell.addParagraph(), formateDate(today), 12, ParagraphAlignment.LEFT);
         row.getCell(0).setWidth("65.00%");
         row.getCell(1).setWidth("35.00%");
 
@@ -190,10 +186,8 @@ public class PlanDownloadController {
                 //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
                 //!Надо выяснить как происходит подача заявок в таком случае.
                 //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
-                String time = record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        + "-"
-                        + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-                prevRow.time.add(time);
+
+                prevRow.time.add(getTimeString(record));
                 prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
             } else {
                 RowData rowData = new RowData();
@@ -201,7 +195,7 @@ public class PlanDownloadController {
 
                 Claim claim = dispatcherService.findClaimByRecord(record);
 
-                rowData.carBoss = claim.getCarBoss().getFirstname();
+                rowData.carBoss = getCarBossNameWithInitials(claim.getCarBoss());
                 rowData.driver.add(getDriverNameWithInitials(a.getDriver()));
                 rowData.departmentName = claim.getDepartment().getFullname();
                 rowData.purposes = claim.getPurpose();
@@ -218,26 +212,26 @@ public class PlanDownloadController {
                         return Integer.compare(t1.getOrderNum(), t2.getOrderNum());
                     });
                     for (RouteTask routeTask : routeTasks) {
+                        //System.out.println(routeTask.getId() + " " + routeTask.getPlace() + " " +routeTask.getPlace().getName());
+                        if ((routeTask == null) || (routeTask.getPlace() == null) || (routeTask.getPlace().getName() == null)) {
+                            break;
+                        }
                         route = route + routeTask.getPlace().getName() + ", ";
                     }
                     route = route.substring(0, route.length() - 2);
                 }
                 rowData.route = route;
 
-                rowData.time.add(record.getStartDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                        + "-"
-                        + record.getEndDate().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+                rowData.time.add(getTimeString(record));
 
                 prevRow = rowData;
                 rowDataList.add(rowData);
             }
         }
 
-        //-----------тестовые данные для проверки отображения
         if (appointments.isEmpty()) {
             fullfillTestData(rowDataList);
         }
-        //end-----------тестовые данные для проверки
 
         String currentDepName = "";
         int number = 1;
@@ -289,18 +283,15 @@ public class PlanDownloadController {
         }
 
         //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
-        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое);
+        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.ремонт);
+        vehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
         //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
         vehicles = vehicles.stream().filter((t) -> {
             return t.getModel() != null;
         }).filter((t) -> {
             return t.getNumber() != null;
         }).collect(Collectors.toList());
-        vehicles.stream().filter((t) -> {
-            return (t.getNote() == null) || (t.getNote().equals(""));
-        }).findAny().ifPresent((t) -> {
-            t.setNote("Не введён в эксплуатацию");
-        });
+
         for (Vehicle vehicle : vehicles) {
             row = table.createRow();
             isBold = true;
@@ -317,7 +308,6 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, isBold, parAligCenter);
             textToParagraph(row.getCell(4).getParagraphs().get(0), vehicle.getNote(),
                     "Times New Roman", fontSize, false, parAligLeft);
-            
 
             int cellIndex = 4;
             row.getCell(cellIndex).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
@@ -342,27 +332,13 @@ public class PlanDownloadController {
 
         //-------------- отправка файла
         MediaTypeUtils mediaTypeUtils = new MediaTypeUtils();
-        String fileName = "plan" + today.toLocalDate().toString() + ".docx";
+        String fileName = "plan" + today.toString() + ".docx";
         MediaType mediaType = mediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
         response.setContentType(mediaType.getType());
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
         response.setContentLength((int) file.length());
         FileSystemResource resource = new FileSystemResource(file);
         return resource;
-
-        /*  try (BufferedInputStream inStream = new BufferedInputStream(new FileInputStream(file))) {
-        BufferedOutputStream outStream = new BufferedOutputStream(response.getOutputStream());
-        
-        byte[] buffer = new byte[1024];
-        int bytesRead = 0;
-        while ((bytesRead = inStream.read(buffer)) != -1) {
-        
-        System.out.println("Plan downloading..(" + bytesRead + "bytes)");
-        outStream.write(buffer, 0, bytesRead);
-        }
-        
-        outStream.flush();
-        }*/
     }
 
     private String formateDate(LocalDate date) {
@@ -442,7 +418,7 @@ public class PlanDownloadController {
         rd.carBoss = "Старший машины С.М.";
         rd.departmentName = "ЦИ-2";
         rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
+        rd.purposes = "Дежурный";
         rd.route = "Пл.10, Пл. 95";
         rd.time.add("8:00-19:00");
         rd.transportDepNumber = "4";
@@ -451,45 +427,22 @@ public class PlanDownloadController {
 
         rowDataList.add(rd);
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "5";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
 
-        rowDataList.add(rd);
+    }
 
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Перевозка грузов";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "3";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Нужно поездить туда-сюда";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "8";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
+    private String getTimeString(Record record) {
+        String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"))
+                + "("
+                + record.getEntranceDate().format(DateTimeFormatter.ofPattern("HH:mm"))
+                + ")- ";
+        if (record.getEndDate() != null) {
+            String endTimeStr = record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
+            if (endTimeStr.equalsIgnoreCase("23:59")){
+                endTimeStr = "24:00";
+            }
+            time = time + endTimeStr;
+        }
+        return time;
     }
 
     private class RowData {
@@ -530,10 +483,10 @@ public class PlanDownloadController {
             return;
         }
         textToParagraph(cell.getParagraphs().get(0), list.get(0),
-                "Times New Roman", fontSize, isBold, paragraphAlignment);
+                fontFamily, fontSize, isBold, paragraphAlignment);
         for (int i = 1; i < list.size(); i++) {
             textToParagraph(cell.addParagraph(), list.get(i),
-                    "Times New Roman", fontSize, isBold, paragraphAlignment);
+                    fontFamily, fontSize, isBold, paragraphAlignment);
         }
     }
 
