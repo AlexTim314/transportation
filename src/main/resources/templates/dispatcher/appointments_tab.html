@@ -58,15 +58,19 @@
         <button class="btn edit assert" ng-click="plctrl.updateAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
         <span class="btn edit btn-print"><i class="fa fa-lg fa-print"></i></span>
     </div>
-    <div class="paginator">
-        
-        <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n1 - 1)" title="Предыдущая страница">&lt</div>
-        <!--        <div class="pages {{plctrl.first?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1">{{plctrl.n1}}</div>-->
-        <div class="pages page-active" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1" title="Текущая страница">{{plctrl.n1}}</div>	
-        <!--        <div class="pages {{plctrl.last?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n3)" ng-model="plctrl.n3">{{plctrl.n3}}</div>-->
-        <div class="pages" ng-click="plctrl.showRecordsPage(plctrl.n1+1)" title="Следующая страница">&gt</div>
-        <div class="pages">...</div>	
-        <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n)" ng-model="plctrl.n" title="Всего страниц">{{plctrl.n}}</div>
+    <div class="paginator" id='pagination'>
+        <div class="pages" onclick="previousPageClick()">&lt</div>	
+        <div class="pages" onclick="nextPageClick()">&gt</div>						 					
     </div>
-   
+    <!--    <div class="paginator">
+            
+            <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n1 - 1)" title="Предыдущая страница">&lt</div>
+                    <div class="pages {{plctrl.first?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1">{{plctrl.n1}}</div>
+            <div class="pages page-active" ng-click="plctrl.showRecordsPage(plctrl.n1)" ng-model="plctrl.n1" title="Текущая страница">{{plctrl.n1}}</div>	
+                    <div class="pages {{plctrl.last?'page-active':''}}" ng-click="plctrl.showRecordsPage(plctrl.n3)" ng-model="plctrl.n3">{{plctrl.n3}}</div>
+            <div class="pages" ng-click="plctrl.showRecordsPage(plctrl.n1+1)" title="Следующая страница">&gt</div>
+            <div class="pages">...</div>	
+            <div class="pages " ng-click="plctrl.showRecordsPage(plctrl.n)" ng-model="plctrl.n" title="Всего страниц">{{plctrl.n}}</div>
+        </div>-->
+
 </div>
