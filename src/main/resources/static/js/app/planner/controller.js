@@ -72,6 +72,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.tempTransportDep = {};
         self.tempVehSpec = '';
         self.username;
+        self.pageCount;
+        self.numRecordsPerPage = 10;
+        self.pager = {};
+        self.data = [];
+        // self.clrecs = [];
 
 
         self.getPermit = function () {
@@ -637,10 +642,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.rowClick = function (dep) {
-            if (dep.isVisible === undefined) {
-                dep.isVisible = true;
-            } else {
+            if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
+            } else {
+                for (var i = 0; i < self.headers.length; i++) {
+                    self.headers[i].isVisible = false;
+                }
+                //if (dep.isVisible === undefined) {
+                //     dep.isVisible = true;
+                // } else {
+                dep.isVisible = !dep.isVisible;
+                // }
+                self.showRecords(dep.compositeClaimRecords);
             }
         };
 
@@ -849,7 +862,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         var expandHeaders = function () {
             for (var k in expandedHeaders) {
-                self.headers[k].isVisible = expandedHeaders[k];
+                if (self.headers.length > 0)
+                    self.headers[k].isVisible = expandedHeaders[k];
             }
         };
 
@@ -1459,6 +1473,73 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formOpen('form-add');
             formOpen('cover-trsp1');
         };
+
+        self.showRecords = function (clrecs) {
+            self.clrec = [];
+            self.pageCount = Math.ceil(clrecs.length / self.numRecordsPerPage);
+            console.log('page count =' + self.pageCount);
+            self.clrecs = clrecs;
+            self.setPage(1);
+        };
+
+//=================pagination===========
+        self.setPage = function (page) {
+            if (page < 1 || page > self.pageCount) {
+                self.pager = {};
+                self.data = [];
+                return;
+            }
+            // get pager object from service
+            self.pager = self.getPager(self.clrecs.length, page, self.numRecordsPerPage);
+            // get current page of items
+            // self.data = self.clrecs.slice(self.pager.startIndex, self.pager.endIndex + 1);
+            console.log(self.data);
+        };
+
+        self.getPager = function (totalItems, currentPage, pageSize) {
+            var totalPages = self.pageCount;
+            var startPage, endPage;
+            if (totalPages <= 10) {
+                // less than 10 total pages so show all
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // more than 10 total pages so calculate start and end pages
+                if (currentPage <= 6) {
+                    startPage = 1;
+                    endPage = 10;
+                } else if (currentPage + 4 >= totalPages) {
+                    startPage = totalPages - 9;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 5;
+                    endPage = currentPage + 4;
+                }
+            }
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+            var pages = [];
+            var k = 0;
+            // create an array of pages to ng-repeat in the pager control
+            for (var i = startPage; i < endPage + 1; i++) {
+                pages[k] = i;
+                k++;
+            }
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
+        };
+//=====================
 
     }]);
 
