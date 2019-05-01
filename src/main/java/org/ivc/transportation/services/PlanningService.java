@@ -12,6 +12,7 @@ import org.ivc.transportation.entities.AppointmentInfo;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.Vehicle;
@@ -20,6 +21,7 @@ import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DepartmentRepository;
+import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
@@ -80,6 +82,9 @@ public class PlanningService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+    
+    @Autowired
+    private DriverRepository driverRepository;
 
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
@@ -243,6 +248,10 @@ public class PlanningService {
 
     public List<Vehicle> getAllVehicles(Principal principal) {
         return vehicleRepository.findAll();
+    }
+    
+    public List<Driver> getAllDrivers(Principal principal) {
+        return driverRepository.findAll();
     }
 
     public Boolean getPermit(Principal principal) {

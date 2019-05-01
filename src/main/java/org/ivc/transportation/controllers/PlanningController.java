@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
@@ -54,11 +55,11 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
 
-    @GetMapping("/planner/affirmedClaims1")
+    @GetMapping("/planner/affirmedClaims1/monthBefore")
     public List<AffirmedClaim> getAffirmedClaimsAll1() {
         return planningService.getAffirmedClaimsAll1();
     }
-
+    
     @GetMapping("/planner/ots_info")
     public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
@@ -172,6 +173,11 @@ public class PlanningController {
     @GetMapping("/planner/vehicles")
     public List<Vehicle> getAllVehicles(Principal principal) {
         return planningService.getAllVehicles(principal);
+    }
+       
+    @GetMapping("/planner/drivers")
+    public List<Driver> getAllDrivers(Principal principal) {
+        return planningService.getAllDrivers(principal);
     }
 
     @PostMapping("/planner/carBoss_create")

@@ -1,7 +1,7 @@
 'use strict';
 
-App.controller('PlannerController', ['$scope', 'PlannerService',
-    function ($scope, PlannerService) {
+App.controller('PlannerController1', ['$scope', 'PlannerService1',
+    function ($scope, PlannerService1) {
         var self = this;
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: '', claims: []};
         self.specDepartment = {id: null, shortname: '', fullname: '', address: '', phone: ''};
@@ -76,11 +76,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.numRecordsPerPage = 10;
         self.pager = {};
         self.data = [];
+        self.cmpsts = [];
+        self.vehicleTypes = [];
+        self.drivers = [];
+        self.routeTasks = [];
         // self.clrecs = [];
 
 
         self.getPermit = function () {
-            PlannerService.getPermit()
+            PlannerService1.getPermit()
                     .then(
                             function (d) {
                                 self.permit = d;
@@ -92,7 +96,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.getUserName = function () {
-            PlannerService.getUserName()
+            PlannerService1.getUserName()
                     .then(
                             function (d) {
                                 self.username = d.username;
@@ -106,7 +110,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.getUserName();
 
         self.fetchAllSpecDepartments = function () {
-            PlannerService.fetchAllDepartments()
+            PlannerService1.fetchAllDepartments()
                     .then(
                             function (d) {
                                 self.specDepartments = d;
@@ -123,13 +127,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var truck = 'fas fa-lg fa-truck';
             var tractor = 'fas fa-lg fa-tractor';
             switch (spec) {
-                case "пассажирский":
+                case 0:
                     return bus;
-                case "легковой":
+                case 1:
                     return car;
-                case "грузовой":
+                case 2:
                     return truck;
-                case "спецтехника":
+                case 3:
                     return tractor;
             }
         };
@@ -152,7 +156,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchAllAppointments = function () {
-            PlannerService.fetchAllAppointments()
+            PlannerService1.fetchAllAppointments()
                     .then(
                             function (d) {
                                 self.appointments = d;
@@ -164,7 +168,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchAllClaims = function () {
-            PlannerService.fetchAllClaims()
+            PlannerService1.fetchAllClaims()
                     .then(
                             function (d) {
                                 self.claims = d;
@@ -182,10 +186,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.archive = false;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchMonthPlanRecords()
+            PlannerService1.fetchMonthPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
@@ -203,10 +208,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.archive = true;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchMonthBeforePlanRecords()
+            PlannerService1.fetchMonthBeforePlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                console.log(self.cmpsts)
+                                self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
@@ -226,10 +233,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.archive = false;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchWeekPlanRecords()
+            PlannerService1.fetchWeekPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
@@ -245,10 +253,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.today = true;
             self.week = false;
             self.archive = false;
-            PlannerService.fetchTomorrowPlanRecords()
+            PlannerService1.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -264,10 +273,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.archive = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
-            PlannerService.fetchDatePlanRecords(datePlan)
+            PlannerService1.fetchDatePlanRecords(datePlan)
                     .then(
                             function (d) {
-                                self.headers = d;
+                                self.cmpsts = d;
+                                self.createHeaders();
                                 expandHeaders();
                             },
                             function (errResponse) {
@@ -284,7 +294,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carchive = false;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchMonthCompletePlanRecords()
+            PlannerService1.fetchMonthCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -304,7 +314,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carchive = true;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchMonthBeforeCompletePlanRecords()
+            PlannerService1.fetchMonthBeforeCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -324,7 +334,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carchive = false;
             formOpen('cover-trsp1');
             formOpen('preloader');
-            PlannerService.fetchWeekCompletePlanRecords()
+            PlannerService1.fetchWeekCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -342,7 +352,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.ctoday = true;
             self.cweek = false;
             self.carchive = false;
-            PlannerService.fetchTomorrowCompletePlanRecords()
+            PlannerService1.fetchTomorrowCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -361,7 +371,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.carchive = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
-            PlannerService.fetchDateCompletePlanRecords(datePlan)
+            PlannerService1.fetchDateCompletePlanRecords(datePlan)
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -375,7 +385,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.fetchCarBosses = function () {
             console.log(self.specDepartment);
-            PlannerService.fetchCarBosses()
+            PlannerService1.fetchCarBosses()
                     .then(
                             function (d) {
                                 self.carBosses = d;
@@ -387,7 +397,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchTransportDeps = function () {
-            PlannerService.fetchTransportDeps()
+            PlannerService1.fetchTransportDeps()
                     .then(
                             function (d) {
                                 self.transportDeps = d;
@@ -399,7 +409,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchVehicles = function () {
-            PlannerService.fetchVehicles()
+            PlannerService1.fetchVehicles()
                     .then(
                             function (d) {
                                 self.vehicles = d;
@@ -410,8 +420,20 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchDrivers = function () {
+            PlannerService1.fetchDrivers()
+                    .then(
+                            function (d) {
+                                self.drivers = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Drivers');
+                            }
+                    );
+        };
+
         self.fetchAllVehicleModels = function () {
-            PlannerService.fetchAllVehicleModels()
+            PlannerService1.fetchAllVehicleModels()
                     .then(
                             function (d) {
                                 self.vehicleModels = d;
@@ -425,7 +447,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.fetchPlaces = function () {
-            PlannerService.fetchPlaces()
+            PlannerService1.fetchPlaces()
                     .then(
                             function (d) {
                                 self.places = d;
@@ -437,7 +459,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.fetchOtsInfo = function () {
-            PlannerService.fetchOtsInfo()
+            PlannerService1.fetchOtsInfo()
                     .then(
                             function (d) {
                                 self.otsInfos = d;
@@ -455,7 +477,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.fetchOtsVehModels = function () {
-            PlannerService.fetchOtsVehModels()
+            PlannerService1.fetchOtsVehModels()
                     .then(
                             function (d) {
                                 self.compVMTDSpecs = d;
@@ -493,7 +515,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.getDateFromServer = function () {
-            PlannerService.fetchDateFromServer()
+            PlannerService1.fetchDateFromServer()
                     .then(
                             function (d) {
                                 var date = new Date(d);
@@ -552,7 +574,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
          };
          */
         self.fetchVehicleTypes = function () {
-            PlannerService.fetchVehicleTypes()
+            PlannerService1.fetchVehicleTypes()
                     .then(
                             function (d) {
                                 self.vehicleTypes = d;
@@ -563,23 +585,46 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.fetchDepartments = function () {
+            PlannerService1.fetchDepartments()
+                    .then(
+                            function (d) {
+                                self.departments = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Departments');
+                            }
+                    );
+        };
 
-        self.fetchTomorrowPlanRecords();
-        self.fetchTomorrowCompletePlanRecords();
+        self.fetchRouteTasks = function () {
+            PlannerService1.fetchRouteTasks()
+                    .then(
+                            function (d) {
+                                self.routeTasks = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTasks');
+                            }
+                    );
+        };
+
+        self.fetchDepartments();
+        self.fetchDrivers();
+        self.fetchVehicles();
+        self.fetchVehicleTypes();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
+        self.fetchRouteTasks();
+        self.fetchTomorrowPlanRecords();
+        self.fetchTomorrowCompletePlanRecords();
         self.getDateFromServer();
         self.fetchCarBosses();
         self.fetchPlaces();
         self.fetchAllSpecDepartments();
-        self.fetchVehicleTypes();
         self.fetchOtsInfo();
-        self.fetchVehicles();
         self.fetchOtsVehModels();
 
-        self.departFromObj = function (obj) {
-            self.departments = obj.departments;
-        };
 
         self.createAppointments = function () {
             var appoints = [];
@@ -589,13 +634,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 if (self.headers[i].isVisible) {
                     expandedHeaders[i] = true;
                 }
-                for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                    var appointment = self.headers[i].compositeClaimRecords[j].appointment;
-                    var recId = self.headers[i].compositeClaimRecords[j].record.id;
-                    if (appointment.status === 'CANCELED_BY_USER' || appointment.status === 'CANCELED_BY_PLANNER') {
+                for (var j = 0; j < self.headers[i].composite.length; j++) {
+                    var appointment = self.headers[i].composite[j].appointment;
+                    var recId = self.headers[i].composite[j].record.id;
+                    if (appointment.status === '3' || appointment.status === '4') {
                         continue;
                     }
-                    if (appointment.status === 'CANCELED_BY_DISPATCHER' || appointment.transportDep !== null && appointment.id === null) {
+                    if (appointment.status === '5' || appointment.transportDep !== null && appointment.id === null) {
                         appoints.push({
                             recordId: recId,
                             appointment: appointment
@@ -603,7 +648,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     }
                 }
             }
-            PlannerService.createAppointments(appoints)
+            PlannerService1.createAppointments(appoints)
                     .then(
                             function (d) {
                                 if (self.all) {
@@ -632,7 +677,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.deleteAppointment = function (appointment) {
-            PlannerService.deleteAppointment(appointment)
+            PlannerService1.deleteAppointment(appointment)
                     .then(
                             self.fetchAllAppointments,
                             function (errResponse) {
@@ -653,7 +698,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 // } else {
                 dep.isVisible = !dep.isVisible;
                 // }
-                self.showRecords(dep.compositeClaimRecords);
+                self.showRecords(dep.composite);
             }
         };
 
@@ -747,19 +792,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var canceledByDispatcher = 'Отменено диспетчером';
             var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceledByUser;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceledByPlanner;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceledByDispatcher;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceledBySupermanager;
             }
         };
@@ -771,19 +816,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var completed = 'fas fa-lg fa-check-double';
             var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -795,19 +840,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var completed = 'status-ready';
             var canceled = 'cancel-status';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -827,7 +872,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
 
         self.affirmatorToString = function (user) {
-            if (user !== null) {
+            if (user !== null && user !== undefined) {
                 var nameArr = user.fullName.split(' ');
                 var result = nameArr[0];
                 if (nameArr.length > 1) {
@@ -841,8 +886,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.carBossToString = function (boss) {
-            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
-            return result;
+            if (boss !== null && boss !== undefined) {
+                var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+                return result;
+            }
         };
 
         self.checkPhone = function (appointment) {
@@ -855,7 +902,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
-            if (appointment.status !== 'CANCELED_BY_DISPATCHER' && appointment.id !== null) {
+            if (appointment.status !== '5' && appointment.id !== null) {
                 return true;
             }
         };
@@ -899,22 +946,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         canceledApp = self.record.appointments[i];
                     }
                 }
-                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.status = '4';
                 canceledApp.note = self.cancelNote;
             } else {
                 canceledApp = {id: null, creationDate: '', status: '', note: ''};
-                canceledApp.status = 'CANCELED_BY_PLANNER';
+                canceledApp.status = '4';
                 canceledApp.note = self.cancelNote;
             }
-            PlannerService.cancelRecord({recordId: self.record.id, appointment: canceledApp})
+            PlannerService1.cancelRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
                                 var rec = d;
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].record.id === rec.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -924,7 +971,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].record = d;
+                                self.headers[l].composite[k].record = d;
                             },
                             function (errResponse) {
                                 console.error('Error while canceled Record.');
@@ -934,9 +981,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.amountReady = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'READY') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '1') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -944,9 +993,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.amountInProgress = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'IN_PROGRESS') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '0') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -954,11 +1005,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.amountCanceled = function (header) {
             var k = 0;
-            for (var j = 0; j < header.compositeClaimRecords.length; j++) {
-                if (header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_USER' ||
-                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_PLANNER' ||
-                        header.compositeClaimRecords[j].appointment.status === 'CANCELED_BY_DISPATCHER') {
-                    k = k + 1;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.status === '3' ||
+                            header.composite[j].appointment.status === '4' ||
+                            header.composite[j].appointment.status === '5') {
+                        k = k + 1;
+                    }
                 }
             }
             return k;
@@ -979,15 +1032,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateTime = function () {
-            PlannerService.updateTime(self.record)
+            PlannerService1.updateTime(self.record)
                     .then(
                             function (d) {
                                 var rec = d;
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].record.id === rec.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -997,7 +1050,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].record = d;
+                                self.headers[l].composite[k].record = d;
                             },
                             function (errResponse) {
                                 console.error('Error while updating Time');
@@ -1006,15 +1059,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateRoute = function () {
-            PlannerService.updateRoute(self.claim)
+            PlannerService1.updateRoute(self.claim)
                     .then(
                             function (d) {
                                 var clm = d;
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
-                                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].claim.id === clm.id) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if (self.headers[i].composite[j].claim.id === clm.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -1024,7 +1077,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].claim = d;
+                                self.headers[l].composite[k].claim = d;
                             },
                             function (errResponse) {
                                 console.error('Error while updating Claim.');
@@ -1104,7 +1157,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
-
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
@@ -1182,22 +1234,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             if (self.newClaim.id === null) {
-                //коррекция времени для хранения без часового пояса
-                for (var i = 0; i < self.newClaim.records.length; i++) {
-                    var rec = self.newClaim.records[i];
-                    var sd = new Date(rec.startDate);                    
-                    
-                    var entranceTime = new Date(rec.entranceDate);
-                    entranceTime.setUTCHours(entranceTime.getHours());
-                    var startTime = new Date(rec.startDate);
-                    startTime.setUTCHours(startTime.getHours());
-                    var endTime = new Date(rec.endDate);
-                    endTime.setUTCHours(endTime.getHours());
-                    
-                    self.newClaim.records[i].startDate = self.frmtDate(sd, startTime);
-                    self.newClaim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
-                    self.newClaim.records[i].endDate = self.frmtDate(sd, endTime);
-                }
                 self.createClaim(self.newClaim);
 //                formClose('plannerCarBoss');
 //                formClose('formRoute');
@@ -1213,7 +1249,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('form-add');
             formClose('cover-trsp1');
             self.newClaim.department = self.specDepartment;
-            PlannerService.createClaim(self.newClaim)
+            PlannerService1.createClaim(self.newClaim)
                     .then(
                             function (d) {
                                 //self.newClaims.push(d);
@@ -1307,7 +1343,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.createCarBoss = function () {
             self.carBoss.department = self.specDepartment;
-            PlannerService.createCarBoss(self.carBoss)
+            PlannerService1.createCarBoss(self.carBoss)
                     .then(
                             function (d) {
                                 self.fetchCarBosses();
@@ -1320,7 +1356,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateCarBoss = function () {
-            PlannerService.updateCarBoss(self.carBoss)
+            PlannerService1.updateCarBoss(self.carBoss)
                     .then(
                             function (d) {
                                 self.fetchCarBosses();
@@ -1333,7 +1369,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.removeCB = function (carBoss) {
-            PlannerService.deleteCarBoss(carBoss)
+            PlannerService1.deleteCarBoss(carBoss)
                     .then(
                             function (d) {
                                 var k = -1;
@@ -1392,8 +1428,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.checkAll = function (header) {
-            for (var i = 0; i < header.compositeClaimRecords.length; i++) {
-                header.compositeClaimRecords[i].record.checked = header.allChecked;
+            for (var i = 0; i < header.composite.length; i++) {
+                header.composite[i].record.checked = header.allChecked;
             }
         };
 
@@ -1450,9 +1486,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.changeCheckedTD = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
-                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
-                            self.headers[i].compositeClaimRecords[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
+                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                        if (self.headers[i].composite[j].record.checked) {
+                            self.headers[i].composite[j].appointment.transportDep = compositeClaimRecord.appointment.transportDep;
                         }
                     }
                 }
@@ -1465,9 +1501,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.changeCheckedVM = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
-                    for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                        if (self.headers[i].compositeClaimRecords[j].record.checked) {
-                            self.headers[i].compositeClaimRecords[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
+                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                        if (self.headers[i].composite[j].record.checked) {
+                            self.headers[i].composite[j].appointment.vehicleModel = compositeClaimRecord.appointment.vehicleModel;
                         }
                     }
                 }
@@ -1502,7 +1538,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
-                //self.pager = {};
+                self.pager = {};
                 self.data = [];
                 return;
             }
@@ -1557,6 +1593,119 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             };
         };
 //=====================
+
+        self.createHeaders = function () {
+            var t1 = Date.now();
+            self.headers = [];
+            var deps = [];
+            var k = 0;
+            deps[k] = self.cmpsts[0].departmentid;
+            for (var i = 1; i < self.cmpsts.length; i++) {
+                if (self.cmpsts[i].departmentid !== deps[k]) {
+                    k++;
+                    deps[k] = self.cmpsts[i].departmentid;
+                }
+            }
+            for (var i = 0; i < deps.length; i++) {
+                for (var j = 0; j < self.departments.length; j++) {
+                    if (deps[i] === self.departments[j].id) {
+                        self.headers[i] = {
+                            department: {
+                                id: self.departments[j].id,
+                                shortname: self.departments[j].shortname,
+                                fullname: self.departments[j].fullname},
+                            composite: []
+                        };
+
+                    }
+                }
+            }
+            for (var i = 0; i < self.headers.length; i++) {
+                for (var j = 0; j < self.cmpsts.length; j++) {
+                    if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
+                        for (var l = 0; l < self.transportDeps.length; l++) {
+                            if (self.cmpsts[j].transportdepid === self.transportDeps[l].id) {
+                                var transportDep = self.transportDeps[l];
+                            }
+                        }
+                        for (var l = 0; l < self.vehicleModels.length; l++) {
+                            if (self.cmpsts[j].modelid === self.vehicleModels[l].id) {
+                                var vehicleModelId = self.vehicleModels[l].id;
+                                var vehicleModelModelName = self.vehicleModels[l].modelName;
+                                var vehicleModelVehicleType = self.vehicleModels[l].vehicleType;
+                            }
+                        }
+                        for (var l = 0; l < self.drivers.length; l++) {
+                            if (self.cmpsts[j].driverid === self.drivers[l].id) {
+                                var driverId = self.drivers[l].id;
+                                var driverFirstname = self.drivers[l].firstname;
+                                var driverName = self.drivers[l].name;
+                                var driverSurname = self.drivers[l].surname;
+                                var driverPhone = self.drivers[l].phone;
+                            }
+                        }
+                        for (var l = 0; l < self.vehicles.length; l++) {
+                            if (self.cmpsts[j].vehicleid === self.vehicles[l].id) {
+                                var vehicle = self.vehicles[l];
+                            }
+                        }
+
+                        self.headers[i].composite.push({
+                            claim: {
+                                id: self.cmpsts[j].claimid,
+                                specialization: self.cmpsts[j].claimspecialization,
+                                purpose: self.cmpsts[j].claimpurpose,
+                                vehicleType: {typeName: self.cmpsts[j].vehicletypename},
+                                routeTasks: {}
+                            },
+                            record: {
+                                id: self.cmpsts[j].recordid,
+                                startDate: self.cmpsts[j].startdate,
+                                entranceDate: self.cmpsts[j].entrancedate,
+                                endDate: self.cmpsts[j].enddate
+                            },
+                            appointment: {
+                                id: self.cmpsts[j].appointmentid,
+                                status: self.cmpsts[j].appointmentstatus,
+                                note: self.cmpsts[j].appointmentnote,
+                                transportDep: transportDep,
+                                vehicleModel: {
+                                    id: vehicleModelId,
+                                    modelName: vehicleModelModelName,
+                                    vehicleType: vehicleModelVehicleType
+                                },
+                                vehicle: vehicle,
+                                driver: {
+                                    id: driverId,
+                                    firstname: driverFirstname,
+                                    name: driverName,
+                                    surname: driverSurname,
+                                    phone: driverPhone
+                                },
+                                creator: {
+                                    id: null,
+                                    fullName: null,
+                                    post: null
+                                },
+                                modificator: {
+                                    id: null,
+                                    fullName: null,
+                                    post: null
+                                }
+                            }
+                        });
+
+                    }
+                }
+            }
+
+            var t2 = Date.now();
+            console.log(t1);
+            console.log(t2);
+            console.log(t2 - t1);
+            console.log(self.headers);
+        };
+
 
     }]);
 

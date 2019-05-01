@@ -8,7 +8,7 @@
     <version>2</version>
     <packaging>jar</packaging>
 
-    <name>transportation</name>
+    <name>transportationOld</name>
     <description>Автоматизация диспетчерской службы Комплекса АТО</description>
 
     <parent>
