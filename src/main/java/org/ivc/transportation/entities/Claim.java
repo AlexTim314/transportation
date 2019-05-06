@@ -96,8 +96,10 @@ public class Claim implements Serializable {
         this.affirmationDate = claim.affirmationDate;
         this.affirmator = claim.affirmator;
         this.carBoss = claim.carBoss;
+        this.carBoss.setDepartment(null);
         this.creationDate = claim.creationDate;
         this.creator = claim.creator;
+        this.creator.getDepartment().setSuperManager(null);
         this.department = null;
         this.purpose = claim.purpose;
         this.records = null;

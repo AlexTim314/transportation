@@ -34,6 +34,11 @@ public class ClaimController {
     public Boolean getPermit(Principal principal) {
         return claimService.getPermit(principal);
     }
+    
+    @GetMapping("/user/username")
+    public String getUserName(Principal principal) {
+        return claimService.getUserName(principal);
+    }
 
     @GetMapping("/user/affirmedClaims/Tomorrow")
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {

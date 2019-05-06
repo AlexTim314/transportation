@@ -162,8 +162,8 @@ open_sidenav = function () {
     var str1 = document.getElementById("claim-create");
     var str2 = document.getElementById("sb-v-id");
     str.style.left = '0';
-    str1.style.width = '82%';
-    str2.style.left = "-2%";
+    str1.style.width = '83%';
+    str2.style.left = "-50%";
     // setTimeout('str2.style.left="-2%"', 900);
 
 }
@@ -172,7 +172,7 @@ close_sidenav = function () {
     var str1 = document.getElementById("claim-create");
     var str2 = document.getElementById("sb-v-id");
     str.style.left = '-17%';
-    str1.style.width = '98%';
+    str1.style.width = '100%';
     str2.style.left = "0";
     // setTimeout('', 900);
 

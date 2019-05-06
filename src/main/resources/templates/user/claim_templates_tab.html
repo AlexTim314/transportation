@@ -18,8 +18,8 @@
                 <th>Старший</th>
                 <th>Маршрут</th>
                 <th>
-                    <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" onclick="templateAddOpen()"></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" onclick="formOpen('del-claim-template-confirm')"></i>                                        
+                    <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" ng-click="ctrl.prepToAddTemplate()"></i>
+                    <i title="Удалить" class="fas fa-lg fa-trash-alt" ng-click="ctrl.prepToDeleteTemplate()"></i>                                        
                 </th>
             </tr>
             <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates |filter: searching">

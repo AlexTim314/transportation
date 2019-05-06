@@ -236,6 +236,13 @@ public class DispatcherService {
         }
         return false;
     }
+    
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
+    }
 
     public List<VehicleModel> findVehicleModelsByTransportDep(Principal principal) {
         AppUser user = getUser(principal);

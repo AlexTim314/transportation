@@ -1,6 +1,6 @@
 <div class="dialog-window" id="del-route-templ-confirm" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close " onclick="formClose('del-car-boss-confirm')"></i>
+    <i class="fas fa-times i-close " ng-click="ctrl.cancelDeleteRouteTempl()"></i>
     <p>Вы уверены, что хотите удалить?</p>
-    <div class="btn edit" onclick="formClose('del-route-templ-confirm')">Отмена</div>
+    <div class="btn edit" ng-click="ctrl.cancelDeleteRouteTempl()">Отмена</div>
     <div class="btn delete" ng-click="ctrl.deleteRouteTemplates()"><i class="fas  fa-trash-alt"></i>Удалить</div>
 </div>

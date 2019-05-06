@@ -113,13 +113,18 @@ App.controller('DriversController', ['$scope', 'DriversService',
                     .then(
                             function (d) {
                                 self.driver = {id: null};
-                                formClose('del-driver-confirm');
+                                self.closeDeleteForm();
                                 self.fetchDrivers();
                             },
                             function (errResponse) {
                                 console.error('Error while deleting Driver.');
                             }
                     );
+        };
+        
+        self.closeDeleteForm = function() {
+            formClose('del-driver-confirm');
+            formClose('cover-trsp1');
         };
 
         self.submit = function () {
@@ -132,6 +137,7 @@ App.controller('DriversController', ['$scope', 'DriversService',
 
         self.tryToCreate = function () {
             self.driver = {id: null};
+            formOpen('cover-trsp1');
             formOpen('formDriver');
             self.setBirthday();
         };
@@ -149,11 +155,13 @@ App.controller('DriversController', ['$scope', 'DriversService',
             self.driver.transportDep = driver.transportDep;
             self.driver.status = driver.status;
             self.driver.note = driver.note;
+            formOpen('cover-trsp1');
             formOpen('formDriver');
         };
 
         self.tryToDelete = function (driver) {
             self.driver.id = driver.id;
+            formOpen('cover-trsp1');
             formOpen('del-driver-confirm');
         };
 
@@ -169,18 +177,21 @@ App.controller('DriversController', ['$scope', 'DriversService',
             self.driver.driverClass = driver.driverClass;
             self.driver.transportDep = driver.transportDep;
             self.driverInfo.status = driver.status;
+            formOpen('cover-trsp1');
             formOpen('formChangeDriverStatus');
         };
 
         self.resetForm = function () {
             self.driver = {id: null};
             formClose('formDriver');
+            formClose('cover-trsp1');
         };
 
         self.closeStatusForm = function () {
             self.driver = {id: null};
             self.driverInfo = {id: null};
             formClose('formChangeDriverStatus');
+            formClose('cover-trsp1');
         };
 
     }]);

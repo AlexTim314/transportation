@@ -19,7 +19,19 @@ App.controller('DispatcherPageController', ['$scope', 'DispatcherPageService',
                     );
         };
 
+       self.getUserName = function () {
+            DispatcherPageService.getUserName()
+                    .then(
+                            function (d) {
+                                self.username = d.username;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Username');
+                            });
+        };
+
         self.getPermit();
+        self.getUserName();
 
         self.fetchTransportDep = function () {
             DispatcherPageService.fetchTransportDep()

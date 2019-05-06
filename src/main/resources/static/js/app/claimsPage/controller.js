@@ -18,8 +18,20 @@ App.controller('ClaimsPageController', ['$scope', 'ClaimsPageService',
                             }
                     );
         };
+        
+        self.getUserName = function () {
+            ClaimsPageService.getUserName()
+                    .then(
+                            function (d) {
+                                self.username = d.username;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Username');
+                            });
+        };
 
         self.getPermit();
+        self.getUserName();
 
         self.fetchDepartment = function () {
             ClaimsPageService.fetchDepartment()

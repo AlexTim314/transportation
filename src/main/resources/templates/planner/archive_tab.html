@@ -1,23 +1,20 @@
 <div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
-        <div class="table-header clearfix">
-            <div class="fast-filter clearfix">                                    
-                <span class="filter-elem edit {{plctrl.ctoday?'active-color':''}}" ng-click="plctrl.fetchTomorrowCompletePlanRecords()">Завтра</span>
-                <span class="filter-elem edit {{plctrl.cweek?'active-color':''}}" ng-click="plctrl.fetchWeekCompletePlanRecords()">За неделю</span>
-                <span class="filter-elem edit {{plctrl.call?'active-color':''}}" ng-click="plctrl.fetchAllCompletePlanRecords()">Все</span>
+        <div class="table-header">
+            <div class="fast-filter">                                    
+                <span class="filter-elem {{plctrl.ctoday?'active-color':''}}" ng-click="plctrl.fetchTomorrowCompletePlanRecords()">Завтра</span>
+                <span class="filter-elem {{plctrl.cweek?'active-color':''}}" ng-click="plctrl.fetchWeekCompletePlanRecords()">На неделю</span>
+                <span class="filter-elem {{plctrl.call?'active-color':''}}" ng-click="plctrl.fetchMonthCompletePlanRecords()">На месяц</span>
             </div>
-            <input type="search" placeholder="Поиск" ng-model="searchCompleteClaim">						  		
-            <ul class="plan-info ">
-                <li>Cостояние Плана</li>
-                <li>Завершено</li>
-            </ul>						  		
-            <ul class="plan-date" >
-                <li>Дата планирования</li>
-                <li>
-                    <input type="date" name="date-plan" id="compl-date-plan">
-                </li>
-            </ul>
-            <button style="padding:0.5%;font-size: 0.7em; float: right; margin-right:5px;" class="edit btn"  ng-click="plctrl.fetchDateCompletePlanRecords()">Показать</button>		  			                 
+            <div class="fast-filter">
+                <span class="filter-elem {{plctrl.carchive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforeCompleteRecords()">Архив за месяц</span>
+            </div>
+            <div class="definite-date">
+                <label for="date-plan">Планируемый день</label>
+                <input type="date" name="date-plan" id="compl-date-plan" ng-click="plctrl.changeDate()">
+                <div class="filter-elem edit" ng-click="plctrl.fetchDateCompletePlanRecords()">Показать</div>
+            </div>	
+            <input type="search" placeholder="Поиск" ng-model="searchCompleteClaim">						  				  		
         </div>
         <div class="height-wrapper"> 
             <table class="table-record"  id="tbl2" >

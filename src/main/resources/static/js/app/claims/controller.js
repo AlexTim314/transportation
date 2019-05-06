@@ -39,23 +39,23 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.permit = false;
 
         self.carBossName = null;
-       /* self.displayCarBosses = false;
+        /* self.displayCarBosses = false;
+         
+         self.clickCarBossesInput = function () {
+         self.displayCarBosses = !self.displayCarBosses;
+         };
+         
+         self.changeCarBossInput = function () {
+         self.displayCarBosses = self.carBossName !== null && self.carBossName !== undefined && self.carBossName.length > 0;
+         self.claim.carBoss = null;
+         };
+         
+         self.selectCarBoss = function (carBoss) {
+         self.claim.carBoss = carBoss;
+         self.carBossName = self.carBossToStringFull(carBoss);
+         self.displayCarBosses = false;
+         };*/
 
-        self.clickCarBossesInput = function () {
-            self.displayCarBosses = !self.displayCarBosses;
-        };
-
-        self.changeCarBossInput = function () {
-            self.displayCarBosses = self.carBossName !== null && self.carBossName !== undefined && self.carBossName.length > 0;
-            self.claim.carBoss = null;
-        };
-
-        self.selectCarBoss = function (carBoss) {
-            self.claim.carBoss = carBoss;
-            self.carBossName = self.carBossToStringFull(carBoss);
-            self.displayCarBosses = false;
-        };*/
-        
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -150,10 +150,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.allday = true;
             self.today = false;
             self.week = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
             ClaimsService.fetchAffirmedClaims()
                     .then(
                             function (d) {
                                 self.affirmedClaims = d;
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AffirmedClaims');
@@ -255,7 +259,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while fetching Department');
                             }
                     );
-        };       
+        };
 
 //        self.getToday = function () {
 //            var date = new Date();
@@ -298,6 +302,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 }
                                 self.resetClaimForm();
                                 menu_close();
+                                formClose('cover-trsp1');
                             },
                             function (errResponse) {
                                 console.error('Error while creating Claim.');
@@ -316,20 +321,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 claim.routeTasks[i].id = null;
             }
             menu_close();
+            formClose('cover-trsp1');
             for (var i = 0; i < claim.records.length; i++) {
-                        //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
-                        var date = new Date(claim.records[i].startDate);
-                        date.setUTCHours(date.getHours());
-                        self.claim.records[i].startDate = self.frmtDate(date, date);
-                        date = new Date(claim.records[i].entranceDate);
-                        date.setUTCHours(date.getHours());
-                        self.claim.records[i].entranceDate = self.frmtDate(date, date);
-                        if (claim.records[i].endDate !== null) {
-                            date = new Date(claim.records[i].endDate);
-                            date.setUTCHours(date.getHours());
-                            self.claim.records[i].endDate = self.frmtDate(date, date);
-                        }
-                    }
+                //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
+                var date = new Date(claim.records[i].startDate);
+                date.setUTCHours(date.getHours());
+                self.claim.records[i].startDate = self.frmtDate(date, date);
+                date = new Date(claim.records[i].entranceDate);
+                date.setUTCHours(date.getHours());
+                self.claim.records[i].entranceDate = self.frmtDate(date, date);
+                if (claim.records[i].endDate !== null) {
+                    date = new Date(claim.records[i].endDate);
+                    date.setUTCHours(date.getHours());
+                    self.claim.records[i].endDate = self.frmtDate(date, date);
+                }
+            }
             ClaimsService.updateClaim(claim)
                     .then(
                             function () {
@@ -396,7 +402,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while deleting Claim.');
                             }
                     );
-            formClose('del-claim-confirm');
+            self.closeDeleteForm();
             self.all = false;
         };
 
@@ -414,7 +420,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 console.error('Error while deleting ClaimTemplates.');
                             }
                     );
-            formClose('del-claim-template-confirm');
+            self.closeDeleteTemplateForm();
             self.all = false;
         };
 
@@ -444,6 +450,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.record.entranceDate = new Date(rec.entranceDate);
             self.record.endDate = new Date(rec.endDate);
             self.record.appointments = rec.appointments;
+            formOpen('cover-trsp1');
             formOpen('formCancel');
         };
 
@@ -466,6 +473,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 canceledApp.status = 'CANCELED_BY_USER';
                 canceledApp.note = self.cancelNote;
             }
+            formClose('formCancel');
+            formClose('cover-trsp1');
             ClaimsService.cancelAffRecord({recordId: self.record.id, appointment: canceledApp})
                     .then(
                             function (d) {
@@ -500,7 +509,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + (boss.post !== null ? boss.post : "");
             return result;
         };
-        
+
         self.pickCarBoss = function (cb) {
             self.claim.carBoss = cb;
         };
@@ -532,22 +541,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
-            
+
             var entranceTime = new Date(self.record.entranceDate);
             entranceTime.setUTCHours(entranceTime.getHours());
             var startTime = new Date(self.record.startDate);
             startTime.setUTCHours(startTime.getHours());
             var endTime = new Date(self.record.endDate);
             endTime.setUTCHours(endTime.getHours());
-            
+
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                     
-                   // var startTime = new Date(self.record.startDate);
-                   // startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
+
+                    // var startTime = new Date(self.record.startDate);
+                    // startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
                     rec.startDate = self.frmtDate(sd, startTime);
-                    
+
                     //rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     if (self.onDemand) {
@@ -628,11 +637,13 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
         self.infoClick = function (clm) {
+            formOpen('cover-trsp1');
             formOpen('more-claim');
             self.claim = clm;
         };
         self.infoAffClick = function (clm) {
             formOpen('more-claim-confirm');
+            formOpen('cover-trsp1');
             self.affirmedClaim = clm;
         };
         self.resetClaimForm = function () {
@@ -653,9 +664,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 routeTasks: [],
                 claimFromTemplateDate: null
             };
-            self.getDateFromServer();            
+            self.getDateFromServer();
             self.record = {id: null, startDate: null, endDate: null, entranceDate: null};
             self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
+            menu_close();
+            formClose('cover-trsp1');
         };
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
@@ -664,6 +677,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.setClaimForTemp = function (claim) {
             self.copyClaimProperties(claim);
             self.claim.id = null;
+            formOpen('cover-trsp1');
             formOpen('dialog-save');
         };
         self.checkAll = function () {
@@ -704,7 +718,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claim.vehicleType = claim.vehicleType;
                 self.claim.affirmationDate = claim.affirmationDate;
                 self.claim.creationDate = new Date(claim.creationDate);
-                self.claim.creationDate.setUTCHours(self.claim.creationDate.getHours());                
+                self.claim.creationDate.setUTCHours(self.claim.creationDate.getHours());
                 self.record.startDate = new Date(claim.records[0].startDate);
                 self.record.entranceDate = new Date(claim.records[0].entranceDate);
                 if (!self.onDemand) {
@@ -718,7 +732,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.copyClaimProperties(claim);
                 self.claim.id = null;
                 self.claim.templateName = null;
-                if (self.claimFromTemplateDate !== null && self.claimFromTemplateDate !== undefined) {                    
+                if (self.claimFromTemplateDate !== null && self.claimFromTemplateDate !== undefined) {
                     Date.prototype.addDays = function (days) {
                         var date = new Date(this.valueOf());
                         date.setDate(date.getDate() + days);
@@ -760,8 +774,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.tryToUpdateClaim = function (claim) {
             self.copyClaimProperties(claim);
             if (self.claim.templateName === null) {
+                formOpen('cover-trsp1');
                 edit_open();
             } else {
+                formOpen('cover-trsp1');
                 templateEditOpen();
             }
             checkHidden();
@@ -774,7 +790,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.routeTask.place = routeTask.place;
             self.placeName = routeTask.place.name;
             self.routeTask.routeTemplate = routeTask.routeTemplate;
-            self.temporaryRTask = routeTask;            
+            self.temporaryRTask = routeTask;
         };
 
         self.updateRTask = function () {
@@ -1070,8 +1086,51 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
         };
 
+        self.addNewClaim = function () {
+            formOpen('cover-trsp1');
+            menu_open();
+        };
 
+        self.addClaimFromTemplate = function () {
+            formOpen('cover-trsp1');
+            templateOpen();
+        };
+
+        self.prepToDelete = function () {
+            formOpen('cover-trsp1');
+            formOpen('del-claim-confirm');
+        };
+
+        self.closeDeleteForm = function () {
+            formClose('del-claim-confirm');
+            formClose('cover-trsp1');
+        };
         
+        self.closeSaveForm = function() {
+            formClose('dialog-save');
+            formClose('cover-trsp1');
+        };
+        
+        self.closeCancelRecord = function(){
+            formClose('formCancel');
+            formClose('cover-trsp1');
+        };
+        
+        self.prepToAddTemplate = function(){
+            formOpen('cover-trsp1');
+            templateAddOpen();
+        };
+        
+        self.prepToDeleteTemplate = function(){
+            formOpen('cover-trsp1');
+            formOpen('del-claim-template-confirm');
+        };
+        
+        self.closeDeleteTemplateForm = function(){
+            formClose('del-claim-template-confirm');
+            formClose('cover-trsp1');
+        };
+
 
     }]);
 
