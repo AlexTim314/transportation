@@ -166,7 +166,7 @@ public class WaybillFileDownloadController {
                                 case серия:
                                     //TODO: узнать как формировать номер серии
                                     //c.setCellValue(waybill.getSeries());
-                                    c.setCellValue("1 - ");
+                                    c.setCellValue(" ");
                                     break;
                                 case номер:
                                     //c.setCellValue(waybill.getNumber());
@@ -182,13 +182,12 @@ public class WaybillFileDownloadController {
                                     c.setCellValue(dateTime.getYear());
                                     break;
                                 case организация:
-                                    c.setCellValue(claim.getDepartment().getFullname()
-                                            + " " + claim.getDepartment().getAddress());
+                                    c.setCellValue(claim.getDepartment().getFullname());
                                     break;
-                                /* 
                                 case адрес_телефон:
-                                c.setCellValue();
-                                break;*/
+                                    c.setCellValue(claim.getDepartment().getAddress()
+                                            + " " + claim.getDepartment().getPhone());
+                                    break;
                                 case марка:
                                     c.setCellValue(vehicle.getModel().getModelName());
                                     break;
