@@ -1090,14 +1090,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
+
+            var entranceTime = new Date(self.newRecord.entranceDate);
+            //    entranceTime.setUTCHours(entranceTime.getHours());
+            var startTime = new Date(self.newRecord.startDate);
+            //  startTime.setUTCHours(startTime.getHours());
+            var endTime = new Date(self.newRecord.endDate);
+            //endTime.setUTCHours(endTime.getHours());
+
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
+                    rec.startDate = self.frmtDate(sd, startTime);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
-                    rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
+                    rec.endDate = self.frmtDate(sd, endTime);
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
-                    rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
+                    rec.entranceDate = self.frmtDate(sd, entranceTime);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
@@ -1107,10 +1115,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
-                rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
+                rec.startDate = self.frmtDate(sd, startTime);
+                rec.endDate = self.frmtDate(sd, endTime);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
-                rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
+                rec.entranceDate = self.frmtDate(sd, entranceTime);
                 if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
@@ -1167,6 +1175,22 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return;
             }
             if (self.newClaim.id === null) {
+                //коррекция времени для хранения без часового пояса
+                for (var i = 0; i < self.newClaim.records.length; i++) {
+                    var rec = self.newClaim.records[i];
+                    var sd = new Date(rec.startDate);                    
+                    
+                    var entranceTime = new Date(rec.entranceDate);
+                    entranceTime.setUTCHours(entranceTime.getHours());
+                    var startTime = new Date(rec.startDate);
+                    startTime.setUTCHours(startTime.getHours());
+                    var endTime = new Date(rec.endDate);
+                    endTime.setUTCHours(endTime.getHours());
+                    
+                    self.newClaim.records[i].startDate = self.frmtDate(sd, startTime);
+                    self.newClaim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
+                    self.newClaim.records[i].endDate = self.frmtDate(sd, endTime);
+                }
                 self.createClaim(self.newClaim);
 //                formClose('plannerCarBoss');
 //                formClose('formRoute');

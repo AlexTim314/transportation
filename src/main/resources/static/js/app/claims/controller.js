@@ -617,15 +617,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.records.splice(k, 1);
         };
 
-        self.checkRec = function (rec) {
-            self.record.checked = false;
+        self.checkRec = function (rec) {            
+            self.record.checked = false;            
             self.record = rec;
-            self.record.startDate = new Date(rec.startDate);
-            //self.record.startDate.setUTCHours(self.record.startDate.getHours());
-            self.record.entranceDate = new Date(rec.entranceDate);
-            if (rec.endDate !== null) {
-                self.record.endDate = new Date(rec.endDate);
-            }
+            //self.record.startDate = new Date(rec.startDate);
+            //self.record.startDate.setHours(self.record.startDate.getUTCHours());
+            //self.record.entranceDate = new Date(rec.entranceDate);
+            //if (rec.endDate !== null) {
+            //   self.record.endDate = new Date(rec.endDate);
+            //}
             self.record.checked = true;
         };
 
