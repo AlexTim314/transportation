@@ -12,6 +12,7 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +31,14 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
 
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
+
     @GetMapping("/user/permit")
     public Boolean getPermit(Principal principal) {
         return claimService.getPermit(principal);
     }
-    
+
     @GetMapping("/user/username")
     public String getUserName(Principal principal) {
         return claimService.getUserName(principal);
@@ -71,12 +75,16 @@ public class ClaimController {
 
     @PostMapping("/user/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
-        return claimService.saveClaim(principal, claim);
+        Claim newClaim = claimService.saveClaim(principal, claim);
+        messagingTemplate.convertAndSend("/topic/create_claim", newClaim);
+        return newClaim;
     }
 
     @PutMapping("/user/claim_update")
     public Claim updateClaim(Principal principal, @RequestBody Claim claim) {
-        return claimService.saveClaim(principal, claim);
+        Claim updClaim = claimService.saveClaim(principal, claim);
+        messagingTemplate.convertAndSend("/topic/update_claim", updClaim);
+        return updClaim;
     }
 
     @PutMapping("/manager/claims_affirm")
@@ -84,7 +92,7 @@ public class ClaimController {
         claimService.affirmClaims(principal, claimIds);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/user/claims_delete")
     public ResponseEntity<String> deleteClaims(@RequestBody List<Long> claimIds) {
         claimService.deleteClaims(claimIds);

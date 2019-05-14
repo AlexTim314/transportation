@@ -34,7 +34,7 @@ public class Place implements Serializable {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "address", unique = true, length = 255)
+    @Column(name = "address", unique = false, length = 255)
     private String address;
 
 }

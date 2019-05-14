@@ -39,6 +39,75 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.permit = false;
 
         self.carBossName = null;
+
+        var stompClient = null;
+
+        self.connect = function () {
+            var socket = new SockJS('/transportation/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, self.onConnected, self.onError);
+//            event.preventDefault();
+        };
+
+        self.onConnected = function () {
+            // Subscribe to the Public Topic
+            stompClient.subscribe('/topic/create_claim', self.insertClaim);
+            stompClient.subscribe('/topic/update_claim', self.replaceClaim);
+            stompClient.subscribe('/topic/delete_claims', self.cutClaims);
+        };
+
+        self.onError = function (error) {
+            alert('Could not connect to WebSocket server. Please refresh this page to try again!');
+        };
+
+        self.onMessageReceived = function (payload) {
+            var claim = JSON.parse(payload.body);
+            if (claim.templateName === null) {
+                self.newClaims.push(claim);
+            }
+        };
+
+        self.insertClaim = function (payload) {
+            var claim = JSON.parse(payload.body);
+            if (claim.templateName === null) {
+                self.newClaims.push(claim);
+            }
+        };
+
+        self.replaceClaim = function (payload) {
+            var clm = JSON.parse(payload.body);
+            var k = -1;
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].id === clm.id) {
+                    k = i;
+                    break;
+                }
+            }
+//            for(var key in self.newClaims[k]){
+//                self.newClaims[k][key] = clm[key];
+//            }
+            self.newClaims[k] = clm;
+            $scope.$apply();
+//            if (k >= 0) {
+//                self.newClaims.splice(k, 1);
+//                self.newClaims.push(claim);
+//            }
+        };
+
+        self.cutClaims = function (payload) {
+            var claim = JSON.parse(payload.body);
+            var k = -1;
+            for (var i = 0; i < self.newClaims.length; i++) {
+                if (self.newClaims[i].id === claim.id) {
+                    k = i;
+                    break;
+                }
+            }
+            if (k >= 0) {
+                self.newClaims.splice(k, 1);
+            }
+        };
+
         /* self.displayCarBosses = false;
          
          self.clickCarBossesInput = function () {
@@ -279,6 +348,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 //            self.startDate = new Date(today);
 //        };
 
+        self.connect();
+
         self.fetchNewClaims();
         self.fetchAffirmedClaimsTomorrow();
         self.fetchClaimTemplates();
@@ -296,7 +367,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 if (d.templateName === null) {
-                                    self.newClaims.push(d);
+//                                    self.newClaims.push(d);
                                 } else {
                                     self.claimTemplates.push(d);
                                 }
@@ -340,7 +411,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function () {
                                 if (claim.templateName === null) {
-                                    self.fetchNewClaims();
+//                                    self.fetchNewClaims();
                                 } else {
                                     self.fetchClaimTemplates();
                                 }
@@ -1105,28 +1176,28 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             formClose('del-claim-confirm');
             formClose('cover-trsp1');
         };
-        
-        self.closeSaveForm = function() {
+
+        self.closeSaveForm = function () {
             formClose('dialog-save');
             formClose('cover-trsp1');
         };
-        
-        self.closeCancelRecord = function(){
+
+        self.closeCancelRecord = function () {
             formClose('formCancel');
             formClose('cover-trsp1');
         };
-        
-        self.prepToAddTemplate = function(){
+
+        self.prepToAddTemplate = function () {
             formOpen('cover-trsp1');
             templateAddOpen();
         };
-        
-        self.prepToDeleteTemplate = function(){
+
+        self.prepToDeleteTemplate = function () {
             formOpen('cover-trsp1');
             formOpen('del-claim-template-confirm');
         };
-        
-        self.closeDeleteTemplateForm = function(){
+
+        self.closeDeleteTemplateForm = function () {
             formClose('del-claim-template-confirm');
             formClose('cover-trsp1');
         };
