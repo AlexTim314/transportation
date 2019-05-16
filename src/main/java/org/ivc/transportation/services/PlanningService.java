@@ -251,7 +251,6 @@ public class PlanningService {
     }
 
     public List<AffirmedClaim> getAffirmedClaimsAll1() {
-        System.out.println("working");
         return claimRepository.findAffirmedClaims();
     }
 }
