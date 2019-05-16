@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,24 +21,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
-@ToString(exclude = {})
+@EqualsAndHashCode(exclude = {"place"})
+@ToString(exclude = {"place"})
 @Entity
-@Table(name = "place")
-public class Place implements Serializable {
+@Table(name = "refueling_station")
+public class RefuelingStation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Column(name = "name")
     private String name;
-    
-    @Column(name = "shortname", nullable = false, length = 255)
-    private String shortname;
 
-    @Column(name = "address", unique = false, length = 255)
-    private String address;
+    @OneToOne
+    private Place place;
 
 }

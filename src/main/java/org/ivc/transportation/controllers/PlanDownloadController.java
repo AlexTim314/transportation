@@ -195,7 +195,7 @@ public class PlanDownloadController {
 
                 Claim claim = dispatcherService.findClaimByRecord(record);
 
-                rowData.carBoss = getCarBossNameWithInitials(claim.getCarBoss());
+//                rowData.carBoss = getCarBossNameWithInitials(claim.getCarBoss());
                 rowData.driver.add(getDriverNameWithInitials(a.getDriver()));
                 rowData.departmentName = claim.getDepartment().getFullname();
                 rowData.purposes = claim.getPurpose();

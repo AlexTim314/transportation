@@ -231,10 +231,10 @@ public class WaybillFileDownloadController {
                                 case остаток_горючего_при_выезде:
                                     c.setCellValue(vehicle.getFuel());
                                     break;
-                                case заказчик:
-                                    c.setCellValue(claim.getDepartment().getShortname() + " "
-                                            + getCarBossNameWithInitials(claim.getCarBoss()));
-                                    break;
+//                                case заказчик:
+//                                    c.setCellValue(claim.getDepartment().getShortname() + " "
+//                                            + getCarBossNameWithInitials(claim.getCarBoss()));
+//                                    break;
                             }
                         } catch (NullPointerException ex) {
                             System.out.println("При заполнении путевого листа"

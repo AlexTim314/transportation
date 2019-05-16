@@ -101,11 +101,11 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
-        if (claim.getCarBoss() != null && claim.getCarBoss().getId() == null) {
-            claim.getCarBoss().setDepartment(getDepartment(principal));
-            CarBoss boss = carBossRepository.save(claim.getCarBoss());
-            claim.setCarBoss(boss);
-        }
+//        if (claim.getCarBoss() != null && claim.getCarBoss().getId() == null) {
+//            claim.getCarBoss().setDepartment(getDepartment(principal));
+//            CarBoss boss = carBossRepository.save(claim.getCarBoss());
+//            claim.setCarBoss(boss);
+//        }
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
         } else {

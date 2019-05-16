@@ -1,7 +1,6 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,37 +25,32 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"appointmentGroup", "carBoss"})
-@ToString(exclude = {"appointmentGroup", "carBoss"})
+@EqualsAndHashCode(exclude = {"vehicle", "appointments", "routeTasks", "refuelings"})
+@ToString(exclude = {"vehicle", "appointments", "routeTasks", "refuelings"})
 @Entity
-@Table(name = "record")
-public class Record implements Serializable {
+@Table(name = "waybill")
+public class Waybill implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "entrance_date", nullable = false)
-    private LocalDateTime entranceDate;
-
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
-
-    @Column(name = "affirmation_date")
-    private LocalDateTime affirmationDate;
-
-    @ManyToOne
-    private AppUser affirmator;
+    
+    @Column(name = "number", nullable = false, length = 64)
+    private String number;
     
     @ManyToOne
-    private CarBoss carBoss;
+    private Vehicle vehicle;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "record_id")
+    @JoinColumn(name = "waybill_id")
     private List<Appointment> appointments;
-
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "waybill_id")
+    private List<RouteTask> routeTasks;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "waybill_id")
+    private List<Refueling> refuelings; 
 }
