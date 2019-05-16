@@ -1,6 +1,7 @@
 'use strict';
 
 App.controller('DispatcherController', ['$scope', 'DispatcherService',
+
     function ($scope, DispatcherService) {
         var self = this;
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: '', claims: []};
@@ -50,10 +51,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.pageCount;
         self.numRecordsPerPage = 7;
         self.data = [];
-        self.listRecordsPerPage = [];
-        self.n;
-        self.n1;
-
+        self.pager = {};
 
 
         self.selectIcon = function (spec) {
@@ -84,14 +82,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.setPage(1);
                                 formClose('cover-trsp1');
                                 formClose('preloader');
-                                total = d.length;
-                                max = self.numRecordsPerPage;
-                                createPage(pag, currentPage);
-                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                self.showRecordsPage(1);
-                                self.catchClick();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching MonthRecords');
@@ -110,14 +104,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.setPage(1);
                                 formClose('cover-trsp1');
                                 formClose('preloader');
-                                total = d.length;
-                                max = self.numRecordsPerPage;
-                                createPage(pag, currentPage);
-                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                self.showRecordsPage(1);
-                                self.catchClick();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching MonthBeforeRecords');
@@ -136,14 +126,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.setPage(1);
                                 formClose('cover-trsp1');
                                 formClose('preloader');
-                                total = d.length;
-                                max = self.numRecordsPerPage;
-                                createPage(pag, currentPage);
-                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                self.showRecordsPage(1);
-                                self.catchClick();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -162,14 +148,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
+                                self.setPage(1);
                                 formClose('cover-trsp1');
                                 formClose('preloader');
-                                total = d.length;
-                                max = self.numRecordsPerPage;
-                                createPage(pag, currentPage);
-                                self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                self.showRecordsPage(1);
-                                self.catchClick();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TodayRecords');
@@ -193,12 +175,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 self.data = d;
                                 formClose('cover-trsp1');
                                 formClose('preloader');
-                                total = d.length;
-                                max = self.numRecordsPerPage;
-                                createPage(pag, currentPage);
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
-                                self.showRecordsPage(1);
-                                self.catchClick();
+                                self.setPage(1);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -307,35 +285,64 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             document.getElementById('date-plan').value = today;
             self.date = day + "." + month + "." + year;
         };
-
-//        self.createListPages = function () {
-//            for (var i = 1; i < self.pageCount + 1; i++) {
-//                self.listRecordsPerPage[i - 1] = i;
-//            }
-//        };
-
-        self.showRecordsPage = function (page) {
-            if (page > 0) {
+        
+//=================pagination===========
+        self.setPage = function (page) {
+            if (page < 1 || page > self.pageCount) {
+                self.pager = {};
                 self.headers = [];
-                self.headers = self.data.slice((page * self.numRecordsPerPage) - self.numRecordsPerPage, page * self.numRecordsPerPage);
-                console.log($scope.headers);
+                return;
             }
+            // get pager object from service
+            self.pager = self.getPager(self.data.length, page, self.numRecordsPerPage);
+            // get current page of items
+           // self.headers = self.data.slice(self.pager.startIndex, self.pager.endIndex + 1);
         };
 
-        self.catchClick = function () {
-//        var pageElem='pagination';
-//        var pag=document.getElementById(pageElem);
-//	var items=pag1.getElementsByTagName('div');
-            for (var i = 1; i < items.length - 1; i++) {
-                items[i].addEventListener("click", function () {
-                    currentPage = this.innerHTML * 1;
-                    self.showRecordsPage(currentPage);
-                    var obj = GetPager(total, currentPage, max);
-                    var arrPage = createArr(obj.startPage, obj.endPage);
-                    changePage(pag, arrPage, currentPage);
-                });
+        self.getPager = function (totalItems, currentPage, pageSize) {
+            var totalPages = self.pageCount;
+            var startPage, endPage;
+            if (totalPages <= 10) {
+                // less than 10 total pages so show all
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // more than 10 total pages so calculate start and end pages
+                if (currentPage <= 6) {
+                    startPage = 1;
+                    endPage = 10;
+                } else if (currentPage + 4 >= totalPages) {
+                    startPage = totalPages - 9;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 5;
+                    endPage = currentPage + 4;
+                }
             }
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+            var pages = [];
+            var k = 0;
+            // create an array of pages to ng-repeat in the pager control
+            for (var i = startPage; i < endPage + 1; i++) {
+                pages[k] = i;
+                k++;
+            }
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
         };
+//=====================
 
         self.fetchTomorrowPlanRecords();
         self.fetchAllVehicleModels();
@@ -344,7 +351,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.getToday();
         self.fetchVehicles();
         self.fetchDrivers();
-//        self.createListPages();
 
 
         self.departFromObj = function (obj) {
@@ -652,19 +658,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
 
-
-
-
-
-
-
     }]);
-//
-//App.filter('startFrom', function () {
-//    return function (input, start) {
-//        start = +start;
-//        return input.slice(start);
-//    };
-//});
 
 
