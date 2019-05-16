@@ -1,0 +1,54 @@
+<div class="sidebar clearfix" id="sidenav-id"  xmlns:th="http://www.thymeleaf.org">
+
+    <div class="thin-strip-header">
+        <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
+        <i class="fas fa-info-circle"></i>Информация
+    </div>
+    <div class="nav-sidebar">
+        <div class="btn active" id="side-btn1" onclick="open_sidetab('bar-block1', 'side-btn1', 2)"><i class="fas fa-bus-alt"></i>Транспорт</div>
+        <div class="btn" id="side-btn2" onclick="open_sidetab('bar-block2', 'side-btn2', 2)"><i class="fas fa-user"></i>Водители</div>
+    </div>
+    <ul class="info-bar-block" id="bar-block1">
+
+        <li class="info-bar-item">						
+            <div class="info-bar-btn" ng-click="plctrl.rowOtsInfoClick(ots, $event.currentTarget)" ng-repeat-start="ots in plctrl.otsInfos">
+                <span>{{ots.otsInfo.name}}</span>
+                <section class="info-bar-sub-type">
+                    <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{ots.otsInfo.type1count}}</span></div>
+                    <div><i class="fas fa-car" title="Легковой"></i><span>{{ots.otsInfo.type2count}}</span></div>
+                    <div><i class="fas fa-truck" title="Грузовой"></i><span>{{ots.otsInfo.type3count}}</span></div>
+                    <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{ots.otsInfo.type4count}}</span></div>
+                </section>
+            </div>
+
+            <div class="info-bar-sub" ng-show="ots.isVisible !== undefined && ots.isVisible" ng-repeat-end>
+                <ul>
+                    <li ng-repeat="info in ots.vehicleModelInfos">
+                        <span><i class="{{plctrl.selectSmallIcon(info.specialization)}}"></i>{{info.model}}</span>
+                        <span>{{info.count}}</span>
+                    </li>
+
+                </ul>
+            </div>						
+        </li>
+
+    </ul>
+
+    <div class="info-bar-sub info-bar-driver" style="max-height: 520px; width: 90%; margin-left: 5%; " id="bar-block2">
+        <ul>
+            <li ng-repeat="otsDr in plctrl.otsInfos">
+                <span>{{otsDr.otsInfo.name}}</span>
+                <span>
+                    <i class="fas fa-user" title="Количество водителей"></i>{{otsDr.otsInfo.drivercount}}
+                </span>
+            </li>
+            <li>
+                <span>Всего</span>
+                <span><i class="fas fa-user" title="Количество водителей"></i>{{plctrl.allCountDrivers}}</span>
+            </li>
+
+
+
+        </ul>
+    </div>			
+</div>

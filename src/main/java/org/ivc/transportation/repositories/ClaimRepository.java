@@ -44,7 +44,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             @Param("start_date") LocalDateTime startDate,
             @Param("end_date") LocalDateTime endDate
     );
-    
+
     @Query(value = "select claim.id as claimid, "
             + "claim.department_id as departmentid, "
             + "department.fullname as departmentfullname, "
@@ -55,11 +55,19 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.vehicle_type_id as vehicletypeid, "
             + "claim.purpose as claimpurpose, "
             + "vehicle_type.type_name as vehicletypename, "
-            + "vehicle_type.specialization as vehiclespecialization, "
+            + "claim.specialization as claimspecialization, "
             + "record.start_date as startdate, "
             + "record.end_date as enddate, "
-            + "record.entrance_date as entrancedate "
+            + "record.entrance_date as entrancedate, "
+            + "appointment.transport_dep_id as transportdepid, "
+            + "appointment.driver_id as driverid, "
+            + "appointment.vehicle_id as vehicleid, "
+            + "appointment.vehicle_model_id as modelid, "
+            + "appointment.creator_id as appcreatorid, "
+            + "appointment.modificator_id as appmodifid, "
+            + "app_user.full_name as creatorname "
             + "from department, "
+            + "app_user, "
             + "claim, "
             + "vehicle_type, "
             + "record left outer join appointment on appointment.record_id = record.id and appointment.id = (select max(id) from appointment where record_id = record.id) "
@@ -68,9 +76,10 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.actual = true and "
             + "claim.affirmation_date is not null and "
             + "vehicle_type.id = claim.vehicle_type_id and "
-            + "record.claim_id = claim.id "
-            + "order by claim.department_id"
-            , nativeQuery = true)
+            + "record.claim_id = claim.id and "
+            + "app_user.id = appointment.creator_id "
+            + "order by claim.department_id",
+             nativeQuery = true)
     List<AffirmedClaim> findAffirmedClaims();
 
     void deleteByIdAndAffirmationDateIsNull(Long id);

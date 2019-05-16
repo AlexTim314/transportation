@@ -16,7 +16,7 @@ public interface AffirmedClaim {
     String getDepartmentfullname();
     Long getClaimid();
     String getVehicletypename();
-    String getVehiclespecialization();
+    Long getClaimspecialization();
     Long getRecordid();
     Long getAppointmentid();
     String getAppointmentstatus();
@@ -26,4 +26,11 @@ public interface AffirmedClaim {
     LocalDateTime getStartdate();
     LocalDateTime getEnddate();
     LocalDateTime getEntrancedate();
+    Long getDriverid();
+    Long getVehicleid();
+    Long getTransportdepid();
+    Long getModelid();
+    Long getAppcreatorid();
+    Long getAppmodifid();
+    String getCreatorname();
 }

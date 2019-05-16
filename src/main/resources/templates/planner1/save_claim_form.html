@@ -1,0 +1,115 @@
+<div class="menu-new-claim" id="form-add" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times" ng-click="plctrl.resetClaimForm()"></i>
+    <form>
+        <div class="form-item">
+
+            <label for="department">Подразделение</label>
+            <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" ng-change="plctrl.fetchCarBosses()" required>
+                <option value="" disabled selected><--Выберите подразделение--></option>
+            </select>
+
+        </div>
+        <section class="section-type">
+
+            <div class="form-item clearfix" >
+
+                <div class=" left-block">
+                    <label for="type">Тип транспорта</label>
+                    <select name="type" ng-model="plctrl.newClaim.specialization" required>
+                        <option value="" disabled selected><--Выберите специализацию--></option>
+                        <option value="пассажирский">Пассажирский</option>
+                        <option value="легковой">Легковой</option>
+                        <option value="грузовой">Грузовой</option>
+                        <option value="спецтехника">Спецтехника</option>
+                    </select>
+                </div>
+
+                <div class="right-block" >
+                    <label for="criterion">Вид техники</label>
+                    <select name="criterion" ng-options="vt as vt.typeName for vt in plctrl.vehicleTypes| filter:plctrl.newClaim.specialization track by vt.id"   ng-model="plctrl.newClaim.vehicleType">
+                        <option value="" disabled selected><--Выберите тип--></option>
+                    </select>	
+                </div>
+
+            </div> 
+
+            <div class="form-item">
+                <label for="purpose">Цель</label>
+                <textarea name="purpose" rows="10" ng-model="plctrl.newClaim.purpose"></textarea>
+            </div>
+            <div class="form-item clearfix">
+                <div class="left-block-route">
+                    <label for="carBoss">Старший</label>
+                    <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.carBosses|filter: {department : {id: plctrl.specDepartment.id}} track by cb.firstname" ng-model="plctrl.newClaim.carBoss" required>
+                        <option value="" disabled selected>Выберите старшего машины</option>
+                    </select>
+                </div>
+                <div class="right-block-route">
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('plannerCarBoss')" title="Добавить старшего"><i class="fas fa-lg fa-user" ></i></div> 						 		
+                </div>
+            </div>
+            <div class="form-item clearfix">
+                <div class="left-block-route">
+                    <label for="route">Маршрут</label>
+                    <select name="route">
+                        <option value="" disabled selected><--По указанию--></option>
+                    </select> 
+                </div>
+                <div class="right-block-route">
+                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('newFormTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                </div>
+            </div>	
+        </section>
+        <section>	 
+            <div class="form-item clearfix" >
+                <div class="form-item-date ">
+                    <label for="date-begin">Дата:</label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" ng-model = "plctrl.onWeek">на неделю
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <div class="inp-btn clearfix">
+                        <input type="date"  name="date-begin" ng-model="plctrl.startDate" id="startDate" required >
+                        <span title="Добавить дату" class="fas fa-lg fa-plus-circle flash-class" ng-click = "plctrl.addRec()"></span>
+                    </div>							 		
+                </div>
+
+                <div class="right-block ">
+                    <label for="time-begin">Время подачи</label>
+                    <input type="time"  name="time-begin" ng-model="plctrl.newRecord.entranceDate" id="entranceTime" required>
+
+
+                    <label for="time-begin">Время выезда</label>
+                    <input type="time"  name="time-begin" ng-model="plctrl.newRecord.startDate" id="startTime" required>
+
+                    <div class="check-hidden">
+                        <label for="time-end">Время возвращения</label>
+                        <input type="time"  name="time-end" ng-model="plctrl.newRecord.endDate" id="endTime" required>
+                    </div>
+                    <div class="check-hidden">
+                        <label class="custom-checkbox">
+
+
+
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
+                            <span class="checkmark" title="установить дату возвращения на следующий день"></span>
+                        </label>
+<!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
+                    </div>
+
+                </div>
+                <div class="left-block-tag">
+                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in plctrl.newClaim.records| orderBy:'startDate'" ng-click="plctrl.checkRecord(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
+                        <span class="fas fa-times" ng-click = "plctrl.removeRec(rec)"></span>
+                    </div>
+                </div>
+            </div> 					
+
+        </section>
+        <div class="form-item">
+            <button class="btn submit" id="btn-add-edit" ng-click="plctrl.submitClaim()">Добавить</button>
+        </div>
+
+    </form>
+</div>
