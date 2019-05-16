@@ -60,6 +60,13 @@ public class ClaimService {
         AppUser user = getUser(principal);
         return user.getRoles().stream().anyMatch((role) -> (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")));
     }
+    
+    public String getUserName(Principal principal) {
+        final char dm = (char) 34;
+        AppUser user = getUser(principal);
+        String un = "{" + dm + "username" + dm + ":" + dm + user.getUsername() + dm + "}";
+        return un;
+    }
 
     public List<Claim> findNewClaimsByDepartment(Principal principal) {
         Department department = getDepartment(principal);

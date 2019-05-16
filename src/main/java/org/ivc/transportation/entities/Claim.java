@@ -52,7 +52,6 @@ public class Claim implements Serializable {
 
     @Column(name = "affirmation_date")
     private LocalDateTime affirmationDate;
-    
 
     @Column(name = "actual", nullable = false)
     private boolean actual;
@@ -89,17 +88,21 @@ public class Claim implements Serializable {
         this.vehicleType = vehicleType;
         this.creator = creator;
     }
-    
+
     public Claim(Claim claim) {
         this.id = claim.id;
         this.actual = claim.actual;
         this.affirmationDate = claim.affirmationDate;
         this.affirmator = claim.affirmator;
         this.carBoss = claim.carBoss;
-        this.carBoss.setDepartment(null);
+        if (carBoss != null) {
+            this.carBoss.setDepartment(null);
+        }
         this.creationDate = claim.creationDate;
         this.creator = claim.creator;
-        this.creator.getDepartment().setSuperManager(null);
+        if (creator != null && creator.getDepartment() != null) {
+            this.creator.getDepartment().setSuperManager(null);
+        }
         this.department = null;
         this.purpose = claim.purpose;
         this.records = null;

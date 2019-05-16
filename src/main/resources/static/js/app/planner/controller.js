@@ -44,9 +44,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.today = false;
         self.week = false;
         self.all = false;
+        self.archive = false;
         self.ctoday = false;
         self.cweek = false;
         self.call = false;
+        self.carchive = false;
         self.bosses = [];
         self.onWeek = false;
         self.cancelNote = '';
@@ -69,6 +71,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.permit = false;
         self.tempTransportDep = {};
         self.tempVehSpec = '';
+        self.username;
+        self.pageCount;
+        self.numRecordsPerPage = 10;
+        self.pager = {};
+        self.data = [];
+        // self.clrecs = [];
 
 
         self.getPermit = function () {
@@ -83,7 +91,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
+        self.getUserName = function () {
+            PlannerService.getUserName()
+                    .then(
+                            function (d) {
+                                self.username = d.username;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Username');
+                            });
+        };
+
         self.getPermit();
+        self.getUserName();
 
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
@@ -155,31 +175,64 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
 
-        self.fetchAllPlanRecords = function () {
+        self.fetchMonthPlanRecords = function () {
             self.all = true;
             self.today = false;
             self.week = false;
-            PlannerService.fetchAllPlanRecords()
+            self.archive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            PlannerService.fetchMonthPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;
                                 expandHeaders();
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
-                                console.error('Error while fetching AllRecords');
+                                console.error('Error while fetching MonthRecords');
                             }
                     );
         };
+
+        self.fetchMonthBeforePlanRecords = function () {
+            self.all = false;
+            self.today = false;
+            self.week = false;
+            self.archive = true;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            PlannerService.fetchMonthBeforePlanRecords()
+                    .then(
+                            function (d) {
+                                self.headers = d;
+                                expandHeaders();
+                                formClose('cover-trsp1');
+                                formClose('preloader');
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching MonthBefRecords');
+                            }
+                    );
+        };
+
+
 
         self.fetchWeekPlanRecords = function () {
             self.all = false;
             self.today = false;
             self.week = true;
+            self.archive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
             PlannerService.fetchWeekPlanRecords()
                     .then(
                             function (d) {
                                 self.headers = d;
                                 expandHeaders();
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -191,6 +244,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.all = false;
             self.today = true;
             self.week = false;
+            self.archive = false;
             PlannerService.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
@@ -207,6 +261,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.all = false;
             self.today = false;
             self.week = false;
+            self.archive = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
             PlannerService.fetchDatePlanRecords(datePlan)
@@ -222,14 +277,39 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
 
-        self.fetchAllCompletePlanRecords = function () {
+        self.fetchMonthCompletePlanRecords = function () {
             self.call = true;
             self.ctoday = false;
             self.cweek = false;
-            PlannerService.fetchAllCompletePlanRecords()
+            self.carchive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            PlannerService.fetchMonthCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
+                                formClose('cover-trsp1');
+                                formClose('preloader');
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching AllCompleteRecords');
+                            }
+                    );
+        };
+
+        self.fetchMonthBeforeCompleteRecords = function () {
+            self.call = false;
+            self.ctoday = false;
+            self.cweek = false;
+            self.carchive = true;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+            PlannerService.fetchMonthBeforeCompletePlanRecords()
+                    .then(
+                            function (d) {
+                                self.complHeaders = d;
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllCompleteRecords');
@@ -241,10 +321,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.call = false;
             self.ctoday = false;
             self.cweek = true;
+            self.carchive = false;
+            formOpen('cover-trsp1');
+            formOpen('preloader');
             PlannerService.fetchWeekCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
+                                formClose('cover-trsp1');
+                                formClose('preloader');
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteWeekRecords');
@@ -256,6 +341,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.call = false;
             self.ctoday = true;
             self.cweek = false;
+            self.carchive = false;
             PlannerService.fetchTomorrowCompletePlanRecords()
                     .then(
                             function (d) {
@@ -272,11 +358,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.call = false;
             self.ctoday = false;
             self.cweek = false;
+            self.carchive = false;
+            self.changeDate();
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
             PlannerService.fetchDateCompletePlanRecords(datePlan)
                     .then(
                             function (d) {
                                 self.complHeaders = d;
+
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteRecords of Day');
@@ -553,10 +642,18 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.rowClick = function (dep) {
-            if (dep.isVisible === undefined) {
-                dep.isVisible = true;
-            } else {
+            if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
+            } else {
+                for (var i = 0; i < self.headers.length; i++) {
+                    self.headers[i].isVisible = false;
+                }
+                //if (dep.isVisible === undefined) {
+                //     dep.isVisible = true;
+                // } else {
+                dep.isVisible = !dep.isVisible;
+                // }
+                self.showRecords(dep.compositeClaimRecords);
             }
         };
 
@@ -597,15 +694,29 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.moreInfoOpen = function (clrec) {
             self.compClRec = clrec;
             formOpen('more-claim');
+            formOpen('cover-trsp1');
+        };
+
+        self.closeInfo = function () {
+            formClose('more-claim');
+            formClose('cover-trsp1');
         };
 
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
+            formOpen('cover-trsp1');
             formOpen('more-claim-status');
+
+        };
+
+        self.closeInfoAppointments = function () {
+            formClose('more-claim-status')
+            formClose('cover-trsp1');
         };
 
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);
+            var datePlan = new Date(document.getElementById('compl-date-plan').value);
             var day = datePlan.getDate();
             var month = datePlan.getMonth() + 1;
             var year = datePlan.getFullYear();
@@ -714,6 +825,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             return result;
         };
 
+
         self.affirmatorToString = function (user) {
             if (user !== null) {
                 var nameArr = user.fullName.split(' ');
@@ -750,7 +862,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         var expandHeaders = function () {
             for (var k in expandedHeaders) {
-                self.headers[k].isVisible = expandedHeaders[k];
+                if (self.headers.length > 0)
+                    self.headers[k].isVisible = expandedHeaders[k];
             }
         };
 
@@ -1038,7 +1151,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.validateForm = function () {
-            if (self.specDepartment.id === null){
+            if (self.specDepartment.id === null) {
                 console.log('Department not selected!');
                 return true;
             }
@@ -1081,6 +1194,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.newClaim.routeTasks[i].id = null;
             }
             formClose('form-add');
+            formClose('cover-trsp1');
             self.newClaim.department = self.specDepartment;
             PlannerService.createClaim(self.newClaim)
                     .then(
@@ -1117,6 +1231,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('plannerCarBoss');
             formClose('formRoute');
             formClose('newFormTask');
+            formClose('form-add');
+            formClose('cover-trsp1');
         };
 
         self.submitRTask = function () {
@@ -1219,7 +1335,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.submitCB = function () {
-            if (self.specDepartment.id === null){
+            if (self.specDepartment.id === null) {
                 alert("Не выбрано подразделение!");
                 return;
             }
@@ -1352,6 +1468,78 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 return null;
             }
         };
+
+        self.prepareToAddClaim = function () {
+            formOpen('form-add');
+            formOpen('cover-trsp1');
+        };
+
+        self.showRecords = function (clrecs) {
+            self.clrec = [];
+            self.pageCount = Math.ceil(clrecs.length / self.numRecordsPerPage);
+            console.log('page count =' + self.pageCount);
+            self.clrecs = clrecs;
+            self.setPage(1);
+        };
+
+//=================pagination===========
+        self.setPage = function (page) {
+            if (page < 1 || page > self.pageCount) {
+                self.pager = {};
+                self.data = [];
+                return;
+            }
+            // get pager object from service
+            self.pager = self.getPager(self.clrecs.length, page, self.numRecordsPerPage);
+            // get current page of items
+            // self.data = self.clrecs.slice(self.pager.startIndex, self.pager.endIndex + 1);
+            console.log(self.data);
+        };
+
+        self.getPager = function (totalItems, currentPage, pageSize) {
+            var totalPages = self.pageCount;
+            var startPage, endPage;
+            if (totalPages <= 10) {
+                // less than 10 total pages so show all
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // more than 10 total pages so calculate start and end pages
+                if (currentPage <= 6) {
+                    startPage = 1;
+                    endPage = 10;
+                } else if (currentPage + 4 >= totalPages) {
+                    startPage = totalPages - 9;
+                    endPage = totalPages;
+                } else {
+                    startPage = currentPage - 5;
+                    endPage = currentPage + 4;
+                }
+            }
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+            var pages = [];
+            var k = 0;
+            // create an array of pages to ng-repeat in the pager control
+            for (var i = startPage; i < endPage + 1; i++) {
+                pages[k] = i;
+                k++;
+            }
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
+        };
+//=====================
 
     }]);
 

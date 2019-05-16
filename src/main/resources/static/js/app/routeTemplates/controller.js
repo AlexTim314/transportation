@@ -119,7 +119,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             self.routeTemplate.routeTasks.push({id: null, place: p, workName: self.workName, orderNum: self.checkedTskNumb + 1});
             self.workName = null;
 //            self.routeTemplate.routeTasks.push({id: null, place: p, workName: self.workName, tIds: self.tIds});
-           self.tIds++;
+            self.tIds++;
 //            self.workName = null;
         };
 
@@ -144,6 +144,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
         self.tryToCreate = function () {
             self.tIds = 0;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
+            formOpen('cover-trsp1');
             formOpen('formRouteTemplate');
         };
 
@@ -163,6 +164,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                 self.tIds++;
                 self.routeTemplate.routeTasks.push(tsk);
             }
+            formOpen('cover-trsp1');
             formOpen('formRouteTemplate');
         };
 
@@ -173,6 +175,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                     idsArr.push(self.routeTemplates[i].id);
                 }
             }
+            formOpen('cover-trsp1');
             formOpen('del-route-templ-confirm');
         };
 
@@ -180,6 +183,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
             formClose('formRouteTemplate');
+            formClose('cover-trsp1');
         };
 
         self.checkAll = function () {
@@ -187,7 +191,7 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                 self.routeTemplates[i].checked = self.all;
             }
         };
-        
+
         self.checkTsk = function (tsk) {
             self.checkedTskNumb = tsk.orderNum;
             for (var i = 0; i < self.routeTemplate.routeTasks.length; i++) {
@@ -203,6 +207,11 @@ App.controller('RouteTemplatesController', ['$scope', 'RouteTemplatesService',
                     break;
                 }
             }
+        };
+
+        self.cancelDeleteRouteTempl = function () {
+            formClose('del-route-templ-confirm');
+            formClose('cover-trsp1');
         };
 
     }]);

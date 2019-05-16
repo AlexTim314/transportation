@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Driver;
@@ -48,11 +49,25 @@ public class AppointmentController {
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
+    
+    @GetMapping("/dispatcher/appointments/Month")
+    public List<CompositeClaimRecord> getAppointmentsMonth(Principal principal) {
+        LocalDateTime dStart = LocalDateTime.now();
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
+        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+    }
+    
+    @GetMapping("/dispatcher/appointments/monthBefore")
+    public List<CompositeClaimRecord> getAppointmentsMonthBefore(Principal principal) {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+    }
 
     @PostMapping("/dispatcher/appointments/Date")
     public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {        
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
-        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
@@ -85,6 +100,10 @@ public class AppointmentController {
     @GetMapping("/dispatcher/permit")
     public Boolean getPermit(Principal principal) {
         return dispatcherService.getPermit(principal);
+    }
+    @GetMapping("/dispatcher/username")
+    public String getUserName(Principal principal) {
+        return dispatcherService.getUserName(principal);
     }
        
     @GetMapping("/dispatcher/vehicleModels")

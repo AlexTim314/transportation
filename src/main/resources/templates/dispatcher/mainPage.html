@@ -31,10 +31,34 @@
     </head>
     <body ng-app="Transportation" >
         <div class="wrapper">
-            <!-- Login Form-->
-            <div class="sidebar-vertical" id="sb-v-id">
-                <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+            <div class="cover-trsp" id="cover-trsp1"></div>
+            <div class="loading-content" id="preloader">
+                <div class="load-wrapp">
+                    <div class="load-4">
+
+                        <div class="ring-1"></div>
+                    </div>
+                    <div class="load-6">	  
+                        <div class="letter-holder">
+                            <div class="l-1 letter">З</div>
+                            <div class="l-2 letter">а</div>
+                            <div class="l-3 letter">г</div>
+                            <div class="l-4 letter">р</div>
+                            <div class="l-5 letter">у</div>
+                            <div class="l-6 letter">з</div>
+                            <div class="l-7 letter">к</div>
+                            <div class="l-8 letter">а</div>
+                            <div class="l-9 letter">.</div>
+                            <div class="l-10 letter">.</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+
+            <!-- Login Form-->
+
             <form action="#" class="formLogin" id="formLogin">
                 <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
                 <div class="container">
@@ -62,29 +86,51 @@
             <th:block th:include="dispatcher/route_form"></th:block> 
 
             <div class="main clearfix">
-                <div class="header clearfix">
+                <!--                <div class="header clearfix">
+                                    Logo 
+                                    <div class="logo">
+                                    </div>
+                                    Text header 
+                
+                                    <h1>Комплекс Автотранспортного Обеспечения</h1>
+                                    <div ng-controller="DispatcherPageController as ctrl">
+                                    <h3>{{ctrl.transportDep.fullname}}</h3>
+                                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
+                                    </div>
+                
+                                    Navigation 	
+                                    <nav class="nav-horizontal">
+                                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 3)">Назначения</div>
+                                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 3)">Транспорт</div>		
+                                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 3)">Водители</div>	
+                                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)">Механики</div>	
+                                        <div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)">Маршруты</div>	
+                                    </nav>
+                
+                                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
+                
+                                    
+                                </div>-->
+                <div class="header" ng-controller="DispatcherPageController as ctrl">
                     <!--Logo -->
                     <div class="logo">
+                        <h1>Комплекс </h1>
+                        <h6>автотранспортного обеспечения</h6>
                     </div>
-                    <!--Text header -->
-
-                    <h1>Комплекс Автотранспортного Обеспечения</h1>
-                    <div ng-controller="DispatcherPageController as ctrl">
-                    <h3>{{ctrl.transportDep.fullname}}</h3>
-                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
-                    </div>
-
                     <!--Navigation -->	
+                    <a href="/transportation" class="home" ng-show="ctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
+
                     <nav class="nav-horizontal">
-                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 3)">Назначения</div>
-                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 3)">Транспорт</div>		
-                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 3)">Водители</div>	
-                        <!--<div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)">Механики</div>-->	
-                        <!--<div class="btn" id="tab-btn5" onclick="open_tab1('tab-list5', 'tab-btn5', 5)">Маршруты</div>-->	
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 4)">Назначения</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 4)">Транспорт</div>		
+                        <div class="btn" id="tab-btn3" onclick="open_tab1('tab-list3', 'tab-btn3', 4)">Водители</div>	
+                        <div class="btn" id="tab-btn4" onclick="open_tab1('tab-list4', 'tab-btn4', 4)">Путевые листы</div>	
                     </nav>
-
-                    <button class="login btn" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i>Выход</button>
-
+                    <div class="department-block">{{ctrl.transportDep.fullname}}</div>
+                    <div class="sing-block">
+                        <div class="user-title"><i class="fas fa-user "></i>{{ctrl.username}}</div>
+                        <div class="login" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i></div>
+                    </div>
                     <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
@@ -92,10 +138,12 @@
                 <div ng-controller="DispatcherController as plctrl">
                     <th:block th:include="dispatcher/sidebar"></th:block>
                 </div>
-                    
-                            
-                <div id="claim-create" class="tabcontent">
 
+
+                <div id="claim-create" class="tabcontent">
+                    <div class="sidebar-vertical" id="sb-v-id">
+                        <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+                    </div>
                     <div class="clearfix" style="overflow-x:auto;">
                         <div ng-controller="DispatcherController as plctrl">
                             <!--Sidebar-->
