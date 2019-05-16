@@ -1091,21 +1091,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             var inc = self.isOtherDay ? 1 : 0;
 
-            var entranceTime = new Date(self.newRecord.entranceDate);
-            //    entranceTime.setUTCHours(entranceTime.getHours());
-            var startTime = new Date(self.newRecord.startDate);
-            //  startTime.setUTCHours(startTime.getHours());
-            var endTime = new Date(self.newRecord.endDate);
-            //endTime.setUTCHours(endTime.getHours());
-
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = self.frmtDate(sd, startTime);
+                    rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
-                    rec.endDate = self.frmtDate(sd, endTime);
+                    rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
-                    rec.entranceDate = self.frmtDate(sd, entranceTime);
+                    rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
@@ -1115,10 +1108,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = self.frmtDate(sd, startTime);
-                rec.endDate = self.frmtDate(sd, endTime);
+                rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
+                rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
-                rec.entranceDate = self.frmtDate(sd, entranceTime);
+                rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
                 if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;

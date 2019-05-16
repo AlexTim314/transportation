@@ -72,6 +72,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (claim.templateName === null) {
                 self.newClaims.push(claim);
             }
+            $scope.$apply();
         };
 
         self.replaceClaim = function (payload) {
@@ -394,16 +395,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             menu_close();
             formClose('cover-trsp1');
             for (var i = 0; i < claim.records.length; i++) {
-                //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
                 var date = new Date(claim.records[i].startDate);
-                date.setUTCHours(date.getHours());
                 self.claim.records[i].startDate = self.frmtDate(date, date);
                 date = new Date(claim.records[i].entranceDate);
-                date.setUTCHours(date.getHours());
                 self.claim.records[i].entranceDate = self.frmtDate(date, date);
                 if (claim.records[i].endDate !== null) {
                     date = new Date(claim.records[i].endDate);
-                    date.setUTCHours(date.getHours());
                     self.claim.records[i].endDate = self.frmtDate(date, date);
                 }
             }
@@ -411,7 +408,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function () {
                                 if (claim.templateName === null) {
-//                                    self.fetchNewClaims();
+                                    self.fetchNewClaims();
                                 } else {
                                     self.fetchClaimTemplates();
                                 }
@@ -612,34 +609,19 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 return;
             }
             var inc = self.isOtherDay ? 1 : 0;
-
-            var entranceTime = new Date(self.record.entranceDate);
-            entranceTime.setUTCHours(entranceTime.getHours());
-            var startTime = new Date(self.record.startDate);
-            startTime.setUTCHours(startTime.getHours());
-            var endTime = new Date(self.record.endDate);
-            endTime.setUTCHours(endTime.getHours());
-
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-
-                    // var startTime = new Date(self.record.startDate);
-                    // startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
-                    rec.startDate = self.frmtDate(sd, startTime);
-
-                    //rec.startDate = self.frmtDate(sd, self.record.startDate);
+                    rec.startDate = self.frmtDate(sd, self.record.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     if (self.onDemand) {
                         rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
                         rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     } else {
-                        //rec.endDate = self.frmtDate(sd, self.record.endDate);
-                        rec.endDate = self.frmtDate(sd, endTime);
+                        rec.endDate = self.frmtDate(sd, self.record.endDate);
                         rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                     }
-                    rec.entranceDate = self.frmtDate(sd, entranceTime);
-                    //rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
+                    rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                         alert("Необходимо указать время подачи, выезда и возвращения!");
@@ -649,16 +631,15 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = self.frmtDate(sd, startTime);
+                rec.startDate = self.frmtDate(sd, self.record.startDate);
                 if (self.onDemand) {
                     rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
                 } else {
-                    rec.endDate = self.frmtDate(sd, endTime);
+                    rec.endDate = self.frmtDate(sd, self.record.endDate);
                     rec.endDate.setDate(rec.endDate.getDate() + inc);
                 }
-                //rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
-                rec.entranceDate = self.frmtDate(sd, entranceTime);
+                rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
@@ -688,15 +669,14 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             self.claim.records.splice(k, 1);
         };
 
-        self.checkRec = function (rec) {            
-            self.record.checked = false;            
+        self.checkRec = function (rec) {
+            self.record.checked = false;
             self.record = rec;
-            //self.record.startDate = new Date(rec.startDate);
-            //self.record.startDate.setHours(self.record.startDate.getUTCHours());
-            //self.record.entranceDate = new Date(rec.entranceDate);
-            //if (rec.endDate !== null) {
-            //   self.record.endDate = new Date(rec.endDate);
-            //}
+            self.record.startDate = new Date(rec.startDate);
+            self.record.entranceDate = new Date(rec.entranceDate);
+            if (rec.endDate !== null) {
+                self.record.endDate = new Date(rec.endDate);
+            }
             self.record.checked = true;
         };
 
@@ -825,16 +805,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                         self.record.endDate = new Date(claim.records[index].endDate).addDays(datesDiff);
                     }
                     for (var i = 0; i < claim.records.length; i++) {
-                        //self.record.startDate.setUTCHours(self.record.startDate.getHours());                        
                         date = new Date(claim.records[i].startDate);
-                        date.setUTCHours(date.getHours());
                         self.claim.records[i].startDate = self.frmtDate(date.addDays(datesDiff), date);
                         date = new Date(claim.records[i].entranceDate);
-                        date.setUTCHours(date.getHours());
                         self.claim.records[i].entranceDate = self.frmtDate(date.addDays(datesDiff), date);
                         if (claim.records[index].endDate !== null) {
                             date = new Date(claim.records[i].endDate);
-                            date.setUTCHours(date.getHours());
                             self.claim.records[i].endDate = self.frmtDate(date.addDays(datesDiff), date);
                         }
                     }
@@ -907,6 +883,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     }
                     self.claim.carBoss = boss;
                 }
+            }
+            //коррекция времени для хранения без часового пояса
+            for (var i = 0; i < self.claim.records.length; i++) {
+                var rec = self.claim.records[i];
+                var sd = new Date(rec.startDate);
+
+                var entranceTime = new Date(rec.entranceDate);
+                entranceTime.setUTCHours(entranceTime.getHours());
+                var startTime = new Date(rec.startDate);
+                startTime.setUTCHours(startTime.getHours());
+                var endTime = new Date(rec.endDate);
+                endTime.setUTCHours(endTime.getHours());
+                self.claim.records[i].startDate = self.frmtDate(sd, startTime);
+                self.claim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
+                self.claim.records[i].endDate = self.frmtDate(sd, endTime);
             }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
