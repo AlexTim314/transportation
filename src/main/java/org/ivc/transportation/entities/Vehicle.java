@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,8 +27,8 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"model", "transportDep", "fuels", "lastDep"})
-@ToString(exclude = {"model", "transportDep", "fuels", "lastDep"})
+@EqualsAndHashCode(exclude = {"model", "transportDep", "fuels"/*, "lastDep"*/})
+@ToString(exclude = {"model", "transportDep", "fuels"/*, "lastDep"*/})
 @Entity
 @Table(name = "vehicle")
 public class Vehicle implements Serializable {
@@ -57,8 +56,8 @@ public class Vehicle implements Serializable {
     @Column(name = "note", length = 255)
     private String note;
 
-    @OneToOne
-    private Department lastDep;
+//    @OneToOne
+//    private Department lastDep;
     
     @ManyToOne
     private VehicleModel model;

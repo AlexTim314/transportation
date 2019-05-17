@@ -574,10 +574,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         };
 
         self.carBossToString = function (boss) {
-            if (boss === null) {
-                return null;
+            if (boss === null || boss === undefined) {
+                return "не назначен";
             }
-            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + (boss.post !== null ? boss.post : "");
+            var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "");
             return result;
         };
 
@@ -893,20 +893,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 alert("Форма заполнена не полностью!");
                 return;
             }
-            if (self.claim.carBoss === null
-                    && self.carBossName !== null
-                    && self.carBossName !== undefined
-                    && self.carBossName.length > 0) {
-                var fio = self.carBossName.split(' ');
-                var boss = {};
-                if (fio.length > 1) {
-                    boss.firstname = fio[0];
-                    boss.name = fio[1];
-                    if (fio.length > 2) {
-                        boss.surname = fio[2];
-                    }
-                    self.claim.carBoss = boss;
-                }
+            for (var i = 0; i < self.claim.records.length; i++) {
+                self.claim.records[i].carBoss = self.claim.carBoss;
             }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
