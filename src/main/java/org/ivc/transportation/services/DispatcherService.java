@@ -30,6 +30,7 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
 import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
+import org.ivc.transportation.utils.VehicleForPlan;
 import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

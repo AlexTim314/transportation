@@ -14,6 +14,7 @@ import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.VehicleForPlan;
 import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -111,5 +112,4 @@ public class AppointmentController {
     public List<VehicleModel> getVehicleModels(Principal principal) {
         return dispatcherService.findVehicleModelsByTransportDep(principal);
     }
-
 }
