@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,4 +46,21 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Query(value = "select * from vehicle where status = :status order by note", nativeQuery = true)
     public List<Vehicle> findVehiclesForPlan(@Param("status") int status);
+    
+    @Query(value = "select vehicle.id as vehicleid, "
+            + "vehicle.number as number, "
+            + "transport_dep.shortname as otsname, "
+            + "vehicle_model.model_name as modelname, "
+            + "department.id as departmentid "
+            + "from vehicle, department, appointment, record, claim, transport_dep, vehicle_model "
+            + "where claim.department_id = department.id and "
+            + "record.claim_id = claim.id and "
+            + "appointment.id = (select max(id) from appointment where record_id = record.id) and "
+            + "vehicle.id = appointment.vehicle_id and "
+            + "transport_dep.id = vehicle.transport_dep_id and "
+            + "vehicle_model.id = vehicle.model_id "
+            + "group by departmentid, vehicleid, transport_dep.id, vehicle_model.id "
+            + "order by departmentid", nativeQuery = true)
+    List<VehicleLastDep> findVehicleLastDep();
+    
 }

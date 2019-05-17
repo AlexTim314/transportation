@@ -30,6 +30,7 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
 import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
+import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -248,5 +249,4 @@ public class DispatcherService {
         AppUser user = getUser(principal);
         return vehicleModelRepository.findVehicleModelsByTransportDepId(user.getTransportDep().getId());
     }
-
 }
