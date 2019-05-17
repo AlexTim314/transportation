@@ -174,11 +174,13 @@ public class PlanDownloadController {
         hMergeContinue.setVal(STMerge.CONTINUE);
 
         List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
+        List<Vehicle> vehicles = null;//dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
 
         List<RowData> rowDataList = new LinkedList<>();
         RowData prevRow = null;
-        for (Appointment a : appointments) {
-            String vehicleNumber = a.getVehicle().getNumber();
+        for (Vehicle v : vehicles) {
+            Appointment a = null;
+            String vehicleNumber = v.getNumber();
             Record record = dispatcherService.findRecordByAppointment(a);
             if ((prevRow != null) && (vehicleNumber.equalsIgnoreCase(prevRow.vehicleNumber))) {
                 //TODO: обработка написана из предположения, что если на одну машину
@@ -283,16 +285,16 @@ public class PlanDownloadController {
         }
 
         //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
-        List<Vehicle> vehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.ремонт);
-        vehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
+        List<Vehicle> v_ehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.ремонт);
+        v_ehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
         //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
-        vehicles = vehicles.stream().filter((t) -> {
+        v_ehicles = v_ehicles.stream().filter((t) -> {
             return t.getModel() != null;
         }).filter((t) -> {
             return t.getNumber() != null;
         }).collect(Collectors.toList());
 
-        for (Vehicle vehicle : vehicles) {
+        for (Vehicle vehicle : v_ehicles) {
             row = table.createRow();
             isBold = true;
             fontSize = 8;

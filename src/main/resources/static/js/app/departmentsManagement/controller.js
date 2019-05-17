@@ -3,7 +3,7 @@
 App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagementService',
     function ($scope, DepartmentsManagementService) {
         var self = this;
-        self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
+        self.department = {id: null, inplanorder: 0, shortname: '', fullname: '', address: '', phone: ''};
         self.departments = [];
 
         self.fetchAllDepartments = function () {
@@ -68,6 +68,7 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
 
         self.editDepartment = function (department) {
             self.department.id = department.id;
+            self.department.inplanorder = department.inplanorder;
             self.department.fullname = department.fullname;
             self.department.shortname = department.shortname;
             self.department.address = department.address;
@@ -75,7 +76,7 @@ App.controller('DepartmentsManagementController', ['$scope', 'DepartmentsManagem
         };
 
         self.reset = function () {
-            self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
+            self.department = {id: null, inplanorder: 0, shortname: '', fullname: '', address: '', phone: ''};
         };
 
     }]);

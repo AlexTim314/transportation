@@ -32,6 +32,9 @@ public class Department implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
+    @Column(name = "inplanorder", nullable = false, unique = true)
+    private int inplanorder;
 
     @Column(name = "shortname", nullable = false, unique = true, length = 64)
     private String shortname;
@@ -49,26 +52,30 @@ public class Department implements Serializable {
     @JoinColumn(name = "super_manager_id")
     private AppUser superManager;
 
-    public Department(String shortname) {
+    public Department(int inplanorder, String shortname) {
+        this.inplanorder = inplanorder;
         this.shortname = shortname;
     }
 
-    public Department(String shortname, String fullname) {
+    public Department(int inplanorder, String shortname, String fullname) {
+        this.inplanorder = inplanorder;
         this.shortname = shortname;
         this.fullname = fullname;
     }
 
-    public Department(String shortname, String fullname, String address) {
+    public Department(int inplanorder, String shortname, String fullname, String address) {
+        this.inplanorder = inplanorder;
         this.shortname = shortname;
         this.fullname = fullname;
         this.address = address;
     }
 
-    public Department(String shortname, String fullname, String address, String phone) {
+    public Department(int inplanorder, String shortname, String fullname, String address, String phone) {
+        this.inplanorder = inplanorder;
         this.shortname = shortname;
         this.fullname = fullname;
         this.address = address;
         this.phone = phone;
     }
-
+    
 }
