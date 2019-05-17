@@ -625,9 +625,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
 
-//        self.departFromObj = function (obj) {
-//            self.departments = obj.departments;
-//        };
 
         self.createAppointments = function () {
             var appoints = [];
