@@ -58,7 +58,7 @@ public class PlanningController {
     public List<AffirmedClaim> getAffirmedClaimsAll1() {
         return planningService.getAffirmedClaimsAll1();
     }
-
+    
     @GetMapping("/planner/ots_info")
     public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
