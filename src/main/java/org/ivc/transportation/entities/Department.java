@@ -33,8 +33,8 @@ public class Department implements Serializable {
     @Column(name = "id")
     private Long id;
     
-    @Column(name = "inplanorder", nullable = false, unique = true)
-    private int inplanorder;
+    @Column(name = "order", nullable = false, unique = true)
+    private int order;
 
     @Column(name = "shortname", nullable = false, unique = true, length = 64)
     private String shortname;
@@ -52,26 +52,26 @@ public class Department implements Serializable {
     @JoinColumn(name = "super_manager_id")
     private AppUser superManager;
 
-    public Department(int inplanorder, String shortname) {
-        this.inplanorder = inplanorder;
+    public Department(int order, String shortname) {
+        this.order = order;
         this.shortname = shortname;
     }
 
-    public Department(int inplanorder, String shortname, String fullname) {
-        this.inplanorder = inplanorder;
+    public Department(int order, String shortname, String fullname) {
+        this.order = order;
         this.shortname = shortname;
         this.fullname = fullname;
     }
 
-    public Department(int inplanorder, String shortname, String fullname, String address) {
-        this.inplanorder = inplanorder;
+    public Department(int order, String shortname, String fullname, String address) {
+        this.order = order;
         this.shortname = shortname;
         this.fullname = fullname;
         this.address = address;
     }
 
-    public Department(int inplanorder, String shortname, String fullname, String address, String phone) {
-        this.inplanorder = inplanorder;
+    public Department(int order, String shortname, String fullname, String address, String phone) {
+        this.order = order;
         this.shortname = shortname;
         this.fullname = fullname;
         this.address = address;

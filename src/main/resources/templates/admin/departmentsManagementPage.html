@@ -72,9 +72,9 @@
                                     
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label class="col-md-2 control-lable" for="inplanorder">Номер для определения порядка подразделений в плане</label>
+                                            <label class="col-md-2 control-lable" for="order">Номер для определения порядка подразделений в плане</label>
                                             <div class="col-md-7">
-                                                <input type="text" ng-model="ctrl.department.inplanorder" id="inplanorder" class="form-control input-sm" placeholder="Введите номер для сортировки в плане" required/>
+                                                <input type="text" ng-model="ctrl.department.order" id="order" class="form-control input-sm" placeholder="Введите номер для сортировки в плане" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                             <th>Сокращённое название</th>
                                             <th>Адрес</th>
                                             <th>Телефон</th>
-                                            <th ng-click="reverse =!reverse; predicate ='inplanorder'">Порядок в плане</th>
+                                            <th ng-click="reverse =!reverse; predicate ='order'">Порядок в плане</th>
                                             <th style="width: 200px;"></th>
                                         </tr>
                                     </thead>
@@ -128,7 +128,7 @@
                                             <td>{{department.shortname}}</td>
                                             <td>{{department.address}}</td>
                                             <td>{{department.phone}}</td>
-                                            <td>{{department.inplanorder}}</td>
+                                            <td>{{department.order}}</td>
                                             <td><button type="button" ng-click="ctrl.editDepartment(department)" class="btn btn-success">Изменить</button>
                                                 <button type="button" ng-click="ctrl.deleteDepartment(department)" class="btn btn-danger custom-width">Удалить</button></td>
                                         </tr>

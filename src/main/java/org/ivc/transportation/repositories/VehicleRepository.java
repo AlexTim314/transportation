@@ -85,7 +85,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             + "left outer join department on department.id = claim.department_id, vehicle_model, transport_dep "
             + "where vehicle_model.id = vehicle.model_id and transport_dep.id = vehicle.transport_dep_id "
             + "group by departmentid, vehicleid, modelname, otsname, purpose, carrbossfirstname, carrbossname, carrbosssurname, entrancedate, startdate, enddate, driverfirstname, drivername, driversurname "
-            + "order by departmentid", nativeQuery = true)
+            + "order by departmentid, vehicleid", nativeQuery = true)
     public List<VehicleForPlan> findVehiclesForPlan(@Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
 
 }

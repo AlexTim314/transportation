@@ -11,12 +11,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -28,17 +31,17 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import static org.ivc.transportation.controllers.WaybillFileDownloadController.getCarBossNameWithInitials;
-import static org.ivc.transportation.controllers.WaybillFileDownloadController.getDriverNameWithInitials;
+import static org.ivc.transportation.controllers.WaybillFileDownloadController.getNameWithInitials;
 import org.ivc.transportation.entities.Appointment;
-import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
-import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.services.CommonService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.EntitiesUtils;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
+import org.ivc.transportation.utils.VehicleForPlan;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -69,7 +72,12 @@ public class PlanDownloadController {
     private DispatcherService dispatcherService;
 
     @Autowired
+    private CommonService commonService;
+
+    @Autowired
     private ServletContext servletContext;
+
+    private static final String PL = "Пл. ";
 
     @GetMapping("planner/plandownload/{date}")
     @ResponseBody
@@ -173,66 +181,34 @@ public class PlanDownloadController {
         CTHMerge hMergeContinue = CTHMerge.Factory.newInstance();
         hMergeContinue.setVal(STMerge.CONTINUE);
 
-        List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
-        List<Vehicle> vehicles = null;//dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
+        //List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
+        
+        List<VehicleForPlan> vehicles = dispatcherService.getVehiclesForPlan(purposeDate);
 
         List<RowData> rowDataList = new LinkedList<>();
         RowData prevRow = null;
-        for (Vehicle v : vehicles) {
-            Appointment a = null;
-            String vehicleNumber = v.getNumber();
-            Record record = dispatcherService.findRecordByAppointment(a);
-            if ((prevRow != null) && (vehicleNumber.equalsIgnoreCase(prevRow.vehicleNumber))) {
-                //TODO: обработка написана из предположения, что если на одну машину
-                //есть два назначения на одну дату, то у них могут различаться только
-                //время и водитель. И тогда они должны быть указаны в одной сроке таблицы друг под другом.
-                //!Надо выяснить как происходит подача заявок в таком случае.
-                //Требуется чтобы назначения были отсортированы так, что на одну машину они идут подряд.
-
-                prevRow.time.add(getTimeString(record));
-                prevRow.driver.add(getDriverNameWithInitials(a.getDriver()));
+        for (VehicleForPlan v : vehicles) {
+            if ((prevRow != null) && (v.getNumber().equalsIgnoreCase(prevRow.vehicleNumber))) {                
+                addDataInRowLists(v, prevRow);
             } else {
                 RowData rowData = new RowData();
-                rowData.vehicleNumber = vehicleNumber;
-
-                Claim claim = dispatcherService.findClaimByRecord(record);
-
-                rowData.carBoss = getCarBossNameWithInitials(claim.getCarBoss());
-                rowData.driver.add(getDriverNameWithInitials(a.getDriver()));
-                rowData.departmentName = claim.getDepartment().getFullname();
-                rowData.purposes = claim.getPurpose();
-                rowData.vehicleModelName = a.getVehicleModel().getModelName();
-
-                String[] tmpArr = a.getTransportDep().getShortname().split(" ");
+                rowData.vehicleModelName = v.getModelname();
+                rowData.vehicleNumber = v.getNumber();
+                String[] tmpArr = v.getOtsname().split(" ");
                 rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
 
-                String route = "";
-                List<RouteTask> routeTasks = claim.getRouteTasks();
-
-                if (!routeTasks.isEmpty()) {
-                    routeTasks.sort((t1, t2) -> {
-                        return Integer.compare(t1.getOrderNum(), t2.getOrderNum());
-                    });
-                    for (RouteTask routeTask : routeTasks) {
-                        //System.out.println(routeTask.getId() + " " + routeTask.getPlace() + " " +routeTask.getPlace().getName());
-                        if ((routeTask == null) || (routeTask.getPlace() == null) || (routeTask.getPlace().getName() == null)) {
-                            break;
-                        }
-                        route = route + routeTask.getPlace().getName() + ", ";
-                    }
-                    route = route.substring(0, route.length() - 2);
+                Long depId = v.getDepartmentid();
+                if (depId == null) {
+                    rowData.departmentName = "Незадействованный ранее";
+                } else {
+                    Department department = commonService.findDepartmentById(depId);
+                    rowData.departmentName = department == null ? "Подразделение не указано" : department.getFullname();
                 }
-                rowData.route = route;
 
-                rowData.time.add(getTimeString(record));
-
+                addDataInRowLists(v, rowData);
                 prevRow = rowData;
                 rowDataList.add(rowData);
             }
-        }
-
-        if (appointments.isEmpty()) {
-            fullfillTestData(rowDataList);
         }
 
         String currentDepName = "";
@@ -268,11 +244,11 @@ public class PlanDownloadController {
                     "Times New Roman", fontSize, isBold, parAligCenter);
             textToParagraph(row.getCell(3).getParagraphs().get(0), rowData.transportDepNumber,
                     "Times New Roman", fontSize, isBold, parAligCenter);
-            textToParagraph(row.getCell(4).getParagraphs().get(0), rowData.purposes,
+            listToCell(row.getCell(4), rowData.purposes,
                     "Times New Roman", fontSize, false, parAligLeft);
-            textToParagraph(row.getCell(5).getParagraphs().get(0), rowData.carBoss,
+            listToCell(row.getCell(5), rowData.carBoss,
                     "Times New Roman", fontSize, false, parAligLeft);
-            textToParagraph(row.getCell(6).getParagraphs().get(0), rowData.route,
+            listToCell(row.getCell(6), rowData.route,
                     "Times New Roman", 7, false, parAligCenter);
             listToCell(row.getCell(7), rowData.time,
                     "Times New Roman", fontSize, false, parAligLeft);
@@ -388,50 +364,6 @@ public class PlanDownloadController {
         }
     }
 
-    private void fullfillTestData(List<RowData> rowDataList) {
-
-        RowData rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Перевозка пассажиров";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "1";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-1";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Перевозка грузов";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "2";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
-        rd = new RowData();
-        rd.carBoss = "Старший машины С.М.";
-        rd.departmentName = "ЦИ-2";
-        rd.driver.add("Водитель В.В.");
-        rd.purposes = "Дежурный";
-        rd.route = "Пл.10, Пл. 95";
-        rd.time.add("8:00-19:00");
-        rd.transportDepNumber = "4";
-        rd.vehicleModelName = "Газ 2121";
-        rd.vehicleNumber = "Е777КХ";
-
-        rowDataList.add(rd);
-
-
-    }
-
     private String getTimeString(Record record) {
         String time = record.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm"))
                 + "("
@@ -439,12 +371,41 @@ public class PlanDownloadController {
                 + ")- ";
         if (record.getEndDate() != null) {
             String endTimeStr = record.getEndDate().format(DateTimeFormatter.ofPattern("HH:mm"));
-            if (endTimeStr.equalsIgnoreCase("23:59")){
+            if (endTimeStr.equalsIgnoreCase("23:59")) {
                 endTimeStr = "24:00";
             }
             time = time + endTimeStr;
         }
         return time;
+    }
+
+    private String getTimeString(LocalDateTime start, LocalDateTime entrance, LocalDateTime end) {
+        String time = start.format(DateTimeFormatter.ofPattern("HH:mm"))
+                + "("
+                + entrance.format(DateTimeFormatter.ofPattern("HH:mm"))
+                + ")- ";
+        if (end != null) {
+            String endTimeStr = end.format(DateTimeFormatter.ofPattern("HH:mm"));
+            if (endTimeStr.equalsIgnoreCase("23:59")) {
+                endTimeStr = "24:00";
+            }
+            time = time + endTimeStr;
+        }
+        return time;
+    }
+
+    private void addDataInRowLists(VehicleForPlan v, RowData rowData) {
+        if (v.getPurpose() != null) {
+            rowData.carBoss.add(getNameWithInitials(v.getCarrbossfirstname(), v.getCarrbossname(), v.getCarrbosssurname()));
+            rowData.driver.add(getNameWithInitials(v.getDriverfirstname(), v.getDrivername(), v.getDriversurname()));
+            rowData.purposes.add(v.getPurpose());
+            if (v.getRoute() != null) {
+                String route = v.getRoute();
+                int index = route.indexOf(PL) + PL.length();
+                rowData.route.add(route.substring(0, index) + route.substring(index).replaceAll(PL, ""));
+            }
+            rowData.time.add(getTimeString(v.getStartdate(), v.getEntrancedate(), v.getEnddate()));
+        }
     }
 
     private class RowData {
@@ -453,9 +414,9 @@ public class PlanDownloadController {
         String vehicleModelName;
         String vehicleNumber;
         String transportDepNumber;
-        String purposes;
-        String carBoss;
-        String route;
+        List<String> purposes = new ArrayList<>();
+        List<String> carBoss = new ArrayList<>();
+        List<String> route = new ArrayList<>();
         List<String> time = new ArrayList<>();
         List<String> driver = new ArrayList<>();
     }
