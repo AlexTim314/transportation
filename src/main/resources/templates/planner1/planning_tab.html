@@ -56,8 +56,8 @@
                                 <th style="width:10% ">Вид техники</th>
                                 <th style="width:5% ">Дата выезда</th>
                                 <th style="width:10% ">Время подачи</th>
-                                <th style="width:15% ">Цель поездки</th>
-                                <th style="width:15% ">Маршрут</th>
+                                <th style="width:30% ">Цель поездки</th>
+                                <!--                                <th style="width:15% ">Маршрут</th>-->
                                 <th style="width:10% ">ОТС</th>
                                 <th style="width:12.5% ">Марка</th>
                                 <th style="width:5% ">Статус</th>
@@ -80,10 +80,10 @@
                                 <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
-                                <td >
-                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
-                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
-                                </td>                                                         
+                                <!--                                <td >
+                                                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
+                                                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                                                                </td>                                                         -->
 
                                 <td>
                                     <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" ng-change="plctrl.changeCheckedTD(clrec)">
@@ -97,7 +97,7 @@
                                 <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
                                 <td class="td-relative"> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
-                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="{{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
+                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="Утвердил {{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
                                 </td>
                             </tr>
                         </table>
@@ -106,9 +106,9 @@
             </table>
         </div>  
         <div ng-if="plctrl.pager.pages.length" class="paginator" id='pagination'>           
-            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" title="Предыдущая страница">&lt</div>
+            <div class="pages " ng-click="(plctrl.pager.currentPage - 1)" title="Предыдущая страница">&lt</div>
             <div ng-repeat="page in plctrl.pager.pages" class="pages {{plctrl.pager.currentPage === page?'page-active':''}}" ng-click="plctrl.setPage(page)">{{page}}</div>   
-            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" title="Следующая страница">&gt</div>
+            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" ng-show="plctrl.pager.currentPage !== plctrl.pager.length" title="Следующая страница">&gt</div>
         </div>
         <div class="more-info" id="appt-note" style="width: 25%;">
             <div>Примечание

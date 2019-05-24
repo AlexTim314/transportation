@@ -873,15 +873,17 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
         self.affirmatorToString = function (user) {
             if (user !== null && user !== undefined) {
-                var nameArr = user.fullName.split(' ');
-                var result = nameArr[0];
-                if (nameArr.length > 1) {
-                    result += " " + nameArr[1].charAt(0) + ".";
+                if (user.fullName !== null) {
+                    var nameArr = user.fullName.split(' ');
+                    var result = nameArr[0];
+                    if (nameArr.length > 1) {
+                        result += " " + nameArr[1].charAt(0) + ".";
+                    }
+                    if (nameArr.length > 2) {
+                        result += nameArr[2].charAt(0) + ".";
+                    }
+                    return result;
                 }
-                if (nameArr.length > 2) {
-                    result += nameArr[2].charAt(0) + ".";
-                }
-                return result;
             }
         };
 
@@ -1662,7 +1664,12 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 id: self.cmpsts[j].recordid,
                                 startDate: self.cmpsts[j].startdate,
                                 entranceDate: self.cmpsts[j].entrancedate,
-                                endDate: self.cmpsts[j].enddate
+                                endDate: self.cmpsts[j].enddate,
+                                affirmator: {
+                                    id: self.cmpsts[j].affirmid,
+                                    fullName: self.cmpsts[j].affirmname
+                                },
+                                tasks: self.cmpsts[j].route
                             },
                             appointment: {
                                 id: self.cmpsts[j].appointmentid,
@@ -1683,14 +1690,14 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                     phone: driverPhone
                                 },
                                 creator: {
-                                    id: null,
-                                    fullName: null,
-                                    post: null
+                                    id: self.cmpsts[j].creatorid,
+                                    fullName: self.cmpsts[j].creatorname,
+                                    post: self.cmpsts[j].creatorpost
                                 },
                                 modificator: {
-                                    id: null,
-                                    fullName: null,
-                                    post: null
+                                    id: self.cmpsts[j].modifid,
+                                    fullName: self.cmpsts[j].modifname,
+                                    post: self.cmpsts[j].modifpost
                                 }
                             }
                         });

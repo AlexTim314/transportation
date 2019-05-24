@@ -35,6 +35,10 @@ public interface AffirmedClaim {
     Long getAppmodifid();
     Long getCreatorid();
     String getCreatorname();
-    Long getModificatorid();
-    String getModificatorname();
+    Long getModifid();
+    String getModifname();
+    String getCreatorpost();
+    String getModifpost();
+    Long getAffirmid();
+    String getAffirmname();
 }
