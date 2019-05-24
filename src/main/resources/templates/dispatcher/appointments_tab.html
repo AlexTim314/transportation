@@ -59,9 +59,9 @@
         <span class="btn edit btn-print"><i class="fa fa-lg fa-print"></i></span>
     </div>
         <div ng-if="plctrl.pager.pages.length" class="paginator" id='pagination'>           
-            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" title="Предыдущая страница">&lt</div>
+            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" ng-show="plctrl.pager.currentPage !== 1" title="Предыдущая страница">&lt</div>
             <div ng-repeat="page in plctrl.pager.pages" class="pages {{plctrl.pager.currentPage === page?'page-active':''}}" ng-click="plctrl.setPage(page)">{{page}}</div>   
-            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" title="Следующая страница">&gt</div>
+            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" ng-show="plctrl.pager.currentPage !== plctrl.pageCount" title="Следующая страница">&gt</div>
         </div>
 
 </div>
