@@ -63,6 +63,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.affirmator_id as affirmid, "
             + "(select full_name as affirmname from app_user where id = claim.affirmator_id), "
             + "appointment.transport_dep_id as transportdepid, "
+            + "appointment.creation_date as crdate, "
             + "appointment.driver_id as driverid, "
             + "appointment.vehicle_id as vehicleid, "
             + "appointment.vehicle_model_id as modelid, "

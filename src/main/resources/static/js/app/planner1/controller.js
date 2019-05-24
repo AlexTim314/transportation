@@ -1,5 +1,4 @@
 'use strict';
-
 App.controller('PlannerController1', ['$scope', 'PlannerService1',
     function ($scope, PlannerService1) {
         var self = this;
@@ -23,6 +22,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.carBoss = {id: null};
         self.otsInfo = {id: null, type1count: 0, type4count: 0, type2count: 0, drivercount: 0, type3count: 0, name: ''};
         self.compVMTDSpec = {shortname: '', modelname: '', vehiclemodelid: null, transportdepid: null, vehiclespecialization: ''};
+
+
         self.compVMTDSpecs = [];
         self.otsInfos = [];
         self.allCountDrivers = 0;
@@ -94,7 +95,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.getUserName = function () {
             PlannerService1.getUserName()
                     .then(
@@ -105,10 +105,8 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 console.error('Error while fetching Username');
                             });
         };
-
         self.getPermit();
         self.getUserName();
-
         self.fetchAllSpecDepartments = function () {
             PlannerService1.fetchAllDepartments()
                     .then(
@@ -120,7 +118,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
             var car = 'fas fa-lg fa-car';
@@ -137,7 +134,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     return tractor;
             }
         };
-
         self.selectSmallIcon = function (spec) {
             var bus = 'fas fa-bus-alt';
             var car = 'fas fa-car';
@@ -154,7 +150,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     return tractor;
             }
         };
-
         self.fetchAllAppointments = function () {
             PlannerService1.fetchAllAppointments()
                     .then(
@@ -166,7 +161,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchAllClaims = function () {
             PlannerService1.fetchAllClaims()
                     .then(
@@ -178,7 +172,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchMonthPlanRecords = function () {
             self.all = true;
             self.today = false;
@@ -190,6 +183,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
+                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -200,7 +194,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchMonthBeforePlanRecords = function () {
             self.all = false;
             self.today = false;
@@ -212,7 +205,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
-                                console.log(self.cmpsts)
+                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -223,9 +216,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
-
         self.fetchWeekPlanRecords = function () {
             self.all = false;
             self.today = false;
@@ -237,6 +227,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
+                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -247,7 +238,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchTomorrowPlanRecords = function () {
             self.all = false;
             self.today = true;
@@ -257,6 +247,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
+                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                             },
@@ -265,7 +256,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchDatePlanRecords = function () {
             self.all = false;
             self.today = false;
@@ -277,6 +267,7 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
+                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                             },
@@ -285,8 +276,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
         self.fetchMonthCompletePlanRecords = function () {
             self.call = true;
             self.ctoday = false;
@@ -306,7 +295,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchMonthBeforeCompleteRecords = function () {
             self.call = false;
             self.ctoday = false;
@@ -326,7 +314,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchWeekCompletePlanRecords = function () {
             self.call = false;
             self.ctoday = false;
@@ -346,7 +333,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchTomorrowCompletePlanRecords = function () {
             self.call = false;
             self.ctoday = true;
@@ -363,7 +349,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchDateCompletePlanRecords = function () {
             self.call = false;
             self.ctoday = false;
@@ -375,14 +360,12 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteRecords of Day');
                             }
                     );
         };
-
         self.fetchCarBosses = function () {
             console.log(self.specDepartment);
             PlannerService1.fetchCarBosses()
@@ -395,7 +378,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchTransportDeps = function () {
             PlannerService1.fetchTransportDeps()
                     .then(
@@ -407,7 +389,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchVehicles = function () {
             PlannerService1.fetchVehicles()
                     .then(
@@ -419,7 +400,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchDrivers = function () {
             PlannerService1.fetchDrivers()
                     .then(
@@ -431,7 +411,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchAllVehicleModels = function () {
             PlannerService1.fetchAllVehicleModels()
                     .then(
@@ -443,9 +422,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
-
         self.fetchPlaces = function () {
             PlannerService1.fetchPlaces()
                     .then(
@@ -457,7 +433,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchOtsInfo = function () {
             PlannerService1.fetchOtsInfo()
                     .then(
@@ -474,27 +449,23 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
         self.fetchOtsVehModels = function () {
             PlannerService1.fetchOtsVehModels()
                     .then(
                             function (d) {
                                 self.compVMTDSpecs = d;
+                                console.log(self.compVMTDSpecs);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching compVMTDSpec');
                             }
                     );
         };
-
-
         self.downloadPlan = function () {
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
             var day = datePlan.getDate();
             var month = datePlan.getMonth() + 1;
             var year = datePlan.getFullYear();
-
             if (month < 10)
                 month = "0" + month;
             if (day < 10)
@@ -513,7 +484,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var strDate = year + "" + month + "" + day;
             window.open("/transportation/planner/plandownload/" + strDate, "_self");
         };
-
         self.getDateFromServer = function () {
             PlannerService1.fetchDateFromServer()
                     .then(
@@ -528,7 +498,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
                                 self.date = self.getFormatedDate(date, ".", false);
-
                                 date.setDate(date.getDate() + 1);
                                 var tomorrow = self.getFormatedDate(date, "-", true);
                                 document.getElementById('compl-date-plan').value = tomorrow;
@@ -538,8 +507,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
         self.getFormatedDate = function (date, separator, yearAtBeginning) {
             var day = date.getDate();
             var month = date.getMonth() + 1;
@@ -553,7 +520,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return day + separator + month + separator + year;
         };
-
         /*  self.getToday = function () {
          var date = new Date();
          var today = self.getFormatedDate(date, "-", true);
@@ -584,7 +550,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchDepartments = function () {
             PlannerService1.fetchDepartments()
                     .then(
@@ -596,7 +561,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchRouteTasks = function () {
             PlannerService1.fetchRouteTasks()
                     .then(
@@ -608,7 +572,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.fetchDepartments();
         self.fetchDrivers();
         self.fetchVehicles();
@@ -624,8 +587,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
         self.fetchAllSpecDepartments();
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
-
-
         self.createAppointments = function () {
             var appoints = [];
             var appointment = {};
@@ -674,8 +635,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
-
         self.deleteAppointment = function (appointment) {
             PlannerService1.deleteAppointment(appointment)
                     .then(
@@ -685,7 +644,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.rowClick = function (dep) {
             if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
@@ -701,7 +659,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 self.showRecords(dep.composite);
             }
         };
-
         self.rowCompleteClick = function (dep) {
             if (dep.isVisible === undefined) {
                 dep.isVisible = true;
@@ -709,7 +666,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 dep.isVisible = !dep.isVisible;
             }
         };
-
         self.clearBacklight = function (element) {
             var block = document.getElementById('bar-block1');
             var items = block.getElementsByClassName('info-bar-btn');
@@ -720,7 +676,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 }
             }
         };
-
         self.rowOtsInfoClick = function (ots, element) {
             self.clearBacklight(element);
             element.classList.toggle('subActive');
@@ -735,30 +690,24 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 ots.isVisible = !ots.isVisible;
             }
         };
-
         self.moreInfoOpen = function (clrec) {
             self.compClRec = clrec;
             formOpen('more-claim');
             formOpen('cover-trsp1');
         };
-
         self.closeInfo = function () {
             formClose('more-claim');
             formClose('cover-trsp1');
         };
-
         self.moreInfoAppointments = function (compClRec) {
             self.compClRec = compClRec;
             formOpen('cover-trsp1');
             formOpen('more-claim-status');
-
         };
-
         self.closeInfoAppointments = function () {
             formClose('more-claim-status')
             formClose('cover-trsp1');
         };
-
         self.changeDate = function () {
             var datePlan = new Date(document.getElementById('date-plan').value);
             var datePlan = new Date(document.getElementById('compl-date-plan').value);
@@ -771,7 +720,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 day = "0" + day;
             self.date = day + "." + month + "." + year;
         };
-
         self.getFilter = function (clrec) {
             var vType = clrec.claim.vehicleType;
             var filter = {};
@@ -782,7 +730,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return filter;
         };
-
         self.selectStatus = function (stat) {
             var inProgress = 'Обрабатывается';
             var ready = 'Готово';
@@ -808,8 +755,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     return canceledBySupermanager;
             }
         };
-
-
         self.selectStatusIco = function (stat) {
             var inProgress = 'fas fa-lg fa-clock';
             var ready = 'fas fa-lg fa-check';
@@ -832,8 +777,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     return canceled;
             }
         };
-
-
         self.selectStatusColor = function (stat) {
             var inProgress = 'done-status';
             var ready = 'status-ready';
@@ -856,12 +799,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                     return canceled;
             }
         };
-
         self.statusClass = function (clrec) {
             var status = clrec.appointment.status;
             return self.selectStatusIco(status) + ' ' + self.selectStatusColor(status);
         };
-
         self.personToString = function (person) {
             if (person === null) {
                 return null;
@@ -869,8 +810,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             var result = person.firstname + " " + person.name.charAt(0) + "." + (person.surname !== null && person.surname !== undefined ? person.surname.charAt(0) + "." : "");
             return result;
         };
-
-
         self.affirmatorToString = function (user) {
             if (user !== null && user !== undefined) {
                 if (user.fullName !== null) {
@@ -886,48 +825,39 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 }
             }
         };
-
         self.carBossToString = function (boss) {
             if (boss !== null && boss !== undefined) {
                 var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
                 return result;
             }
         };
-
         self.checkPhone = function (appointment) {
             return appointment.driver !== null && appointment.driver !== undefined && appointment.driver.phone !== null && appointment.driver.phone !== undefined;
         };
-
         self.showDriver = function (appointment) {
             return appointment.driver === null || appointment.driver === undefined ? '-' : self.personToString(appointment.driver);
         };
-
         self.disable = function (clrec) {
             var appointment = clrec.appointment;
             if (appointment.status !== '5' && appointment.id !== null) {
                 return true;
             }
         };
-
         var expandHeaders = function () {
             for (var k in expandedHeaders) {
                 if (self.headers.length > 0)
                     self.headers[k].isVisible = expandedHeaders[k];
             }
         };
-
         self.appt = {};
-
         self.checkRec = function (clrec) {
             self.appt = clrec.appointment;
             formOpen('appt-note');
         };
-
         self.apptStatus = function () {
             var status = self.appt.status;
             return self.selectStatus(status);
         };
-
         self.prepareToCancel = function (rec) {
             self.record.id = rec.id;
             self.record.startDate = new Date(rec.startDate);
@@ -936,7 +866,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.record.appointments = rec.appointments;
             formOpen('formCancel');
         };
-
         self.cancelRecord = function () {
             var canceledApp = {};
             if (self.record.appointments.length !== 0) {
@@ -980,7 +909,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.amountReady = function (header) {
             var k = 0;
             if (header.composite !== undefined) {
@@ -992,7 +920,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return k;
         };
-
         self.amountInProgress = function (header) {
             var k = 0;
             if (header.composite !== undefined) {
@@ -1004,7 +931,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return k;
         };
-
         self.amountCanceled = function (header) {
             var k = 0;
             if (header.composite !== undefined) {
@@ -1018,7 +944,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return k;
         };
-
         self.correctingTime = function (rec) {
             self.record = rec;
             self.record.startDate = new Date(rec.startDate);
@@ -1026,13 +951,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.record.endDate = new Date(rec.endDate);
             formOpen('correctTime');
         };
-
         self.correctingRoute = function (clm) {
             self.claim = clm;
             formOpen('formRoute');
-
         };
-
         self.updateTime = function () {
             PlannerService1.updateTime(self.record)
                     .then(
@@ -1059,7 +981,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.updateRoute = function () {
             PlannerService1.updateRoute(self.claim)
                     .then(
@@ -1086,7 +1007,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.addTask = function (p) {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 if (self.claim.routeTasks[i].orderNum > self.checkedTskNumb) {
@@ -1096,7 +1016,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.claim.routeTasks.push({id: null, place: p, workName: self.workName, orderNum: self.checkedTskNumb + 1});
             self.workName = null;
         };
-
         self.removeTask = function (tsk) {
             var k = -1;
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -1107,7 +1026,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             self.claim.routeTasks.splice(k, 1);
         };
-
         self.submit = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.complRTasks.push(self.claim.routeTasks[i]);
@@ -1120,13 +1038,11 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.updateRoute();
             formClose('formRoute');
         };
-
         self.resetForm = function () {
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
             formClose('formRoute');
         };
-
         self.checkTsk = function (tsk) {
             self.checkedTskNumb = tsk.orderNum;
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -1143,18 +1059,13 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 }
             }
         };
-
-
         self.checkRecord = function (rec) {
             self.newRecord.checked = false;
             self.newRecord = rec;
             self.newRecord.checked = true;
         };
-
-
         self.addRec = function () {
             var sd = new Date(self.startDate);
-
             if (sd === null) {
                 return;
             }
@@ -1187,12 +1098,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 self.newClaim.records.push(rec);
             }
         };
-
         self.frmtDate = function (date, time) {
             var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
             return result;
         };
-
         self.removeRec = function (rec) {
             //удалить запись
             var k = -1;
@@ -1204,7 +1113,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             self.newClaim.records.splice(k, 1);
         };
-
         self.validateForm = function () {
             if (self.specDepartment.id === null) {
                 console.log('Department not selected!');
@@ -1229,7 +1137,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return false;
         };
-
         self.submitClaim = function () {
             if (self.validateForm()) {
                 alert("Форма заполнена не полностью!");
@@ -1243,7 +1150,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 
             self.resetClaimForm();
         };
-
         self.createClaim = function () {
             for (var i = 0; i < self.newClaim.routeTasks.length; i++) {
                 self.newClaim.routeTasks[i].id = null;
@@ -1264,7 +1170,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.resetClaimForm = function () {
             self.isOtherDay = false;
             self.newClaim = {
@@ -1289,7 +1194,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             formClose('form-add');
             formClose('cover-trsp1');
         };
-
         self.submitRTask = function () {
             if (self.routeTask.id === null && self.routeTask.orderNum === '') {
                 self.addRTask();
@@ -1298,7 +1202,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             self.resetRTaskForm();
         };
-
         self.addRTask = function () {
             var rt = {id: null};
             rt.orderNum = self.newClaim.routeTasks.length;
@@ -1307,7 +1210,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.newClaim.routeTasks.push(rt);
         };
-
         self.updateRTask = function () {
             self.removeRTask(self.temporaryRTask);
             var rt = {id: null};
@@ -1317,11 +1219,9 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             rt.routeTemplate = self.routeTask.routeTemplate;
             self.newClaim.routeTasks.push(rt);
         };
-
         self.resetRTaskForm = function () {
             self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         };
-
         self.removeRTask = function (routeTask) {
             var k = -1;
             for (var i = 0; i < self.newClaim.routeTasks.length; i++) {
@@ -1332,7 +1232,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             self.newClaim.routeTasks.splice(k, 1);
         };
-
         self.tryToUpdateRTask = function (routeTask) {
             self.routeTask.id = routeTask.id;
             self.routeTask.orderNum = routeTask.orderNum;
@@ -1341,8 +1240,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.routeTask.routeTemplate = routeTask.routeTemplate;
             self.temporaryRTask = routeTask;
         };
-
-
         self.createCarBoss = function () {
             self.carBoss.department = self.specDepartment;
             PlannerService1.createCarBoss(self.carBoss)
@@ -1356,7 +1253,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.updateCarBoss = function () {
             PlannerService1.updateCarBoss(self.carBoss)
                     .then(
@@ -1369,7 +1265,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.removeCB = function (carBoss) {
             PlannerService1.deleteCarBoss(carBoss)
                     .then(
@@ -1388,7 +1283,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-
         self.submitCB = function () {
             if (self.specDepartment.id === null) {
                 alert("Не выбрано подразделение!");
@@ -1400,12 +1294,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 self.updateCarBoss();
             }
         };
-
         self.tryToCreate = function () {
             self.carBoss = {id: null};
             formOpen('formCarBoss');
         };
-
         self.tryToUpdateCB = function (carBoss) {
             self.carBoss.id = carBoss.id;
             self.carBoss.firstname = carBoss.firstname;
@@ -1418,23 +1310,19 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.carBoss.department = carBoss.department;
             formOpen('formCarBoss');
         };
-
         self.tryToDelete = function (carBoss) {
             self.carBoss = carBoss;
             formOpen('del-car-boss-confirm');
         };
-
         self.resetCBForm = function () {
             self.carBoss = {id: null};
             formClose('formCarBoss');
         };
-
         self.checkAll = function (header) {
             for (var i = 0; i < header.composite.length; i++) {
                 header.composite[i].record.checked = header.allChecked;
             }
         };
-
         self.getUniqueModels = function (arr) {
             var i = 0,
                     current,
@@ -1448,7 +1336,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             }
             return unique;
         };
-
 //        self.prepareData = function (td, spec) {
 //            self.tempTransportDep = td;
 //            self.tempVehSpec = spec;
@@ -1499,7 +1386,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             //   self.filterModelsByselectedTransportDep(compositeClaimRecord.appointment.transportDep, compositeClaimRecord.claim.specialization);
 
         };
-
         self.changeCheckedVM = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
                 for (var i = 0; i < self.headers.length; i++) {
@@ -1511,7 +1397,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 }
             }
         };
-
         self.carBossToStringInfo = function (boss) {
             if (boss === null) {
                 return null;
@@ -1523,12 +1408,10 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                 return null;
             }
         };
-
         self.prepareToAddClaim = function () {
             formOpen('form-add');
             formOpen('cover-trsp1');
         };
-
         self.showRecords = function (clrecs) {
             self.clrec = [];
             self.pageCount = Math.ceil(clrecs.length / self.numRecordsPerPage);
@@ -1536,7 +1419,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             self.clrecs = clrecs;
             self.setPage(1);
         };
-
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
@@ -1550,7 +1432,6 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
             // self.data = self.clrecs.slice(self.pager.startIndex, self.pager.endIndex + 1);
             console.log(self.data);
         };
-
         self.getPager = function (totalItems, currentPage, pageSize) {
             var totalPages = self.pageCount;
             var startPage, endPage;
@@ -1597,123 +1478,153 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
 //=====================
 
         self.createHeaders = function () {
-            var t1 = Date.now();
-            self.headers = [];
-            var deps = [];
-            var k = 0;
-            deps[k] = self.cmpsts[0].departmentid;
-            for (var i = 1; i < self.cmpsts.length; i++) {
-                if (self.cmpsts[i].departmentid !== deps[k]) {
-                    k++;
-                    deps[k] = self.cmpsts[i].departmentid;
-                }
-            }
-            for (var i = 0; i < deps.length; i++) {
-                for (var j = 0; j < self.departments.length; j++) {
-                    if (deps[i] === self.departments[j].id) {
-                        self.headers[i] = {
-                            department: {
-                                id: self.departments[j].id,
-                                shortname: self.departments[j].shortname,
-                                fullname: self.departments[j].fullname},
-                            composite: []
-                        };
-
+            if (self.cmpsts.length > 0) {
+                var t1 = Date.now();
+                self.headers = [];
+                var deps = [];
+                var k = 0;
+                deps[k] = self.cmpsts[0].departmentid;
+                for (var i = 1; i < self.cmpsts.length; i++) {
+                    if (self.cmpsts[i].departmentid !== deps[k]) {
+                        k++;
+                        deps[k] = self.cmpsts[i].departmentid;
                     }
                 }
-            }
-            for (var i = 0; i < self.headers.length; i++) {
-                for (var j = 0; j < self.cmpsts.length; j++) {
-                    if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
-                        for (var l = 0; l < self.transportDeps.length; l++) {
-                            if (self.cmpsts[j].transportdepid === self.transportDeps[l].id) {
-                                var transportDep = self.transportDeps[l];
-                            }
+                for (var i = 0; i < deps.length; i++) {
+                    for (var j = 0; j < self.departments.length; j++) {
+                        if (deps[i] === self.departments[j].id) {
+                            self.headers[i] = {
+                                department: {
+                                    id: self.departments[j].id,
+                                    shortname: self.departments[j].shortname,
+                                    fullname: self.departments[j].fullname},
+                                composite: []
+                            };
                         }
-                        for (var l = 0; l < self.vehicleModels.length; l++) {
-                            if (self.cmpsts[j].modelid === self.vehicleModels[l].id) {
-                                var vehicleModelId = self.vehicleModels[l].id;
-                                var vehicleModelModelName = self.vehicleModels[l].modelName;
-                                var vehicleModelVehicleType = self.vehicleModels[l].vehicleType;
-                            }
-                        }
-                        for (var l = 0; l < self.drivers.length; l++) {
-                            if (self.cmpsts[j].driverid === self.drivers[l].id) {
-                                var driverId = self.drivers[l].id;
-                                var driverFirstname = self.drivers[l].firstname;
-                                var driverName = self.drivers[l].name;
-                                var driverSurname = self.drivers[l].surname;
-                                var driverPhone = self.drivers[l].phone;
-                            }
-                        }
-                        for (var l = 0; l < self.vehicles.length; l++) {
-                            if (self.cmpsts[j].vehicleid === self.vehicles[l].id) {
-                                var vehicle = self.vehicles[l];
-                            }
-                        }
-
-                        self.headers[i].composite.push({
-                            claim: {
-                                id: self.cmpsts[j].claimid,
-                                specialization: self.cmpsts[j].claimspecialization,
-                                purpose: self.cmpsts[j].claimpurpose,
-                                vehicleType: {typeName: self.cmpsts[j].vehicletypename},
-                                routeTasks: {}
-                            },
-                            record: {
-                                id: self.cmpsts[j].recordid,
-                                startDate: self.cmpsts[j].startdate,
-                                entranceDate: self.cmpsts[j].entrancedate,
-                                endDate: self.cmpsts[j].enddate,
-                                affirmator: {
-                                    id: self.cmpsts[j].affirmid,
-                                    fullName: self.cmpsts[j].affirmname
-                                },
-                                tasks: self.cmpsts[j].route
-                            },
-                            appointment: {
-                                id: self.cmpsts[j].appointmentid,
-                                status: self.cmpsts[j].appointmentstatus,
-                                note: self.cmpsts[j].appointmentnote,
-                                transportDep: transportDep,
-                                vehicleModel: {
-                                    id: vehicleModelId,
-                                    modelName: vehicleModelModelName,
-                                    vehicleType: vehicleModelVehicleType
-                                },
-                                vehicle: vehicle,
-                                driver: {
-                                    id: driverId,
-                                    firstname: driverFirstname,
-                                    name: driverName,
-                                    surname: driverSurname,
-                                    phone: driverPhone
-                                },
-                                creator: {
-                                    id: self.cmpsts[j].creatorid,
-                                    fullName: self.cmpsts[j].creatorname,
-                                    post: self.cmpsts[j].creatorpost
-                                },
-                                modificator: {
-                                    id: self.cmpsts[j].modifid,
-                                    fullName: self.cmpsts[j].modifname,
-                                    post: self.cmpsts[j].modifpost
+                    }
+                }
+                for (var i = 0; i < self.headers.length; i++) {
+                    for (var j = 0; j < self.cmpsts.length; j++) {
+                        if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
+                            var transportDep = null;
+                            var vehicleModel = null;
+                            var driver = null;
+                            var vehicle = null;
+                            var creator = {
+                                id: null,
+                                fullName: null,
+                                username: null,
+                                post: null,
+                                password: null,
+                                enabled: null,
+                                department: null,
+                                transportDep: null,
+                                roles: [],
+                                selected: null
+                            };
+                            var modificator = {
+                                id: null,
+                                fullName: null,
+                                username: null,
+                                post: null,
+                                password: null,
+                                enabled: null,
+                                department: null,
+                                transportDep: null,
+                                roles: [],
+                                selected: null
+                            };
+                            for (var l = 0; l < self.transportDeps.length; l++) {
+                                if (self.cmpsts[j].transportdepid === self.transportDeps[l].id) {
+                                    transportDep = self.transportDeps[l];
                                 }
                             }
-                        });
+                            for (var l = 0; l < self.vehicleModels.length; l++) {
+                                if (self.cmpsts[j].modelid === self.vehicleModels[l].id) {
+                                    vehicleModel = self.vehicleModels[l];
+                                }
+                            }
+                            for (var l = 0; l < self.drivers.length; l++) {
+                                if (self.cmpsts[j].driverid === self.drivers[l].id) {
+                                    driver = self.drivers[l];
+                                    driver.transportDep = null;
+                                }
+                            }
+                            for (var l = 0; l < self.vehicles.length; l++) {
+                                if (self.cmpsts[j].vehicleid === self.vehicles[l].id) {
+                                    var vehicle = self.vehicles[l];
+                                }
+                            }
 
+                            if (self.cmpsts[j].creatorid !== undefined) {
+                                creator.id = self.cmpsts[j].creatorid;
+                                creator.fullName = self.cmpsts[j].creatorname;
+                                creator.post = self.cmpsts[j].creatorpost;
+                                //creat = self.creator;
+                            }
+
+                            if (self.cmpsts[j].modifid !== undefined) {
+                                modificator.id = self.cmpsts[j].modifid;
+                                modificator.fullName = self.cmpsts[j].modifname;
+                                modificator.post = self.cmpsts[j].modifpost;
+                                //modif = self.modificator;
+                            }
+
+                            self.headers[i].composite.push({
+                                claim: {
+                                    id: self.cmpsts[j].claimid,
+                                    specialization: self.cmpsts[j].claimspecialization,
+                                    purpose: self.cmpsts[j].claimpurpose,
+                                    vehicleType: {typeName: self.cmpsts[j].vehicletypename},
+                                    routeTasks: {}
+                                },
+                                record: {
+                                    id: self.cmpsts[j].recordid,
+                                    startDate: self.cmpsts[j].startdate,
+                                    entranceDate: self.cmpsts[j].entrancedate,
+                                    endDate: self.cmpsts[j].enddate,
+                                    affirmator: {
+                                        id: self.cmpsts[j].affirmid,
+                                        fullName: self.cmpsts[j].affirmname
+                                    },
+                                    tasks: self.cmpsts[j].route
+                                },
+                                appointment: {
+                                    id: self.cmpsts[j].appointmentid,
+                                    status: self.cmpsts[j].appointmentstatus,
+                                    note: self.cmpsts[j].appointmentnote,
+                                    transportDep: transportDep,
+                                    vehicleModel: vehicleModel,
+                                    vehicle: vehicle,
+                                    driver: driver,
+                                    creator: creator,
+                                    modificator: modificator,
+                                    creationDate: self.cmpsts[j].crdate
+                                }
+                            });
+                        }
                     }
                 }
+
+                var t2 = Date.now();
+                console.log(t1);
+                console.log(t2);
+                console.log(t2 - t1);
+                console.log(self.headers);
             }
-
-            var t2 = Date.now();
-            console.log(t1);
-            console.log(t2);
-            console.log(t2 - t1);
-            console.log(self.headers);
         };
-
-
+        self.convertSpec = function (spec) {
+            switch (spec) {
+                case 0:
+                    return 'пассажирский';
+                case 1:
+                    return 'легковой';
+                case 2:
+                    return 'грузовой';
+                case 3:
+                    return 'спецтехника';
+            }
+        };
     }]);
 
 

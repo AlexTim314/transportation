@@ -90,7 +90,7 @@
                                     </select>           
                                 </td>
                                 <td>
-                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':clrec.claim.specialization} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':plctrl.convertSpec(clrec.claim.specialization)} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>

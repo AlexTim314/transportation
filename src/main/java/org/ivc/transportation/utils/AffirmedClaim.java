@@ -30,6 +30,7 @@ public interface AffirmedClaim {
     Long getDriverid();
     Long getVehicleid();
     Long getTransportdepid();
+    LocalDateTime getCrdate();
     Long getModelid();
     Long getAppcreatorid();
     Long getAppmodifid();
