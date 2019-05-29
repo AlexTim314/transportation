@@ -37,6 +37,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.onDemand = false;
         self.startDate;
         self.permit = false;
+        self.mTime = 1800000; //30 минут в миллисекундах (1 мин = 60000 мсек)
 
         self.carBossName = null;
 
@@ -180,7 +181,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                                 document.getElementById('startDate').value = tomorrow;
                                 document.getElementById('startDate').min = today;
                                 document.getElementById('entranceTime').value = "00:00";
-                                document.getElementById('startTime').value = "00:00";
+                                //document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(tomorrow);
                             },
@@ -608,11 +609,12 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (sd === null) {
                 return;
             }
+                
             var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
-                    rec.startDate = self.frmtDate(sd, self.record.startDate);
+                    rec.startDate = self.frmtDate(sd, new Date(self.record.entranceDate.getTime()-self.mTime));
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     if (self.onDemand) {
                         rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
@@ -631,7 +633,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 }
             } else {
                 var rec = {id: null};
-                rec.startDate = self.frmtDate(sd, self.record.startDate);
+                rec.startDate = self.frmtDate(sd, new Date(self.record.entranceDate.getTime()-self.mTime));
                 if (self.onDemand) {
                     rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
                     rec.endDate.setDate(rec.endDate.getDate() + i + inc);
@@ -887,11 +889,11 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             //коррекция времени для хранения без часового пояса
             for (var i = 0; i < self.claim.records.length; i++) {
                 var rec = self.claim.records[i];
-                var sd = new Date(rec.startDate);
-
+                //var sd = new Date(rec.startDate);
+                var sd = new Date(rec.entranceDate.getTime()-self.mTime);   
                 var entranceTime = new Date(rec.entranceDate);
                 entranceTime.setUTCHours(entranceTime.getHours());
-                var startTime = new Date(rec.startDate);
+                var startTime = new Date(rec.entranceDate.getTime()-self.mTime);
                 startTime.setUTCHours(startTime.getHours());
                 var endTime = new Date(rec.endDate);
                 endTime.setUTCHours(endTime.getHours());
@@ -1105,8 +1107,8 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             for (var i = 0; i < self.claim.records.length; i++) {
                 var r = self.claim.records[i];
-                if (r.startDate === null || r.startDate === undefined
-                        || r.entranceDate === null || r.entranceDate === undefined) {
+                if (r.startDate === null || /*r.startDate === undefined
+                        ||*/ r.entranceDate === null || r.entranceDate === undefined) {
                     console.log('Не введено время');
                     return true;
                 }

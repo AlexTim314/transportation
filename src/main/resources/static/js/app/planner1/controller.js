@@ -172,28 +172,28 @@ App.controller('PlannerController1', ['$scope', 'PlannerService1',
                             }
                     );
         };
-        self.fetchMonthPlanRecords = function () {
-            self.all = true;
-            self.today = false;
-            self.week = false;
-            self.archive = false;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
-            PlannerService1.fetchMonthPlanRecords()
-                    .then(
-                            function (d) {
-                                self.cmpsts = d;
-                                console.log(self.cmpsts);
-                                self.createHeaders();
-                                expandHeaders();
-                                formClose('cover-trsp1');
-                                formClose('preloader');
-                            },
-                            function (errResponse) {
-                                console.error('Error while fetching MonthRecords');
-                            }
-                    );
-        };
+//        self.fetchMonthPlanRecords = function () {
+//            self.all = true;
+//            self.today = false;
+//            self.week = false;
+//            self.archive = false;
+//            formOpen('cover-trsp1');
+//            formOpen('preloader');
+//            PlannerService1.fetchMonthPlanRecords()
+//                    .then(
+//                            function (d) {
+//                                self.cmpsts = d;
+//                                console.log(self.cmpsts);
+//                                self.createHeaders();
+//                                expandHeaders();
+//                                formClose('cover-trsp1');
+//                                formClose('preloader');
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while fetching MonthRecords');
+//                            }
+//                    );
+//        };
         self.fetchMonthBeforePlanRecords = function () {
             self.all = false;
             self.today = false;

@@ -4,11 +4,11 @@
             <div class="fast-filter">                                    
                 <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
                 <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
-                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>
+                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
             </div>
-            <div class="fast-filter">
+<!--            <div class="fast-filter">
                 <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
-            </div>
+            </div>-->
             <div class="definite-date">
                 <label for="date-plan">Планируемый день</label>
                 <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
