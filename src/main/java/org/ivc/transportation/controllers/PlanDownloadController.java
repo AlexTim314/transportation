@@ -15,11 +15,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -32,16 +33,14 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import static org.ivc.transportation.controllers.WaybillFileDownloadController.getNameWithInitials;
-import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.CommonService;
 import org.ivc.transportation.services.DispatcherService;
-import org.ivc.transportation.utils.EntitiesUtils;
-import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import org.ivc.transportation.utils.MediaTypeUtils;
 import org.ivc.transportation.utils.VehicleForPlan;
+import org.ivc.transportation.utils.VehicleLastDep;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -182,27 +181,39 @@ public class PlanDownloadController {
         hMergeContinue.setVal(STMerge.CONTINUE);
 
         //List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
-        
         List<VehicleForPlan> vehicles = dispatcherService.getVehiclesForPlan(purposeDate);
+        List<VehicleLastDep> vehicleLastDep = dispatcherService.getVehicleLastDep();
+        Map<Long, Optional<VehicleLastDep>> orderMap = vehicleLastDep.stream()
+                .collect(Collectors.groupingBy(VehicleLastDep::getVehicleid, Collectors.maxBy(Comparator.comparing(VehicleLastDep::getStartDate))));
+
+
+        vehicles.sort((v1, v2) -> {
+            int order1 = getDepOrder(v1, orderMap);
+            int order2 = getDepOrder(v2, orderMap);
+            return order1 - order2;
+        });
 
         List<RowData> rowDataList = new LinkedList<>();
         RowData prevRow = null;
         for (VehicleForPlan v : vehicles) {
-            if ((prevRow != null) && (v.getNumber().equalsIgnoreCase(prevRow.vehicleNumber))) {                
+            if ((prevRow != null)
+                    && (v.getNumber().equalsIgnoreCase(prevRow.vehicleNumber))
+                    && (Integer.compare(getDepOrder(v, orderMap), prevRow.depOrder) == 0)) {
                 addDataInRowLists(v, prevRow);
-            } else {
+            } else {                
                 RowData rowData = new RowData();
                 rowData.vehicleModelName = v.getModelname();
                 rowData.vehicleNumber = v.getNumber();
                 String[] tmpArr = v.getOtsname().split(" ");
                 rowData.transportDepNumber = tmpArr[tmpArr.length - 1];
 
-                Long depId = v.getDepartmentid();
-                if (depId == null) {
+                Integer orderInPlan = getDepOrder(v, orderMap);
+                if (orderInPlan == Integer.MAX_VALUE) {
                     rowData.departmentName = "Незадействованный ранее";
                 } else {
-                    Department department = commonService.findDepartmentById(depId);
+                    Department department = commonService.findDepartmentByOrder(orderInPlan);
                     rowData.departmentName = department == null ? "Подразделение не указано" : department.getFullname();
+                    rowData.depOrder = orderInPlan;
                 }
 
                 addDataInRowLists(v, rowData);
@@ -249,7 +260,7 @@ public class PlanDownloadController {
             listToCell(row.getCell(5), rowData.carBoss,
                     "Times New Roman", fontSize, false, parAligLeft);
             listToCell(row.getCell(6), rowData.route,
-                    "Times New Roman", 7, false, parAligCenter);
+                    "Times New Roman", 6, false, parAligCenter);
             listToCell(row.getCell(7), rowData.time,
                     "Times New Roman", fontSize, false, parAligLeft);
             listToCell(row.getCell(8), rowData.driver,
@@ -260,9 +271,8 @@ public class PlanDownloadController {
             });
         }
 
-        //List<Vehicle> vehicles = new ArrayList<>();//TODO: нужен запрос, который будет выдавать все машины, которые указываются в конце списка. 
-        List<Vehicle> v_ehicles = dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.ремонт);
-        v_ehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
+        List<Vehicle> v_ehicles = dispatcherService.getVehiclesForPlan();
+        //v_ehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
         //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
         v_ehicles = v_ehicles.stream().filter((t) -> {
             return t.getModel() != null;
@@ -408,6 +418,18 @@ public class PlanDownloadController {
         }
     }
 
+    private int getDepOrder(VehicleForPlan v1, Map<Long, Optional<VehicleLastDep>> orderMap) {
+        if (v1.getDepartmentOrder() != null) {
+            return v1.getDepartmentOrder();
+        }
+        if(orderMap.get(v1.getVehicleid()) == null 
+                || 
+           !orderMap.get(v1.getVehicleid()).isPresent()){
+            return Integer.MAX_VALUE;
+        }
+        return orderMap.get(v1.getVehicleid()).get().getDepartmentOrder();        
+    }
+
     private class RowData {
 
         String departmentName;
@@ -419,6 +441,7 @@ public class PlanDownloadController {
         List<String> route = new ArrayList<>();
         List<String> time = new ArrayList<>();
         List<String> driver = new ArrayList<>();
+        int depOrder = -1;
     }
 
     private void textToParagraph(XWPFParagraph paragraph, String text,
@@ -443,7 +466,8 @@ public class PlanDownloadController {
             ParagraphAlignment paragraphAlignment) {
 
         if (list.isEmpty()) {
-            return;
+            list.add(""); // если ничего не записать в ячейку, она получается слишком высокой
+            //return;
         }
         textToParagraph(cell.getParagraphs().get(0), list.get(0),
                 fontFamily, fontSize, isBold, paragraphAlignment);

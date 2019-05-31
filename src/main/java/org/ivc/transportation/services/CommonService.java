@@ -94,7 +94,7 @@ public class CommonService {
     }
     
     public Department findDepartmentByOrder(int num) {
-        return departmentRepository.findByOrder(num).orElse(null);
+        return departmentRepository.findByPlanOrder(num).orElse(null);
     }
 
     public TransportDep findTransportDepByUser(Principal principal) {

@@ -18,7 +18,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     Department findByShortname(String shortname);
     
-    Optional<Department> findByOrder(int num);
+    Optional<Department> findByPlanOrder(int num);
 
     List<Department> findDepartmentsBySuperManagerId(Long id);
 

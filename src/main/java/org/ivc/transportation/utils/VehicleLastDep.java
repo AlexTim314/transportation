@@ -5,14 +5,15 @@
  */
 package org.ivc.transportation.utils;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author user
  */
 public interface VehicleLastDep {    
     Long getVehicleid();
-    String getNumber();
-    String getOtsname();
-    String getModelname();
     Long getDepartmentid();
+    Integer getDepartmentOrder();
+    LocalDateTime getStartDate();
 }

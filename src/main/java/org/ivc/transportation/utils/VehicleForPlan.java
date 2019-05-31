@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @author user
  */
 public interface VehicleForPlan {    
-    Long getDepartmentid();
+    Integer getDepartmentOrder();
     Long getVehicleid();
     String getModelname();
     String getNumber();

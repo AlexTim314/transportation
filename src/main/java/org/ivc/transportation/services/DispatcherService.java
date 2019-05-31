@@ -33,7 +33,6 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 import org.ivc.transportation.utils.VehicleForPlan;
 import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -172,14 +171,18 @@ public class DispatcherService {
         return appointmentRepository.findAppointmentsForPlan(status.ordinal(), dStart, dEnd);
     }
 
-    public List<Vehicle> getVehiclesForPlan(VehicleStatus status) {
-        return vehicleRepository.findVehiclesForPlan(status.ordinal());
+    public List<Vehicle> getVehiclesForPlan() {
+        return vehicleRepository.findVehiclesForPlan();
     }
     
     public List<VehicleForPlan> getVehiclesForPlan(LocalDate date){
         LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(0, 0));
         LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(23, 59));
         return vehicleRepository.findVehiclesForPlan(startTime, endTime);
+    }
+    
+    public List<VehicleLastDep> getVehicleLastDep() {
+        return vehicleRepository.findVehicleLastDep();
     }
 
     public Appointment getAppointmentById(Long apptId) {

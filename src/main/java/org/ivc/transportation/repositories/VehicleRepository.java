@@ -45,26 +45,29 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             @Param("date_start") LocalDateTime dateStart,
             @Param("date_end") LocalDateTime dateEnd);
 
-    @Query(value = "select * from vehicle where status = :status order by note", nativeQuery = true)
-    public List<Vehicle> findVehiclesForPlan(@Param("status") int status);
+    @Query(value = "select * from vehicle where status > 1 order by note", nativeQuery = true)
+    public List<Vehicle> findVehiclesForPlan();
 
-    @Query(value = "select vehicle.id as vehicleid, "
-            + "vehicle.number as number, "
-            + "transport_dep.shortname as otsname, "
-            + "vehicle_model.model_name as modelname, "
-            + "department.id as departmentid "
-            + "from vehicle, department, appointment, record, claim, transport_dep, vehicle_model "
-            + "where claim.department_id = department.id and "
-            + "record.claim_id = claim.id and "
-            + "appointment.id = (select max(id) from appointment where record_id = record.id) and "
-            + "vehicle.id = appointment.vehicle_id and "
-            + "transport_dep.id = vehicle.transport_dep_id and "
-            + "vehicle_model.id = vehicle.model_id "
-            + "group by departmentid, vehicleid, transport_dep.id, vehicle_model.id "
-            + "order by departmentid", nativeQuery = true)
+    @Query(value = "SELECT"
+            + "  vehicle.id as vehicleid,"
+            + "  department.id as departmentid,"
+            + "  department.plan_order as departmentorder,"
+            + "  record.start_date as startdate"
+            + " FROM"
+            + "  public.vehicle,"
+            + "  public.department,"
+            + "  public.claim,"
+            + "  public.record,"
+            + "  public.appointment"
+            + " WHERE "
+            + "  claim.department_id = department.id AND"
+            + "  record.claim_id = claim.id AND"
+            + "  appointment.vehicle_id = vehicle.id AND"
+            + "  appointment.record_id = record.id AND"
+            + "  vehicle.status < 2", nativeQuery = true)
     List<VehicleLastDep> findVehicleLastDep();
 
-    @Query(value = "select department.id as departmentid, "
+    @Query(value = "select department.plan_order as departmentorder, "
             + "vehicle.id as vehicleid, "
             + "vehicle_model.model_name as modelname, "
             + "vehicle.number as number, "
@@ -83,9 +86,9 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             + "left outer join place on place.id = route_task.place_id "
             + "left outer join driver on driver.id = appointment.driver_id "
             + "left outer join department on department.id = claim.department_id, vehicle_model, transport_dep "
-            + "where vehicle_model.id = vehicle.model_id and transport_dep.id = vehicle.transport_dep_id "
-            + "group by departmentid, vehicleid, modelname, otsname, purpose, carrbossfirstname, carrbossname, carrbosssurname, entrancedate, startdate, enddate, driverfirstname, drivername, driversurname "
-            + "order by departmentid, vehicleid", nativeQuery = true)
+            + "where vehicle.status < 2 and vehicle_model.id = vehicle.model_id and transport_dep.id = vehicle.transport_dep_id "
+            + "group by departmentorder, vehicleid, modelname, otsname, purpose, carrbossfirstname, carrbossname, carrbosssurname, entrancedate, startdate, enddate, driverfirstname, drivername, driversurname "
+            + "order by departmentorder, vehicleid", nativeQuery = true)
     public List<VehicleForPlan> findVehiclesForPlan(@Param("date_start") LocalDateTime dateStart, @Param("date_end") LocalDateTime dateEnd);
 
 }
