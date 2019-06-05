@@ -8,6 +8,7 @@ import java.util.List;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
@@ -64,6 +65,11 @@ public class CommonController {
     @GetMapping("/places")
     public List<Place> getAllPlaces() {
         return commonService.findAllPlaces();
+    }
+    
+    @GetMapping("/routeTasks")
+    public List<RouteTask> getAllRouteTasks() {
+        return commonService.findAllRouteTasks();
     }
 
     @GetMapping("/fuels")

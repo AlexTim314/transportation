@@ -56,6 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/supermanager/**").access("hasAnyRole('ROLE_SUPERMANAGER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/planner/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
+        
+        http.authorizeRequests().antMatchers("/planner1/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/dispatcher/**").access("hasAnyRole('ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
@@ -66,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/usersManagement", "/departmentsManagement",
                 "/transportDepsManagement", "/placesManagement",
                 "/vehicleTypesManagement", "/fuelsManagement", "/claims",
-                "/planner", "/dispatcher", "/supermanager")
+                "/planner", "/planner1", "/dispatcher", "/supermanager")
                 .access("hasRole('ROLE_ADMIN')");
 
         // When the user has logged in as XX.

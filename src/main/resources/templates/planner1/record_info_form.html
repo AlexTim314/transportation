@@ -1,0 +1,30 @@
+<div class="more-info" id="more-claim" xmlns:th="http://www.thymeleaf.org">
+    <div>Дополнительная информация
+        <i class="fas fa-times" ng-click="plctrl.closeInfo()"></i>
+    </div>
+    <fieldset>
+        <legend>Цель</legend>
+        <p>{{plctrl.compClRec.claim.purpose}}</p>
+    </fieldset>
+    <fieldset>
+        <legend>Старший машины</legend>
+        <ul>
+            <li><label>ФИО<span>{{plctrl.carBossToStringInfo(plctrl.compClRec.claim.carBoss)}}</span></label></li>
+            <li><label>Должность<span>{{plctrl.compClRec.claim.carBoss.post}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Назначено</legend>
+        <ul>
+            <li><label>ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
+            <li><label>Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Маршрут</legend>
+        <ul>
+            <li><span>{{plctrl.compClRec.record.tasks}}</span></li>
+            <li><span> </span></li>
+        </ul>
+    </fieldset>
+</div>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Сектор планирования КАТО</title>
+
+        <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/app/app.js"></script>
+
+        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/controller.js"></script>
+
+        <script src="js/app/planner1/service.js"></script>
+        <script src="js/app/planner1/controller.js"></script>
+
+    </head>
+    <body ng-app="Transportation" ng-controller="PlannerController1 as plctrl" >
+        <div class="wrapper">
+            <div class="cover-trsp" id="cover-trsp1"></div>
+            <div class="loading-content" id="preloader">
+                <div class="load-wrapp">
+                    <div class="load-4">
+
+                        <div class="ring-1"></div>
+                    </div>
+                    <div class="load-6">	  
+                        <div class="letter-holder">
+                            <div class="l-1 letter">З</div>
+                            <div class="l-2 letter">а</div>
+                            <div class="l-3 letter">г</div>
+                            <div class="l-4 letter">р</div>
+                            <div class="l-5 letter">у</div>
+                            <div class="l-6 letter">з</div>
+                            <div class="l-7 letter">к</div>
+                            <div class="l-8 letter">а</div>
+                            <div class="l-9 letter">.</div>
+                            <div class="l-10 letter">.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--             <a href="#" onclick="history.back();" ng-show="plctrl.permit">Возврат на страницу приветствия</a>-->
+            <!-- Login Form-->
+
+            <form action="#" class="formLogin" id="formLogin">
+                <i class="fas fa-times i-close" onclick="formLogin_close()"></i>
+                <div class="container">
+                    <label for="uname"><b>Логин</b></label>
+                    <input type="text" placeholder="Введите Логин" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder="Введите Пароль" name="psw" required>
+
+                    <button type="submit" class="btn edit"><i class="fas fa-sign-in-alt"></i>Войти</button>
+                    <label class="custom-checkbox">Запомнить меня
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+                <div class="container container-underline" style="">
+                    <button type="button" class="btn delete">Отмена</button>
+                    <span class="psw">Забыли <a href="#">Пароль?</a></span>
+                </div>
+            </form>
+            <div class="main clearfix">
+                <div class="header">
+                    <!--Logo -->
+                    <div class="logo">
+                        <h1>Комплекс </h1>
+                        <h6>автотранспортного обеспечения</h6>
+                    </div>
+                    <!--Text header -->
+
+                    <a href="/transportation" class="home" ng-show="plctrl.permit" title="Домой"><i class="fas fa-lg fa-home"></i></a>
+
+                    <!--Navigation -->	
+                    <nav class="nav-horizontal">
+                        <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 2)">Обработка заявок</div>
+                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			
+                    </nav>
+                    <div class="department-block">Отдел планирования</div>
+                    <div class="sing-block">
+                        <div class="user-title"><i class="fas fa-user "></i>{{plctrl.username}}</div>
+                        <div class="login" onclick="javascript: document.logoutForm.submit()" role="menuitem"><i class="fas fa-sign-out-alt"></i></div>
+                    </div>
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out"/>
+                    </form>
+                </div>
+                <!--Sidebar-->
+                <th:block th:include="planner1/slidebar"></th:block> 
+
+                <div id="claim-create" class="tabcontent">
+
+                    <div class="sidebar-vertical" id="sb-v-id">
+                        <i class="sidenav-btn fas fa-bars" onclick="open_sidenav()"></i>
+                    </div>
+                    <div class="clearfix" style="overflow-x:auto;">
+                        <th:block th:include="planner1/planning_tab"></th:block> 
+
+                        <th:block th:include="planner1/archive_tab"></th:block> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <th:block th:include="planner1/cancel_record"></th:block>
+
+    <th:block th:include="planner1/record_info_form"></th:block> 
+
+    <th:block th:include="planner1/appointment_info_form"></th:block> 
+
+    <th:block th:include="planner1/save_claim_form"></th:block>
+
+    <th:block th:include="planner1/new_route_tasks_form"></th:block>
+
+    <th:block th:include="planner1/route_tasks_form"></th:block>
+
+    <th:block th:include="planner1/correction_time_form"></th:block>
+
+    <th:block th:include="planner1/status_info_form"></th:block> 
+
+    <th:block th:include="planner1/car_bosses_tab"></th:block> 
+
+
+    <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>

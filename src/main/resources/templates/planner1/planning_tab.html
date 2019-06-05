@@ -1,0 +1,128 @@
+<div style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
+    <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
+        <div class="table-header">
+            <div class="fast-filter">                                    
+                <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
+                <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
+                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
+            </div>
+<!--            <div class="fast-filter">
+                <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
+            </div>-->
+            <div class="definite-date">
+                <label for="date-plan">Планируемый день</label>
+                <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
+                <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
+            </div>	
+            <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
+        </div>	
+        <div class="height-wrapper"> 
+            <table class="table-record"  id="tbl1" >
+                <tr class="header-level">
+                    <th style="width: 3%;"></th>
+                    <th style="width: 97%;">
+                        ЗАЯВКИ ОТ ПОДРАЗДЕЛЕНИЙ 
+                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" style="float: right;margin-right: 1%;" ng-click="plctrl.prepareToAddClaim()"></i>
+                    </th>
+                </tr>
+                <tr>                           
+                <tr style = "cursor: pointer" ng-click="plctrl.rowClick(header)" class="activeRow" ng-repeat-start="header in plctrl.headers| filter: searchClaim">
+                    <td>
+                        <i class="{{header.isVisible !== undefined && header.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>		
+                    </td>
+                    <td >{{header.department.fullname}}
+                        <span>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.composite.length}}</i>
+                        </span>
+                        <div class="record-status" style="width: 6%;">
+                            <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
+                            <div title="Обрабатывается"><i class="fas fa-clock"></i>{{plctrl.amountInProgress(header)}}</div>
+                            <div title="Отменено"><i class="fas fa-ban"></i>{{plctrl.amountCanceled(header)}}</div>
+                        </div>  
+                    </td>
+                </tr>
+                <tr class="hiddenRow" ng-show="header.isVisible !== undefined && header.isVisible" ng-repeat-end>
+                    <td colspan="2">
+
+                        <table class="table-claim">
+                            <tr>
+                                <th style="width:5% ">
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" ng-model="header.allChecked" checked="false" ng-change="plctrl.checkAll(header)">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>	
+                                <th style="width:2.5% ">Тип транспорта</th>
+                                <th style="width:10% ">Вид техники</th>
+                                <th style="width:5% ">Дата выезда</th>
+                                <th style="width:10% ">Время подачи</th>
+                                <th style="width:30% ">Цель поездки</th>
+                                <!--                                <th style="width:15% ">Маршрут</th>-->
+                                <th style="width:10% ">ОТС</th>
+                                <th style="width:12.5% ">Марка</th>
+                                <th style="width:5% ">Статус</th>
+                                <th style="width:2.5% "> </th>
+                                <th style="width:2.5% "> </th>
+                            </tr>
+                            <tr ng-repeat="clrec in header.composite| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: 'startDate' | filter: searchClaim">
+                                <td>
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" ng-model="clrec.record.checked">
+                                        <span class="checkmark"></span>
+                                    </label>	
+                                </td>
+                                <td class="td-relative">
+                                    <div class="new-tag" ng-show="clrec.appointment.id === null">New</div>
+                                    <span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span>
+                                </td> 
+                                <td>{{clrec.claim.vehicleType.typeName}}</td>
+                                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                                <td>{{clrec.claim.purpose}}
+                                </td>
+                                <!--                                <td >
+                                                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
+                                                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                                                                </td>                                                         -->
+
+                                <td>
+                                    <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" ng-change="plctrl.changeCheckedTD(clrec)">
+                                    </select>           
+                                </td>
+                                <td>
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':plctrl.convertSpec(clrec.claim.specialization)} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
+                                    </select>  
+                                </td>
+                                <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
+                                <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
+                                <td class="td-relative"> 
+                                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
+                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="Утвердил {{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>                                                
+            </table>
+        </div>  
+        <div ng-if="plctrl.pager.pages.length" class="paginator" id='pagination'>           
+            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" ng-show="plctrl.pager.currentPage !== 1" title="Предыдущая страница">&lt</div>
+            <div ng-repeat="page in plctrl.pager.pages" class="pages {{plctrl.pager.currentPage === page?'page-active':''}}" ng-click="plctrl.setPage(page)">{{page}}</div>   
+            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" ng-show="plctrl.pager.currentPage !== plctrl.pageCount" title="Следующая страница">&gt</div>
+        </div>
+        <div class="more-info" id="appt-note" style="width: 25%;">
+            <div>Примечание
+                <i class="fas fa-times" onclick="formClose('appt-note')"></i>
+            </div>
+            <fieldset style="min-height: 50px;">
+                <legend><i class="{{plctrl.selectStatusIco(plctrl.appt.status) + ' ' + plctrl.selectStatusColor(plctrl.appt.status)}}"> {{plctrl.apptStatus()}} </i></legend>
+                <p>{{plctrl.appt.note}}</p>
+            </fieldset>                        
+        </div>
+
+        <div class="assert-block clearfix">
+            <button class="btn edit assert" ng-click="plctrl.createAppointments()"><i class="fas fa-lg fa-share-square"></i>Отправить План</button>
+        </div>
+    </div>	
+
+</div>

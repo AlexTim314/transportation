@@ -7,12 +7,14 @@ import java.util.Optional;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.FuelRepository;
 import org.ivc.transportation.repositories.PlaceRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
@@ -46,6 +48,9 @@ public class CommonService {
 
     @Autowired
     private PlaceRepository placeRepository;
+    
+    @Autowired
+    private RouteTaskRepository routeTaskRepository;
 
     @Autowired
     private FuelRepository fuelRepository;
@@ -71,6 +76,10 @@ public class CommonService {
 
     public List<Place> findAllPlaces() {
         return placeRepository.findAll();
+    }
+    
+    public List<RouteTask> findAllRouteTasks() {
+        return routeTaskRepository.findAll();
     }
 
     public List<Fuel> findAllFuels() {

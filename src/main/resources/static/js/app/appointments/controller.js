@@ -104,6 +104,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                console.log(self.data);
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -289,7 +290,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
-                self.pager = {};
+                //self.pager = {};
                 self.headers = [];
                 return;
             }
@@ -644,7 +645,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     }
                 }
             } else {
-                console.log('В заявке не указан тип автотранспорта')
+                console.log('В заявке не указан тип автотранспорта');
                 self.filteredVehicleModels = self.vehicleModels;
             }
         };
