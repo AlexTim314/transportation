@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +37,7 @@ import static org.ivc.transportation.controllers.WaybillFileDownloadController.g
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
+import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.services.CommonService;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.MediaTypeUtils;
@@ -53,6 +55,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,11 +76,23 @@ public class PlanDownloadController {
 
     @Autowired
     private CommonService commonService;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ServletContext servletContext;
 
     private static final String PL = "Пл. ";
+    private String otsNameFilter = "";
+    
+    @GetMapping("planner/plandownloadots/{date}")
+    @ResponseBody
+    public FileSystemResource downloadForOts(HttpServletResponse response, Principal principal, @PathVariable("date") String strDate) throws FileNotFoundException, IOException {
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        otsNameFilter = userRepository.findByUsername(loginedUser.getUsername()).getTransportDep().getShortname();
+        return download(response, strDate);
+    }
 
     @GetMapping("planner/plandownload/{date}")
     @ResponseBody
@@ -182,10 +198,17 @@ public class PlanDownloadController {
 
         //List<Appointment> appointments = dispatcherService.getAppointmentsForPlan(AppointmentStatus.READY, purposeDate);
         List<VehicleForPlan> vehicles = dispatcherService.getVehiclesForPlan(purposeDate);
-        List<VehicleLastDep> vehicleLastDep = dispatcherService.getVehicleLastDep();
-        Map<Long, Optional<VehicleLastDep>> orderMap = vehicleLastDep.stream()
-                .collect(Collectors.groupingBy(VehicleLastDep::getVehicleid, Collectors.maxBy(Comparator.comparing(VehicleLastDep::getStartDate))));
-
+        
+        if (!otsNameFilter.isEmpty()){
+            vehicles = vehicles.stream().filter((v) -> {
+                return v.getOtsname().equalsIgnoreCase(otsNameFilter);
+            }).collect(Collectors.toList());
+        }
+        
+        Map<Long, Optional<VehicleLastDep>> orderMap = dispatcherService
+                .getVehicleLastDep().stream()
+                .collect(Collectors.groupingBy(VehicleLastDep::getVehicleid
+                        , Collectors.maxBy(Comparator.comparing(VehicleLastDep::getStartDate))));
 
         vehicles.sort((v1, v2) -> {
             int order1 = getDepOrder(v1, orderMap);
@@ -195,6 +218,7 @@ public class PlanDownloadController {
 
         List<RowData> rowDataList = new LinkedList<>();
         RowData prevRow = null;
+        //подготовка данных для таблицы
         for (VehicleForPlan v : vehicles) {
             if ((prevRow != null)
                     && (v.getNumber().equalsIgnoreCase(prevRow.vehicleNumber))
@@ -271,9 +295,15 @@ public class PlanDownloadController {
             });
         }
 
-        List<Vehicle> v_ehicles = dispatcherService.getVehiclesForPlan();
-        //v_ehicles.addAll(dispatcherService.getVehiclesForPlan(EntitiesUtils.VehicleStatus.другое));
-        //Скорее всего отбор по статусу "Другое" в самом актуальном VehicleInfo. Сортировка по тексту в note.
+        //транспортные средства, со статусом отличным от "исправно" или "работоспособно", вниз плана
+        List<Vehicle> v_ehicles = dispatcherService.getVehiclesForPlan(); 
+        
+        if (!otsNameFilter.isEmpty()){
+            v_ehicles = v_ehicles.stream().filter((v) -> {
+                return v.getTransportDep().getShortname().equalsIgnoreCase(otsNameFilter);
+            }).collect(Collectors.toList());
+        }
+        
         v_ehicles = v_ehicles.stream().filter((t) -> {
             return t.getModel() != null;
         }).filter((t) -> {
@@ -302,7 +332,6 @@ public class PlanDownloadController {
             for (int i = cellIndex; i < row.getTableCells().size(); i++) {
                 row.getCell(i).getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
             }
-
         }
 
         paragraph = document.createParagraph();
@@ -326,6 +355,7 @@ public class PlanDownloadController {
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName);
         response.setContentLength((int) file.length());
         FileSystemResource resource = new FileSystemResource(file);
+        otsNameFilter = "";
         return resource;
     }
 
