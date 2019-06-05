@@ -14,8 +14,7 @@
             <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
         </div>	
         <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  							  		
-
-    </div>	
+         </div>	
     <div class="height-wrapper">            
         <table class=" table-plan table-claim" style="margin-left: 0;">
             <tr>
@@ -29,6 +28,7 @@
                 <th style="width:10%">Водитель</th>
                 <th style="width:8%">Статус</th>
                 <th style="width:10%"></th>
+            
             </tr>
             <tr ng-repeat="clrec in plctrl.data| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: clrec.record.startDate | filter: searchAppointment">
                 <td><span title="{{clrec.claim.specialization}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>

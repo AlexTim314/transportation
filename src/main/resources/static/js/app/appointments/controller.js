@@ -104,6 +104,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
+                                console.log(self.data);
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -644,7 +645,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     }
                 }
             } else {
-                console.log('В заявке не указан тип автотранспорта')
+                console.log('В заявке не указан тип автотранспорта');
                 self.filteredVehicleModels = self.vehicleModels;
             }
         };
