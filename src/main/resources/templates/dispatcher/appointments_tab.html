@@ -27,7 +27,7 @@
                 <th style="width:5%">Гос.номер</th>
                 <th style="width:10%">Водитель</th>
                 <th style="width:8%">Статус</th>
-                <th style="width:10%"></th>
+                <th style="width:10%"><i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
             
             </tr>
             <tr ng-repeat="clrec in plctrl.data| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: clrec.record.startDate | filter: searchAppointment">

@@ -1,6 +1,6 @@
 <div class="new-claim-task" id="formTask" xmlns:th="http://www.thymeleaf.org">
     <i class="fas fa-times i-close" onclick="formClose('formTask')"></i>
-    <div class="form-item">
+    <div class="form-item" style="margin-top:30px;">
         <label for="type">Место</label>
         <div class="custom-select">
             <i class="fas fa-caret-down" style="top: 5px; margin-right: 5px;" ng-click="ctrl.clickPlaceNameInput()"></i>
@@ -15,7 +15,7 @@
                     <option value="" disabled selected>Выберите место</option>
                 </select>-->
     </div>	
-    <div class="form-item" style="margin-bottom:20px;"> 
+    <div class="form-item" > 
 
         <label for="work">Работы</label>
         <textarea name="work" ng-model="ctrl.routeTask.workName"></textarea>
@@ -39,8 +39,8 @@
                 <td>{{routeTask.place.name}}</td>
                 <td>{{routeTask.workName}}</td>
                 <td>
-                    <i class="fas fa-times" ng-click="ctrl.removeRTask(routeTask)"></i>
-                    <i class="fas fa-edit" ng-click="ctrl.tryToUpdateRTask(routeTask)"></i>
+                    <span class="fas fa-times" ng-click="ctrl.removeRTask(routeTask)"></span>
+                    <span class="fas fa-edit" ng-click="ctrl.tryToUpdateRTask(routeTask)"></span>
                 </td>	 					
             </tr>	 				
         </table>

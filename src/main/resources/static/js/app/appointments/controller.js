@@ -4,7 +4,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
     function ($scope, DispatcherService) {
         var self = this;
-        self.department = {id: null, shortname: '', fullname: '', address: '', phone: '', claims: []};
+        self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, routeTasks: []};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
@@ -18,6 +18,9 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.vehicleType = {id: null, typeName: '', specialization: ''};
         self.clrec = {record: {}, claim: {}, appointment: {}};
         self.compClRec = {record: {}, claim: {}, appointment: {}};
+        self.rec = {id: null, appointment: {}, carBoss: {}, purpose: '', routeTasks: [], startDate: '', endDate: '', entranceDate: ''};
+        self.carBoss = {id: null};
+        self.newRecord = {id: null, startDate: '', endDate: '', entranceDate: ''};
         self.departments = [];
         self.headers = [];
         self.complHeaders = [];
@@ -52,6 +55,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.numRecordsPerPage = 7;
         self.data = [];
         self.pager = {};
+        self.startDate;
+        self.vehicleTypes;
+        self.places;
+        self.routeTasks;
+
 
 
         self.selectIcon = function (spec) {
@@ -185,6 +193,18 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     );
         };
 
+        self.fetchCarBosses = function () {
+            DispatcherService.fetchCarBosses()
+                    .then(
+                            function (d) {
+                                self.carBosses = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Bosses');
+                            }
+                    );
+        };
+
 
         self.fetchAllVehicleModels = function () {
             DispatcherService.fetchAllVehicleModels()
@@ -286,7 +306,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             document.getElementById('date-plan').value = today;
             self.date = day + "." + month + "." + year;
         };
-        
+
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
@@ -297,7 +317,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             // get pager object from service
             self.pager = self.getPager(self.data.length, page, self.numRecordsPerPage);
             // get current page of items
-           // self.headers = self.data.slice(self.pager.startIndex, self.pager.endIndex + 1);
+            // self.headers = self.data.slice(self.pager.startIndex, self.pager.endIndex + 1);
         };
 
         self.getPager = function (totalItems, currentPage, pageSize) {
@@ -344,14 +364,102 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             };
         };
 //=====================
+        self.fetchVehicleTypes = function () {
+            DispatcherService.fetchVehicleTypes()
+                    .then(
+                            function (d) {
+                                self.vehicleTypes = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching VehicleTypes');
+                            }
+                    );
+        };
+
+        self.fetchPlaces = function () {
+            DispatcherService.fetchPlaces()
+                    .then(
+                            function (d) {
+                                self.places = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Places');
+                            }
+                    );
+        };
+
+        self.fetchRouteTasks = function () {
+            DispatcherService.fetchRouteTasks()
+                    .then(
+                            function (d) {
+                                self.routeTasks = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTasks');
+                            }
+                    );
+        };
+
+        self.fetchDepartment = function () {
+            DispatcherService.fetchDepartment()
+                    .then(
+                            function (d) {
+                                self.department = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Department');
+                            }
+                    );
+        };
+        self.fetchRouteTemplates = function () {
+            DispatcherService.fetchRouteTemplates()
+                    .then(
+                            function (d) {
+                                self.routeTemplates = d;
+                                self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTemplates');
+                            }
+                    );
+        };
+
+        self.getDateFromServer = function () {
+            DispatcherService.fetchDateFromServer()
+                    .then(
+                            function (d) {
+                                var date = new Date(d);
+                                var today = self.getFormatedDate(date, "-", true);
+                                document.getElementById('date-plan').value = today;
+                                document.getElementById('startDate').value = today;
+                                document.getElementById('startDate').min = today;
+                                // document.getElementById('entranceTime').value = "00:00";
+                                document.getElementById('startTime').value = "00:00";
+                                document.getElementById('endTime').value = "00:00";
+                                self.startDate = new Date(today);
+                                //   self.date = self.getFormatedDate(date, ".", false);
+
+                                date.setDate(date.getDate() + 1);
+                                // var tomorrow = self.getFormatedDate(date, "-", true);
+                                // document.getElementById('compl-date-plan').value = tomorrow;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Date');
+                            }
+                    );
+        };
 
         self.fetchTomorrowPlanRecords();
         self.fetchAllVehicleModels();
         self.fetchDrivers();
         self.fetchVehicles();
         self.getToday();
-        self.fetchVehicles();
-        self.fetchDrivers();
+        self.fetchVehicleTypes();
+        self.fetchCarBosses();
+        self.fetchPlaces();
+        self.fetchRouteTasks();
+        self.fetchDepartment();
+        self.getDateFromServer();
 
 
         self.departFromObj = function (obj) {
@@ -634,6 +742,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             }
         };
 
+
         self.filteringVehicleModels = function (vehicleType) {
             self.filteredVehicleModels = [];
             if (vehicleType !== undefined && vehicleType !== null) {
@@ -658,6 +767,259 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formClose('cover-trsp1');
         };
 
+        self.submitClaim = function () {
+            console.log(self.rec);
+            if (self.validateForm()) {
+                alert("Форма заполнена не полностью!");
+                return;
+            }
+            if (self.rec.id === null) {
+                self.createClaim(self.rec);
+            }
+            self.resetClaimForm();
+        };
+
+        self.validateForm = function () {
+            if (self.rec.startDate === null || self.rec.startDate === undefined
+                    || self.rec.endDate === null || self.rec.endDate === undefined) {
+                console.log('Missing Date or Time record!');
+                return true;
+            }
+
+            return false;
+        };
+
+        self.createClaim = function () {
+            for (var i = 0; i < self.rec.routeTasks.length; i++) {
+                self.rec.routeTasks[i].id = null;
+            }
+            formClose('form-add');
+            formClose('cover-trsp1');
+            console.log(self.rec);
+            DispatcherService.createClaim(self.rec)
+                    .then(
+                            function (d) {
+                                //self.newClaims.push(d);
+                                self.resetClaimForm();
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating Claim.');
+                            }
+                    );
+        };
+
+        self.resetClaimForm = function () {
+            self.isOtherDay = false;
+            self.rec = {
+                id: null,
+                appointment: {},
+                carBoss: {},
+                purpose: '',
+                routeTasks: [],
+                startDate: '',
+                endDate: '',
+                entranceDate: ''
+            };
+            self.getDateFromServer();
+            formClose('dispatcherCarBoss');
+            formClose('formRoute');
+            formClose('newFormTask');
+            formClose('form-add');
+            formClose('cover-trsp1');
+        };
+
+        self.resetRTaskForm = function () {
+            self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
+        };
+
+        self.submitRTask = function () {
+            if (self.routeTask.id === null && self.routeTask.orderNum === '') {
+                self.addRTask();
+            } else {
+                self.updateRTask();
+            }
+            self.resetRTaskForm();
+        };
+
+        self.removeRTask = function (routeTask) {
+            var k = -1;
+            for (var i = 0; i < self.rec.routeTasks.length; i++) {
+                if (routeTask === self.rec.routeTasks[i]) {
+                    k = i;
+                    break;
+                }
+            }
+            self.rec.routeTasks.splice(k, 1);
+        };
+
+        self.tryToUpdateRTask = function (routeTask) {
+            self.routeTask.id = routeTask.id;
+            self.routeTask.orderNum = routeTask.orderNum;
+            self.routeTask.workName = routeTask.workName;
+            self.routeTask.place = routeTask.place;
+            self.routeTask.routeTemplate = routeTask.routeTemplate;
+            self.temporaryRTask = routeTask;
+        };
+
+        self.addRTask = function () {
+            var rt = {id: null};
+            rt.orderNum = self.rec.routeTasks.length;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+            self.rec.routeTasks.push(rt);
+        };
+
+        self.updateRTask = function () {
+            self.removeRTask(self.temporaryRTask);
+            var rt = {id: null};
+            rt.orderNum = self.routeTask.orderNum;
+            rt.workName = self.routeTask.workName;
+            rt.place = self.routeTask.place;
+            rt.routeTemplate = self.routeTask.routeTemplate;
+            self.rec.routeTasks.push(rt);
+        };
+
+        self.resetCBForm = function () {
+            self.carBoss = {id: null};
+            formClose('dispatcherCarBoss');
+        };
+
+        self.submitCB = function () {
+//            if (self.specDepartment.id === null) {
+//                alert("Не выбрано подразделение!");
+//                return;
+//            }
+            if (self.carBoss.id === null) {
+                self.createCarBoss();
+            } else {
+                self.updateCarBoss();
+            }
+        };
+
+        self.removeCB = function (carBoss) {
+            DispatcherService.deleteCarBoss(carBoss)
+                    .then(
+                            function (d) {
+                                var k = -1;
+                                for (var i = 0; i < self.carBosses.length; i++) {
+                                    if (carBoss === self.carBosses[i]) {
+                                        k = i;
+                                        break;
+                                    }
+                                }
+                                self.carBosses.splice(k, 1);
+                            },
+                            function (errResponse) {
+                                console.error('Error while deleting CarBoss.');
+                            }
+                    );
+        };
+
+        self.tryToUpdateCB = function (carBoss) {
+            self.carBoss.id = carBoss.id;
+            self.carBoss.firstname = carBoss.firstname;
+            self.carBoss.name = carBoss.name;
+            self.carBoss.surname = carBoss.surname;
+            self.carBoss.post = carBoss.post;
+            self.carBoss.birthday = new Date(carBoss.birthday);
+            self.carBoss.address = carBoss.address;
+            self.carBoss.phone = carBoss.phone;
+            self.carBoss.department = carBoss.department;
+            formOpen('dispatcherCarBoss');
+        };
+
+        self.createCarBoss = function () {
+            self.carBoss.department = self.department;
+            console.log(self.carBoss);
+            DispatcherService.createCarBoss(self.carBoss)
+                    .then(
+                            function (d) {
+                                self.fetchCarBosses();
+                                self.resetCBForm();
+                            },
+                            function (errResponse) {
+                                console.error('Error while creating CarBoss.');
+                            }
+                    );
+        };
+
+        self.updateCarBoss = function () {
+            DispatcherService.updateCarBoss(self.carBoss)
+                    .then(
+                            function (d) {
+                                self.fetchCarBosses();
+                                self.resetCBForm();
+                            },
+                            function (errResponse) {
+                                console.error('Error while updating CarBoss.');
+                            }
+                    );
+        };
+
+        self.resetForm = function () {
+            self.workName = null;
+            self.routeTemplate = {id: null, name: null, routeTasks: []};
+            formClose('dispFormTask');
+        };
+
+
+        self.carBossToString = function (boss) {
+            if (boss !== null && boss !== undefined) {
+                var result = boss.firstname + " " + boss.name.charAt(0) + "." + (boss.surname !== null && boss.surname !== null ? boss.surname.charAt(0) + "." : "") + " " + boss.post;
+                return result;
+            }
+        };
+
+        self.addRec = function () {
+            var sd = new Date(self.startDate);
+
+            if (sd === null) {
+                return;
+            }
+            var inc = self.isOtherDay ? 1 : 0;
+            var rec = {id: null};
+            rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
+            rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
+            rec.endDate.setDate(rec.endDate.getDate() + inc);
+            rec.entranceDate = self.frmtDate(sd, new Date(self.newRecord.startDate.getTime() + 1800000));
+            if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
+                alert("Необходимо указать время подачи, выезда и возвращения!");
+                return;
+            }
+            self.rec.startDate = rec.startDate;
+            self.rec.endDate = rec.endDate;
+            self.rec.entranceDate = rec.entranceDate;
+            console.log(self.rec);
+        };
+
+        self.removeRec = function () {
+            self.rec.splice(0, 1);
+        };
+
+        self.frmtDate = function (date, time) {
+            var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
+            return result;
+        };
+
+        self.getFormatedDate = function (date, separator, yearAtBeginning) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if (month < 10)
+                month = "0" + month;
+            if (day < 10)
+                day = "0" + day;
+            if (yearAtBeginning) {
+                return year + separator + month + separator + day;
+            }
+            return day + separator + month + separator + year;
+        };
+
+        self.openAddClaimForm = function(){
+            formOpen('form-add');
+            self.fetchRouteTemplates();
+        };
 
     }]);
 

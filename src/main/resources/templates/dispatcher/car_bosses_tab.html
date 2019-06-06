@@ -1,5 +1,5 @@
-<div class="new-claim-task" id="plannerCarBoss" xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times i-close" onclick="formClose('plannerCarBoss')"></i>
+<div class="new-claim-task" id="dispatcherCarBoss" xmlns:th="http://www.thymeleaf.org">
+    <i class="fas fa-times i-close" onclick="formClose('dispatcherCarBoss')"></i>
 
     <div class="form-item" style="margin-bottom:20px;"> 
 
@@ -40,7 +40,7 @@
                 <th>Номер мобильного</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="b in plctrl.carBosses| orderBy: 'fullname'|filter: {department : {id: plctrl.specDepartment.id}}">
+            <tr ng-repeat="b in plctrl.carBosses| orderBy: 'fullname'|filter: {department : {id: plctrl.department.id}}">
                 <td>{{b.firstname}} {{b.name[0]}}.{{b.surname[0]}}.</td>
                 <td>{{b.post}}</td>
                 <td>{{b.phone}}</td>
@@ -53,7 +53,7 @@
     </div>
     <div class="form-item">
         <div class="right-block">	
-            <div class="btn edit" onclick="formClose('plannerCarBoss')"><i class="fas fa-save"></i>Сохранить</div>
+            <div class="btn edit" onclick="formClose('dispatcherCarBoss')"><i class="fas fa-save"></i>Сохранить</div>
         </div>    
     </div>
 </div>

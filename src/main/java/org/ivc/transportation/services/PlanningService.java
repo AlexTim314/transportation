@@ -168,7 +168,7 @@ public class PlanningService {
             app.setCreator(getUser(principal));
             app.setNote("Заявка передана в транспортный отдел");
             app.setStatus(EntitiesUtils.AppointmentStatus.IN_PROGRESS);
-            if (app.getModificator().getId() == null) {
+            if (app.getModificator() == null || app.getModificator().getId() == null) {
                 app.setModificator(null);
             }
             app = appointmentRepository.save(app);

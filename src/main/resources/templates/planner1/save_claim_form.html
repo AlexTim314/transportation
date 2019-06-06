@@ -37,7 +37,7 @@
                 <label for="purpose">Цель</label>
                 <textarea name="purpose" rows="10" ng-model="plctrl.newClaim.purpose"></textarea>
             </div>
-            <div class="form-item clearfix">
+            <div class="form-item block-route">
                 <div class="left-block-route">
                     <label for="carBoss">Старший</label>
                     <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.carBosses|filter: {department : {id: plctrl.specDepartment.id}} track by cb.firstname" ng-model="plctrl.newClaim.carBoss" required>
@@ -45,10 +45,10 @@
                     </select>
                 </div>
                 <div class="right-block-route">
-                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('plannerCarBoss')" title="Добавить старшего"><i class="fas fa-lg fa-user" ></i></div> 						 		
+                    <div class="btn edit"  onclick="formOpen('plannerCarBoss')" title="Добавить старшего"><i class="fas fa-lg fa-user" ></i></div> 						 		
                 </div>
             </div>
-            <div class="form-item clearfix">
+            <div class="form-item block-route">
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
                     <select name="route">
@@ -56,7 +56,7 @@
                     </select> 
                 </div>
                 <div class="right-block-route">
-                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('newFormTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                    <div class="btn edit"  onclick="formOpen('newFormTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
                 </div>
             </div>	
         </section>
@@ -95,7 +95,7 @@
                             <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
                             <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
-<!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
+                        <!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
                     </div>
 
                 </div>
@@ -112,4 +112,108 @@
         </div>
 
     </form>
+    <div class="new-claim-task" id="plannerCarBoss" style="width:35%; min-width: 400px;">
+        <i class="fas fa-times i-close" onclick="formClose('plannerCarBoss')"></i>
+
+
+
+        <div class="form-item" style="margin-top:30px">
+            <label for="dsurname">Фамилия</label>
+            <input type="text" class="letter-mask" name="dsurname" ng-model="plctrl.carBoss.firstname" title="Только буквы русского алфавита">
+        </div>
+        <div class="form-item">    
+            <label for="dfirstname">Имя</label>
+            <input type="text" class="letter-mask" name="dfirstname" ng-model="plctrl.carBoss.name" title="Только буквы русского алфавита">
+        </div>
+        <div class="form-item">    
+            <label for="dsecondname">Отчество</label>
+            <input type="text" class="letter-mask" name="dsecondname" ng-model="plctrl.carBoss.surname" title="Только буквы русского алфавита">
+        </div>
+        <div class="form-item">    
+            <label for="number">Должность</label>
+            <input type="text" name="number" ng-model="plctrl.carBoss.post">
+        </div>
+        <div class="form-item">
+            <label for="phone">Номер мобильного</label>
+            <input type="tel" name="phone" ng-model="plctrl.carBoss.phone">
+        </div>  
+        <div class="form-item"> 
+            <div class="left-block" style="margin-top:10px;">	
+                <div ng-show="plctrl.carBoss.id !== null" class="btn delete" ng-click="plctrl.resetCBForm()">Сброс</div>
+            </div>
+
+            <div class="right-block" style="margin-top:10px;">	
+                <div class="btn edit" ng-click="plctrl.submitCB()"><i class="{{plctrl.carBoss.id===null?'fas fa-plus-circle':'fas fa-edit'}}" style="cursor:pointer;" ></i>{{plctrl.carBoss.id===null?'Добавить':'Изменить'}}</div>
+            </div>
+        </div>
+        <div class="small-height-wrapper">	
+            <table class="table-task" >
+                <tr>
+                    <th>ФИО</th>
+                    <th>Должность</th>
+                    <th>Номер мобильного</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="b in plctrl.carBosses| orderBy: 'fullname'|filter: {department : {id: plctrl.specDepartment.id}}">
+                    <td>{{b.firstname}} {{b.name[0]}}.{{b.surname[0]}}.</td>
+                    <td>{{b.post}}</td>
+                    <td>{{b.phone}}</td>
+                    <td>
+                        <span class="fas fa-times" ng-click="plctrl.removeCB(b)"></span>
+                        <span class="fas fa-edit" ng-click="plctrl.tryToUpdateCB(b)"></span>
+                    </td>	 					
+                </tr>	 				
+            </table>
+        </div>
+        <div class="form-item">
+            <div class="right-block">	
+                <div class="btn edit" onclick="formClose('plannerCarBoss')"><i class="fas fa-save"></i>Сохранить</div>
+            </div>    
+        </div>
+    </div>
+
+    <div class="new-claim-task" id="newFormTask">
+        <i class="fas fa-times i-close" onclick="formClose('newFormTask')"></i>
+        <div class="form-item">
+            <label for="type">Место</label>
+            <select name="type" ng-options="p as p.name + (p.address !== null ? ' (' + p.address + ')' : '') for p in plctrl.places| orderBy: 'name'|filter:pFilt track by p.id" ng-model = "plctrl.routeTask.place">
+                <option value="" disabled selected><--Выберите место--></option>
+            </select>
+        </div>	
+        <div class="form-item" style="margin-top: 30px;"> 
+
+            <label for="work">Работы</label>
+            <textarea name="work" ng-model="plctrl.routeTask.workName"></textarea>
+
+            <div class="left-block" style="margin-top:10px;">	
+                <div ng-show="plctrl.routeTask.id !== null" class="btn delete" ng-click="plctrl.resetRTaskForm()">Сброс</div>
+            </div>
+
+            <div class="right-block" style="margin-top:10px;">	
+                <div class="btn edit" ng-click="plctrl.submitRTask()"><i class="{{plctrl.routeTask.id===null?'fas fa-plus-circle':'fas fa-edit'}}" style="cursor:pointer;" ></i>{{plctrl.routeTask.id===null?'Добавить':'Изменить'}}</div>
+            </div>
+        </div>
+        <div class="small-height-wrapper">	
+            <table class="table-task" >
+                <tr>
+                    <th>Место</th>
+                    <th>Задание</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="routeTask in plctrl.newClaim.routeTasks| orderBy: 'orderNum'">
+                    <td>{{routeTask.place.name}}</td>
+                    <td>{{routeTask.workName}}</td>
+                    <td>
+                        <span class="fas fa-times" ng-click="plctrl.removeRTask(routeTask)"></span>
+                        <span class="fas fa-edit" ng-click="plctrl.tryToUpdateRTask(routeTask)"></span>
+                    </td>	 					
+                </tr>	 				
+            </table>
+        </div>
+        <div class="form-item">
+            <div class="right-block">	
+                <div class="btn edit" onclick="formClose('newFormTask')"><i class="fas fa-save"></i>Сохранить</div>
+            </div>    
+        </div>
+    </div>
 </div>
