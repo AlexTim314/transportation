@@ -3,6 +3,7 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
@@ -97,6 +98,14 @@ public class CommonService {
         return null;
     }
 
+    public Department findDepartmentById(Long id) {
+        return departmentRepository.findById(id).orElse(null);
+    }
+    
+    public Department findDepartmentByOrder(int num) {
+        return departmentRepository.findByPlanOrder(num).orElse(null);
+    }
+
     public TransportDep findTransportDepByUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -108,7 +117,7 @@ public class CommonService {
     public List<CompositeTransportDepVehicleModels> findVehicleModelsByTransportDep() {
         List<CompositeTransportDepVehicleModels> list = new ArrayList<CompositeTransportDepVehicleModels>();
         transportDepRepository.findAll().forEach(u -> list.add(new CompositeTransportDepVehicleModels(u,
-            vehicleModelRepository.findVehicleModelsByTransportDepId(u.getId()))));
+                vehicleModelRepository.findVehicleModelsByTransportDepId(u.getId()))));
         return list;
     }
 

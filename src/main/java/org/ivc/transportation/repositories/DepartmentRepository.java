@@ -2,6 +2,7 @@ package org.ivc.transportation.repositories;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.ivc.transportation.entities.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,8 @@ import org.springframework.data.repository.query.Param;
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     Department findByShortname(String shortname);
+    
+    Optional<Department> findByPlanOrder(int num);
 
     List<Department> findDepartmentsBySuperManagerId(Long id);
 
@@ -73,6 +76,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             + "where claim.affirmation_date is not null and "
             + "department.id = claim.department_id "
             + "group by department.id", nativeQuery = true)
-    List<Department> findDepartmentsWithPlannedClaims();
+    List<Department> findDepartmentsWithPlannedClaims();    
 
 }

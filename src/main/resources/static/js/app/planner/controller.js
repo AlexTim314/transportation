@@ -981,13 +981,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.updateTime = function () {
             PlannerService.updateTime(self.record)
                     .then(
-                            function (d) {
-                                var rec = d;
+                            function (rec) {
+                                var record = rec;
                                 var l = -1;
                                 var k = -1;
                                 for (var i = 0; i < self.headers.length; i++) {
                                     for (var j = 0; j < self.headers[i].compositeClaimRecords.length; j++) {
-                                        if (self.headers[i].compositeClaimRecords[j].record.id === rec.id) {
+                                        if (self.headers[i].compositeClaimRecords[j].record.id === record.id) {
                                             l = i;
                                             k = j;
                                             break;
@@ -997,7 +997,20 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                         break;
                                     }
                                 }
-                                self.headers[l].compositeClaimRecords[k].record = d;
+
+                                var sd = new Date(rec.startDate);
+
+                                var entranceTime = new Date(rec.entranceDate);
+                                entranceTime.setUTCHours(entranceTime.getHours());
+                                var startTime = new Date(rec.startDate);
+                                startTime.setUTCHours(startTime.getHours());
+                                var endTime = new Date(rec.endDate);
+                                endTime.setUTCHours(endTime.getHours());
+                                rec.startDate = self.frmtDate(sd, startTime);
+                                rec.entranceDate = self.frmtDate(sd, entranceTime);
+                                rec.endDate = self.frmtDate(sd, endTime);
+
+                                self.headers[l].compositeClaimRecords[k].record = rec;
                             },
                             function (errResponse) {
                                 console.error('Error while updating Time');
@@ -1185,15 +1198,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 //коррекция времени для хранения без часового пояса
                 for (var i = 0; i < self.newClaim.records.length; i++) {
                     var rec = self.newClaim.records[i];
-                    var sd = new Date(rec.startDate);                    
-                    
+                    var sd = new Date(rec.startDate);
+
                     var entranceTime = new Date(rec.entranceDate);
                     entranceTime.setUTCHours(entranceTime.getHours());
                     var startTime = new Date(rec.startDate);
                     startTime.setUTCHours(startTime.getHours());
                     var endTime = new Date(rec.endDate);
                     endTime.setUTCHours(endTime.getHours());
-                    
+
                     self.newClaim.records[i].startDate = self.frmtDate(sd, startTime);
                     self.newClaim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
                     self.newClaim.records[i].endDate = self.frmtDate(sd, endTime);

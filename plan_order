@@ -1,0 +1,43 @@
+ALTER TABLE public.department ADD COLUMN plan_order integer;
+
+UPDATE public.department SET plan_order=130 WHERE id=1;
+UPDATE public.department SET plan_order=270 WHERE id=2;
+UPDATE public.department SET plan_order=1001 WHERE id=3;
+UPDATE public.department SET plan_order=90 WHERE id=4;
+UPDATE public.department SET plan_order=1002 WHERE id=5;
+UPDATE public.department SET plan_order=1003 WHERE id=6;
+UPDATE public.department SET plan_order=1004 WHERE id=7;
+UPDATE public.department SET plan_order=1005 WHERE id=8;
+UPDATE public.department SET plan_order=1006 WHERE id=9;
+UPDATE public.department SET plan_order=1007 WHERE id=10;
+UPDATE public.department SET plan_order=1008 WHERE id=11;
+UPDATE public.department SET plan_order=1009 WHERE id=12;
+UPDATE public.department SET plan_order=1010 WHERE id=13;
+UPDATE public.department SET plan_order=20 WHERE id=15;
+UPDATE public.department SET plan_order=40 WHERE id=17;
+UPDATE public.department SET plan_order=120 WHERE id=18;
+UPDATE public.department SET plan_order=140 WHERE id=19;
+UPDATE public.department SET plan_order=240 WHERE id=20;
+UPDATE public.department SET plan_order=150 WHERE id=21;
+UPDATE public.department SET plan_order=250 WHERE id=22;
+UPDATE public.department SET plan_order=160 WHERE id=23;
+UPDATE public.department SET plan_order=1011 WHERE id=24;
+UPDATE public.department SET plan_order=210 WHERE id=25;
+UPDATE public.department SET plan_order=180 WHERE id=26;
+UPDATE public.department SET plan_order=200 WHERE id=27;
+UPDATE public.department SET plan_order=260 WHERE id=28;
+UPDATE public.department SET plan_order=170 WHERE id=29;
+UPDATE public.department SET plan_order=1012 WHERE id=30;
+UPDATE public.department SET plan_order=1013 WHERE id=31;
+UPDATE public.department SET plan_order=1014 WHERE id=32;
+UPDATE public.department SET plan_order=1016 WHERE id=33;
+UPDATE public.department SET plan_order=110 WHERE id=34;
+UPDATE public.department SET plan_order=100 WHERE id=35;
+UPDATE public.department SET plan_order=220 WHERE id=36;
+UPDATE public.department SET plan_order=10 WHERE id=41;
+UPDATE public.department SET plan_order=3 WHERE id=44;
+UPDATE public.department SET plan_order=5 WHERE id=45;
+UPDATE public.department SET plan_order=7 WHERE id=47;
+
+ALTER TABLE public.department ALTER COLUMN plan_order SET NOT NULL;
+
