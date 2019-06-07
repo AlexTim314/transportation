@@ -55,10 +55,10 @@ public class PlanningController {
         return planningService.getAffirmedClaimsAll();
     }
 
-    @GetMapping("/planner/affirmedClaims1/monthBefore")
-    public List<AffirmedClaim> getAffirmedClaimsAll1() {
-        return planningService.getAffirmedClaimsAll1();
-    }
+//    @GetMapping("/planner/affirmedClaims1/monthBefore")
+//    public List<AffirmedClaim> getAffirmedClaimsAll1() {
+//        return planningService.getAffirmedClaimsAll1();
+//    }
     
     @GetMapping("/planner/ots_info")
     public List<CompositeOtsInfo> getOtsInfo() {
@@ -70,39 +70,67 @@ public class PlanningController {
         return planningService.getTransportDepModels();
     }
 
+//    @GetMapping("/planner/affirmedClaims/Tomorrow")
+//    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTomorrow() {
+//        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
+//        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+//    }
+    
     @GetMapping("/planner/affirmedClaims/Tomorrow")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsTomorrow() {
+    public List<AffirmedClaim> getAffirmedClaimsTomorrow() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
-        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+        return planningService.getAffirmedClaimsByTimeFilter(dStart, dEnd);
     }
 
+//    @GetMapping("/planner/affirmedClaims/Week")
+//    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek() {
+//        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
+//        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+//    }
+    
     @GetMapping("/planner/affirmedClaims/Week")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsWeek() {
+    public List<AffirmedClaim> getAffirmedClaimsWeek() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
-        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+        return planningService.getAffirmedClaimsByTimeFilter(dStart, dEnd);
     }
+// not used
+//    @GetMapping("/planner/affirmedClaims/Month")
+//    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonth() {
+//        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
+//        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+//    }
 
-    @GetMapping("/planner/affirmedClaims/Month")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonth() {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
-        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
-    }
-
+//    @GetMapping("/planner/affirmedClaims/monthBefore")
+//    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonthBefore() {
+//        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+//        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+//    }
+    
     @GetMapping("/planner/affirmedClaims/monthBefore")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsMonthBefore() {
+    public List<AffirmedClaim> getAffirmedClaimsMonthBefore() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
-        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+        return planningService.getAffirmedClaimsByTimeFilter(dStart, dEnd);
     }
 
-    @PostMapping("/planner/affirmedClaims/Date")
-    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
+//    @PostMapping("/planner/affirmedClaims/Date")
+//    public List<CompositeDepartmentClaimRecords> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
+//        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
+//        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+//    }
+    
+        @PostMapping("/planner/affirmedClaims/Date")
+    public List<AffirmedClaim> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
-        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
+        return planningService.getAffirmedClaimsByTimeFilter(dStart, dEnd);
     }
 
     @GetMapping("/planner/plannedClaims")

@@ -4,11 +4,11 @@
             <div class="fast-filter">                                    
                 <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
                 <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
-                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>
+                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
             </div>
-            <div class="fast-filter">
+<!--            <div class="fast-filter">
                 <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
-            </div>
+            </div>-->
             <div class="definite-date">
                 <label for="date-plan">Планируемый день</label>
                 <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
@@ -32,7 +32,7 @@
                     </td>
                     <td >{{header.department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.compositeClaimRecords.length}}</i>
+                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.composite.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
                             <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
@@ -56,15 +56,15 @@
                                 <th style="width:10% ">Вид техники</th>
                                 <th style="width:5% ">Дата выезда</th>
                                 <th style="width:10% ">Время подачи</th>
-                                <th style="width:15% ">Цель поездки</th>
-                                <th style="width:15% ">Маршрут</th>
+                                <th style="width:30% ">Цель поездки</th>
+                                <!--                                <th style="width:15% ">Маршрут</th>-->
                                 <th style="width:10% ">ОТС</th>
                                 <th style="width:12.5% ">Марка</th>
                                 <th style="width:5% ">Статус</th>
                                 <th style="width:2.5% "> </th>
                                 <th style="width:2.5% "> </th>
                             </tr>
-                            <tr ng-repeat="clrec in header.compositeClaimRecords| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: 'startDate' | filter: searchClaim">
+                            <tr ng-repeat="clrec in header.composite| limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | orderBy: 'startDate' | filter: searchClaim">
                                 <td>
                                     <label class="custom-checkbox">
                                         <input type="checkbox" ng-model="clrec.record.checked">
@@ -80,24 +80,24 @@
                                 <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
-                                <td >
-                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
-                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
-                                </td>                                                         
+                                <!--                                <td >
+                                                                    <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
+                                                                    <span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>
+                                                                </td>                                                         -->
 
                                 <td>
                                     <select ng-disabled="plctrl.disable(clrec)" name="ots" ng-options="td as td.shortname for td in plctrl.transportDeps track by td.shortname" ng-model="clrec.appointment.transportDep" ng-change="plctrl.changeCheckedTD(clrec)">
                                     </select>           
                                 </td>
                                 <td>
-                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':clrec.claim.specialization} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
+                                    <select ng-disabled="plctrl.disable(clrec)" name="model" ng-options="tm.vehiclemodelid as tm.modelname for tm in plctrl.compVMTDSpecs| filter:{'transportdepid':clrec.appointment.transportDep.id,'vehiclespecialization':plctrl.convertSpec(clrec.claim.specialization)} track by tm.modelname" ng-model="clrec.appointment.vehicleModel.id" ng-change="plctrl.changeCheckedVM(clrec)">
                                     </select>  
                                 </td>
                                 <td><i class="{{plctrl.statusClass(clrec)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}" ng-click="plctrl.checkRec(clrec)"></i></td>
                                 <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
                                 <td class="td-relative"> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
-                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="{{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
+                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator !== null" title="Утвердил {{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
                                 </td>
                             </tr>
                         </table>
@@ -106,9 +106,9 @@
             </table>
         </div>  
         <div ng-if="plctrl.pager.pages.length" class="paginator" id='pagination'>           
-            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" title="Предыдущая страница">&lt</div>
+            <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" ng-show="plctrl.pager.currentPage !== 1" title="Предыдущая страница">&lt</div>
             <div ng-repeat="page in plctrl.pager.pages" class="pages {{plctrl.pager.currentPage === page?'page-active':''}}" ng-click="plctrl.setPage(page)">{{page}}</div>   
-            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" title="Следующая страница">&gt</div>
+            <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" ng-show="plctrl.pager.currentPage !== plctrl.pageCount" title="Следующая страница">&gt</div>
         </div>
         <div class="more-info" id="appt-note" style="width: 25%;">
             <div>Примечание

@@ -51,11 +51,6 @@ public class PageController {
         return "planner/mainPage";
     }
 
-    @RequestMapping(value = "/planner1", method = RequestMethod.GET)
-    public String planner1Page() {
-        return "planner1/mainPage";
-    }
-
     @RequestMapping(value = "/dispatcher", method = RequestMethod.GET)
     public String dispatcherPage() {
         return "dispatcher/mainPage";

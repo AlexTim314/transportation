@@ -92,6 +92,59 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
              nativeQuery = true)
     List<AffirmedClaim> findAffirmedClaims();
 
+    @Query(value = "select claim.id as claimid, "
+            + "claim.department_id as departmentid, "
+            + "department.fullname as departmentfullname, "
+            + "record.id as recordid, "
+            + "appointment.id as appointmentid, "
+            + "appointment.status as appointmentstatus, "
+            + "appointment.note as appointmentnote, "
+            + "claim.vehicle_type_id as vehicletypeid, "
+            + "claim.purpose as claimpurpose, "
+            + "vehicle_type.type_name as vehicletypename, "
+            + "claim.specialization as claimspecialization, "
+            + "string_agg(route_task.work_name || '(' || place.name || ')', ', ' order by route_task.order_num) as route, "
+            + "record.start_date as startdate, "
+            + "record.end_date as enddate, "
+            + "record.entrance_date as entrancedate, "
+            + "claim.affirmator_id as affirmid, "
+            + "(select full_name as affirmname from app_user where id = claim.affirmator_id), "
+            + "appointment.transport_dep_id as transportdepid, "
+            + "appointment.creation_date as crdate, "
+            + "appointment.driver_id as driverid, "
+            + "appointment.vehicle_id as vehicleid, "
+            + "appointment.vehicle_model_id as modelid, "
+            + "appointment.creator_id as creatorid, "
+            + "(select full_name as creatorname from app_user where id = appointment.creator_id), "
+            + "(select post as creatorpost from app_user where id = appointment.creator_id), "
+            + "appointment.modificator_id as modifid, "
+            + "(select full_name as modifname from app_user where id = appointment.modificator_id), "
+            + "(select post as modifpost from app_user where id = appointment.modificator_id) "
+            + "from department, "
+            + "claim, "
+            + "vehicle_type, "
+            + "route_task, "
+            + "place, "
+            + "record left outer join appointment on appointment.record_id = record.id and appointment.id = (select max(id) from appointment where record_id = record.id) "
+            + "where "
+            + "department.id = claim.department_id and "
+            + "claim.actual = true and "
+            + "claim.affirmation_date is not null and "
+            + "vehicle_type.id = claim.vehicle_type_id and "
+            + "record.claim_id = claim.id and "
+            + "record.start_date between :date_start and :date_end and "
+            + "route_task.claim_id = claim.id and "
+            + "place.id = route_task.place_id "
+            + "group by departmentid, claimid, departmentfullname, recordid, appointmentid, appointmentstatus, vehicletypeid, vehicletypename "
+            + "order by claim.department_id",
+             nativeQuery = true)
+    List<AffirmedClaim> findAffirmedClaimsTimeFilter(
+    @Param("date_start") LocalDateTime dateStart, 
+    @Param("date_end") LocalDateTime dateEnd);
+    
+    
+    
+    
     void deleteByIdAndAffirmationDateIsNull(Long id);
 
     void deleteByIdInAndAffirmationDateIsNull(List<Long> claimIds);

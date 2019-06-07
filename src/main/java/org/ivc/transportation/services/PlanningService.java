@@ -285,4 +285,8 @@ public class PlanningService {
     public List<AffirmedClaim> getAffirmedClaimsAll1() {
         return claimRepository.findAffirmedClaims();
     }
+    
+    public List<AffirmedClaim> getAffirmedClaimsByTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
+        return claimRepository.findAffirmedClaimsTimeFilter(dateStart, dateEnd);
+    }
 }
