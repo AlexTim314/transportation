@@ -13,6 +13,7 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
+import org.ivc.transportation.utils.AddDispatcherClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.VehicleForPlan;
@@ -126,7 +127,7 @@ public class AppointmentController {
     public CarBoss createCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
         return dispatcherService.saveCarBoss(principal, carBoss);
     }
-    
+
     @PutMapping("/dispatcher/carBoss_update")
     public CarBoss updateCarBoss(Principal principal, @RequestBody CarBoss carBoss) {
         return dispatcherService.saveCarBoss(principal, carBoss);
@@ -137,4 +138,11 @@ public class AppointmentController {
         dispatcherService.deleteCarBoss(carBoss);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/dispather/claim_create")
+    public ResponseEntity<String> createClaim(Principal principal, @RequestBody AddDispatcherClaim claim) {
+        System.out.println(claim);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

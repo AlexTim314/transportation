@@ -34,5 +34,14 @@ public class AddDispatcherClaim {
     String purpose;
     List<RouteTask> routeTasks;
     List<RDate> dates;
+    
+    AddDispatcherClaim(Long VehicleId, Long DriverId, Long CarBossId, String Purpose, List<RouteTask> RouteTasks, List<RDate> Dates) {
+        this.vehicleId = VehicleId;
+        this.driverId = DriverId;
+        this.carBossId = CarBossId;
+        this.purpose = Purpose;
+        this.routeTasks = RouteTasks;
+        this.dates = Dates;
+    }
 
 }
