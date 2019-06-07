@@ -359,6 +359,26 @@ fasttab = function () {
     }
 }
 
+getFileNameOfInput=function(id,idList){
+    var inp=document.getElementById(id).files;
+    var lbl=document.getElementById(id).previousElementSibling;
+    var list=document.getElementById(idList);
+    var str='';
+    if(inp.length==0){
+    lbl.querySelector('span:not(:first-child)').innerHTML=' Прикрепить файл';
+    lbl.querySelector('span:not(:first-child)').classList.remove('custom-filedownload-active');
+    list.innerHTML=str;
+    }
+    else{
+    for(var i=0;i<inp.length;i++){
+      str+=inp[i].name+' ';
+    }
+    list.innerHTML=str;
+    lbl.querySelector('span:not(:first-child)').innerHTML='Число файлов: '+inp.length;
+    lbl.querySelector('span:not(:first-child)').classList.add('custom-filedownload-active');
+  }  
+}
+
 
 
 //  var block= document.getElementById('bar-block1');

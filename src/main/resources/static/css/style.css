@@ -461,6 +461,20 @@ i{
     cursor: pointer;
 
 }
+.custom-filedownload label{
+	color:grey;
+	cursor:pointer;
+}
+.custom-filedownload p{
+	color:grey;
+	width: 50%; 
+	overflow:hidden; 
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.custom-filedownload-active{
+	color:white;
+}
 .check-item{
     float: left;
     margin-right: 3%;
@@ -579,8 +593,8 @@ i{
 .new-claim-task{
     position: absolute;
     display: none;
-    top:40%;
-    right :10%;
+    top:0;
+    left :100%;
     width: 25%;
     min-width: 284px;
     height: auto;
@@ -699,16 +713,25 @@ i{
 .current-param-btn:hover{
     color:black;
 }
-
+.block-route{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
 .form-item .right-block-route{
     width:30px;
     height: 30px;
-    float: right;
+/*    float: right;*/
+}
+.right-block-route div{
+    width:30px;
+    height: 30px;
 }
 .form-item .left-block-route{
     width:85%;
-    float:left;
+/*    float:left;*/
 }
+
 .cover-trsp{
     position: absolute;
     width: 100%;

@@ -22,7 +22,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchMonthBeforeRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/monthBefore')
                         .then(
@@ -146,6 +146,94 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                         );
             },
 
+            fetchVehicleTypes: function () {
+                return $http.get('/transportation/vehicleTypes')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleTypes');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchPlaces: function () {
+                return $http.get('/transportation/places')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching places');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchRouteTasks: function () {
+                return $http.get('/transportation/routeTasks')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTasks');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchCarBosses: function () {
+                return $http.get('/transportation/dispatcher/carBosses')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching bosses');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchDepartment: function () {
+                return $http.get('/transportation/department')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching department');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchRouteTemplates: function () {
+                return $http.get('/transportation/dispatcher/routeTemplates')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            fetchDateFromServer: function () {
+                return $http.get('/transportation/getNow')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching date from server');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
 //            createAppointment: function (appointments) {
 //                return $http.post('/transportation/planner/appointments_create',
 //                        JSON.stringify(appointments), {headers: self.headers})
@@ -200,6 +288,51 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                     return $q.reject(errResponse);
                                 }
                         );
+            },
+
+            createCarBoss: function (carBoss) {
+                return $http.post('/transportation/dispatcher/carBoss_create',
+                        JSON.stringify(carBoss), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating carBoss');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            updateCarBoss: function (carBoss) {
+                return $http.put('/transportation/dispatcher/carBoss_update',
+                        JSON.stringify(carBoss), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating carBoss');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+
+            deleteCarBoss: function (carBoss) {
+                return $http({method: 'DELETE',
+                    url: '/transportation/dispatcher/carBoss_delete',
+                    data: JSON.stringify(carBoss),
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting carBoss');
+                            return $q.reject(errResponse);
+                        }
+                );
             }
 
         };

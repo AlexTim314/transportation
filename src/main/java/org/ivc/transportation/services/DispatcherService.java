@@ -11,7 +11,9 @@ import org.ivc.transportation.entities.AppRole;
 import org.ivc.transportation.entities.AppUser;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.AppointmentInfo;
+import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Driver;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
@@ -19,6 +21,7 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
+import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
@@ -66,6 +69,9 @@ public class DispatcherService {
 
     @Autowired
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    private CarBossRepository carBossRepository;
 
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
@@ -248,7 +254,7 @@ public class DispatcherService {
         }
         return false;
     }
-    
+
     public String getUserName(Principal principal) {
         final char dm = (char) 34;
         AppUser user = getUser(principal);
@@ -259,5 +265,30 @@ public class DispatcherService {
     public List<VehicleModel> findVehicleModelsByTransportDep(Principal principal) {
         AppUser user = getUser(principal);
         return vehicleModelRepository.findVehicleModelsByTransportDepId(user.getTransportDep().getId());
+    }
+
+    public List<CarBoss> findCarBossesByDepartment(Principal principal) {
+        Department department = getDepartment(principal);
+        if (department != null) {
+            return carBossRepository.findByDepartment(department);
+        }
+        return null;
+    }
+
+    private Department getDepartment(Principal principal) {
+        if (principal == null) {
+            return null;
+        }
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        return userRepository.findByUsername(loginedUser.getUsername()).getDepartment();
+
+    }
+
+    public CarBoss saveCarBoss(Principal principal, CarBoss carBoss) {
+        return carBossRepository.save(carBoss);
+    }
+
+    public void deleteCarBoss(CarBoss carBoss) {
+        carBossRepository.delete(carBoss);
     }
 }
