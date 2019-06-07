@@ -67,6 +67,10 @@
 
                 <div class="form-item-date ">
                     <label for="date-begin">Дата</label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" ng-model = "plctrl.onWeek">на неделю
+                        <span class="checkmark"></span>
+                    </label>
 
                     <div class="inp-btn clearfix">
                         <input type="date"  name="date-begin" ng-model="plctrl.startDate" id="startDate" required >
@@ -87,15 +91,15 @@
                     <div class="check-hidden">
                         <label class="custom-checkbox">
                             <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
-                            <span class="checkmark"></span>
+                            <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
                         <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>
                     </div>
 
                 </div>
                 <div class="left-block-tag">
-                    <div class="route-tag">{{plctrl.rec.startDate| date:'dd.MM.yyyy'}}
-                        <span class="fas fa-times" ng-click = "plctrl.removeRec()"></span>
+                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in plctrl.newClaim.rDates| orderBy:'startDate'" ng-click="plctrl.checkRecord(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
+                        <span class="fas fa-times" ng-click = "plctrl.removeRec(rec)"></span>
                     </div>
 
                 </div>
