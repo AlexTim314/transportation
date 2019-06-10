@@ -291,4 +291,5 @@ public class DispatcherService {
     public void deleteCarBoss(CarBoss carBoss) {
         carBossRepository.delete(carBoss);
     }
+
 }
