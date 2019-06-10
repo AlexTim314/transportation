@@ -144,5 +144,6 @@ public class AppointmentController {
         System.out.println(claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
 
 }

@@ -7,6 +7,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.department = {id: null, shortname: '', fullname: '', address: '', phone: ''};
         self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, routeTasks: []};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
+        self.addDispatcherClaim = {id: null, vehicleId: null, driverId: null, carBossId: null, purpose: '', dates: [], routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.temporaryRTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
         self.place = {id: null, name: '', address: ''};
@@ -20,7 +21,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.compClRec = {record: {}, claim: {}, appointment: {}};
         self.rec = {id: null, appointment: {}, carBoss: {}, purpose: '', routeTasks: [], startDate: '', endDate: '', entranceDate: ''};
         self.carBoss = {id: null};
-        self.newRecord = {id: null, startDate: '', endDate: '', entranceDate: ''};
+        self.newRecord = {startDate: '', endDate: '', entranceDate: ''};
         self.departments = [];
         self.headers = [];
         self.complHeaders = [];
@@ -768,11 +769,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.submitClaim = function () {
+           
             if (self.validateForm()) {
                 alert("Форма заполнена не полностью!");
                 return;
-            }
-            if (self.newClaim.rDates.id === null) {
+            }else{
+             console.log(self.addDispatcherClaim);
+         //   if (self.addDispatcherClaim.dates.id === null) {
                 self.createClaim();
             }
             self.resetClaimForm();
@@ -785,12 +788,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //                return true;
 //            }
             
-            if (self.newClaim.rDates.length === 0) {
+            if (self.addDispatcherClaim.dates.length === 0) {
                 console.log('No records in claim!');
                 return true;
             }
-            for (var i = 0; i < self.newClaim.rDates.length; i++) {
-                var r = self.newClaim.rDates[i];
+            for (var i = 0; i < self.addDispatcherClaim.dates.length; i++) {
+                var r = self.addDispatcherClaim.dates[i];
                 if (r.entranceDate === null || r.entranceDate === undefined
                         || r.endDate === null || r.endDate === undefined) {
                     console.log('Missing Date or Time record!');
@@ -803,16 +806,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.createClaim = function () {
-            for (var i = 0; i < self.newClaim.routeTasks.length; i++) {
-                self.newClaim.routeTasks[i].id = null;
+            for (var i = 0; i < self.addDispatcherClaim.routeTasks.length; i++) {
+                self.addDispatcherClaim.routeTasks[i].id = null;
+                delete self.addDispatcherClaim.appointment;
+                delete self.addDispatcherClaim.id;
+                
             }
             formClose('form-add');
             formClose('cover-trsp1');
-            console.log(self.newClaim);
-            DispatcherService.createClaim(self.newClaim)
+            console.log(self.addDispatcherClaim);
+            DispatcherService.createClaim(self.addDispatcherClaim)
                     .then(
                             function (d) {
-                                //self.newClaims.push(d);
+                                //self.addDispatcherClaims.push(d);
                                 self.resetClaimForm();
                             },
                             function (errResponse) {
@@ -836,7 +842,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.getDateFromServer();
             formClose('dispatcherCarBoss');
             formClose('formRoute');
-            formClose('newFormTask');
+            formClose('dispFormTask');
             formClose('form-add');
             formClose('cover-trsp1');
         };
@@ -856,13 +862,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.removeRTask = function (routeTask) {
             var k = -1;
-            for (var i = 0; i < self.newClaim.routeTasks.length; i++) {
-                if (routeTask === self.newClaim.routeTasks[i]) {
+            for (var i = 0; i < self.addDispatcherClaim.routeTasks.length; i++) {
+                if (routeTask === self.addDispatcherClaim.routeTasks[i]) {
                     k = i;
                     break;
                 }
             }
-            self.newClaim.routeTasks.splice(k, 1);
+            self.addDispatcherClaim.routeTasks.splice(k, 1);
         };
 
         self.tryToUpdateRTask = function (routeTask) {
@@ -876,11 +882,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.addRTask = function () {
             var rt = {id: null};
-            rt.orderNum = self.newClaim.routeTasks.length;
+            rt.orderNum = self.addDispatcherClaim.routeTasks.length;
             rt.workName = self.routeTask.workName;
             rt.place = self.routeTask.place;
             rt.routeTemplate = self.routeTask.routeTemplate;
-            self.newClaim.routeTasks.push(rt);
+            self.addDispatcherClaim.routeTasks.push(rt);
         };
 
         self.updateRTask = function () {
@@ -993,7 +999,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
-                    var rec = {id: null};
+                    var rec = {};
                     rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
@@ -1004,10 +1010,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                         alert("Необходимо указать время подачи, выезда и возвращения!");
                         return;
                     }
-                    self.newClaim.rDates.push(rec);
+                    self.addDispatcherClaim.dates.push(rec);
                 }
             } else {
-                var rec = {id: null};
+                var rec = {};
                 rec.startDate = self.frmtDate(sd, self.newRecord.startDate);
                 rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
                 rec.endDate.setDate(rec.endDate.getDate() + inc);
@@ -1016,12 +1022,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
                 }
-                 self.newClaim.rDates.push(rec);
+                 self.addDispatcherClaim.dates.push(rec);
             }
 //            self.rec.startDate = rec.startDate;
 //            self.rec.endDate = rec.endDate;
 //            self.rec.entranceDate = rec.entranceDate;
-            console.log(self.newClaim.rDates);
+            console.log(self.addDispatcherClaim.dates);
         };
 
 
@@ -1032,13 +1038,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.removeRec = function (rec) {
             //удалить запись
             var k = -1;
-            for (var i = 0; i < self.newClaim.rDates.length; i++) {
-                if (rec === self.newClaim.rDates[i]) {
+            for (var i = 0; i < self.addDispatcherClaim.dates.length; i++) {
+                if (rec === self.addDispatcherClaim.dates[i]) {
                     k = i;
                     break;
                 }
             }
-            self.newClaim.rDates.splice(k, 1);
+            self.addDispatcherClaim.dates.splice(k, 1);
         };
 
         self.frmtDate = function (date, time) {

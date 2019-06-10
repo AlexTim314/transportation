@@ -9,7 +9,7 @@
 
                 <div class=" left-block">
                     <label for="type">Марка авто</label>
-                    <select name="type" ng-options="m as m.modelName for m in plctrl.vehicleModels track by m.id" ng-model="plctrl.rec.appointment.vehicleModel" ng-change="plctrl.filteringVehicles(plctrl.rec.appointment.vehicleModel)">
+                    <select name="type" ng-options="m as m.modelName for m in plctrl.vehicleModels track by m.id" ng-model="plctrl.addDispatcherClaim.appointment.vehicleModel" ng-change="plctrl.filteringVehicles(plctrl.addDispatcherClaim.appointment.vehicleModel)">
                         <option value="" disabled selected>Выберите Марку</option>	
                     </select>
                 </div>
@@ -17,14 +17,14 @@
 
                 <div class="right-block" >
                     <label for="criterion">Гос.номер</label>
-                    <select name="criterion" ng-options="n as n.number for n in plctrl.vehicles|filter: {model: {id: plctrl.rec.appointment.vehicleModel.id}} track by n.id"   ng-model="plctrl.rec.appointment.vehicle">
+                    <select name="criterion" ng-options="n.id as n.number for n in plctrl.vehicles|filter: {model: {id: plctrl.addDispatcherClaim.appointment.vehicleModel.id}} track by n.id"   ng-model="plctrl.addDispatcherClaim.vehicleId">
                         <option value="" disabled selected>Выберите Гос.Номер</option>
                     </select>	
                 </div>	
             </div>
             <div class="form-item clearfix">
                 <label for="driver">Водитель</label>
-                <select name="driver" ng-options="d as plctrl.personToString(d) for d in plctrl.drivers track by d.id"   ng-model="plctrl.rec.appointment.driver">
+                <select name="driver" ng-options="d.id as plctrl.personToString(d) for d in plctrl.drivers track by d.id"   ng-model="plctrl.addDispatcherClaim.driverId">
                     <option value="" disabled selected>Выберите Водителя</option>					
                 </select>
             </div>    
@@ -34,12 +34,12 @@
 
             <div class="form-item check-hidden">
                 <label for="purpose">Цель</label>
-                <textarea name="purpose"   rows="10" ng-model="plctrl.rec.purpose" style="resize: vertical;"></textarea>
+                <textarea name="purpose"   rows="10" ng-model="plctrl.addDispatcherClaim.purpose" style="resize: vertical;"></textarea>
             </div>
             <div class="form-item block-route" >
                 <div class="left-block-route">
                     <label for="carBoss">Старший</label>
-                    <select name="carBoss" ng-options="cb as plctrl.carBossToString(cb) for cb in plctrl.carBosses|filter: {department : {id: plctrl.department.id}} track by cb.firstname" ng-model="plctrl.rec.carBoss" required>
+                    <select name="carBoss" ng-options="cb.id as plctrl.carBossToString(cb) for cb in plctrl.carBosses|filter: {department : {id: plctrl.department.id}} track by cb.firstname" ng-model="plctrl.addDispatcherClaim.carBossId" required>
                         <option value="" disabled selected>Выберите старшего машины</option>
                     </select>
                 </div>
@@ -53,7 +53,7 @@
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-options="route.routeTasks as route.name for route in plctrl.routeTemplates track by route.id" ng-model="plctrl.rec.routeTasks">
+                    <select name="route" ng-options="route.routeTasks as route.name for route in plctrl.routeTemplates track by route.id" ng-model="plctrl.addDispatcherClaim.routeTasks">
                     </select>  
                 </div>
                 <div class="right-block-route">
@@ -98,7 +98,7 @@
 
                 </div>
                 <div class="left-block-tag">
-                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in plctrl.newClaim.rDates| orderBy:'startDate'" ng-click="plctrl.checkRecord(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
+                    <div class="route-tag {{rec.checked?'active-color':''}}" ng-repeat="rec in plctrl.addDispatcherClaim.dates| orderBy:'startDate'" ng-click="plctrl.checkRecord(rec)">{{rec.startDate| date:'dd.MM.yyyy'}}
                         <span class="fas fa-times" ng-click = "plctrl.removeRec(rec)"></span>
                     </div>
 

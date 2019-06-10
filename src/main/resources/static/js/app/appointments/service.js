@@ -333,6 +333,21 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                             return $q.reject(errResponse);
                         }
                 );
+            },
+            
+            createClaim: function (claim) {
+                return $http.post('/transportation/dispather/claim_create',
+                        JSON.stringify(claim), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating dispatcher claim');
+                                    return $q.reject(errResponse);
+                                }
+                        );
             }
 
         };

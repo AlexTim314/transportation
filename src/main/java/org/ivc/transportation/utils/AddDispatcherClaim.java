@@ -5,35 +5,23 @@
  */
 package org.ivc.transportation.utils;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
 import org.ivc.transportation.entities.RouteTask;
 
 /**
  *
  * @author user
  */
-class RDate {
-
-    LocalDateTime startDate;
-    LocalDateTime entranceDate;
-    LocalDateTime endDate;
-
-    RDate(LocalDateTime StartDate, LocalDateTime EntranceDate, LocalDateTime EndDate) {
-        this.startDate = StartDate;
-        this.entranceDate = EntranceDate;
-        this.endDate = EndDate;
-    }
-}
-
+@Data
 public class AddDispatcherClaim {
 
-    Long vehicleId;
-    Long driverId;
-    Long carBossId;
-    String purpose;
-    List<RouteTask> routeTasks;
-    List<RDate> dates;
+    private Long vehicleId;
+    private Long driverId;
+    private Long carBossId;
+    private String purpose;
+    private List<RouteTask> routeTasks;
+    private List<RDate> dates;
     
     AddDispatcherClaim(Long VehicleId, Long DriverId, Long CarBossId, String Purpose, List<RouteTask> RouteTasks, List<RDate> Dates) {
         this.vehicleId = VehicleId;
