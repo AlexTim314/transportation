@@ -3,15 +3,18 @@ package org.ivc.transportation.services;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Fuel;
 import org.ivc.transportation.entities.Place;
+import org.ivc.transportation.entities.RouteTask;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.entities.VehicleType;
 import org.ivc.transportation.repositories.DepartmentRepository;
 import org.ivc.transportation.repositories.FuelRepository;
 import org.ivc.transportation.repositories.PlaceRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
@@ -45,6 +48,9 @@ public class CommonService {
 
     @Autowired
     private PlaceRepository placeRepository;
+    
+    @Autowired
+    private RouteTaskRepository routeTaskRepository;
 
     @Autowired
     private FuelRepository fuelRepository;
@@ -71,6 +77,10 @@ public class CommonService {
     public List<Place> findAllPlaces() {
         return placeRepository.findAll();
     }
+    
+    public List<RouteTask> findAllRouteTasks() {
+        return routeTaskRepository.findAll();
+    }
 
     public List<Fuel> findAllFuels() {
         return fuelRepository.findAll();
@@ -88,6 +98,14 @@ public class CommonService {
         return null;
     }
 
+    public Department findDepartmentById(Long id) {
+        return departmentRepository.findById(id).orElse(null);
+    }
+    
+    public Department findDepartmentByOrder(int num) {
+        return departmentRepository.findByPlanOrder(num).orElse(null);
+    }
+
     public TransportDep findTransportDepByUser(Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
@@ -99,7 +117,7 @@ public class CommonService {
     public List<CompositeTransportDepVehicleModels> findVehicleModelsByTransportDep() {
         List<CompositeTransportDepVehicleModels> list = new ArrayList<CompositeTransportDepVehicleModels>();
         transportDepRepository.findAll().forEach(u -> list.add(new CompositeTransportDepVehicleModels(u,
-            vehicleModelRepository.findVehicleModelsByTransportDepId(u.getId()))));
+                vehicleModelRepository.findVehicleModelsByTransportDepId(u.getId()))));
         return list;
     }
 

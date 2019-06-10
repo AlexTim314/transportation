@@ -72,7 +72,7 @@
                 </select>
             </div>
 
-            <div class="form-item clearfix">
+            <div class="form-item block-route">
 
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
@@ -80,7 +80,7 @@
                     </select> 
                 </div>
                 <div class="right-block-route">
-                    <div class="btn edit" style="height: 30px;margin-top:23px;" onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
+                    <div class="btn edit"  onclick="formOpen('formTask')" title="Добавить задачи"><i class="fas fa-lg fa-tasks" ></i></div> 						 		
                 </div>
             </div>	
         </section>
@@ -104,8 +104,8 @@
                     <input type="time"  name="time-begin" ng-model="ctrl.record.entranceDate" id="entranceTime">
 
 
-                    <label for="time-begin">Время выезда</label>
-                    <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" id="startTime">
+                    <!--                    <label for="time-begin">Время выезда</label>
+                                        <input type="time"  name="time-begin" ng-model="ctrl.record.startDate" id="startTime">-->
 
                     <div class="check-hidden">
                         <label for="time-end">Время возвращения</label>
@@ -119,7 +119,7 @@
                             <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="ctrl.isOtherDay">другой день
                             <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
-<!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
+                        <!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
                     </div>
 
                 </div>
@@ -131,9 +131,16 @@
             </div> 					
 
         </section>
+        <div class="form-item block-route custom-filedownload">
+            <label for="load-file1"  title="Прикрепите документы в формате(.pdf,.doc,.docx)"><span class="fa fa-paperclip"></span> <span> Прикрепить файл<span> </label>
+            <input type="file" id="load-file1" multiple  onchange="getFileNameOfInput('load-file1', 'load-list1')" style="display: none;"> 
+            <p id='load-list1'></p>  						
+        </div>
+
         <div class="form-item">
             <button type="submit" class="btn submit" id="btn-add-edit" ng-click="ctrl.submitClaim()" value="{{ctrl.claim.id===null?'Добавить':'Изменить'}}"></button>
         </div>
 
     </form>
+    <th:block th:include="user/route_tasks_form"></th:block> 
 </div>

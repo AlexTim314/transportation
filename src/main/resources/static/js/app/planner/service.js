@@ -272,6 +272,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchDrivers: function () {
+                return $http.get('/transportation/planner/drivers')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching drivers');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchAllVehicleModels: function () {
                 return $http.get('/transportation/vehicleModels')
@@ -344,6 +357,32 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching otsVehModels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchDepartments: function () {
+                return $http.get('/transportation/departments')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching departments');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            
+            fetchRouteTasks: function () {
+                return $http.get('/transportation/routeTasks')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTasks');
                                     return $q.reject(errResponse);
                                 }
                         );

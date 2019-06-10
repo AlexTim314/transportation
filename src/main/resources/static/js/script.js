@@ -31,7 +31,7 @@ edit_open = function () {
     sec[0].style.display = "none";
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "none";
-    }
+}
 
 formRecord_close = function () {
     var str = document.getElementById("formRecord-id");
@@ -56,7 +56,9 @@ formOpen = function (name) {
 }
 formClose = function (name) {
     var str = document.getElementById(name);
-    str.style.display = "none";
+    if (str !== null) {
+        str.style.display = "none";
+    }
 }
 formEditOpen = function (name) {
     var str = document.getElementById(name);
@@ -85,7 +87,7 @@ templateEditOpen = function () {
     edit_open();
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "block";
-    }
+}
 open_tab1 = function (tabName, btnName, iEnd) {
     for (var i = 1; i <= iEnd; i++) {
         var str = document.getElementById("tab-list" + i);
@@ -356,6 +358,25 @@ fasttab = function () {
 
         });
 
+    }
+}
+
+getFileNameOfInput = function (id, idList) {
+    var inp = document.getElementById(id).files;
+    var lbl = document.getElementById(id).previousElementSibling;
+    var list = document.getElementById(idList);
+    var str = '';
+    if (inp.length == 0) {
+        lbl.querySelector('span:not(:first-child)').innerHTML = ' Прикрепить файл';
+        lbl.querySelector('span:not(:first-child)').classList.remove('custom-filedownload-active');
+        list.innerHTML = str;
+    } else {
+        for (var i = 0; i < inp.length; i++) {
+            str += inp[i].name + ' ';
+        }
+        list.innerHTML = str;
+        lbl.querySelector('span:not(:first-child)').innerHTML = 'Число файлов: ' + inp.length;
+        lbl.querySelector('span:not(:first-child)').classList.add('custom-filedownload-active');
     }
 }
 
