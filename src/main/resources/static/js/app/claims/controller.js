@@ -51,9 +51,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.onConnected = function () {
             // Subscribe to the Public Topic
-            stompClient.subscribe('/topic/create_claim', self.insertClaim);
-            stompClient.subscribe('/topic/update_claim', self.replaceClaim);
-            stompClient.subscribe('/topic/delete_claims', self.cutClaims);
+            stompClient.subscribe('/topic/create_claim/' + self.department.id, self.insertClaim);
+            stompClient.subscribe('/topic/update_claim/' + self.department.id, self.replaceClaim);
+            stompClient.subscribe('/topic/delete_claims/' + self.department.id, self.cutClaims);
         };
 
         self.onError = function (error) {
@@ -324,6 +324,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.department = d;
+                                self.connect();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Department');
@@ -349,7 +350,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 //            self.startDate = new Date(today);
 //        };
 
-        self.connect();
+        self.fetchDepartment();
 
         self.fetchNewClaims();
         self.fetchAffirmedClaimsTomorrow();
