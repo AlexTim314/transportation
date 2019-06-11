@@ -91,7 +91,7 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             self.carBoss = {id: null};
             formOpen('cover-trsp1');
             formOpen('formCarBoss');
-            self.setBirthday();
+          //  self.setBirthday();
         };
 
         self.tryToUpdate = function (carBoss) {
@@ -100,10 +100,9 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             self.carBoss.name = carBoss.name;
             self.carBoss.surname = carBoss.surname;
             self.carBoss.post = carBoss.post;
-            self.carBoss.birthday = new Date(carBoss.birthday);
-            self.carBoss.address = carBoss.address;
-            self.carBoss.phone = carBoss.phone;
-            self.carBoss.department = carBoss.department;
+            self.carBoss.birthday = null;
+            self.carBoss.phone = '';
+            self.carBoss.department = '';
             formOpen('cover-trsp1');
             formOpen('formCarBoss');
         };
@@ -120,19 +119,19 @@ App.controller('CarBossesController', ['$scope', 'CarBossesService',
             formClose('cover-trsp1');
         };
         
-        self.setBirthday = function () {
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear() - 18;
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            var maxDay = year + "-" + month + "-" + day;
-            document.getElementById('birthday').value = maxDay;
-            document.getElementById('birthday').max = maxDay;
-        };
+//        self.setBirthday = function () {
+//            var date = new Date();
+//            var day = date.getDate();
+//            var month = date.getMonth() + 1;
+//            var year = date.getFullYear() - 18;
+//            if (month < 10)
+//                month = "0" + month;
+//            if (day < 10)
+//                day = "0" + day;
+//            var maxDay = year + "-" + month + "-" + day;
+//            document.getElementById('birthday').value = maxDay;
+//            document.getElementById('birthday').max = maxDay;
+//        };
         
         self.cancelDeleteCarBossForm = function(){
             formClose('del-car-boss-confirm');

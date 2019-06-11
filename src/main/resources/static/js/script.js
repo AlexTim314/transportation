@@ -292,15 +292,15 @@ window.addEventListener("DOMContentLoaded", function () {
             setCursorPosition(this.value.length, this);
     }
 
-    var input = document.querySelector("[type='tel']");
+    //var input = document.querySelector("[type='tel']");
     var surname = document.getElementsByClassName("letter-mask");
     var fuel = document.getElementsByClassName("fuel");
     var odom = document.getElementsByClassName("odometr");
     var engineHours = document.getElementsByClassName("engineHours");
 
-    input.addEventListener("input", mask, false);
-    input.addEventListener("focus", mask, false);
-    input.addEventListener("blur", mask, false);
+//    input.addEventListener("input", mask, false);
+//    input.addEventListener("focus", mask, false);
+//    input.addEventListener("blur", mask, false);
 
     for (var i = 0; i < surname.length; i++) {
         surname[i].addEventListener("input", russ, false);
