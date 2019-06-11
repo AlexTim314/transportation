@@ -141,7 +141,7 @@ public class AppointmentController {
 
     @PostMapping("/dispatcher/claim_create")
     public ResponseEntity<String> createClaim(Principal principal, @RequestBody AddDispatcherClaim claim) {
-        System.out.println(claim);
+        dispatcherService.createClaim(principal, claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
