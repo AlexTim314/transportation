@@ -336,7 +336,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
             
             createClaim: function (claim) {
-                return $http.post('/transportation/dispather/claim_create',
+                return $http.post('/transportation/dispatcher/claim_create',
                         JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {

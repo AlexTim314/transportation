@@ -14,7 +14,7 @@ import org.ivc.transportation.entities.RouteTask;
  * @author user
  */
 @Data
-public class AddDispatcherClaim {
+public class AddDispatcherClaim{
 
     private Long vehicleId;
     private Long driverId;
@@ -22,8 +22,8 @@ public class AddDispatcherClaim {
     private String purpose;
     private List<RouteTask> routeTasks;
     private List<RDate> dates;
-    
-    AddDispatcherClaim(Long VehicleId, Long DriverId, Long CarBossId, String Purpose, List<RouteTask> RouteTasks, List<RDate> Dates) {
+
+    public AddDispatcherClaim(Long VehicleId, Long DriverId, Long CarBossId, String Purpose, List<RouteTask> RouteTasks, List<RDate> Dates) {
         this.vehicleId = VehicleId;
         this.driverId = DriverId;
         this.carBossId = CarBossId;

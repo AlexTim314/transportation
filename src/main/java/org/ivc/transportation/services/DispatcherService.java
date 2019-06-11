@@ -28,6 +28,7 @@ import org.ivc.transportation.repositories.RecordRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
+import org.ivc.transportation.utils.AddDispatcherClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -75,6 +76,9 @@ public class DispatcherService {
 
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
+
+    @Autowired
+    private VehicleModelRepository transportDepRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -180,13 +184,13 @@ public class DispatcherService {
     public List<Vehicle> getVehiclesForPlan() {
         return vehicleRepository.findVehiclesForPlan();
     }
-    
-    public List<VehicleForPlan> getVehiclesForPlan(LocalDate date){
+
+    public List<VehicleForPlan> getVehiclesForPlan(LocalDate date) {
         LocalDateTime startTime = LocalDateTime.of(date, LocalTime.of(0, 0));
         LocalDateTime endTime = LocalDateTime.of(date, LocalTime.of(23, 59));
         return vehicleRepository.findVehiclesForPlan(startTime, endTime);
     }
-    
+
     public List<VehicleLastDep> getVehicleLastDep() {
         return vehicleRepository.findVehicleLastDep();
     }
@@ -291,4 +295,46 @@ public class DispatcherService {
     public void deleteCarBoss(CarBoss carBoss) {
         carBossRepository.delete(carBoss);
     }
+
+    public void createClaim(Principal principal, AddDispatcherClaim tclaim) {
+        List<Record> records;
+        records = new ArrayList<Record>();
+        AppUser disp = getUser(principal);
+        Vehicle v = vehicleRepository.findById(tclaim.getVehicleId()).get();
+        for (int i = 0; i < tclaim.getDates().size(); i++) {
+            Record r = new Record();
+            r.setEntranceDate(tclaim.getDates().get(i).getEntranceDate());
+            r.setStartDate(tclaim.getDates().get(i).getStartDate());
+            r.setEndDate(tclaim.getDates().get(i).getEndDate());
+            r.setAffirmationDate(LocalDateTime.now());
+            Appointment app = new Appointment();
+            app.setCreationDate(LocalDateTime.now());
+            app.setCreator(disp);
+            app.setDriver(driverRepository.findById(tclaim.getDriverId()).get());
+            app.setNote("Заявка подана диспетчером");
+            app.setStatus(AppointmentStatus.READY);
+            app.setTransportDep(disp.getTransportDep());
+            app.setVehicle(v);
+            app.setVehicleModel(v.getModel());
+            List<Appointment> apps = new ArrayList<Appointment>();
+            apps.add(app);
+            r.setAppointments(apps);
+            records.add(r);
+        }
+        Claim claim = new Claim();
+        claim.setActual(true);
+        claim.setAffirmationDate(LocalDateTime.now());
+        claim.setAffirmator(disp);
+        claim.setCarBoss(carBossRepository.findById(tclaim.getCarBossId()).get());
+        claim.setCreationDate(LocalDateTime.now());
+        claim.setCreator(disp);
+        claim.setDepartment(disp.getDepartment());
+        claim.setPurpose(tclaim.getPurpose());
+        claim.setRecords(records);
+        claim.setRouteTasks(tclaim.getRouteTasks());
+        claim.setSpecialization(v.getModel().getVehicleType().getSpecialization());
+        claim.setVehicleType(v.getModel().getVehicleType());
+        claimRepository.save(claim);
+    }
+
 }

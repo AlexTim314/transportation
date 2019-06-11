@@ -19,9 +19,10 @@ public class RDate {
     private LocalDateTime entranceDate;
     private LocalDateTime endDate;
 
-    RDate(LocalDateTime StartDate, LocalDateTime EntranceDate, LocalDateTime EndDate) {
+    public RDate(LocalDateTime StartDate, LocalDateTime EntranceDate, LocalDateTime EndDate) {
         this.startDate = StartDate;
         this.entranceDate = EntranceDate;
         this.endDate = EndDate;
     }
+
 }
