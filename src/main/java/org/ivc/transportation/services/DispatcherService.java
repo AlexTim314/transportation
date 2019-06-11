@@ -29,6 +29,7 @@ import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.AddDispatcherClaim;
+import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
@@ -335,6 +336,10 @@ public class DispatcherService {
         claim.setSpecialization(v.getModel().getVehicleType().getSpecialization());
         claim.setVehicleType(v.getModel().getVehicleType());
         claimRepository.save(claim);
+    }
+
+    public List<AppointmentClaim> getAppointments1(Principal principal) {
+        return claimRepository.findAppointmentClaims(getUser(principal).getTransportDep().getId());
     }
 
 }

@@ -14,6 +14,7 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.AddDispatcherClaim;
+import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.VehicleForPlan;
@@ -41,6 +42,11 @@ public class AppointmentController {
     @GetMapping("/dispatcher/appointments")
     public List<CompositeClaimRecord> getAppointments(Principal principal) {
         return dispatcherService.getAppointments(principal);
+    }
+
+    @GetMapping("/dispatcher/appointments1")
+    public List<AppointmentClaim> getAppointments1(Principal principal) {
+        return dispatcherService.getAppointments1(principal);
     }
 
     @GetMapping("/dispatcher/appointments/Tomorrow")
