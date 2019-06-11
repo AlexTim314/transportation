@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,6 +43,9 @@ public class TransportDep implements Serializable {
 
     @Column(name = "phone", unique = true, length = 16)
     private String phone;
+
+    @OneToOne
+    private Place place;
 
     public TransportDep(String shortname) {
         this.shortname = shortname;
