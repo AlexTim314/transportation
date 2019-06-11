@@ -891,6 +891,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 var rec = self.claim.records[i];
                 //var sd = new Date(rec.startDate);
                 var sd = new Date(rec.entranceDate.getTime()-self.mTime);   
+                var ed = new Date(rec.endDate.getTime());
+//                if (self.isOtherDay){
+//                    ed = ed.addDays(1);
+//                }
                 var entranceTime = new Date(rec.entranceDate);
                 entranceTime.setUTCHours(entranceTime.getHours());
                 var startTime = new Date(rec.entranceDate.getTime()-self.mTime);
@@ -899,7 +903,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 endTime.setUTCHours(endTime.getHours());
                 self.claim.records[i].startDate = self.frmtDate(sd, startTime);
                 self.claim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
-                self.claim.records[i].endDate = self.frmtDate(sd, endTime);
+                self.claim.records[i].endDate = self.frmtDate(ed, endTime);
             }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
