@@ -52,9 +52,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 
         self.onConnected = function () {
             // Subscribe to the Public Topic
-            stompClient.subscribe('/topic/create_claim', self.insertClaim);
-            stompClient.subscribe('/topic/update_claim', self.replaceClaim);
-            stompClient.subscribe('/topic/delete_claims', self.cutClaims);
+            stompClient.subscribe('/topic/create_claim/' + self.department.id, self.insertClaim);
+            stompClient.subscribe('/topic/update_claim/' + self.department.id, self.replaceClaim);
+            stompClient.subscribe('/topic/delete_claims/' + self.department.id, self.cutClaims);
         };
 
         self.onError = function (error) {
@@ -325,6 +325,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     .then(
                             function (d) {
                                 self.department = d;
+                                self.connect();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Department');
@@ -350,7 +351,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 //            self.startDate = new Date(today);
 //        };
 
-        self.connect();
+        self.fetchDepartment();
 
         self.fetchNewClaims();
         self.fetchAffirmedClaimsTomorrow();
@@ -891,6 +892,10 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 var rec = self.claim.records[i];
                 //var sd = new Date(rec.startDate);
                 var sd = new Date(rec.entranceDate.getTime()-self.mTime);   
+                var ed = new Date(rec.endDate.getTime());
+//                if (self.isOtherDay){
+//                    ed = ed.addDays(1);
+//                }
                 var entranceTime = new Date(rec.entranceDate);
                 entranceTime.setUTCHours(entranceTime.getHours());
                 var startTime = new Date(rec.entranceDate.getTime()-self.mTime);
@@ -899,7 +904,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 endTime.setUTCHours(endTime.getHours());
                 self.claim.records[i].startDate = self.frmtDate(sd, startTime);
                 self.claim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
-                self.claim.records[i].endDate = self.frmtDate(sd, endTime);
+                self.claim.records[i].endDate = self.frmtDate(ed, endTime);
             }
             if (self.claim.id === null) {
                 self.createClaim(self.claim);

@@ -1,5 +1,5 @@
 <div class="menu-new-claim" id="form-add"  xmlns:th="http://www.thymeleaf.org">
-    <i class="fas fa-times" onclick="menu_close()"></i>
+    <i class="fas fa-times" ng-click="plctrl.closeAddingClaimForm()"></i>
     <form>
         <section class="section-type">
             <div class="form-item">
@@ -135,10 +135,10 @@
                 <label for="number">Должность</label>
                 <input type="text" name="number" ng-model="plctrl.carBoss.post">
             </div>
-            <div class="form-item" >
+<!--            <div class="form-item" >
                 <label for="phone">Номер мобильного</label>
                 <input type="tel" name="phone" ng-model="plctrl.carBoss.phone">
-            </div>  
+            </div>  -->
         <div class="form-item"> 
             <div class="left-block" style="margin-top:10px;">	
                 <div ng-show="plctrl.carBoss.id !== null" class="btn delete" ng-click="plctrl.resetCBForm()">Сброс</div>
@@ -153,13 +153,13 @@
                 <tr>
                     <th>ФИО</th>
                     <th>Должность</th>
-                    <th>Номер мобильного</th>
+<!--                    <th>Номер мобильного</th>-->
                     <th></th>
                 </tr>
                 <tr ng-repeat="b in plctrl.carBosses| orderBy: 'fullname'|filter: {department : {id: plctrl.department.id}}">
                     <td>{{b.firstname}} {{b.name[0]}}.{{b.surname[0]}}.</td>
                     <td>{{b.post}}</td>
-                    <td>{{b.phone}}</td>
+<!--                    <td>{{b.phone}}</td>-->
                     <td>
                         <span class="fas fa-times" ng-click="plctrl.removeCB(b)"></span>
                         <span class="fas fa-edit" ng-click="plctrl.tryToUpdateCB(b)"></span>

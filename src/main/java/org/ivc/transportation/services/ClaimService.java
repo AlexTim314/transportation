@@ -158,7 +158,7 @@ public class ClaimService {
         recordRepository.delete(record);
     }
 
-    private Department getDepartment(Principal principal) {
+    public Department getDepartment(Principal principal) {
         if (principal == null) {
             return null;
         }

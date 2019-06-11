@@ -53,7 +53,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.tempDriver;
         self.tempVehicleModel;
         self.pageCount;
-        self.numRecordsPerPage = 7;
+        self.numRecordsPerPage = 10;
         self.data = [];
         self.pager = {};
         self.startDate;
@@ -113,7 +113,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.data = d;
-                                console.log(self.data);
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -176,7 +175,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.archive = false;
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
-            console.log(datePlan);
             formOpen('cover-trsp1');
             formOpen('preloader');
             DispatcherService.fetchDatePlanRecords(datePlan)
@@ -769,13 +767,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         };
 
         self.submitClaim = function () {
-           
+
             if (self.validateForm()) {
                 alert("Форма заполнена не полностью!");
                 return;
-            }else{
-             console.log(self.addDispatcherClaim);
-         //   if (self.addDispatcherClaim.dates.id === null) {
+            } else {
+                console.log(self.addDispatcherClaim);
+                //   if (self.addDispatcherClaim.dates.id === null) {
                 self.createClaim();
             }
             self.resetClaimForm();
@@ -787,7 +785,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 //                console.log('Missing Date or Time record!');
 //                return true;
 //            }
-            
+
             if (self.addDispatcherClaim.dates.length === 0) {
                 console.log('No records in claim!');
                 return true;
@@ -800,7 +798,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return true;
                 }
             }
-            
+
 
             return false;
         };
@@ -810,7 +808,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                 self.addDispatcherClaim.routeTasks[i].id = null;
                 delete self.addDispatcherClaim.appointment;
                 delete self.addDispatcherClaim.id;
-                
+
             }
             formClose('form-add');
             formClose('cover-trsp1');
@@ -829,16 +827,14 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.resetClaimForm = function () {
             self.isOtherDay = false;
-            self.rec = {
+            self.addDispatcherClaim = {
                 id: null,
-                appointment: {},
-                carBoss: {},
+                vehicleId: null,
+                driverId: null,
+                carBossId: null,
                 purpose: '',
-                routeTasks: [],
-                startDate: '',
-                endDate: '',
-                entranceDate: ''
-            };
+                dates: [],
+                routeTasks: []};
             self.getDateFromServer();
             formClose('dispatcherCarBoss');
             formClose('formRoute');
@@ -1022,7 +1018,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     alert("Необходимо указать время подачи, выезда и возвращения!");
                     return;
                 }
-                 self.addDispatcherClaim.dates.push(rec);
+                self.addDispatcherClaim.dates.push(rec);
             }
 //            self.rec.startDate = rec.startDate;
 //            self.rec.endDate = rec.endDate;
@@ -1068,6 +1064,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
 
         self.openAddClaimForm = function () {
             formOpen('form-add');
+            formOpen('cover-trsp1');
             self.fetchRouteTemplates();
         };
 
@@ -1075,6 +1072,15 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.newRecord.checked = false;
             self.newRecord = rec;
             self.newRecord.checked = true;
+        };
+        
+        self.closeAddingClaimForm = function (){
+            menu_close();
+            formClose('dispatcherCarBoss');
+            formClose('formRoute');
+            formClose('dispFormTask');
+            formClose('form-add');
+            formClose('cover-trsp1');
         };
 
     }]);
