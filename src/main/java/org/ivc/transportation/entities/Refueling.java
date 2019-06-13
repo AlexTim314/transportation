@@ -22,8 +22,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"fuel", "vehicle"})
-@ToString(exclude = {"fuel", "vehicle"})
+@EqualsAndHashCode(exclude = {"fuel", "vehicle", "refuelingStation"})
+@ToString(exclude = {"fuel", "vehicle", "refuelingStation"})
 @Entity
 @Table(name = "refueling")
 public class Refueling implements Serializable {
@@ -44,4 +44,8 @@ public class Refueling implements Serializable {
 
     @ManyToOne
     private Vehicle vehicle;
+
+    @ManyToOne
+    private RefuelingStation refuelingStation;
+
 }
