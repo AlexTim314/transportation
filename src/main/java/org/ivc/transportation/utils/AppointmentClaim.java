@@ -26,14 +26,8 @@ public interface AppointmentClaim {
     String getRoute();
 
     Long getVehicleModelId();
-
-    String getVehiclenumber();
-
-    float getVehiclefuel();
-
-    Long getVehiclemotohours();
-
-    float getVehicleodometr();
+    
+    Long getVehicleid();
 
     String getPurpose();
 
@@ -48,5 +42,15 @@ public interface AppointmentClaim {
     String getCarbosssurname();
 
     String getCarbossphone();
+    
+    String getAppstatus();
+    
+    String getAppnote();
+    
+    Long getAppointmentid();
+    
+    Long getRecordid();
+    
+    Long getClaimid();
 
 }

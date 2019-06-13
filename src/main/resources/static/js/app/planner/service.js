@@ -387,6 +387,19 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchRouteTemplates: function () {
+                return $http.get('/transportation/planner/routeTemplates')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching routeTemplates');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             createCarBoss: function (carBoss) {
                 return $http.post('/transportation/planner/carBoss_create',

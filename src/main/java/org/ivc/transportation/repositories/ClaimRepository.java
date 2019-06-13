@@ -150,17 +150,19 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "record.end_date as enddate, "
             + "string_agg(route_task.work_name || '(' || place.name || ')', ', ' order by route_task.order_num) as route, "
             + "vehicle_model.id as vehiclemodelid, "
-            + "vehicle.number as vehiclenumber, "
-            + "vehicle.fuel as vehiclefuel, "
-            + "vehicle.motohours as vehiclemotohours, "
-            + "vehicle.odometr as vehicleodometr, "
+            + "vehicle.id as vehicleid, "
             + "claim.purpose as purpose, "
             + "appointment.driver_id as driverid, "
             + "department.shortname as depshortname, "
             + "car_boss.firstname as carbossfirstname, "
             + "car_boss.name as carbossname, "
             + "car_boss.surname as carbosssurname, "
-            + "car_boss.phone as carbossphone "
+            + "car_boss.phone as carbossphone, "
+            + "appointment.id as appointmentid, "
+            + "appointment.status as appstatus, "
+            + "appointment.note as appnote, "
+            + "record.id as recordid, "
+            + "claim.id as claimid "
             + "from "
             + "record, appointment, vehicle, vehicle_model, vehicle_type, claim, route_task, place, department, car_boss "
             + "where "
@@ -168,9 +170,9 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "vehicle.id = appointment.vehicle_id and vehicle_model.id = vehicle.model_id and vehicle_type.id = vehicle_model.vehicle_type_id and "
             + "claim.id = record.claim_id and route_task.claim_id = claim.id and place.id = route_task.place_id and "
             + "appointment.id = (select max(id) from appointment where record_id = record.id) and department.id = claim.department_id and car_boss.id = claim.car_boss_id "
-            + "group by record.id, vehicle_type.id, vehicle_model.id, vehicle.number, "
-            + "vehicle.fuel, vehicle.motohours, vehicle.odometr, claim.purpose, appointment.driver_id, department.shortname, "
-            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone",
+            + "group by record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
+            + "claim.purpose, appointment.driver_id, department.shortname, "
+            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note",
             nativeQuery = true)
     List<AppointmentClaim> findAppointmentClaims(
             @Param("transportDepId") Long transportDepId

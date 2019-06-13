@@ -51,8 +51,7 @@
             <div class="form-item block-route">
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route">
-                        <option value="" disabled selected><--По указанию--></option>
+                    <select name="route" ng-mousedown="plctrl.fetchRouteTemplates()" ng-options="route.routeTasks as route.name for route in plctrl.routeTemplates track by route.id" ng-model="plctrl.newClaim.routeTasks">
                     </select> 
                 </div>
                 <div class="right-block-route">
@@ -92,7 +91,7 @@
 
 
 
-                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.isOtherDay">другой день
+                            <input type="checkbox" id="other-day-check" onchange="checkShow('other-day', 'other-day-check')" ng-model="plctrl.newRecord.isOtherDay">другой день
                             <span class="checkmark" title="установить дату возвращения на следующий день"></span>
                         </label>
                         <!--                        <div class="btn edit right-calendar" id="other-day" title="Выбрать дату"><i class="fas fa-lg fa-calendar-alt"></i></div>-->
