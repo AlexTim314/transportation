@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.ivc.transportation.utils.tdDriverInfo;
 
 /**
  *
@@ -42,6 +43,11 @@ public class AppointmentController {
     @GetMapping("/dispatcher/appointments")
     public List<CompositeClaimRecord> getAppointments(Principal principal) {
         return dispatcherService.getAppointments(principal);
+    }
+
+    @GetMapping("/dispatcher/driverInfo")
+    public List<tdDriverInfo> getDriverInfo(Principal principal) {
+        return dispatcherService.getTdDriverInfo(principal);
     }
 
     @GetMapping("/dispatcher/appointments1")
