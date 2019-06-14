@@ -396,18 +396,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             menu_close();
             formClose('cover-trsp1');
-                                            
-//            for (var i = 0; i < claim.records.length; i++) {                
-//                var sd = new Date(claim.records[i].startDate);
-//                
-//                var rec = claim.records[i];
-//                rec.startDate = self.frmtDate(sd, new Date(self.record.entranceDate.getTime() - self.mTime));
-//                rec.startDate.setDate(rec.startDate.getDate() + i);
-//                
-//                var inc = rec.isOtherDay? 1 : 0;
-//                rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
-//                rec.endDate.setDate(rec.endDate.getDate() + inc);
-//            }
+
             ClaimsService.updateClaim(claim)
                     .then(
                             function () {
@@ -612,19 +601,18 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             if (sd === null) {
                 return;
             }
-
-            var inc = self.record.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
+                    rec.isOtherDay = self.record.isOtherDay;
                     rec.startDate = self.frmtDate(sd, new Date(self.record.entranceDate.getTime() - self.mTime));
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     if (self.onDemand) {
                         rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
-                        rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                        rec.endDate.setDate(rec.endDate.getDate() + i);
                     } else {
                         rec.endDate = self.frmtDate(sd, self.record.endDate);
-                        rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                        rec.endDate.setDate(rec.endDate.getDate() + i);
                     }
                     rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
@@ -637,12 +625,13 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             } else {
                 var rec = {id: null};
                 rec.startDate = self.frmtDate(sd, new Date(self.record.entranceDate.getTime() - self.mTime));
+                rec.isOtherDay = self.record.isOtherDay;
                 if (self.onDemand) {
                     rec.endDate = self.frmtDate(sd, new Date(2018, 1, 1, 23, 59, 59));
-                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                    rec.endDate.setDate(rec.endDate.getDate() + i);
                 } else {
                     rec.endDate = self.frmtDate(sd, self.record.endDate);
-                    rec.endDate.setDate(rec.endDate.getDate() + inc);
+                    rec.endDate.setDate(rec.endDate.getDate());
                 }
                 rec.entranceDate = self.frmtDate(sd, self.record.entranceDate);
                 if (rec.startDate === 'Invalid Date' || rec.entranceDate === 'Invalid Date' || rec.endDate === 'Invalid Date') {
@@ -910,9 +899,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 //var sd = new Date(rec.startDate);
                 var sd = new Date(rec.entranceDate.getTime() - self.mTime);
                 var ed = new Date(rec.endDate.getTime());
-//                if (self.isOtherDay){
-//                    ed = ed.addDays(1);
-//                }
+                
+                ed = rec.isOtherDay ? ed.setDate(sd.getDate() + 1) : ed.setDate(sd.getDate());
+                
                 var entranceTime = new Date(rec.entranceDate);
                 entranceTime.setUTCHours(entranceTime.getHours());
                 var startTime = new Date(rec.entranceDate.getTime() - self.mTime);

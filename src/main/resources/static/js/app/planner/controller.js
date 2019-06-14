@@ -81,6 +81,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.vehicleTypes = [];
         self.drivers = [];
         self.routeTasks = [];
+        self.routeTemplates = [];
         // self.clrecs = [];
 
 
@@ -205,7 +206,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
-                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -227,7 +227,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
-                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                                 formClose('cover-trsp1');
@@ -247,7 +246,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
-                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                             },
@@ -267,7 +265,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
-                                console.log(self.cmpsts);
                                 self.createHeaders();
                                 expandHeaders();
                             },
@@ -367,7 +364,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.fetchCarBosses = function () {
-            console.log(self.specDepartment);
             PlannerService.fetchCarBosses()
                     .then(
                             function (d) {
@@ -454,10 +450,21 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.compVMTDSpecs = d;
-                                console.log(self.compVMTDSpecs);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching compVMTDSpec');
+                            }
+                    );
+        };
+        self.fetchRouteTemplates = function () {
+            PlannerService.fetchRouteTemplates()
+                    .then(
+                            function (d) {
+                                self.routeTemplates = d;
+                                self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching RouteTemplates');
                             }
                     );
         };
@@ -1069,14 +1076,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             if (sd === null) {
                 return;
             }
-            var inc = self.isOtherDay ? 1 : 0;
             if (self.onWeek) {
                 for (var i = 0; i < 5; i++) {
                     var rec = {id: null};
+                    rec.isOtherDay = self.newRecord.isOtherDay;
                     rec.startDate = self.frmtDate(sd, new Date(self.newRecord.entranceDate.getTime() - 1800000));
                     rec.startDate.setDate(rec.startDate.getDate() + i);
                     rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
-                    rec.endDate.setDate(rec.endDate.getDate() + i + inc);
+                    rec.endDate.setDate(rec.endDate.getDate() + i);
                     rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
                     rec.entranceDate.setDate(rec.entranceDate.getDate() + i);
                     if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
@@ -1087,9 +1094,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             } else {
                 var rec = {id: null};
+                rec.isOtherDay = self.newRecord.isOtherDay;
                 rec.startDate = self.frmtDate(sd, new Date(self.newRecord.entranceDate.getTime() - 1800000));
                 rec.endDate = self.frmtDate(sd, self.newRecord.endDate);
-                rec.endDate.setDate(rec.endDate.getDate() + inc);
+                rec.endDate.setDate(rec.endDate.getDate());
                 rec.entranceDate = self.frmtDate(sd, self.newRecord.entranceDate);
                 if (rec.startDate == 'Invalid Date' || rec.entranceDate == 'Invalid Date' || rec.endDate == 'Invalid Date') {
                     alert("Необходимо указать время подачи, выезда и возвращения!");
@@ -1140,14 +1148,30 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             if (self.validateForm()) {
                 alert("Форма заполнена не полностью!");
                 return;
-            }
-            if (self.newClaim.id === null) {
+            } else {
+                for (var i = 0; i < self.newClaim.records.length; i++) {
+                    var rec = self.newClaim.records[i];
+                    var sd = new Date(rec.entranceDate);
+                    var ed = new Date(rec.endDate);
+
+                    ed = rec.isOtherDay ? ed.setDate(sd.getDate() + 1) : ed.setDate(sd.getDate());
+                    //console.warn(ed);
+
+                    var entranceTime = new Date(rec.entranceDate);
+                    entranceTime.setUTCHours(entranceTime.getHours());
+                    var startTime = new Date(rec.entranceDate.getTime() - 1800000);
+                    startTime.setUTCHours(startTime.getHours());
+                    var endTime = new Date(rec.endDate);
+                    endTime.setUTCHours(endTime.getHours());
+                    self.newClaim.records[i].startDate = self.frmtDate(sd, startTime);
+                    self.newClaim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
+                    self.newClaim.records[i].endDate = self.frmtDate(ed, endTime);
+                }
                 self.createClaim(self.newClaim);
 //                formClose('plannerCarBoss');
 //                formClose('formRoute');
+                self.resetClaimForm();
             }
-
-            self.resetClaimForm();
         };
         self.createClaim = function () {
             for (var i = 0; i < self.newClaim.routeTasks.length; i++) {
@@ -1414,7 +1438,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.showRecords = function (clrecs) {
             self.clrec = [];
             self.pageCount = Math.ceil(clrecs.length / self.numRecordsPerPage);
-            console.log('page count =' + self.pageCount);
             self.clrecs = clrecs;
             self.setPage(1);
         };
@@ -1429,7 +1452,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.pager = self.getPager(self.clrecs.length, page, self.numRecordsPerPage);
             // get current page of items
             // self.data = self.clrecs.slice(self.pager.startIndex, self.pager.endIndex + 1);
-            console.log(self.data);
         };
         self.getPager = function (totalItems, currentPage, pageSize) {
             var totalPages = self.pageCount;
@@ -1606,11 +1628,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
 
                 var t2 = Date.now();
-                console.log(t1);
-                console.log(t2);
-                console.log(t2 - t1);
-                console.log(self.headers);
-            }else{ 
+            } else {
                 self.headers = [];
             }
         };
