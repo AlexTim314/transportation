@@ -244,6 +244,10 @@ public class PlanningService {
         claim.setCreator(getUser(principal));
         claim.setAffirmator(getUser(principal));
         claim.setAffirmationDate(LocalDateTime.now());
+        for (Record record : claim.getRecords()) {
+            record.setAffirmationDate(LocalDateTime.now());
+            record.setAffirmator(getUser(principal));
+        }
         return claimRepository.save(claim);
     }
     

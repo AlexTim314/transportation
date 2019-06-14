@@ -6,6 +6,7 @@ import org.ivc.transportation.entities.Claim;
 import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.utils.AffirmedClaim;
+import org.ivc.transportation.utils.AppointmentClaim;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -89,7 +90,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "place.id = route_task.place_id "
             + "group by departmentid, claimid, departmentfullname, recordid, appointmentid, appointmentstatus, vehicletypeid, vehicletypename "
             + "order by claim.department_id",
-             nativeQuery = true)
+            nativeQuery = true)
     List<AffirmedClaim> findAffirmedClaims();
 
     @Query(value = "select claim.id as claimid, "
@@ -137,14 +138,86 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "place.id = route_task.place_id "
             + "group by departmentid, claimid, departmentfullname, recordid, appointmentid, appointmentstatus, vehicletypeid, vehicletypename "
             + "order by claim.department_id",
-             nativeQuery = true)
+            nativeQuery = true)
     List<AffirmedClaim> findAffirmedClaimsTimeFilter(
-    @Param("date_start") LocalDateTime dateStart, 
-    @Param("date_end") LocalDateTime dateEnd);
+            @Param("date_start") LocalDateTime dateStart,
+            @Param("date_end") LocalDateTime dateEnd);
+
+    @Query(value = "select vehicle_type.id as vehicletypeid, "
+            + "vehicle_type.specialization as vehicletypespecialization, "
+            + "record.start_date as startdate, "
+            + "record.entrance_date as entrancedate, "
+            + "record.end_date as enddate, "
+            //+ "string_agg(route_task.work_name || '(' || place.name || ')', ', ' order by route_task.order_num) as route, "
+            + "string_agg(place.name, ', ' order by route_task.order_num) as route, "
+            + "vehicle_model.id as vehiclemodelid, "
+            + "vehicle.id as vehicleid, "
+            + "claim.purpose as purpose, "
+            + "appointment.driver_id as driverid, "
+            + "department.shortname as depshortname, "
+            + "car_boss.firstname as carbossfirstname, "
+            + "car_boss.name as carbossname, "
+            + "car_boss.surname as carbosssurname, "
+            + "car_boss.phone as carbossphone, "
+            + "appointment.id as appointmentid, "
+            + "appointment.status as appstatus, "
+            + "appointment.note as appnote, "
+            + "record.id as recordid, "
+            + "claim.id as claimid "
+            + "from "
+            + "record, appointment, vehicle, vehicle_model, vehicle_type, claim, route_task, place, department, car_boss "
+            + "where "
+            + "appointment.transport_dep_id = :transportDepId and record.affirmation_date is not null and record.id = appointment.record_id and "
+            + "vehicle.id = appointment.vehicle_id and vehicle_model.id = vehicle.model_id and vehicle_type.id = vehicle_model.vehicle_type_id and "
+            + "claim.id = record.claim_id and route_task.claim_id = claim.id and place.id = route_task.place_id and "
+            + "appointment.id = (select max(id) from appointment where record_id = record.id) and department.id = claim.department_id and car_boss.id = claim.car_boss_id "
+            + "group by record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
+            + "claim.purpose, appointment.driver_id, department.shortname, "
+            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note",
+            nativeQuery = true)
+    List<AppointmentClaim> findAppointmentClaims(
+            @Param("transportDepId") Long transportDepId
+    );
     
-    
-    
-    
+     @Query(value = "select vehicle_type.id as vehicletypeid, "
+            + "vehicle_type.specialization as vehicletypespecialization, "
+            + "record.start_date as startdate, "
+            + "record.entrance_date as entrancedate, "
+            + "record.end_date as enddate, "
+            //+ "string_agg(route_task.work_name || '(' || place.name || ')', ', ' order by route_task.order_num) as route, "
+            + "string_agg(place.name, ', ' order by route_task.order_num) as route, "
+            + "vehicle_model.id as vehiclemodelid, "
+            + "vehicle.id as vehicleid, "
+            + "claim.purpose as purpose, "
+            + "appointment.driver_id as driverid, "
+            + "department.shortname as depshortname, "
+            + "car_boss.firstname as carbossfirstname, "
+            + "car_boss.name as carbossname, "
+            + "car_boss.surname as carbosssurname, "
+            + "car_boss.phone as carbossphone, "
+            + "appointment.id as appointmentid, "
+            + "appointment.status as appstatus, "
+            + "appointment.note as appnote, "
+            + "record.id as recordid, "
+            + "claim.id as claimid "
+            + "from "
+            + "record, appointment, vehicle, vehicle_model, vehicle_type, claim, route_task, place, department, car_boss "
+            + "where "
+            + "record.start_date between :date_start and :date_end and "
+            + "appointment.transport_dep_id = :transportDepId and record.affirmation_date is not null and record.id = appointment.record_id and "
+            + "vehicle.id = appointment.vehicle_id and vehicle_model.id = vehicle.model_id and vehicle_type.id = vehicle_model.vehicle_type_id and "
+            + "claim.id = record.claim_id and route_task.claim_id = claim.id and place.id = route_task.place_id and "
+            + "appointment.id = (select max(id) from appointment where record_id = record.id) and department.id = claim.department_id and car_boss.id = claim.car_boss_id "
+            + "group by record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
+            + "claim.purpose, appointment.driver_id, department.shortname, "
+            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note",
+            nativeQuery = true)
+    List<AppointmentClaim> findAppointmentClaimsTimeFilter(
+            @Param("transportDepId") Long transportDepId,
+            @Param("date_start") LocalDateTime dateStart,
+            @Param("date_end") LocalDateTime dateEnd
+    );
+
     void deleteByIdAndAffirmationDateIsNull(Long id);
 
     void deleteByIdInAndAffirmationDateIsNull(List<Long> claimIds);

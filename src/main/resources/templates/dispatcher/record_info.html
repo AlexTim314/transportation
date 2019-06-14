@@ -4,10 +4,10 @@
     </div>
     <fieldset style="min-height: 50px;">
         <legend>Подразделение</legend>
-        <p>{{plctrl.clrec.claim.affirmator.department.shortname}}</p>
+        <p><b>{{plctrl.clrec.claim.affirmator.department.shortname}}</b></p>
         <ul>
             <li><label> ФИО старшего<span>{{plctrl.clrec.claim.carBoss.firstname}} {{plctrl.clrec.claim.carBoss.name[0]}}.{{plctrl.clrec.claim.carBoss.surname[0]}}.</span></label></li>
-            <li><label> № телефона старшего<span>{{plctrl.clrec.claim.carBoss.phone}}</span></label></li>
+<!--            <li><label> № телефона старшего<span>{{plctrl.clrec.claim.carBoss.phone}}</span></label></li>-->
         </ul>
     </fieldset>
     <fieldset style="min-height: 50px;">
@@ -18,7 +18,7 @@
         <legend>Водитель</legend>
         <ul>
             <li><label> ФИО<span>{{plctrl.clrec.appointment.driver.firstname}} {{plctrl.clrec.appointment.driver.name[0]}}.{{plctrl.clrec.appointment.driver.surname[0]}}.</span></label></li>
-            <li><label> Телефон<span>{{plctrl.clrec.appointment.driver.phone}}</span></label></li>
+            <li><label> Контактные телефоны<span>{{plctrl.clrec.appointment.driver.phone}}</span></label></li>
         </ul>
     </fieldset>
     <fieldset>
@@ -26,9 +26,9 @@
         <ul>
             <li><label> Модель<span>{{plctrl.clrec.appointment.vehicleModel.modelName}}</span></label></li>
             <li><label> Гос.№<span>{{plctrl.clrec.appointment.vehicle.number}}</span></label></li>
-            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{plctrl.clrec.appointment.vehicle.fuel}}</span></label></li>
+<!--            <li><label ><b class="fas fa-oil-can"></b>Топливо,л:<span>{{plctrl.clrec.appointment.vehicle.fuel}}</span></label></li>
             <li><label><b class="fas fa-road"></b> Одометр,км:<span>{{plctrl.clrec.appointment.vehicle.odometr}}</span></label></li>
-            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{plctrl.clrec.appointment.vehicle.motohours}}</span></label></li>
+            <li><label><b class="fas fa-clock"></b> Моточасы:<span>{{plctrl.clrec.appointment.vehicle.motohours}}</span></label></li>-->
         </ul>
     </fieldset>
     <fieldset>
@@ -38,7 +38,7 @@
             <li><label> Дата Возвращения<span>{{plctrl.clrec.record.endDate| date:'dd.MM.yyyy'}}</span></label></li>
             <li><label> Время Выхода<span>{{plctrl.clrec.record.entranceDate| date:'HH:mm'}}</span></label></li>
             <li><label> Время Выезда<span>{{plctrl.clrec.record.startDate| date:'HH:mm'}}</span></label></li>
-            <li><label> Время Возвращения<span><b>{{plctrl.clrec.record.endDate| date:'HH:mm'}}</b></span></label></li>
+            <li><label> Время Возвращения<span>{{plctrl.clrec.record.endDate| date:'HH:mm'}}</span></label></li>
         </ul>
     </fieldset>
 </div>

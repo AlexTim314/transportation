@@ -14,6 +14,7 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.utils.AddDispatcherClaim;
+import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.VehicleForPlan;
@@ -43,36 +44,48 @@ public class AppointmentController {
         return dispatcherService.getAppointments(principal);
     }
 
+    @GetMapping("/dispatcher/appointments1")
+    public List<AppointmentClaim> getAppointments1(Principal principal) {
+        return dispatcherService.getAppointments1(principal);
+    }
+
+//    @GetMapping("/dispatcher/appointments/Tomorrow")
+//    public List<CompositeClaimRecord> getAppointmentsTomorrow(Principal principal) {
+//        LocalDateTime dStart = LocalDateTime.now();
+//        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
+//        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
+//    }
+    
     @GetMapping("/dispatcher/appointments/Tomorrow")
-    public List<CompositeClaimRecord> getAppointmentsTomorrow(Principal principal) {
+    public List<AppointmentClaim> getAppointmentsTomorrow(Principal principal) {
         LocalDateTime dStart = LocalDateTime.now();
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
     @GetMapping("/dispatcher/appointments/Week")
-    public List<CompositeClaimRecord> getAppointmentsWeek(Principal principal) {
+    public List<AppointmentClaim> getAppointmentsWeek(Principal principal) {
         LocalDateTime dStart = LocalDateTime.now();
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
     @GetMapping("/dispatcher/appointments/Month")
-    public List<CompositeClaimRecord> getAppointmentsMonth(Principal principal) {
+    public List<AppointmentClaim> getAppointmentsMonth(Principal principal) {
         LocalDateTime dStart = LocalDateTime.now();
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusMonths(1), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
     @GetMapping("/dispatcher/appointments/monthBefore")
-    public List<CompositeClaimRecord> getAppointmentsMonthBefore(Principal principal) {
+    public List<AppointmentClaim> getAppointmentsMonthBefore(Principal principal) {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
     @PostMapping("/dispatcher/appointments/Date")
-    public List<CompositeClaimRecord> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {
+    public List<AppointmentClaim> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);

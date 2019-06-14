@@ -19,10 +19,10 @@
             <label for="number">Должность</label>
             <input type="text" name="number" ng-model="plctrl.carBoss.post">
         </div>
-        <div>
+<!--        <div>
             <label for="phone">Номер мобильного</label>
             <input type="tel" name="phone" ng-model="plctrl.carBoss.phone">
-        </div>  
+        </div>  -->
 
         <div class="left-block" style="margin-top:10px;">	
             <div ng-show="plctrl.carBoss.id !== null" class="btn delete" ng-click="plctrl.resetCBForm()">Сброс</div>
@@ -37,13 +37,13 @@
             <tr>
                 <th>ФИО</th>
                 <th>Должность</th>
-                <th>Номер мобильного</th>
+<!--                <th>Номер мобильного</th>-->
                 <th></th>
             </tr>
             <tr ng-repeat="b in plctrl.carBosses| orderBy: 'fullname'|filter: {department : {id: plctrl.specDepartment.id}}">
                 <td>{{b.firstname}} {{b.name[0]}}.{{b.surname[0]}}.</td>
                 <td>{{b.post}}</td>
-                <td>{{b.phone}}</td>
+<!--                <td>{{b.phone}}</td>-->
                 <td>
                     <i class="fas fa-times" ng-click="plctrl.removeCB(b)"></i>
                     <i class="fas fa-edit" ng-click="plctrl.tryToUpdateCB(b)"></i>
