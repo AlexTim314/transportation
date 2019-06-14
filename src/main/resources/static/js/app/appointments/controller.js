@@ -59,19 +59,21 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.places;
         self.routeTasks;
         self.cmpsts = [];
+        self.deps = [];
+
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
             var car = 'fas fa-lg fa-car';
             var truck = 'fas fa-lg fa-truck';
             var tractor = 'fas fa-lg fa-tractor';
             switch (spec) {
-                case "пассажирский":
+                case 0:
                     return bus;
-                case "легковой":
+                case 1:
                     return car;
-                case "грузовой":
+                case 2:
                     return truck;
-                case "спецтехника":
+                case 3:
                     return tractor;
             }
         };
@@ -85,7 +87,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             DispatcherService.fetchMonthPlanRecords()
                     .then(
                             function (d) {
-                                self.data = d;
+                                self.cmpsts = d;
+                                self.createDataComposite();
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -107,6 +110,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     .then(
                             function (d) {
                                 self.cmpsts = d;
+                                self.createDataComposite();
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -127,7 +131,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             DispatcherService.fetchWeekPlanRecords()
                     .then(
                             function (d) {
-                                self.data = d;
+                                self.cmpsts = d;
+                                self.createDataComposite();
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -148,7 +153,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             DispatcherService.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
-                                self.data = d;
+                                self.cmpsts = d;
+                                self.createDataComposite();
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
                                 formClose('cover-trsp1');
@@ -171,7 +177,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             DispatcherService.fetchDatePlanRecords(datePlan)
                     .then(
                             function (d) {
-                                self.data = d;
+                                self.cmpsts = d;
+                                self.createDataComposite();
                                 formClose('cover-trsp1');
                                 formClose('preloader');
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
@@ -400,6 +407,17 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+        self.fetchAllDeps = function () {
+            DispatcherService.fetchAllDeps()
+                    .then(
+                            function (d) {
+                                self.deps = d;
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Deps from server');
+                            }
+                    );
+        };
         self.getDateFromServer = function () {
             DispatcherService.fetchDateFromServer()
                     .then(
@@ -434,6 +452,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchPlaces();
         self.fetchRouteTasks();
         self.fetchDepartment();
+        //self.fetchAllDeps();
         self.getDateFromServer();
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -607,19 +626,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var canceledByDispatcher = 'Отменено диспетчером';
             var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceledByUser;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceledByPlanner;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceledByDispatcher;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceledBySupermanager;
             }
         };
@@ -629,19 +648,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var completed = 'fas fa-lg fa-check-double';
             var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -651,19 +670,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var completed = 'status-ready';
             var canceled = 'cancel-status';
             switch (stat) {
-                case 'IN_PROGRESS':
+                case '0':
                     return inProgress;
-                case 'READY':
+                case '1':
                     return ready;
-                case 'COMPLETED':
+                case '2':
                     return completed;
-                case 'CANCELED_BY_USER':
+                case '3':
                     return canceled;
-                case 'CANCELED_BY_PLANNER':
+                case '4':
                     return canceled;
-                case 'CANCELED_BY_DISPATCHER':
+                case '5':
                     return canceled;
-                case 'CANCELED_BY_SUPERMANAGER':
+                case '6':
                     return canceled;
             }
         };
@@ -1032,28 +1051,24 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             var vehicleModel = self.vehicleModels[j];
                         }
                     }
-                    
+
                     for (var j = 0; j < self.drivers.length; j++) {
-                        if (self.cmpsts[i].driverid === self.drivers[j].id){
+                        if (self.cmpsts[i].driverid === self.drivers[j].id) {
                             var driver = self.drivers[j];
                         }
                     }
-                    
-                    for (var j = 0; j < self.drivers.length; j++) {
-                        if (self.cmpsts[i].vehicleid === self.vehicles[j].id){
+
+                    for (var j = 0; j < self.vehicles.length; j++) {
+                        if (self.cmpsts[i].vehicleid === self.vehicles[j].id) {
                             var vehicle = self.vehicles[j];
                         }
                     }
-                    
+
                     self.data.push({
                         claim: {
                             id: self.cmpsts[i].claimid,
-                            // templateName: self.cmpsts[i].claim,
                             specialization: self.cmpsts[i].vehicleTypeSpecialization,
                             purpose: self.cmpsts[i].purpose,
-                            //creationDate: self.cmpsts[i].claim,
-                            //affirmationDate: self.cmpsts[i].claim,
-                            //actual: self.cmpsts[i].claim,
                             department: self.cmpsts[i].depshortname,
                             vehicleType: vehicleType,
                             carBoss: {
@@ -1062,9 +1077,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 surname: self.cmpsts[i].carbosssurname,
                                 phone: self.cmpsts[i].carbossphone
                             }
-                            //creator:	{},
-                            //affirmator:	{},
-                            //routeTasks:	route,
                         },
                         record: {
                             id: self.cmpsts[i].recordid,
@@ -1081,18 +1093,31 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             id: self.cmpsts[i].appointmentid,
                             status: self.cmpsts[i].appstatus,
                             note: self.cmpsts[i].appnote,
-                            //transportDep: {},
                             vehicleModel: vehicleModel,
                             vehicle: vehicle,
                             driver: driver,
                             creator: {},
-                            modificator: {},
-                            // creationDate:
+                            modificator: {}
+
                         }
                     });
                 }
             } else {
                 self.data = [];
+            }
+            console.log(self.data);
+        };
+
+        self.convertSpec = function (spec) {
+            switch (spec) {
+                case 0:
+                    return 'пассажирский';
+                case 1:
+                    return 'легковой';
+                case 2:
+                    return 'грузовой';
+                case 3:
+                    return 'спецтехника';
             }
         };
     }]);

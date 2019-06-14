@@ -207,6 +207,19 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
+            
+            fetchAllDeps: function () {
+                return $http.get('/transportation/departments')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching departments');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchRouteTemplates: function () {
                 return $http.get('/transportation/dispatcher/routeTemplates')

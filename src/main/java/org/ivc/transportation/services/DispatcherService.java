@@ -101,17 +101,25 @@ public class DispatcherService {
         }).collect(Collectors.toList());
     }
 
-    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
+//    public List<CompositeClaimRecord> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
+//        if (findTransportDepByUser(principal) == null) {
+//            System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
+//            return null;
+//        }
+//        List<Appointment> appointmentList = appointmentRepository
+//                .findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
+//        return appointmentList.stream().map((app) -> {
+//            return new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(app.getId())),
+//                    recordRepository.findRecordByAppointmentId(app.getId()), app);
+//        }).collect(Collectors.toList());
+//    }
+    
+    public List<AppointmentClaim> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
         if (findTransportDepByUser(principal) == null) {
             System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
             return null;
         }
-        List<Appointment> appointmentList = appointmentRepository
-                .findAppointmentsByTransportDepTimeFilter(findTransportDepByUser(principal).getId(), dateStart, dateEnd);
-        return appointmentList.stream().map((app) -> {
-            return new CompositeClaimRecord(new Claim(claimRepository.findClaimByAppointmentId(app.getId())),
-                    recordRepository.findRecordByAppointmentId(app.getId()), app);
-        }).collect(Collectors.toList());
+        return claimRepository.findAppointmentClaimsTimeFilter(getUser(principal).getTransportDep().getId(), dateStart, dateEnd);
     }
 
     private TransportDep findTransportDepByUser(Principal principal) {
