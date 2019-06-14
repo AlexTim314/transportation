@@ -25,10 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CommonController {
 
-    public static final String[] COMMON_PATHES = {"/transportDep", "/department",
-        "/departments", "/transportDeps", "/vehicleTypes", "/vehicleModels",
-        "/places", "/fuels", "/vehicleModelsByTransportDep", "getNow"};
-
     @Autowired
     private CommonService commonService;
 
