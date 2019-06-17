@@ -21,8 +21,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"place"})
+@ToString(exclude = {"place"})
 @Entity
 @Table(name = "transport_dep")
 public class TransportDep implements Serializable {
