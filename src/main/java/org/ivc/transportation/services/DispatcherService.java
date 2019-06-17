@@ -42,6 +42,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.ivc.transportation.utils.tdDriverInfo;
 
 /**
  *
@@ -348,6 +349,10 @@ public class DispatcherService {
 
     public List<AppointmentClaim> getAppointments1(Principal principal) {
         return claimRepository.findAppointmentClaims(getUser(principal).getTransportDep().getId());
+    }
+
+    public List<tdDriverInfo> getTdDriverInfo(Principal principal) {
+        return driverRepository.findTdDriverInfo(getUser(principal).getTransportDep().getId());
     }
 
 }
