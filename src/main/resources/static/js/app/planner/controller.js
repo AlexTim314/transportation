@@ -1342,8 +1342,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('formCarBoss');
         };
         self.checkAll = function (header) {
+            //selecting unsassigned records only
             for (var i = 0; i < header.composite.length; i++) {
-                header.composite[i].record.checked = header.allChecked;
+                if (header.composite[i].appointment.transportDep === null || header.composite[i].appointment.transportDep === undefined) {
+                    header.composite[i].record.checked = header.allChecked;
+                }
             }
         };
         self.getUniqueModels = function (arr) {

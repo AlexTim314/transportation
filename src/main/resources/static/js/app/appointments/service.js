@@ -207,7 +207,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-            
+
             fetchAllDeps: function () {
                 return $http.get('/transportation/departments')
                         .then(
@@ -246,6 +246,32 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
+
+//            fetchDriversInfo: function () {
+//                return $http.get('/transportation/dispatcher/driverInfo')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching drivers info from server');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+//            
+//            fetchVehiclesInfo: function () {
+//                return $http.get('/transportation/dispatcher/ots_veh_info')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching vehicles info from server');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
 
 //            createAppointment: function (appointments) {
 //                return $http.post('/transportation/planner/appointments_create',
@@ -347,7 +373,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                         }
                 );
             },
-            
+
             createClaim: function (claim) {
                 return $http.post('/transportation/dispatcher/claim_create',
                         JSON.stringify(claim), {headers: self.headers})

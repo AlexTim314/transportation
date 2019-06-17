@@ -15,6 +15,9 @@
 
         <script src="js/app/dispatcherPage/service.js"></script>
         <script src="js/app/dispatcherPage/controller.js"></script>
+        
+        <script src="js/app/dispatcherSidebar/service.js"></script>
+        <script src="js/app/dispatcherSidebar/controller.js"></script>
 
         <script src="js/app/appointments/service.js"></script>
         <script src="js/app/appointments/controller.js"></script>
@@ -135,7 +138,7 @@
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
                 </div>
-                <div ng-controller="DispatcherController as plctrl">
+                <div ng-controller="DispatcherSidebarController as sctrl">
                     <th:block th:include="dispatcher/sidebar"></th:block>
                 </div>
 

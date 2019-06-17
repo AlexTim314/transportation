@@ -25,6 +25,7 @@ import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
@@ -32,6 +33,7 @@ import org.ivc.transportation.utils.AddDispatcherClaim;
 import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.CompositeTDInfo;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
 import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
@@ -80,7 +82,7 @@ public class DispatcherService {
     private VehicleModelRepository vehicleModelRepository;
 
     @Autowired
-    private VehicleModelRepository transportDepRepository;
+    private TransportDepRepository transportDepRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -354,5 +356,12 @@ public class DispatcherService {
     public List<tdDriverInfo> getTdDriverInfo(Principal principal) {
         return driverRepository.findTdDriverInfo(getUser(principal).getTransportDep().getId());
     }
+    
+    public List<CompositeTDInfo> getTDInfo(Principal principal) {
+        List<CompositeTDInfo> result = new ArrayList<>();
+        transportDepRepository.findVehiclesInfo(findTransportDepByUser(principal).getId()).forEach(u -> result.add(new CompositeTDInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
+        return result;
+    }
+
 
 }
