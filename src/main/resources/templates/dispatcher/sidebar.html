@@ -1,74 +1,67 @@
-		<!--Sidebar-->
-		<div class="sidebar clearfix" id="sidenav-id">
-				<div class="thin-strip-header">
-					 <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
-					<i class="fas fa-info-circle"></i>Информация
-				</div>
-			<ul class="info-bar-block" style="margin-top: 10px;margin-bottom: 20px;">
-					<li class="info-bar-item">						
-						<div class="info-bar-btn">
-							<span>Водители</span>
-						</div>
-						<div class="info-bar-sub" style="display:block;">
-							<ul>
-								<li>
-									<span>
-										<i class="fas fa-walking"></i>Отгул
-									</span>
-									<span>1</span>
-								</li>
-								<li>
-									<span>
-										<i class="fas fa-bed"></i>Больничный
-									</span>
-									<span>2</span>
-								</li>
-								<li>
-									<span>
-										<i class="fas fa-suitcase"></i>Отпуск
-									</span>
-									<span>2</span>
-								</li>
-								<li>
-									<span>Всего</span>
-									<span>27</span>
-								</li>								
-							</ul>
-						</div>						
-					</li>
-				</ul>
-			<ul class="info-bar-block">
-					<li class="info-bar-item">						
-						<div class="info-bar-btn ">
-							<span>Транспорт</span>
-							<section class="info-bar-sub-type">
-								<div><i class="fas fa-car" title="Легковой"></i><span>33</span></div>
-								<div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>1</span></div>
-								<div><i class="fas fa-truck" title="Грузовой"></i><span>16</span></div>
-								<div><i class="fas fa-tractor" title="Спецтехника"></i><span>10</span></div>
-							</section>
-						</div>
-						<div class="info-bar-sub" style="display:block;">
-							<ul>
-								<li>
-									<span><i class="fas fa-bus-alt"></i>ПАЗ 3312</span>
-									<span>3</span>
-								</li>
-								<li>
-									<span><i class="fas fa-bus-alt"></i>ПАЗ 6633</span>
-									<span>17</span>
-								</li>
-								<li>
-									<span><i class="fas fa-bus-alt"></i>ПАЗ 6633</span>
-									<span>7</span>
-								</li>
-								<li>
-									<span>Всего</span>
-									<span>27</span>
-								</li>								
-							</ul>
-						</div>						
-					</li>
-				</ul>	
+<!--Sidebar-->
+<div class="sidebar clearfix" id="sidenav-id">
+    <div class="thin-strip-header">
+        <i class="fas fa-times i-close" onclick="close_sidenav()"></i>
+        <i class="fas fa-info-circle"></i>Информация
+    </div>
+    <ul class="info-bar-block" style="margin-top: 10px;margin-bottom: 20px;">
+        <li class="info-bar-item">						
+            <div class="info-bar-btn">
+                <span>Водители</span>
+            </div>
+            <div class="info-bar-sub" style="display:block;">
+                <ul>
+                    <li>
+                        <span>
+                            <i class="fas fa-walking"></i>Отгул
+                        </span>
+                        <span>{{sctrl.driversInfo.otgul}}</span>
+                    </li>
+                    <li>
+                        <span>
+                            <i class="fas fa-bed"></i>Больничный
+                        </span>
+                        <span>{{sctrl.driversInfo.bolnyak}}</span>
+                    </li>
+                    <li>
+                        <span>
+                            <i class="fas fa-suitcase"></i>Отпуск
+                        </span>
+                        <span>{{sctrl.driversInfo.otpusk}}</span>
+                    </li>
+                    <li>
+                        <span>Всего</span>
+                        <span>{{sctrl.driversInfo.vsego}}</span>
+                    </li>								
+                </ul>
+            </div>						
+        </li>
+    </ul>
+    <ul class="info-bar-block">
+        <li class="info-bar-item">						
+            <div class="info-bar-btn ">
+                <span>Транспорт</span>
+                <section class="info-bar-sub-type">
+                    <div><i class="fas fa-car" title="Легковой"></i><span>{{sctrl.tdInfo.vehInfo.type2count}}</span></div>
+                    <div><i class="fas fa-bus-alt" title="Пассажирский"></i><span>{{sctrl.tdInfo.vehInfo.type1count}}</span></div>
+                    <div><i class="fas fa-truck" title="Грузовой"></i><span>{{sctrl.tdInfo.vehInfo.type3count}}</span></div>
+                    <div><i class="fas fa-tractor" title="Спецтехника"></i><span>{{sctrl.tdInfo.vehInfo.type4count}}</span></div>
+                </section>
+            </div>
+            <div class="info-bar-sub" style="display:block;">
+                <ul>
+                    <li ng-repeat="info in sctrl.tdInfo.vehicleModelInfos">
+                        <span><i class="{{sctrl.selectSmallIcon(info.specialization)}}"></i>{{info.model}}</span>
+                        <span>{{info.count}}</span>
+                    </li>
 
-		</div>
+                    <li>
+                        <span>Всего</span>
+                        <span>{{sctrl.numVehicles}}</span>
+                    </li>								
+                </ul>
+            </div>						
+        </li>
+    </ul>	
+
+</div>

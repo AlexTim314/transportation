@@ -106,8 +106,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 console.error('Error while fetching Username');
                             });
         };
-        self.getPermit();
-        self.getUserName();
+
         self.fetchAllSpecDepartments = function () {
             PlannerService.fetchAllDepartments()
                     .then(
@@ -579,21 +578,26 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        self.getPermit();
+        self.getUserName();
+        self.getDateFromServer();
+
         self.fetchDepartments();
+        self.fetchAllSpecDepartments();
         self.fetchDrivers();
         self.fetchVehicles();
         self.fetchVehicleTypes();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
         self.fetchRouteTasks();
-        self.fetchTomorrowPlanRecords();
-        self.fetchTomorrowCompletePlanRecords();
-        self.getDateFromServer();
         self.fetchCarBosses();
         self.fetchPlaces();
-        self.fetchAllSpecDepartments();
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
+
+        self.fetchTomorrowPlanRecords();
+//        self.fetchTomorrowCompletePlanRecords();
+
         self.createAppointments = function () {
             var appoints = [];
             var appointment = {};
@@ -1342,8 +1346,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('formCarBoss');
         };
         self.checkAll = function (header) {
+            //selecting unsassigned records only
             for (var i = 0; i < header.composite.length; i++) {
-                header.composite[i].record.checked = header.allChecked;
+                if (header.composite[i].appointment.transportDep === null || header.composite[i].appointment.transportDep === undefined) {
+                    header.composite[i].record.checked = header.allChecked;
+                }
             }
         };
         self.getUniqueModels = function (arr) {

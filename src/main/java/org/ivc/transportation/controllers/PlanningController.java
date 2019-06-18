@@ -126,7 +126,7 @@ public class PlanningController {
 //        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
 //    }
     
-        @PostMapping("/planner/affirmedClaims/Date")
+    @PostMapping("/planner/affirmedClaims/Date")
     public List<AffirmedClaim> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
@@ -142,7 +142,8 @@ public class PlanningController {
     public List<CompositeDepartmentClaimRecords> getPlannedClaimsTomorrow() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
-        return planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+        List<CompositeDepartmentClaimRecords> result = planningService.getPlannedClaimsTimeFilter(dStart, dEnd);
+        return result;
     }
 
     @GetMapping("/planner/plannedClaims/Week")

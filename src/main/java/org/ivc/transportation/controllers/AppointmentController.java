@@ -17,6 +17,7 @@ import org.ivc.transportation.utils.AddDispatcherClaim;
 import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
+import org.ivc.transportation.utils.CompositeTDInfo;
 import org.ivc.transportation.utils.VehicleForPlan;
 import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,5 +164,9 @@ public class AppointmentController {
         dispatcherService.createClaim(principal, claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
+    @GetMapping("/dispatcher/ots_veh_info")
+    public List<CompositeTDInfo> getOtsVehInfo(Principal principal) {
+        return dispatcherService.getTDInfo(principal);
+    }
 }

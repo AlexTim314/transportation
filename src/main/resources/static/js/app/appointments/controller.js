@@ -60,6 +60,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.routeTasks;
         self.cmpsts = [];
         self.deps = [];
+        self.driversInfo = [];
+        self.tdInfo;
 
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
@@ -418,6 +420,30 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+//        self.fetchDriversInfo = function () {
+//            DispatcherService.fetchDriversInfo()
+//                    .then(
+//                            function (d) {
+//                                self.driversInfo = d;
+//                                console.log(self.driversInfo);
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while fetching Deps from server');
+//                            }
+//                    );
+//        };
+//        self.fetchVehiclesInfo = function () {
+//            DispatcherService.fetchVehiclesInfo()
+//                    .then(
+//                            function (d) {
+//                                self.tdInfo = d;
+//                                console.log(self.tdInfo);
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while fetching Deps from server');
+//                            }
+//                    );
+//        };
         self.getDateFromServer = function () {
             DispatcherService.fetchDateFromServer()
                     .then(
@@ -442,7 +468,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        self.fetchTomorrowPlanRecords();
+
         self.fetchAllVehicleModels();
         self.fetchDrivers();
         self.fetchVehicles();
@@ -454,6 +480,11 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchDepartment();
         //self.fetchAllDeps();
         self.getDateFromServer();
+        self.fetchTomorrowPlanRecords();
+//        self.fetchDriversInfo();
+//        self.fetchVehiclesInfo();
+        
+
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
         };
@@ -1120,6 +1151,23 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return 'спецтехника';
             }
         };
+        
+//        self.selectSmallIcon = function (spec) {
+//            var bus = 'fas fa-bus-alt';
+//            var car = 'fas fa-car';
+//            var truck = 'fas fa-truck';
+//            var tractor = 'fas fa-tractor';
+//            switch (spec) {
+//                case 0:
+//                    return bus;
+//                case 1:
+//                    return car;
+//                case 2:
+//                    return truck;
+//                case 3:
+//                    return tractor;
+//            }
+//        };
     }]);
 
 

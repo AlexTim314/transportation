@@ -15,9 +15,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @Component
 public class WebSocketEventListener {
 
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
-
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         System.out.println("Received a new web socket connection");
