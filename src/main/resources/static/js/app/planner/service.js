@@ -122,9 +122,23 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
+            
+            fetchInfo: function (ids) {
+                return $http.post('/transportation/planner/info',
+                        JSON.stringify(ids), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching information from Record');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
 
             fetchTomorrowPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Tomorrow')
+                return $http.get('/transportation/planner/claims/tomorrow')
                         .then(
                                 function (response) {
                                     return response.data;

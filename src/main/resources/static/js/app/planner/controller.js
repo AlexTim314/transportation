@@ -82,6 +82,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.drivers = [];
         self.routeTasks = [];
         self.routeTemplates = [];
+        self.clapp;
         // self.clrecs = [];
 
 
@@ -702,7 +703,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
         self.moreInfoOpen = function (clrec) {
-            self.compClRec = clrec;
+            if (clrec.claim.routeTasks.length === 0 || clrec.claim.affirmator.id === null) {
+                console.log('pusto');
+                self.fetchInfo(clrec.claim.id,clrec.appointment.id);
+//                clrec.claim = self.clapp.claim;
+//                clrec.appointment= self.clapp.appointment;
+//                self.compClRec = clrec;
+            } else {
+                self.compClRec = clrec;
+            }
             formOpen('more-claim');
             formOpen('cover-trsp1');
         };
@@ -750,19 +759,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var canceledByDispatcher = 'Отменено диспетчером';
             var canceledBySupermanager = 'Отменено управлением';
             switch (stat) {
-                case '0':
+                case 0:
                     return inProgress;
-                case '1':
+                case 1:
                     return ready;
-                case '2':
+                case 2:
                     return completed;
-                case '3':
+                case 3:
                     return canceledByUser;
-                case '4':
+                case 4:
                     return canceledByPlanner;
-                case '5':
+                case 5:
                     return canceledByDispatcher;
-                case '6':
+                case 6:
                     return canceledBySupermanager;
             }
         };
@@ -772,19 +781,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var completed = 'fas fa-lg fa-check-double';
             var canceled = 'fas fa-lg fa-ban';
             switch (stat) {
-                case '0':
+                case 0:
                     return inProgress;
-                case '1':
+                case 1:
                     return ready;
-                case '2':
+                case 2:
                     return completed;
-                case '3':
+                case 3:
                     return canceled;
-                case '4':
+                case 4:
                     return canceled;
-                case '5':
+                case 5:
                     return canceled;
-                case '6':
+                case 6:
                     return canceled;
             }
         };
@@ -794,19 +803,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var completed = 'status-ready';
             var canceled = 'cancel-status';
             switch (stat) {
-                case '0':
+                case 0:
                     return inProgress;
-                case '1':
+                case 1:
                     return ready;
-                case '2':
+                case 2:
                     return completed;
-                case '3':
+                case 3:
                     return canceled;
-                case '4':
+                case 4:
                     return canceled;
-                case '5':
+                case 5:
                     return canceled;
-                case '6':
+                case 6:
                     return canceled;
             }
         };
@@ -823,7 +832,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
         self.affirmatorToString = function (user) {
             if (user !== null && user !== undefined) {
-                if (user.fullName !== null) {
+                if (user.fullName !== null && user.fullName !== undefined) {
                     var nameArr = user.fullName.split(' ');
                     var result = nameArr[0];
                     if (nameArr.length > 1) {
@@ -888,11 +897,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         canceledApp = self.record.appointments[i];
                     }
                 }
-                canceledApp.status = '4';
+                canceledApp.status = 4;
                 canceledApp.note = self.cancelNote;
             } else {
                 canceledApp = {id: null, creationDate: '', status: '', note: ''};
-                canceledApp.status = '4';
+                canceledApp.status = 4;
                 canceledApp.note = self.cancelNote;
             }
             PlannerService.cancelRecord({recordId: self.record.id, appointment: canceledApp})
@@ -924,7 +933,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var k = 0;
             if (header.composite !== undefined) {
                 for (var j = 0; j < header.composite.length; j++) {
-                    if (header.composite[j].appointment.status === '1') {
+                    if (header.composite[j].appointment.status === 1) {
                         k = k + 1;
                     }
                 }
@@ -935,7 +944,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var k = 0;
             if (header.composite !== undefined) {
                 for (var j = 0; j < header.composite.length; j++) {
-                    if (header.composite[j].appointment.status === '0') {
+                    if (header.composite[j].appointment.status === 0) {
                         k = k + 1;
                     }
                 }
@@ -946,9 +955,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             var k = 0;
             if (header.composite !== undefined) {
                 for (var j = 0; j < header.composite.length; j++) {
-                    if (header.composite[j].appointment.status === '3' ||
-                            header.composite[j].appointment.status === '4' ||
-                            header.composite[j].appointment.status === '5') {
+                    if (header.composite[j].appointment.status === 3 ||
+                            header.composite[j].appointment.status === 4 ||
+                            header.composite[j].appointment.status === 5) {
                         k = k + 1;
                     }
                 }
@@ -1511,11 +1520,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.headers = [];
                 var deps = [];
                 var k = 0;
-                deps[k] = self.cmpsts[0].departmentid;
+                deps[k] = self.cmpsts[0].dep_id;
                 for (var i = 1; i < self.cmpsts.length; i++) {
-                    if (self.cmpsts[i].departmentid !== deps[k]) {
+                    if (self.cmpsts[i].dep_id !== deps[k]) {
                         k++;
-                        deps[k] = self.cmpsts[i].departmentid;
+                        deps[k] = self.cmpsts[i].dep_id;
                     }
                 }
                 console.log(deps);
@@ -1532,15 +1541,15 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         }
                     }
                 }
-                console.log(self.headers);
                 for (var i = 0; i < self.headers.length; i++) {
                     for (var j = 0; j < self.cmpsts.length; j++) {
-                        if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
+                        if (self.headers[i].department.id === self.cmpsts[j].dep_id) {
                             var transportDep = null;
                             var vehicleModel = null;
                             var driver = null;
                             var vehicle = null;
-                            var creator = { //not used
+                            var carBoss = null;
+                            var creator = {//not used
                                 id: null,
                                 fullName: null,
                                 username: null,
@@ -1552,7 +1561,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 roles: [],
                                 selected: null
                             };
-                            var modificator = { //not used
+                            var modificator = {//not used
                                 id: null,
                                 fullName: null,
                                 username: null,
@@ -1564,6 +1573,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 roles: [],
                                 selected: null
                             };
+
+                            for (var l = 0; l < self.carBosses.length; l++) {
+                                if (self.cmpsts[j].boss_id === self.carBosses[l].id) {
+                                    carBoss = self.carBosses[l];
+                                }
+                            }
                             for (var l = 0; l < self.transportDeps.length; l++) {
                                 if (self.cmpsts[j].ots_id === self.transportDeps[l].id) {
                                     transportDep = self.transportDeps[l];
@@ -1605,8 +1620,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     id: self.cmpsts[j].claim_id,
                                     specialization: self.cmpsts[j].specialization,
                                     purpose: self.cmpsts[j].purpose,
+                                    carBoss: carBoss,
                                     vehicleType: {typeName: self.cmpsts[j].veh_type},
-                                    routeTasks: {}                      //not used
+                                    affirmator: {
+                                        id: null, //not used
+                                        fullName: null
+                                    },
+                                    routeTasks: []                      //not used
                                 },
                                 record: {
                                     id: self.cmpsts[j].record_id,
@@ -1614,7 +1634,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     entranceDate: self.cmpsts[j].entrance_date,
                                     endDate: self.cmpsts[j].end_date,
                                     affirmator: {
-                                        id: null,                       //not used
+                                        id: null, //not used
                                         fullName: self.cmpsts[j].affirmator
                                     },
                                     tasks: self.cmpsts[j].route
@@ -1627,8 +1647,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     vehicleModel: vehicleModel,
                                     vehicle: vehicle,
                                     driver: driver,
-                                    creator: creator,           //not used
-                                    modificator: modificator,   //not used
+                                    creator: creator, //not used
+                                    modificator: modificator, //not used
                                     creationDate: null          //not used
                                 }
                             });
@@ -1641,7 +1661,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.headers = [];
             }
             console.log(self.headers);
-            console.log(t2-t1);
+            console.log(t2 - t1);
         };
         self.convertSpec = function (spec) {
             switch (spec) {
@@ -1654,6 +1674,35 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 case 3:
                     return 'спецтехника';
             }
+        };
+        self.fetchInfo = function(cid,aid){
+            var ids = [];
+            ids.push(cid);
+            ids.push(aid);
+            PlannerService.fetchInfo(ids)
+            .then(
+                            function (d) {
+                                self.clapp = d;
+                                for (var i = 0; i < self.headers.length; i++) {
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if(self.headers[i].composite[j].claim.id === self.clapp.claim.id){
+                                            self.headers[i].composite[j].claim = self.clapp.claim;    
+                                            self.compClRec = self.headers[i].composite[j];
+                                        }
+                                    }
+                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
+                                        if(self.headers[i].composite[j].appointment.id === self.clapp.appointment.id){
+                                            self.headers[i].composite[j].appointment = self.clapp.appointment;                                
+                                        }
+                                    }
+                                    
+                                }
+                               console.log(self.compClRec); 
+                            },
+                            function (errResponse) {
+                                console.error('Error while fetching Information from Record');
+                            }
+                    );
         };
     }]);
 
