@@ -13,6 +13,7 @@ import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.services.PlanningService;
 import org.ivc.transportation.services.VehicleService;
 import org.ivc.transportation.utils.AffirmedClaim;
+import org.ivc.transportation.utils.ClaimAppointment;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.CompositeOtsInfo;
@@ -40,7 +41,6 @@ public class PlanningController {
 
     private VehicleService vehicleService;
 
-    
     @GetMapping("/planner/permit")
     public Boolean getPermit(Principal principal) {
         return planningService.getPermit(principal);
@@ -60,7 +60,6 @@ public class PlanningController {
 //    public List<AffirmedClaim> getAffirmedClaimsAll1() {
 //        return planningService.getAffirmedClaimsAll1();
 //    }
-    
     @GetMapping("/planner/ots_info")
     public List<CompositeOtsInfo> getOtsInfo() {
         return planningService.getOtsInfo();
@@ -77,7 +76,6 @@ public class PlanningController {
 //        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
 //        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
 //    }
-    
     @GetMapping("/planner/affirmedClaims/Tomorrow")
     public List<AffirmedClaim> getAffirmedClaimsTomorrow() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
@@ -91,7 +89,6 @@ public class PlanningController {
 //        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
 //        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
 //    }
-    
     @GetMapping("/planner/affirmedClaims/Week")
     public List<AffirmedClaim> getAffirmedClaimsWeek() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
@@ -112,7 +109,6 @@ public class PlanningController {
 //        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
 //        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
 //    }
-    
     @GetMapping("/planner/affirmedClaims/monthBefore")
     public List<AffirmedClaim> getAffirmedClaimsMonthBefore() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
@@ -126,7 +122,6 @@ public class PlanningController {
 //        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
 //        return planningService.getAffirmedClaimsTimeFilter(dStart, dEnd);
 //    }
-    
     @PostMapping("/planner/affirmedClaims/Date")
     public List<AffirmedClaim> getAffirmedClaimsDate(@RequestBody LocalDateTime date) {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
@@ -204,7 +199,7 @@ public class PlanningController {
     public List<Vehicle> getAllVehicles(Principal principal) {
         return planningService.getAllVehicles(principal);
     }
-       
+
     @GetMapping("/planner/drivers")
     public List<Driver> getAllDrivers(Principal principal) {
         return planningService.getAllDrivers(principal);
@@ -230,12 +225,17 @@ public class PlanningController {
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return planningService.saveClaim(principal, claim);
     }
-    
+
     @GetMapping("/planner/claims/tomorrow")
     public List<ClaimRecord> test() {
         LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
         return planningService.findClaimsByTimeFilter(dStart, dEnd);
+    }
+
+    @PostMapping("/planner/info")
+    public ClaimAppointment getInfo(List<Long> ids) {
+        return planningService.getAppointmentInfo(ids.get(0), ids.get(1));
     }
 
 }

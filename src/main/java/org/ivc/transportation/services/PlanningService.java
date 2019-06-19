@@ -28,6 +28,7 @@ import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.AffirmedClaim;
+import org.ivc.transportation.utils.ClaimAppointment;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeDepartmentClaimRecords;
 import org.ivc.transportation.utils.CompositeModelTransportDep;
@@ -296,6 +297,12 @@ public class PlanningService {
 
     public List<ClaimRecord> findClaimsByTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         return claimRepository.findClaimsByTimeFilter(dateStart, dateEnd);
+    }
+    
+    public ClaimAppointment getAppointmentInfo(Long claimId, Long appointmentId){
+        Claim claim = claimRepository.findById(claimId).get();
+        Appointment appointment = appointmentRepository.findById(appointmentId).get();
+        return new ClaimAppointment(claim, appointment);
     }
 
 }
