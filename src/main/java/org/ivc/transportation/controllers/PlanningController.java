@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.ivc.transportation.utils.ClaimRecord;
 
 /**
  *
@@ -228,6 +229,13 @@ public class PlanningController {
     @PostMapping("/planner/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         return planningService.saveClaim(principal, claim);
+    }
+    
+    @GetMapping("/planner/claims/tomorrow")
+    public List<ClaimRecord> test() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
+        return planningService.findClaimsByTimeFilter(dStart, dEnd);
     }
 
 }
