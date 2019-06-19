@@ -32,8 +32,6 @@ public interface ClaimRecord {
 
     Long getDep_id();
 
-    Long getAppointmentId();
-
     Long getAppointment_id();
 
     String getAppointment_note();
