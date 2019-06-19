@@ -234,7 +234,7 @@ public class PlanningController {
     }
 
     @PostMapping("/planner/info")
-    public ClaimAppointment getInfo(List<Long> ids) {
+    public ClaimAppointment getAppointmentInfo(List<Long> ids) {
         return planningService.getAppointmentInfo(ids.get(0), ids.get(1));
     }
 
