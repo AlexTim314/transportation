@@ -1189,7 +1189,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 //self.newClaims.push(d);
                                 self.fetchTomorrowPlanRecords();
-                                self.fetchTomorrowCompletePlanRecords();
+//                                self.fetchTomorrowCompletePlanRecords();
                                 self.resetClaimForm();
                             },
                             function (errResponse) {
