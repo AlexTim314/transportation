@@ -233,7 +233,7 @@ public class PlanningController {
     
     @GetMapping("/planner/claims/tomorrow")
     public List<ClaimRecord> test() {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(60), LocalTime.now());
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
         return planningService.findClaimsByTimeFilter(dStart, dEnd);
     }

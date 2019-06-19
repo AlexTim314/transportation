@@ -1518,6 +1518,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         deps[k] = self.cmpsts[i].departmentid;
                     }
                 }
+                console.log(deps);
                 for (var i = 0; i < deps.length; i++) {
                     for (var j = 0; j < self.departments.length; j++) {
                         if (deps[i] === self.departments[j].id) {
@@ -1531,6 +1532,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         }
                     }
                 }
+                console.log(self.headers);
                 for (var i = 0; i < self.headers.length; i++) {
                     for (var j = 0; j < self.cmpsts.length; j++) {
                         if (self.headers[i].department.id === self.cmpsts[j].departmentid) {
@@ -1538,7 +1540,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             var vehicleModel = null;
                             var driver = null;
                             var vehicle = null;
-                            var creator = {
+                            var creator = { //not used
                                 id: null,
                                 fullName: null,
                                 username: null,
@@ -1550,7 +1552,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 roles: [],
                                 selected: null
                             };
-                            var modificator = {
+                            var modificator = { //not used
                                 id: null,
                                 fullName: null,
                                 username: null,
@@ -1563,35 +1565,35 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 selected: null
                             };
                             for (var l = 0; l < self.transportDeps.length; l++) {
-                                if (self.cmpsts[j].transportdepid === self.transportDeps[l].id) {
+                                if (self.cmpsts[j].ots_id === self.transportDeps[l].id) {
                                     transportDep = self.transportDeps[l];
                                 }
                             }
                             for (var l = 0; l < self.vehicleModels.length; l++) {
-                                if (self.cmpsts[j].modelid === self.vehicleModels[l].id) {
+                                if (self.cmpsts[j].veh_model_id === self.vehicleModels[l].id) {
                                     vehicleModel = self.vehicleModels[l];
                                 }
                             }
                             for (var l = 0; l < self.drivers.length; l++) {
-                                if (self.cmpsts[j].driverid === self.drivers[l].id) {
+                                if (self.cmpsts[j].driver_id === self.drivers[l].id) {
                                     driver = self.drivers[l];
                                     driver.transportDep = null;
                                 }
                             }
                             for (var l = 0; l < self.vehicles.length; l++) {
-                                if (self.cmpsts[j].vehicleid === self.vehicles[l].id) {
+                                if (self.cmpsts[j].veh_id === self.vehicles[l].id) {
                                     var vehicle = self.vehicles[l];
                                 }
                             }
 
-                            if (self.cmpsts[j].creatorid !== undefined) {
+                            if (self.cmpsts[j].creatorid !== undefined) { //not used
                                 creator.id = self.cmpsts[j].creatorid;
                                 creator.fullName = self.cmpsts[j].creatorname;
                                 creator.post = self.cmpsts[j].creatorpost;
                                 //creat = self.creator;
                             }
 
-                            if (self.cmpsts[j].modifid !== undefined) {
+                            if (self.cmpsts[j].modifid !== undefined) { //not used
                                 modificator.id = self.cmpsts[j].modifid;
                                 modificator.fullName = self.cmpsts[j].modifname;
                                 modificator.post = self.cmpsts[j].modifpost;
@@ -1600,34 +1602,34 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
                             self.headers[i].composite.push({
                                 claim: {
-                                    id: self.cmpsts[j].claimid,
-                                    specialization: self.cmpsts[j].claimspecialization,
-                                    purpose: self.cmpsts[j].claimpurpose,
-                                    vehicleType: {typeName: self.cmpsts[j].vehicletypename},
-                                    routeTasks: {}
+                                    id: self.cmpsts[j].claim_id,
+                                    specialization: self.cmpsts[j].specialization,
+                                    purpose: self.cmpsts[j].purpose,
+                                    vehicleType: {typeName: self.cmpsts[j].veh_type},
+                                    routeTasks: {}                      //not used
                                 },
                                 record: {
-                                    id: self.cmpsts[j].recordid,
-                                    startDate: self.cmpsts[j].startdate,
-                                    entranceDate: self.cmpsts[j].entrancedate,
-                                    endDate: self.cmpsts[j].enddate,
+                                    id: self.cmpsts[j].record_id,
+                                    startDate: self.cmpsts[j].start_date,
+                                    entranceDate: self.cmpsts[j].entrance_date,
+                                    endDate: self.cmpsts[j].end_date,
                                     affirmator: {
-                                        id: self.cmpsts[j].affirmid,
-                                        fullName: self.cmpsts[j].affirmname
+                                        id: null,                       //not used
+                                        fullName: self.cmpsts[j].affirmator
                                     },
                                     tasks: self.cmpsts[j].route
                                 },
                                 appointment: {
-                                    id: self.cmpsts[j].appointmentid,
-                                    status: self.cmpsts[j].appointmentstatus,
-                                    note: self.cmpsts[j].appointmentnote,
+                                    id: self.cmpsts[j].appointment_id,
+                                    status: self.cmpsts[j].status,
+                                    note: self.cmpsts[j].appointment_note,
                                     transportDep: transportDep,
                                     vehicleModel: vehicleModel,
                                     vehicle: vehicle,
                                     driver: driver,
-                                    creator: creator,
-                                    modificator: modificator,
-                                    creationDate: self.cmpsts[j].crdate
+                                    creator: creator,           //not used
+                                    modificator: modificator,   //not used
+                                    creationDate: null          //not used
                                 }
                             });
                         }
@@ -1638,6 +1640,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             } else {
                 self.headers = [];
             }
+            console.log(self.headers);
+            console.log(t2-t1);
         };
         self.convertSpec = function (spec) {
             switch (spec) {
