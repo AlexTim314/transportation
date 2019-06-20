@@ -226,10 +226,40 @@ public class PlanningController {
         return planningService.saveClaim(principal, claim);
     }
 
+    @PostMapping("/planner/claims/day")
+    public List<ClaimRecord> getClaimsByDay(@RequestBody LocalDateTime date) {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
+        return planningService.findClaimsByTimeFilter(dStart, dEnd);
+    }
+
     @GetMapping("/planner/claims/tomorrow")
-    public List<ClaimRecord> test() {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(60), LocalTime.now());
+    public List<ClaimRecord> getTomorrowClaims() {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
+        return planningService.findClaimsByTimeFilter(dStart, dEnd);
+    }
+
+    @GetMapping("/planner/claims/week")
+    public List<ClaimRecord> getWeekClaims() {
+        int dt = LocalDate.now().getDayOfWeek().getValue() - 1;
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(dt), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7 - dt), LocalTime.of(23, 59));
+        return planningService.findClaimsByTimeFilter(dStart, dEnd);
+    }
+
+    @GetMapping("/planner/claims/archive")
+    public List<ClaimRecord> getArchiveClaims() {
+        int dt = LocalDate.now().getDayOfMonth() - 1;
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(dt).minusMonths(1), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
+        return planningService.findClaimsByTimeFilter(dStart, dEnd);
+    }
+
+    @PostMapping("/planner/claims/archive/from")
+    public List<ClaimRecord> getArchiveClaimsFromDay(@RequestBody LocalDateTime date) {
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return planningService.findClaimsByTimeFilter(dStart, dEnd);
     }
 
