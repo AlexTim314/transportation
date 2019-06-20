@@ -10,14 +10,22 @@
         <legend>Назначено</legend>
         <ul>
             <li><label>ОТС<span>{{plctrl.compClRec.appointment.transportDep.shortname}}</span></label></li>
-            <li><label>Диспетчер<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
+            <li><label>Диспетчер<span>{{plctrl.compClRec.appointment.modificator.fullName}}</span></label></li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Ответственные</legend>
+        <ul>
+            <li><label>Подал заявку<span>{{plctrl.compClRec.claim.creator.fullName}}</span></label></li>
+            <li><label>Утвердил заявку<span>{{plctrl.compClRec.claim.affirmator.fullName}}</span></label></li>
+            <li><label>Распределил в отдел<span>{{plctrl.compClRec.appointment.creator.fullName}}</span></label></li>
         </ul>
     </fieldset>
     <fieldset>
         <legend>Маршрут</legend>
         <ul>
-            <li><span>{{plctrl.compClRec.record.tasks}}</span></li>
-            <li><span> </span></li>
+            <li><span class="route-tag" ng-repeat="task in plctrl.compClRec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span></li>
+            <li> </li>
         </ul>
     </fieldset>
 </div>
