@@ -72,20 +72,20 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                         );
             },
 
-            fetchMonthPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Month')
-                        .then(
-                                function (response) {
-                                    return response.data;
-                                },
-                                function (errResponse) {
-                                    console.error('Error while fetching monthRecs');
-                                    return $q.reject(errResponse);
-                                }
-                        );
-            },
+//            fetchMonthPlanRecords: function () {
+//                return $http.get('/transportation/planner/affirmedClaims/Month')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching monthRecs');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
             fetchMonthBeforePlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/monthBefore')
+                return $http.get('/transportation/planner/claims/archive')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -111,7 +111,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
             },
 
             fetchWeekPlanRecords: function () {
-                return $http.get('/transportation/planner/affirmedClaims/Week')
+                return $http.get('/transportation/planner/claims/week')
                         .then(
                                 function (response) {
                                     return response.data;
@@ -122,7 +122,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchInfo: function (ids) {
                 return $http.post('/transportation/planner/info',
                         JSON.stringify(ids), {headers: self.headers})
@@ -164,7 +164,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 //            },
 
             fetchDatePlanRecords: function (date) {
-                return $http.post('/transportation/planner/affirmedClaims/Date',
+                return $http.post('/transportation/planner/claims/day',
                         JSON.stringify(date), {headers: self.headers})
                         .then(
                                 function (response) {
@@ -286,7 +286,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchDrivers: function () {
                 return $http.get('/transportation/planner/drivers')
                         .then(
@@ -375,7 +375,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchDepartments: function () {
                 return $http.get('/transportation/departments')
                         .then(
@@ -388,7 +388,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
+
             fetchRouteTasks: function () {
                 return $http.get('/transportation/routeTasks')
                         .then(
@@ -401,9 +401,10 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                 }
                         );
             },
-            
-            fetchRouteTemplates: function () {
-                return $http.get('/transportation/planner/routeTemplates')
+
+            fetchRouteTemplates: function (id) {
+                return $http.post('/transportation/planner/routeTemplates',
+                        JSON.stringify(id), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;

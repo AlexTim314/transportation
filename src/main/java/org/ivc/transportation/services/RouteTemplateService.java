@@ -41,6 +41,10 @@ public class RouteTemplateService {
         }
         return null;
     }
+    
+        public List<RouteTemplate> findRouteTemplatesForPlanner(Long id) {
+            return routeTemplateRepository.findByDepartmentId(id);
+    }
 
     public RouteTemplate saveRouteTemplate(Principal principal, RouteTemplate routeTemplate) {
         if (routeTemplate.getId() != null) {

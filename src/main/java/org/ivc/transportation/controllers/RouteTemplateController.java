@@ -34,9 +34,9 @@ public class RouteTemplateController {
         return routeTemplateService.findRouteTemplates(principal);
     }
     
-    @GetMapping("/planner/routeTemplates")
-    public List<RouteTemplate> getPlannerRouteTemplates(Principal principal) {
-        return routeTemplateService.findRouteTemplates(principal);
+    @PostMapping("/planner/routeTemplates")
+    public List<RouteTemplate> getPlannerRouteTemplates(@RequestBody Long id) {
+        return routeTemplateService.findRouteTemplatesForPlanner(id);
     }
 
     @PostMapping("/user/routeTemplate_create")

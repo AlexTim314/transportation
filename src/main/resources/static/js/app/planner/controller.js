@@ -462,8 +462,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-        self.fetchRouteTemplates = function () {
-            PlannerService.fetchRouteTemplates()
+        self.fetchRouteTemplates = function (id) {
+            PlannerService.fetchRouteTemplates(id)
                     .then(
                             function (d) {
                                 self.routeTemplates = d;
@@ -738,11 +738,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
         self.moreInfoOpen = function (clrec) {
             if (clrec.claim.routeTasks.length === 0 || clrec.claim.affirmator.id === null || clrec.appointment.creator.id === null) {
-                console.log('pusto');
                 self.fetchInfo(clrec.claim.id, clrec.appointment.id);
             } else {
                 self.compClRec = clrec;
-                console.log('ne pusto');
             }
             formOpen('more-claim');
             formOpen('cover-trsp1');
@@ -1456,9 +1454,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.clrecs = clrecs;
             self.setPage(1);
         };
-        self.afterSelectDepartment = function () {
+        self.afterSelectDepartment = function (dep) {
             self.fetchCarBosses();
-            self.fetchRouteTemplates();
+            self.fetchRouteTemplates(dep.id);
         };
 //=================pagination===========
         self.setPage = function (page) {
@@ -1519,7 +1517,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 
         self.createHeaders = function () {
             if (self.cmpsts.length > 0) {
-                var t1 = Date.now();
                 self.headers = [];
                 var deps = [];
                 var k = 0;
@@ -1530,7 +1527,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         deps[k] = self.cmpsts[i].dep_id;
                     }
                 }
-                console.log(deps);
                 for (var i = 0; i < deps.length; i++) {
                     for (var j = 0; j < self.departments.length; j++) {
                         if (deps[i] === self.departments[j].id) {
@@ -1693,13 +1689,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                         }
                     }
                 }
-
-                var t2 = Date.now();
             } else {
                 self.headers = [];
             }
-            console.log(self.headers);
-            console.log(t2 - t1);
         };
         self.convertSpec = function (spec) {
             switch (spec) {
