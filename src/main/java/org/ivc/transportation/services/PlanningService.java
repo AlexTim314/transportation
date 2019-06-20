@@ -298,10 +298,10 @@ public class PlanningService {
     public List<ClaimRecord> findClaimsByTimeFilter(LocalDateTime dateStart, LocalDateTime dateEnd) {
         return claimRepository.findClaimsByTimeFilter(dateStart, dateEnd);
     }
-    
-    public ClaimAppointment getAppointmentInfo(Long claimId, Long appointmentId){
+
+    public ClaimAppointment getAppointmentInfo(Long claimId, Long appointmentId) {
         Claim claim = claimRepository.findById(claimId).get();
-        Appointment appointment = appointmentRepository.findById(appointmentId).get();
+        Appointment appointment = appointmentId != null ? appointmentRepository.findById(appointmentId).get() : null;
         return new ClaimAppointment(claim, appointment);
     }
 
