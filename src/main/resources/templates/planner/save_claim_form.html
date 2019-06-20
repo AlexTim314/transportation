@@ -4,7 +4,7 @@
         <div class="form-item">
 
             <label for="department">Подразделение</label>
-            <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" ng-change="plctrl.fetchCarBosses()" required>
+            <select name="department" ng-options="dep as dep.shortname for dep in plctrl.specDepartments" ng-model="plctrl.specDepartment" ng-change="plctrl.afterSelectDepartment()" required>
                 <option value="" disabled selected><--Выберите подразделение--></option>
             </select>
 
@@ -51,7 +51,7 @@
             <div class="form-item block-route">
                 <div class="left-block-route">
                     <label for="route">Маршрут</label>
-                    <select name="route" ng-mousedown="plctrl.fetchRouteTemplates()" ng-options="route.routeTasks as route.name for route in plctrl.routeTemplates track by route.id" ng-model="plctrl.newClaim.routeTasks">
+                    <select name="route" ng-options="route.routeTasks as route.name for route in plctrl.routeTemplates track by route.id" ng-model="plctrl.newClaim.routeTasks">
                     </select> 
                 </div>
                 <div class="right-block-route">

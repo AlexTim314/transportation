@@ -28,6 +28,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.otsInfos = [];
         self.allCountDrivers = 0;
         self.carBosses = [];
+        self.bossesMap = {};
         self.departments = [];
         self.specDepartments = [];
         self.headers = [];
@@ -38,7 +39,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.newRecords = [];
         self.appointments = [];
         self.transportDeps = [];
+        self.transportDepsMap = {};
         self.vehicleModels = [];
+        self.vehicleModelsMap = {};
         self.rTasks = [];
         self.complRTasks = [];
         self.places = [];
@@ -67,6 +70,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.isDelete = false;
         self.startDate;
         self.vehicles = [];
+        self.vehiclesMap = {};
         self.filteredVehicleModels = [];
         self.selectedModel = {id: null, modelName: '', vehicleType: {}};
         self.permit = false;
@@ -80,9 +84,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.cmpsts = [];
         self.vehicleTypes = [];
         self.drivers = [];
+        self.driversMap = {};
         self.routeTasks = [];
         self.routeTemplates = [];
         self.clapp;
+        var expInvCounter = 14;
+        var invCounter = 0;
         // self.clrecs = [];
 
 
@@ -91,6 +98,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.permit = d;
+
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Permit');
@@ -102,6 +111,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.username = d.username;
+
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Username');
@@ -113,6 +124,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.specDepartments = d;
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Departments');
@@ -173,43 +185,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
-//        self.fetchMonthPlanRecords = function () {
-//            self.all = true;
-//            self.today = false;
-//            self.week = false;
-//            self.archive = false;
-//            formOpen('cover-trsp1');
-//            formOpen('preloader');
-//            PlannerService.fetchMonthPlanRecords()
-//                    .then(
-//                            function (d) {
-//                                self.cmpsts = d;
-//                                console.log(self.cmpsts);
-//                                self.createHeaders();
-//                                expandHeaders();
-//                                formClose('cover-trsp1');
-//                                formClose('preloader');
-//                            },
-//                            function (errResponse) {
-//                                console.error('Error while fetching MonthRecords');
-//                            }
-//                    );
-//        };
         self.fetchMonthBeforePlanRecords = function () {
             self.all = false;
             self.today = false;
             self.week = false;
             self.archive = true;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
+            self.checkingCounterForOpen();
             PlannerService.fetchMonthBeforePlanRecords()
                     .then(
                             function (d) {
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 expandHeaders();
-                                formClose('cover-trsp1');
-                                formClose('preloader');
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching MonthBefRecords');
@@ -221,16 +209,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.today = false;
             self.week = true;
             self.archive = false;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
+            self.checkingCounterForOpen();
             PlannerService.fetchWeekPlanRecords()
                     .then(
                             function (d) {
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 expandHeaders();
-                                formClose('cover-trsp1');
-                                formClose('preloader');
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching WeekRecords');
@@ -242,12 +228,14 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.today = true;
             self.week = false;
             self.archive = false;
+            self.checkingCounterForOpen();
             PlannerService.fetchTomorrowPlanRecords()
                     .then(
                             function (d) {
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 expandHeaders();
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TodayRecords');
@@ -259,6 +247,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.today = false;
             self.week = false;
             self.archive = false;
+            self.checkingCounterForOpen();
             self.changeDate();
             var datePlan = new Date(document.getElementById('date-plan').value);
             PlannerService.fetchDatePlanRecords(datePlan)
@@ -266,7 +255,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 self.cmpsts = d;
                                 self.createHeaders();
-                                expandHeaders();
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -278,14 +267,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.ctoday = false;
             self.cweek = false;
             self.carchive = false;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
+            self.checkingCounterForOpen();
             PlannerService.fetchMonthCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-                                formClose('cover-trsp1');
-                                formClose('preloader');
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllCompleteRecords');
@@ -297,14 +284,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.ctoday = false;
             self.cweek = false;
             self.carchive = true;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
+            self.checkingCounterForOpen();
             PlannerService.fetchMonthBeforeCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-                                formClose('cover-trsp1');
-                                formClose('preloader');
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching AllCompleteRecords');
@@ -316,14 +301,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.ctoday = false;
             self.cweek = true;
             self.carchive = false;
-            formOpen('cover-trsp1');
-            formOpen('preloader');
+            self.checkingCounterForOpen();
             PlannerService.fetchWeekCompletePlanRecords()
                     .then(
                             function (d) {
                                 self.complHeaders = d;
-                                formClose('cover-trsp1');
-                                formClose('preloader');
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching CompleteWeekRecords');
@@ -368,6 +351,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.carBosses = d;
+                                for (var i = 0; i < d.length; i++) {
+                                    self.bossesMap[d[i].id] = i;
+                                }
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Bosses');
@@ -379,6 +366,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.transportDeps = d;
+                                for (var i = 0; i < d.length; i++) {
+                                    self.transportDepsMap[d[i].id] = i;
+                                }
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching TransportDeps');
@@ -390,6 +381,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.vehicles = d;
+                                for (var i = 0; i < d.length; i++) {
+                                    self.vehiclesMap[d[i].id] = i;
+                                }
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Vehicles');
@@ -401,6 +396,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.drivers = d;
+                                for (var i = 0; i < d.length; i++) {
+                                    self.driversMap[d[i].id] = i;
+                                }
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Drivers');
@@ -412,6 +411,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.vehicleModels = d;
+                                for (var i = 0; i < d.length; i++) {
+                                    self.vehicleModelsMap[d[i].id] = i;
+                                }
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleModels');
@@ -439,6 +442,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     k = k + self.otsInfos[i].otsInfo.drivercount;
                                 }
                                 self.allCountDrivers = k;
+
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching OtsInfo');
@@ -450,6 +455,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.compVMTDSpecs = d;
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching compVMTDSpec');
@@ -508,6 +514,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 date.setDate(date.getDate() + 1);
                                 var tomorrow = self.getFormatedDate(date, "-", true);
                                 document.getElementById('compl-date-plan').value = tomorrow;
+
+                                self.checkingCounterForClose();
+
                             },
                             function (errResponse) {
                                 console.error('Error while fetching NewClaims');
@@ -551,6 +560,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.vehicleTypes = d;
+                                self.checkingCounterForClose();
+
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
@@ -562,6 +573,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.departments = d;
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Departments');
@@ -579,10 +591,33 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        self.openLoadingWindow = function () {
+            formOpen('cover-trsp1');
+            formOpen('preloader');
+        };
+        self.closeLoadingWindow = function () {
+            formClose('cover-trsp1');
+            formClose('preloader');
+        }
+        self.checkingCounterForClose = function () {
+            invCounter++;
+            if (invCounter === expInvCounter) {
+                self.closeLoadingWindow();
+                invCounter = 0;
+                expInvCounter = 0;
+            }
+        };
+        self.checkingCounterForOpen = function () {
+            if (expInvCounter === 0) {
+                expInvCounter = 1;
+                self.openLoadingWindow();
+            }
+        };
+        self.openLoadingWindow();
+        ////////////////////////////////
         self.getPermit();
         self.getUserName();
         self.getDateFromServer();
-
         self.fetchDepartments();
         self.fetchAllSpecDepartments();
         self.fetchDrivers();
@@ -590,13 +625,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchVehicleTypes();
         self.fetchTransportDeps();
         self.fetchAllVehicleModels();
-        self.fetchRouteTasks();
         self.fetchCarBosses();
-        self.fetchPlaces();
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
-
         self.fetchTomorrowPlanRecords();
+        ////////////////////
+
 //        self.fetchTomorrowCompletePlanRecords();
 
         self.createAppointments = function () {
@@ -703,14 +737,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
         self.moreInfoOpen = function (clrec) {
-            if (clrec.claim.routeTasks.length === 0 || clrec.claim.affirmator.id === null) {
+            if (clrec.claim.routeTasks.length === 0 || clrec.claim.affirmator.id === null || clrec.appointment.creator.id === null) {
                 console.log('pusto');
-                self.fetchInfo(clrec.claim.id,clrec.appointment.id);
-//                clrec.claim = self.clapp.claim;
-//                clrec.appointment= self.clapp.appointment;
-//                self.compClRec = clrec;
+                self.fetchInfo(clrec.claim.id, clrec.appointment.id);
             } else {
                 self.compClRec = clrec;
+                console.log('ne pusto');
             }
             formOpen('more-claim');
             formOpen('cover-trsp1');
@@ -1375,41 +1407,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             return unique;
         };
-//        self.prepareData = function (td, spec) {
-//            self.tempTransportDep = td;
-//            self.tempVehSpec = spec;
-//        };
-
-//        self.filterVehicleModels = function (vm) {
-//            for (var i = 0; i < self.vehicles.length; i++) {
-//                if (self.vehicles[i].transportDep.id === self.tempTransportDep.id) {
-//                    if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
-//                        if (self.vehicles[i].model.modelName === vm.modelName && self.vehicles[i].model.vehicleType.specialization === self.tempVehSpec) {
-//                            return vm;
-//                        }
-//                    }
-//                }
-//            }
-//        };
-
-
-//        self.filterModelsByselectedTransportDep = function (td, spec) {
-//
-////            self.filteredVehicleModels = [];
-////            for (var i = 0; i < self.vehicles.length; i++) {
-////                if (self.vehicles[i].transportDep.id === td.id) {
-////                    for (var j = 0; j < self.vehicleModels.length; j++) {
-////                        if (self.vehicles[i].model !== null && self.vehicles[i].model !== undefined) {
-////                            if (self.vehicles[i].model.modelName === self.vehicleModels[j].modelName && self.vehicles[i].model.vehicleType.specialization === spec) {
-////                                self.filteredVehicleModels.push(self.vehicleModels[j]);
-////                            }
-////                        }
-////                    }
-////                }
-////            }
-////            self.filteredVehicleModels = self.getUniqueModels(self.filteredVehicleModels);
-//            self.filteredVehicleModels = self.getUniqueModels(self.vehicleModels);
-//        };
 
         self.changeCheckedTD = function (compositeClaimRecord) {
             if (compositeClaimRecord.record.checked) {
@@ -1448,6 +1445,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
         };
         self.prepareToAddClaim = function () {
+            self.fetchRouteTasks();
+            self.fetchPlaces();
             formOpen('form-add');
             formOpen('cover-trsp1');
         };
@@ -1456,6 +1455,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.pageCount = Math.ceil(clrecs.length / self.numRecordsPerPage);
             self.clrecs = clrecs;
             self.setPage(1);
+        };
+        self.afterSelectDepartment = function () {
+            self.fetchCarBosses();
+            self.fetchRouteTemplates();
         };
 //=================pagination===========
         self.setPage = function (page) {
@@ -1574,31 +1577,66 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 selected: null
                             };
 
-                            for (var l = 0; l < self.carBosses.length; l++) {
-                                if (self.cmpsts[j].boss_id === self.carBosses[l].id) {
-                                    carBoss = self.carBosses[l];
-                                }
+//                            for (var l = 0; l < self.carBosses.length; l++) {
+//                                if (self.cmpsts[j].boss_id === self.carBosses[l].id) {
+//                                    carBoss = self.carBosses[l];
+//                                }
+//                            }
+
+                            var boss_id = self.cmpsts[j].boss_id;
+                            if (boss_id !== null) {
+                                var arrId = self.bossesMap[boss_id];
+                                carBoss = self.carBosses[arrId];
                             }
-                            for (var l = 0; l < self.transportDeps.length; l++) {
-                                if (self.cmpsts[j].ots_id === self.transportDeps[l].id) {
-                                    transportDep = self.transportDeps[l];
-                                }
+
+//                            for (var l = 0; l < self.transportDeps.length; l++) {
+//                                if (self.cmpsts[j].ots_id === self.transportDeps[l].id) {
+//                                    transportDep = self.transportDeps[l];
+//                                }
+//                            }
+
+                            var ots_id = self.cmpsts[j].ots_id;
+                            if (ots_id !== null) {
+                                var arrId = self.transportDepsMap[ots_id];
+                                transportDep = self.transportDeps[arrId];
                             }
-                            for (var l = 0; l < self.vehicleModels.length; l++) {
-                                if (self.cmpsts[j].veh_model_id === self.vehicleModels[l].id) {
-                                    vehicleModel = self.vehicleModels[l];
-                                }
+
+//                            for (var l = 0; l < self.vehicleModels.length; l++) {
+//                                if (self.cmpsts[j].veh_model_id === self.vehicleModels[l].id) {
+//                                    vehicleModel = self.vehicleModels[l];
+//                                }
+//                            }
+
+                            var vm_id = self.cmpsts[j].veh_model_id;
+                            if (vm_id !== null) {
+                                var arrId = self.vehicleModelsMap[vm_id];
+                                vehicleModel = self.vehicleModels[arrId];
                             }
-                            for (var l = 0; l < self.drivers.length; l++) {
-                                if (self.cmpsts[j].driver_id === self.drivers[l].id) {
-                                    driver = self.drivers[l];
-                                    driver.transportDep = null;
-                                }
+
+//                            for (var l = 0; l < self.drivers.length; l++) {
+//                                if (self.cmpsts[j].driver_id === self.drivers[l].id) {
+//                                    driver = self.drivers[l];
+//                                    driver.transportDep = null;
+//                                }
+//                            }
+
+                            var dr_id = self.cmpsts[j].driver_id;
+                            if (dr_id !== null) {
+                                var arrId = self.driversMap[dr_id];
+                                driver = self.drivers[arrId];
+                                driver.transportDep = null;
                             }
-                            for (var l = 0; l < self.vehicles.length; l++) {
-                                if (self.cmpsts[j].veh_id === self.vehicles[l].id) {
-                                    var vehicle = self.vehicles[l];
-                                }
+
+//                            for (var l = 0; l < self.vehicles.length; l++) {
+//                                if (self.cmpsts[j].veh_id === self.vehicles[l].id) {
+//                                    var vehicle = self.vehicles[l];
+//                                }
+//                            }
+
+                            var veh_id = self.cmpsts[j].veh_id;
+                            if (veh_id !== null) {
+                                var arrId = self.vehiclesMap[veh_id];
+                                var vehicle = self.vehicles[arrId];
                             }
 
                             if (self.cmpsts[j].creatorid !== undefined) { //not used
@@ -1675,29 +1713,38 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     return 'спецтехника';
             }
         };
-        self.fetchInfo = function(cid,aid){
+        self.fetchInfo = function (cid, aid) {
             var ids = [];
             ids.push(cid);
             ids.push(aid);
             PlannerService.fetchInfo(ids)
-            .then(
+                    .then(
                             function (d) {
-                                self.clapp = d;
+                                var clapp = d;
+                                console.log(clapp);
+                                self.compClRec = {record: {id: null}, claim: {id: null}, appointment: {id: null}};
                                 for (var i = 0; i < self.headers.length; i++) {
                                     for (var j = 0; j < self.headers[i].composite.length; j++) {
-                                        if(self.headers[i].composite[j].claim.id === self.clapp.claim.id){
-                                            self.headers[i].composite[j].claim = self.clapp.claim;    
-                                            self.compClRec = self.headers[i].composite[j];
+                                        if (self.headers[i].composite[j].claim.id === clapp.claim.id) {
+                                            var spec = self.headers[i].composite[j].claim.specialization;
+                                            self.headers[i].composite[j].claim = clapp.claim;
+                                            self.headers[i].composite[j].claim.specialization = spec;
+                                            self.compClRec.claim = self.headers[i].composite[j].claim;
+                                        }
+                                        if (self.headers[i].composite[j].appointment !== null && self.headers[i].composite[j].appointment !== undefined
+                                                && clapp.appointment !== null) {
+                                            if (self.headers[i].composite[j].appointment.id === clapp.appointment.id) {
+                                                var stat = self.headers[i].composite[j].appointment.status;
+                                                self.headers[i].composite[j].appointment = clapp.appointment;
+                                                self.headers[i].composite[j].appointment.status = stat;
+                                                self.compClRec.appointment = self.headers[i].composite[j].appointment;
+                                            }
                                         }
                                     }
-                                    for (var j = 0; j < self.headers[i].composite.length; j++) {
-                                        if(self.headers[i].composite[j].appointment.id === self.clapp.appointment.id){
-                                            self.headers[i].composite[j].appointment = self.clapp.appointment;                                
-                                        }
-                                    }
-                                    
+
                                 }
-                               console.log(self.compClRec); 
+
+                                console.log(self.compClRec);
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Information from Record');
