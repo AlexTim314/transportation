@@ -1,19 +1,17 @@
 <div style="overflow-x:auto;" id="tab-list1" xmlns:th="http://www.thymeleaf.org">
     <div class="clearfix" style="overflow-x:auto;" id="tab-list1">
         <div class="table-header">
-            <div class="fast-filter">                                    
+            <div class="fast-filter"> 
+                <span class="filter-elem {{plctrl.day?'active-color':''}}" id="date-btn">{{plctrl.date}}</span>
                 <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
                 <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
-                <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
-            </div>
-            <!--            <div class="fast-filter">
-                            <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив за месяц</span>
-                        </div>-->
-            <div class="definite-date">
+                <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив</span>
+            </div>            
+<!--            <div class="definite-date">
                 <label for="date-plan">Планируемый день</label>
                 <input type="date" name="date-plan" id="date-plan" ng-click="plctrl.changeDate()">
                 <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
-            </div>	
+            </div>	-->
             <input type="search" placeholder="Поиск" ng-model="searchClaim">						  						  		
         </div>	
         <div class="height-wrapper"> 
@@ -55,16 +53,17 @@
                                 <th style="width:2.5% ">Тип транспорта</th>
                                 <th style="width:10% ">Вид техники</th>
                                 <th style="width:5% ">Дата выезда</th>
-                                <th style="width:10% ">Время подачи</th>
-                                <th style="width:20% ">Цель поездки</th>
+                                <th style="width:10% ">Время</th>
+                                <th style="width:10% ">Цель поездки</th>
+                                <th style="width:15% ">Маршрут</th>
                                 <th style="width:10% ">Старший</th>
-                                <th style="width:10% ">ОТС</th>
+                                <th style="width:5% ">ОТС</th>
                                 <th style="width:12.5% ">Марка</th>
                                 <th style="width:5% ">Статус</th>
                                 <th style="width:2.5% "> </th>
                                 <th style="width:2.5% "> </th>
                             </tr>
-                            <tr ng-repeat="clrec in header.composite| orderBy: 'record.startDate' | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchClaim">
+                            <tr ng-repeat="clrec in header.composite| orderBy: 'record.startDate':true | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchClaim">
                                 <td>
                                     <label class="custom-checkbox">
                                         <input type="checkbox" ng-model="clrec.record.checked">
@@ -80,8 +79,10 @@
                                 <td><i class="fas fa-stopwatch"  title="Коррекция времени" ng-click="plctrl.correctingTime(clrec.record)"></i>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
                                 <td>{{clrec.claim.purpose}}
                                 </td>
+                                <td>{{clrec.claim.route}}
+                                </td>
                                 <td>{{plctrl.carBossToStringInfo(clrec.claim.carBoss)}} <i class="fas fa-info-circle" ng-show="clrec.claim.carBoss !== null" title="{{clrec.claim.carBoss.post}}
-{{clrec.claim.carBoss.phone !== null?'Контактные данные: ':''}}{{clrec.claim.carBoss.phone}}"></i>
+                                                                                           {{clrec.claim.carBoss.phone !== null?'Контактные данные: ':''}}{{clrec.claim.carBoss.phone}}"></i>
                                 </td>
                                 <!--                                <td >
                                                                     <i class="fas fa-lg fa-route" title="Коррекция маршрута" ng-click="plctrl.correctingRoute(clrec.claim)"></i>
@@ -108,7 +109,7 @@
                 </tr>                                                
             </table>
         </div>  
-        <div ng-if="plctrl.pager.pages.length" class="paginator" id='pagination'>           
+        <div ng-if="plctrl.pager.pages.length > 1" class="paginator" id='pagination'>           
             <div class="pages " ng-click="plctrl.setPage(plctrl.pager.currentPage - 1)" ng-show="plctrl.pager.currentPage !== 1" title="Предыдущая страница">&lt</div>
             <div ng-repeat="page in plctrl.pager.pages" class="pages {{plctrl.pager.currentPage === page?'page-active':''}}" ng-click="plctrl.setPage(page)">{{page}}</div>   
             <div class="pages" ng-click="plctrl.setPage(plctrl.pager.currentPage + 1)" ng-show="plctrl.pager.currentPage !== plctrl.pageCount" title="Следующая страница">&gt</div>

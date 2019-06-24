@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.ivc.transportation.entities.CarBoss;
 import org.ivc.transportation.entities.Claim;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.ivc.transportation.utils.ClaimRecord;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -226,10 +228,11 @@ public class PlanningController {
         return planningService.saveClaim(principal, claim);
     }
 
-    @PostMapping("/planner/claims/day")
-    public List<ClaimRecord> getClaimsByDay(@RequestBody LocalDateTime date) {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
-        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
+    @GetMapping("/planner/claims/day")
+    public List<ClaimRecord> getClaimsByDay(@RequestParam String date) {
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.uuuu")), LocalTime.MIN);
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(dateTime), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(dateTime), LocalTime.of(23, 59));
         return planningService.findClaimsByTimeFilter(dStart, dEnd);
     }
 

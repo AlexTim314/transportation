@@ -24,7 +24,7 @@
     <fieldset>
         <legend>Маршрут</legend>
         <ul>
-            <li><span class="route-tag" ng-repeat="task in plctrl.compClRec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span></li>
+            <li><span class="route-tag" ng-repeat="task in plctrl.compClRec.claim.routeTasks| orderBy: 'orderNum':true" title="{{task.workName}}">{{task.place.name}}</span></li>
             <li> </li>
         </ul>
     </fieldset>

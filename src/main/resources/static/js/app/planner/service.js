@@ -164,8 +164,7 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
 //            },
 
             fetchDatePlanRecords: function (date) {
-                return $http.post('/transportation/planner/claims/day',
-                        JSON.stringify(date), {headers: self.headers})
+                return $http.get('/transportation/planner/claims/day?date=' + date)
                         .then(
                                 function (response) {
                                     return response.data;
@@ -546,23 +545,6 @@ App.factory('PlannerService', ['$http', '$q', '$document', function ($http, $q, 
                                     return $q.reject(errResponse);
                                 }
                         );
-            },
-
-            deleteAppointment: function (appointment) {
-                console.log(appointment);
-                return $http({method: 'DELETE',
-                    url: '/transportation/planner/appointment_delete',
-                    data: JSON.stringify(appointment),
-                    headers: self.headers
-                }).then(
-                        function (response) {
-                            return response.data;
-                        },
-                        function (errResponse) {
-                            console.error('Error while deleting appointment');
-                            return $q.reject(errResponse);
-                        }
-                );
             }
 
         };

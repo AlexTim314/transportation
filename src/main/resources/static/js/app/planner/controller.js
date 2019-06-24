@@ -92,7 +92,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         var invCounter = 0;
         // self.clrecs = [];
 
-
         self.getPermit = function () {
             PlannerService.getPermit()
                     .then(
@@ -186,7 +185,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.fetchMonthBeforePlanRecords = function () {
-            self.all = false;
+            self.day = false;
             self.today = false;
             self.week = false;
             self.archive = true;
@@ -205,7 +204,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.fetchWeekPlanRecords = function () {
-            self.all = false;
+            self.day = false;
             self.today = false;
             self.week = true;
             self.archive = false;
@@ -224,7 +223,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.fetchTomorrowPlanRecords = function () {
-            self.all = false;
+            self.day = false;
             self.today = true;
             self.week = false;
             self.archive = false;
@@ -243,19 +242,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.fetchDatePlanRecords = function () {
-            self.all = false;
+            self.day = true;
             self.today = false;
             self.week = false;
             self.archive = false;
             self.checkingCounterForOpen();
             self.changeDate();
-            var datePlan = new Date(document.getElementById('date-plan').value);
-            PlannerService.fetchDatePlanRecords(datePlan)
+            PlannerService.fetchDatePlanRecords(self.date)
                     .then(
                             function (d) {
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 self.checkingCounterForClose();
+                                closePicker();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -335,8 +334,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.cweek = false;
             self.carchive = false;
             self.changeDate();
-            var datePlan = new Date(document.getElementById('compl-date-plan').value);
-            PlannerService.fetchDateCompletePlanRecords(datePlan)
+            PlannerService.fetchDateCompletePlanRecords(self.date)
                     .then(
                             function (d) {
                                 self.complHeaders = d;
@@ -468,6 +466,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 self.routeTemplates = d;
                                 self.routeTemplates.push({id: null, name: 'пользовательский', routeTasks: []});
+                                self.checkingCounterForClose();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching RouteTemplates');
@@ -503,12 +502,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 var date = new Date(d);
                                 var today = self.getFormatedDate(date, "-", true);
-                                document.getElementById('date-plan').value = today;
-                                document.getElementById('startDate').value = today;
-                                document.getElementById('startDate').min = today;
-                                document.getElementById('entranceTime').value = "00:00";
+//                                document.getElementById('date-plan').value = today;
+//                                document.getElementById('startDate').value = today;
+//                                document.getElementById('startDate').min = today;
+//                                document.getElementById('entranceTime').value = "00:00";
                                 //document.getElementById('startTime').value = "00:00";
-                                document.getElementById('endTime').value = "00:00";
+//                                document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
                                 self.date = self.getFormatedDate(date, ".", false);
                                 date.setDate(date.getDate() + 1);
@@ -592,11 +591,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.openLoadingWindow = function () {
-            formOpen('cover-trsp1');
+            formOpen('cover-trsp2');
             formOpen('preloader');
         };
         self.closeLoadingWindow = function () {
-            formClose('cover-trsp1');
+            formClose('cover-trsp2');
             formClose('preloader');
         }
         self.checkingCounterForClose = function () {
@@ -693,6 +692,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.rowClick = function (dep) {
             if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
+                self.showRecords([]);
             } else {
                 for (var i = 0; i < self.headers.length; i++) {
                     self.headers[i].isVisible = false;
@@ -759,16 +759,17 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('cover-trsp1');
         };
         self.changeDate = function () {
-            var datePlan = new Date(document.getElementById('date-plan').value);
-            var datePlan = new Date(document.getElementById('compl-date-plan').value);
-            var day = datePlan.getDate();
-            var month = datePlan.getMonth() + 1;
-            var year = datePlan.getFullYear();
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            self.date = day + "." + month + "." + year;
+            var datePlan = picker.selectedDate;
+            if (picker.selectedDate) {
+                var day = datePlan.getDate();
+                var month = datePlan.getMonth() + 1;
+                var year = datePlan.getFullYear();
+                if (month < 10)
+                    month = "0" + month;
+                if (day < 10)
+                    day = "0" + day;
+                self.date = day + "." + month + "." + year;
+            }
         };
         self.getFilter = function (clrec) {
             var vType = clrec.claim.vehicleType;
@@ -1001,10 +1002,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.record.endDate = new Date(rec.endDate);
             formOpen('correctTime');
         };
+
         self.correctingRoute = function (clm) {
             self.claim = clm;
             formOpen('formRoute');
         };
+
         self.updateTime = function () {
             PlannerService.updateTime(self.record)
                     .then(
@@ -1031,6 +1034,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+
         self.updateRoute = function () {
             PlannerService.updateRoute(self.claim)
                     .then(
@@ -1057,6 +1061,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+
         self.addTask = function (p) {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 if (self.claim.routeTasks[i].orderNum > self.checkedTskNumb) {
@@ -1066,6 +1071,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.claim.routeTasks.push({id: null, place: p, workName: self.workName, orderNum: self.checkedTskNumb + 1});
             self.workName = null;
         };
+
         self.removeTask = function (tsk) {
             var k = -1;
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -1076,6 +1082,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             self.claim.routeTasks.splice(k, 1);
         };
+
         self.submit = function () {
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
                 self.complRTasks.push(self.claim.routeTasks[i]);
@@ -1088,11 +1095,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.updateRoute();
             formClose('formRoute');
         };
+
         self.resetForm = function () {
             self.workName = null;
             self.routeTemplate = {id: null, name: null, routeTasks: []};
             formClose('formRoute');
         };
+
         self.checkTsk = function (tsk) {
             self.checkedTskNumb = tsk.orderNum;
             for (var i = 0; i < self.claim.routeTasks.length; i++) {
@@ -1109,11 +1118,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
         };
+
         self.checkRecord = function (rec) {
             self.newRecord.checked = false;
             self.newRecord = rec;
             self.newRecord.checked = true;
         };
+
         self.addRec = function () {
             var sd = new Date(self.startDate);
             if (sd === null) {
@@ -1149,10 +1160,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.newClaim.records.push(rec);
             }
         };
+
         self.frmtDate = function (date, time) {
             var result = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), new Date(time).getHours(), new Date(time).getMinutes(), new Date(time).getSeconds());
             return result;
         };
+
         self.removeRec = function (rec) {
             //удалить запись
             var k = -1;
@@ -1164,6 +1177,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             }
             self.newClaim.records.splice(k, 1);
         };
+
         self.validateForm = function () {
             if (self.specDepartment.id === null) {
                 console.log('Department not selected!');
@@ -1223,6 +1237,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             formClose('form-add');
             formClose('cover-trsp1');
             self.newClaim.department = self.specDepartment;
+            expInvCounter = 2;
+            self.openLoadingWindow();
             PlannerService.createClaim(self.newClaim)
                     .then(
                             function (d) {
@@ -1455,6 +1471,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             self.setPage(1);
         };
         self.afterSelectDepartment = function (dep) {
+            expInvCounter = 2;
+            self.openLoadingWindow();
             self.fetchCarBosses();
             self.fetchRouteTemplates(dep.id);
         };
@@ -1654,6 +1672,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     id: self.cmpsts[j].claim_id,
                                     specialization: self.cmpsts[j].specialization,
                                     purpose: self.cmpsts[j].purpose,
+                                    route: self.cmpsts[j].route,
                                     carBoss: carBoss,
                                     vehicleType: {typeName: self.cmpsts[j].veh_type},
                                     affirmator: {
