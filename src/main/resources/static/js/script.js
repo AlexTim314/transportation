@@ -398,7 +398,50 @@ picker.datepicker({
     }
 });
 
-closePicker = function(){
+closePicker = function () {
     cal.style.display = "none";
 }
 
+fastOpen = function () {
+    formOpen('cover-trsp1');
+    var elem = document.getElementById('fast-info1');
+    elem.style.visibility = 'visible';
+    elem.style.right = '0';
+}
+fastClose = function () {
+    formClose('cover-trsp1');
+    var elem = document.getElementById('fast-info1');
+    elem.style.visibility = 'collapse';
+    elem.style.right = '-35%';
+}
+ flexOpen=function(name){
+    var str = document.getElementById(name);
+    str.style.display = 'block';
+};
+ flexClose=function(name){
+    var str = document.getElementById(name);
+    str.style.display = 'none';
+};
+
+history_button=function(){
+  var elem=document.getElementsByClassName('waybill-work');
+  var hist=document.getElementsByClassName('waybill-history');
+  hist[0].classList.toggle("collapseRow");
+  var i;
+  for (i=0; i<elem.length;i++){
+    elem[i].classList.toggle("collapseRow");
+  }
+}
+toggle_tab=function(tabName,btnName,iEnd){
+   for (var i = 1; i<=iEnd; i++) {
+     var str = document.getElementById("waybill-tab"+i);
+     var str_btn=document.getElementById("waybill-btn"+i);
+     if (str_btn.classList.contains("waybill-active")){
+      str_btn.classList.remove("waybill-active");}
+      str.style.display="none";  
+    } 
+  var str = document.getElementById(tabName);
+  var str_btn=document.getElementById(btnName);
+  str.style.display="flex";
+  str_btn.classList.add("waybill-active");
+}

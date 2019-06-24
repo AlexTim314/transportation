@@ -63,8 +63,7 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
             },
 
             fetchDatePlanRecords: function (date) {
-                return $http.post('/transportation/dispatcher/appointments/Date',
-                        JSON.stringify(date), {headers: self.headers})
+                return $http.get('/transportation/dispatcher/appointments/day?date=' + date)
                         .then(
                                 function (response) {
                                     return response.data;

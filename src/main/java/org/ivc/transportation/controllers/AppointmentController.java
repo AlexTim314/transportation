@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.ivc.transportation.entities.Appointment;
 import org.ivc.transportation.entities.CarBoss;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.ivc.transportation.utils.tdDriverInfo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -62,7 +64,6 @@ public class AppointmentController {
 //        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(23, 59));
 //        return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
 //    }
-    
     @GetMapping("/dispatcher/appointments/Tomorrow")
     public List<AppointmentClaim> getAppointmentsTomorrow(Principal principal) {
         LocalDateTime dStart = LocalDateTime.now();
@@ -86,15 +87,17 @@ public class AppointmentController {
 
     @GetMapping("/dispatcher/appointments/monthBefore")
     public List<AppointmentClaim> getAppointmentsMonthBefore(Principal principal) {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusMonths(1), LocalTime.of(00, 00));
+        int dt = LocalDate.now().getDayOfMonth() - 1;
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(dt).minusMonths(1), LocalTime.of(0, 0));
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
-    @PostMapping("/dispatcher/appointments/Date")
-    public List<AppointmentClaim> getAppointmentsDate(Principal principal, @RequestBody LocalDateTime date) {
-        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(date), LocalTime.of(0, 0));
-        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(date), LocalTime.of(23, 59));
+    @GetMapping("/dispatcher/appointments/day")
+    public List<AppointmentClaim> getAppointmentsDate(Principal principal, @RequestParam String date) {
+        LocalDateTime dateTime = LocalDateTime.of(LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.uuuu")), LocalTime.MIN);
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.from(dateTime), LocalTime.of(0, 0));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.from(dateTime), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsTimeFilter(principal, dStart, dEnd);
     }
 
@@ -164,7 +167,7 @@ public class AppointmentController {
         dispatcherService.createClaim(principal, claim);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("/dispatcher/ots_veh_info")
     public List<CompositeTDInfo> getOtsVehInfo(Principal principal) {
         return dispatcherService.getTDInfo(principal);

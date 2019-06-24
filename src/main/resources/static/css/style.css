@@ -2708,8 +2708,324 @@ span.psw {
     background: grey;
 
 }
-
 /*--------------------------PLAN.html   {end}------------------------------ */
+/*-------------waybill-----------*/
+.fast-info{
+	position:absolute;
+	display: flex;
+	visibility: collapse;
+	flex-direction: column;
+	right: -35%;
+	width: 25%;
+	min-width: 400px;
+	height: 96%;
+	border-radius: 5px;
+	padding: 1%;
+	background: white;
+	z-index: 2002;
+	-webkit-box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	-moz-box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	box-shadow: 0px 1px 6px 2px rgba(0,0,0,0.41);
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+}
+/*.close-control{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	color:grey;
+}*/
+.fast-info section:first-child{
+	display: flex;
+	justify-content: space-between;
+}
+.fast-info section:first-child span{
+	color:#333;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.fast-info section:first-child div i{
+	cursor: pointer;
+	padding:0.3em;
+	border-radius: 50%;
+	color: white;
+	background: #5f5f5f;
+	transition: all 0.4s linear;
+}
+.fast-info section:first-child div i:hover{
+	background: var(--edit-btn-color1);
+	transform: rotate(-360deg);
+}
+.fast-info section:first-child i{
+	cursor: pointer;
+	color:#333;
+}
+.fast-info section:nth-child(2){
+	margin-top: 5px;
+	margin-bottom:20px;
+}
+.fast-info section:nth-child(2) span{
+	font-size: 0.7em;
+	font-weight: bold;
+	color:grey;
+	margin-right:10px;
+
+}
+.btn-var{
+	cursor: pointer;
+	position: relative;
+	width:100%;
+	padding:5px 0;
+	background:  #5f5f5f;
+	border-radius: 3px;
+	color: white;
+	text-align: center;
+	overflow:hidden;
+	z-index: 1;
+}
+
+.btn-var:after{
+	content: "";
+	position: absolute;
+	left: 0;
+	top:0;
+	width: 0;
+	height: 100%;
+	background: var(--edit-btn-color1);
+	transition: width 0.2s ease-in;
+	z-index: -1;	
+}
+.btn-var:hover:after{
+	width: 100%;
+}
+.fast-bar-block{
+	margin-top:20px;
+}
+.fast-bar-block li:first-child{
+	color:#333 ;
+	font-weight: bold;
+	font-size: 0.9em;
+	padding:5px 0;
+	/*border-bottom:2px solid rgba(0,0,0,0.2);*/
+}
+
+.fast-bar-btn{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	color: grey;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding:5px 0;
+	border-bottom:2px solid rgba(0,0,0,0.2);
+}
+.fast-bar-btn span{
+	padding-left: 5px;
+}
+.fast-bar-btn:hover{
+	background: grey;
+	color:#333;
+}
+.fast-bar-btn i:hover{
+	cursor: pointer;
+}
+.fast-btn-active{
+	background: grey;
+	color:#333;
+}
+.fast-bar-sub table{
+	width: 100%;
+	border-collapse: collapse;
+}
+.fast-bar-sub table th{
+	background: rgba(0,0,0,0.3);
+	font-size: 0.8em;
+	padding:5px 5px;
+	color:white;
+	text-transform: uppercase;
+}
+.fast-bar-sub table th:first-child{
+	width: 30%;
+}
+.fast-bar-sub table th:last-child{
+	width: 70%;
+}
+.fast-bar-sub table td{
+	padding:5px 5px;
+	color:#333;
+	border-bottom:2px solid rgba(0, 162, 211,0.3);
+}
+.fast-bar-sub article{
+	width: 70%;
+	float: right;
+	margin-top:10px;
+}
+.fast-bar-sub article div{
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.7em;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+.fast-bar-sub article div span:first-child{
+	color:grey;
+	text-transform: uppercase;
+}
+.waybill-name{
+	margin-top: 30px;
+	display: flex;
+	font-size: 0.8em;
+	justify-content: space-between;
+	color: grey;
+}
+.waybill-name span{
+	color:#333;
+	font-weight: bold;
+}
+.waybill-name b{
+	cursor:pointer;
+	color:var(--edit-btn-color1);
+	text-decoration: underline;
+}
+.waybill-name div i:hover{
+	cursor: pointer;
+	color:#333;
+}
+.waybill-parametr, .waybill-refueling{
+	margin-top:10px;
+	width:100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.waybill-parametr div, .waybill-refueling div{
+	margin-top: 10px;
+	display: flex;
+	justify-content: space-between;
+}
+.waybill-parametr div label,.waybill-refueling  div label{
+	color:#333;
+	font-weight: bold;
+	font-size: 0.7em;
+}
+.waybill-control{
+	margin-top:20px;
+	margin-bottom:10px;
+	display: flex;
+	justify-content: space-between;
+}
+.waybill-control div span{
+	padding: 5px;
+	font-size: 0.8em;
+	border-radius: 3px;
+	font-weight: bold;
+	background: #5f5f5f;
+	color: white;
+}
+.waybill-control div span:hover{
+	background: var(--edit-btn-color1);
+}
+.waybill-control i{
+	cursor: pointer;
+	color:#333;
+}
+.waybill-control div .waybill-active{
+	background: var(--edit-btn-color1);
+}
+#waybill-tab2{
+	display: none;
+}
+.waybill-refueling table,.waybill-history table{
+	margin-top:10px;
+	width: 100%;
+	border-collapse: collapse;
+}
+.waybill-refueling table th, .waybill-history table th{
+	background: grey;
+	font-size: 0.7em;
+	padding:5px 5px;
+	color:white;
+	text-transform: uppercase;
+}
+.waybill-history p{
+	margin-top:20px;
+	font-weight: bold;
+	color:#5f5f5f;
+}
+.waybill-history div{
+	margin-top: 20px;
+	width: 70%;
+	display: flex;
+	justify-content: space-between;
+	
+}
+.waybill-history div input{
+ 	flex-grow: 2;
+ 	box-shadow: none;
+ 	margin:0;
+ 	border:1px solid grey;
+ 	background: white;
+ 	color:grey;
+ 	text-shadow: none;
+}
+.waybill-history div label{
+	flex-grow: 1;
+	font-weight: bold;
+	color:grey;
+	font-size: 0.9em;
+}
+.waybill-refueling table th:first-child{
+	width: 40%;
+}
+.waybill-refueling table th:nth-child(2){
+	width: 20%;
+}
+.waybill-refueling table th:nth-child(3){
+	width: 20%;
+}
+.waybill-refueling table th:last-child{
+	width: 10%;
+}
+.waybill-refueling table td{
+	padding:5px 5px;
+	color:#333;
+	border-bottom:2px solid rgba(0, 162, 211,0.3);
+}
+.waybill-refueling table td:nth-child(3){
+	text-align: right;
+}
+.waybill-refueling select, .waybill-refueling [type="date"]{
+  	padding:0;
+	width: 30%;
+    margin: 0;
+	color :#333;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+	border-radius:3px;
+  	text-shadow:none;
+  	background: none;
+    -webkit-box-shadow: none;
+    box-shadow: inset none;	
+}
+.waybill-parametr input{
+	width: 20%;
+}
+.waybill-refueling input{
+	width: 30%;
+}
+.waybill-tabcontent{
+	display: none;
+}
+.confirm-tasks{
+	margin-top:20px;
+}
+.confirm-tasks b{
+	font-size: 0.8em;
+	color:#333;
+}
+/*--------------waybill end--------*/
+
 .test{
     padding: 10% 10%;
 }

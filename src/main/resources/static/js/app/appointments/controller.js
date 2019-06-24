@@ -39,6 +39,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.ctoday = false;
         self.cweek = false;
         self.call = false;
+        self.day = false;
         self.selectedIcon;
         self.type;
         self.date;
@@ -80,6 +81,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             }
         };
         self.fetchMonthPlanRecords = function () {
+            self.day = false;
             self.all = true;
             self.today = false;
             self.week = false;
@@ -102,6 +104,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     );
         };
         self.fetchMonthBeforePlanRecords = function () {
+            self.day = false;
             self.all = false;
             self.today = false;
             self.week = false;
@@ -124,6 +127,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     );
         };
         self.fetchWeekPlanRecords = function () {
+            self.day = false;
             self.all = false;
             self.today = false;
             self.week = true;
@@ -146,6 +150,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     );
         };
         self.fetchTomorrowPlanRecords = function () {
+            self.day = false;
             self.all = false;
             self.today = true;
             self.week = false;
@@ -168,15 +173,16 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     );
         };
         self.fetchDatePlanRecords = function () {
+            self.day = true;
             self.all = false;
             self.today = false;
             self.week = false;
             self.archive = false;
             self.changeDate();
-            var datePlan = new Date(document.getElementById('date-plan').value);
+           // var datePlan = new Date(document.getElementById('date-plan').value);
             formOpen('cover-trsp1');
             formOpen('preloader');
-            DispatcherService.fetchDatePlanRecords(datePlan)
+            DispatcherService.fetchDatePlanRecords(self.date)
                     .then(
                             function (d) {
                                 self.cmpsts = d;
@@ -185,6 +191,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 formClose('preloader');
                                 self.pageCount = Math.ceil(d.length / self.numRecordsPerPage);
                                 self.setPage(1);
+                                closePicker();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Records of Day');
@@ -284,19 +291,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             }
                     );
         };
-        self.getToday = function () {
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            var today = year + "-" + month + "-" + day;
-            document.getElementById('date-plan').value = today;
-            self.date = day + "." + month + "." + year;
-        };
+//        self.getToday = function () {
+//            var date = new Date();
+//            var day = date.getDate();
+//            var month = date.getMonth() + 1;
+//            var year = date.getFullYear();
+//            if (month < 10)
+//                month = "0" + month;
+//            if (day < 10)
+//                day = "0" + day;
+//            var today = year + "-" + month + "-" + day;
+//            document.getElementById('date-plan').value = today;
+//            self.date = day + "." + month + "." + year;
+//        };
 //=================pagination===========
         self.setPage = function (page) {
             if (page < 1 || page > self.pageCount) {
@@ -450,13 +457,14 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             function (d) {
                                 var date = new Date(d);
                                 var today = self.getFormatedDate(date, "-", true);
-                                document.getElementById('date-plan').value = today;
+                                //document.getElementById('date-plan').value = today;
                                 document.getElementById('startDate').value = today;
                                 document.getElementById('startDate').min = today;
                                 // document.getElementById('entranceTime').value = "00:00";
                                 document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
+                                 self.date = self.getFormatedDate(date, ".", false);
                                 //   self.date = self.getFormatedDate(date, ".", false);
 
                                 date.setDate(date.getDate() + 1);
@@ -472,7 +480,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchAllVehicleModels();
         self.fetchDrivers();
         self.fetchVehicles();
-        self.getToday();
+        //self.getToday();
         self.fetchVehicleTypes();
         self.fetchCarBosses();
         self.fetchPlaces();
@@ -497,6 +505,10 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                     self.fetchMonthPlanRecords();
                                     return;
                                 }
+                                if (self.day) {
+                                    self.fetchDatePlanRecords();
+                                    return;
+                                }
                                 if (self.week) {
                                     self.fetchWeekPlanRecords();
                                     return;
@@ -509,7 +521,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                     self.fetchMonthBeforePlanRecords();
                                     return;
                                 }
-                                self.fetchDatePlanRecords();
+                               // self.fetchDatePlanRecords();
                             },
                             function (errResponse) {
                                 console.error('Error while updating Appointment.');
@@ -628,15 +640,17 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formClose('cover-trsp1');
         };
         self.changeDate = function () {
-            var datePlan = new Date(document.getElementById('date-plan').value);
-            var day = datePlan.getDate();
-            var month = datePlan.getMonth() + 1;
-            var year = datePlan.getFullYear();
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            self.date = day + "." + month + "." + year;
+            var datePlan = picker.selectedDate;
+            if (picker.selectedDate) {
+                var day = datePlan.getDate();
+                var month = datePlan.getMonth() + 1;
+                var year = datePlan.getFullYear();
+                if (month < 10)
+                    month = "0" + month;
+                if (day < 10)
+                    day = "0" + day;
+                self.date = day + "." + month + "." + year;
+            }
         };
         self.getFilter = function (clrec) {
             var vType = clrec.claim.vehicleType;

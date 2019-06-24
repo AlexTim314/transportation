@@ -1,0 +1,317 @@
+<div class="fast-info" id="fast-info1">
+    <section>
+        <span>X 355 XA</span>
+        <div>
+            <i class="fas fa-history" onclick="history_button()" title="История Путевых Листов"></i>
+        </div> 	
+        <i class="fas fa-times" onclick="fastClose()"></i>				 	
+    </section>
+    <section>
+        <span>Микроавтобус</span>
+        <span>Iveco Daily</span>
+    </section>
+    <div class="btn-var waybill-work step1" onclick="toggle_step('step2', 3)">
+        Открыть Путевой Лист
+    </div>
+    <div class="btn-var waybill-work step3">
+        Закрыть Путевой Лист
+    </div>
+    <div class="waybill-name waybill-work step2" >
+        <span>Путевой Лист</span>
+        <b>№33-55/32  13.03.2019</b>
+        <div>
+            <i class="fas fa-download" title="Скачать"></i>
+            <i class="fas fa-cog" title="Внести Показатели" onclick="flexOpen('waybill-tabcontent1')"></i>
+        </div>
+
+    </div>
+    <div class="waybill-tabcontent waybill-work" id="waybill-tabcontent1">
+        <div class="waybill-control waybill-work" id="waybill-control1">
+            <div>
+                <span class="waybill-active" id="waybill-btn1" onclick="toggle_tab('waybill-tab1', 'waybill-btn1', 2)">Показатели</span>
+                <span id="waybill-btn2" onclick="toggle_tab('waybill-tab2', 'waybill-btn2', 2)">Заправка</span>
+            </div>
+            <i class="fas fa-times" onclick="flexClose('waybill-tabcontent1')"></i>
+
+        </div>
+
+        <section class="waybill-parametr waybill-work" id="waybill-tab1">
+            <div >
+                <label for="">Объем топлива</label>
+                <input type="text" >
+            </div>
+            <div >
+                <label for="">Моточасы</label>
+                <input type="text">
+            </div>
+            <div >
+                <label for="">Одометр</label>
+                <input type="text">
+            </div>	
+        </section>
+
+
+        <section class="waybill-refueling waybill-work" id="waybill-tab2">
+
+            <div>
+                <label for="">Тип топлива</label>
+                <select>
+                    <option value="">Бензин АИ-92</option>
+                </select>
+            </div>
+            <div>
+                <label for="">Объем топлива,л</label>
+                <input type="text" placeholder="л">
+            </div>
+            <div>
+                <label for="">Дата</label>
+                <input type="date">
+            </div>
+            <div>
+                <label for="">Время</label>
+                <input type="time">
+            </div>
+            <div>
+                <label for="">АЗС</label>
+                <input type="text" placeholder="АЗС">
+            </div>
+
+            <table>
+                <tr>
+                    <th>Топливо</th>
+                    <th>Дата,Время</th>
+                    <th>АЗС</th>
+                    <th>Объем,л</th>
+                    <th><i class="fas fa-plus-circle"></i></th>
+                </tr>
+                <tr>
+                    <td>АИ-92</td>
+                    <td>14.02.2019 08:10</td>
+                    <td>пл.72</td>
+                    <td>23.5</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>АИ-92</td>
+                    <td>14.02.2019 08:10</td>
+                    <td>пл.72</td>
+                    <td>23.5</td>
+                    <td></td>
+                </tr>
+            </table>
+        </section>	
+    </div>
+    <ul class="fast-bar-block waybill-work step1 step2" id="fast-bar-block1">
+        <li>Список назначений</li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <div>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" checked >
+                        <span class="checkmark"></span>
+                    </label>
+                    <span>Назначение 1</span>
+                </div>
+
+                <i class="fas fa-plus"></i>
+
+
+
+            </div>
+            <div class="fast-bar-sub ">
+
+            </div>						
+        </li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <div>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                    </label>
+                    <span>Назначение 2</span>
+                </div>
+                <i class="fas fa-plus"></i>
+
+            </div>
+            <div class="fast-bar-sub collapseRow">
+                <table>
+                    <tr>
+                        <th>Место</th>
+                        <th>Задание</th>
+                    </tr>
+                    <tr>
+                        <td>Пл.10</td>
+                        <td>Перевозка пассажиров</td>
+                    </tr>
+                    <tr>
+                        <td>Пл.18</td>
+                        <td>Перевозка пассажиров</td>
+                    </tr>
+                </table>
+                <article>
+                    <div>
+                        <span>Дата</span>
+                        <span>25.07.2019</span>
+                    </div>
+                    <div>
+                        <span>Время</span>
+                        <span>08:00(08:10-16:10)</span>
+                    </div>
+                    <div>
+                        <span>Водитель</span>
+                        <span>Серикбаев С.С.</span>
+                    </div>
+                    <div>
+                        <span>Старший</span>
+                        <span>Иванов М.Ю.</span>
+                    </div>
+                    <div>
+                        <span>Подразделение</span>
+                        <span>ЦИ-1</span>
+                    </div>
+                    <div>
+                        <span>Статус</span>
+                        <span class="done-status">Готово</span>
+                    </div>
+                </article>			
+
+            </div>						
+        </li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <div>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                    </label>
+                    <span>Назначение 3</span>
+                </div>	
+                <i class="fas fa-plus"></i>	
+            </div>
+            <div class="fast-bar-sub collapseRow">
+                <table>
+                    <tr>
+                        <th>Место</th>
+                        <th>Задание</th>
+                    </tr>
+                    <tr>
+                        <td>Пл.10</td>
+                        <td>Перевозка пассажиров</td>
+                    </tr>
+                    <tr>
+                        <td>Пл.18</td>
+                        <td>Перевозка пассажиров</td>
+                    </tr>
+                </table>
+                <article>
+                    <div>
+                        <span>Дата</span>
+                        <span>25.07.2019</span>
+                    </div>
+                    <div>
+                        <span>Время</span>
+                        <span>08:00(08:10-16:10)</span>
+                    </div>
+                    <div>
+                        <span>Водитель</span>
+                        <span>Серикбаев С.С.</span>
+                    </div>
+                    <div>
+                        <span>Старший</span>
+                        <span>Иванов М.Ю.</span>
+                    </div>
+                    <div>
+                        <span>Подразделение</span>
+                        <span>ЦИ-1</span>
+                    </div>
+                    <div>
+                        <span>Статус</span>
+                        <span class="done-status">Готово</span>
+                    </div>
+                </article>			
+
+            </div>							
+        </li>				
+    </ul>
+    <!-- <div class="arrow-container waybill-work step2" >
+            <div class="arrow"></div>
+    </div>	 -->
+    <div  class="btn-ok waybill-work step2" onclick="toggle_step('step3', 3)">Подтвердить</div>
+    <!-- 				<div class="drag-container step3">
+                                            <div class="drag-box" >Пл.1</div>
+                                            <div class="drag-box" >Пл.10</div>
+                                            <div class="drag-box" >Аэропорт "Крайний"</div>
+                                            <div class="drag-box" >Пл.112</div>
+                                            <div class="drag-box" >Пл.18</div>
+                                            <div class="drag-box">Пл.254</div>
+                                            <div class="drag-box" >Пл.90</div>
+                                            <div class="drag-box">КАЗ</div>
+                                            <div class="drag-box" >Пл.2</div>
+                                            <div class="drag-box" >Пл.23</div>
+                                    </div>
+    -->
+
+    <ul class="fast-bar-block waybill-work step3" >
+        <li>Список назначений</li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <span>Назначение 1</span>
+                <i class="fas fa-check status-ready"></i>
+            </div>
+            <div class="fast-bar-sub ">
+
+            </div>						
+        </li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <span>Назначение 2</span>
+                <i class="fas fa-ban cancel-status"></i>
+            </div>
+            <div class="fast-bar-sub ">
+                <textarea  rows="3" style="resize:none;" placeholder="Причина Отмены"></textarea>
+            </div>						
+        </li>
+        <li class="fast-bar-item">						
+            <div class="fast-bar-btn">
+                <span>Назначение 3</span>
+                <i class="fas fa-check status-ready"></i>
+            </div>
+            <div class="fast-bar-sub ">
+
+            </div>						
+        </li>
+    </ul>
+
+
+
+
+
+    <section class="waybill-history collapseRow">
+        <p>История путевых листов</p>
+        <div>
+            <label>Поиск</label>
+            <input type="search">
+        </div>
+        <table>
+            <tr>
+                <th>Номер</th>
+                <th>Дата,время(откр.)</th>
+                <th>Дата,время(закр.)</th>
+            </tr>
+            <tr>
+                <td>32/31-1</td>
+                <td>13.02.2019 08:30</td>
+                <td>13.02.2019 17:30</td>
+
+            </tr>
+            <tr>
+                <td>32/31-2</td>
+                <td>14.02.2019 08:30</td>
+                <td>14.02.2019 17:30</td>
+
+            </tr>
+        </table>
+    </section>
+
+</div>						
