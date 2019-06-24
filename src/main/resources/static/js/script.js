@@ -380,18 +380,25 @@ getFileNameOfInput = function (id, idList) {
     }
 }
 
+var elem = document.getElementById('date-btn');
+var cal = document.getElementById('picker1');
+var dWidth = document.documentElement.clientWidth;
+elem.addEventListener('click', function (event) {
+    cal.style.top = elem.getBoundingClientRect().bottom + 5 + 'px';
+    cal.style.left = elem.getBoundingClientRect().left / dWidth * 100 + "%";
+    cal.style.display = "block";
+});
 
+var picker = $("#dtPicker");
+picker.datepicker({
+    onSelect: function onSelect(fd, date) {
+        if (date) {
+            picker.selectedDate = date;
+        }
+    }
+});
 
-//  var block= document.getElementById('bar-block1');
-//  var items= block.getElementsByClassName('info-bar-btn');
-//  var i;
-//    for (i = 0; i < items.length; i++){
-//    items[i].addEventListener("click", function() {
-//    this.classList.toggle('subActive');
-//  });
-//
-//}
-
-
-
+closePicker = function(){
+    cal.style.display = "none";
+}
 
