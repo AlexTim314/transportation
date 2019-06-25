@@ -4,19 +4,25 @@
             <span class="filter-elem {{plctrl.day?'active-color':''}}" id="date-btn">{{plctrl.date}}</span>
             <span class="filter-elem {{plctrl.today?'active-color':''}}" ng-click="plctrl.fetchTomorrowPlanRecords()">Завтра</span>
             <span class="filter-elem {{plctrl.week?'active-color':''}}" ng-click="plctrl.fetchWeekPlanRecords()">На неделю</span>
-<!--            <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>-->
+            <!--            <span class="filter-elem {{plctrl.all?'active-color':''}}" ng-click="plctrl.fetchMonthPlanRecords()">На месяц</span>-->
             <span class="filter-elem {{plctrl.archive?'active-color':''}}" ng-click="plctrl.fetchMonthBeforePlanRecords()">Архив</span>
         </div>
-<!--        <div class="definite-date">
-            <label for="date-plan">Планируемый день</label>
-            <input type="date" name="date-plan" id="date-plan">
-            <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
-        </div>	-->
+        <!--        <div class="definite-date">
+                    <label for="date-plan">Планируемый день</label>
+                    <input type="date" name="date-plan" id="date-plan">
+                    <div class="filter-elem edit" ng-click="plctrl.fetchDatePlanRecords()">Показать</div>
+                </div>	-->
         <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  							  		
     </div>	
     <div class="height-wrapper">            
         <table class=" table-plan table-claim" style="margin-left: 0;">
             <tr>
+                <th style="width:5%">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" ng-model="allChecked" checked="false" ng-change="plctrl.checkAll(allChecked)">
+                        <span class="checkmark"></span>
+                    </label>
+                </th>
                 <th style="width:5%">Тип транспорта</th>
                 <th style="width:7%">Вид техники</th>
                 <th style="width:5%">Дата выезда</th>
@@ -26,11 +32,20 @@
                 <th style="width:10%">Марка</th>
                 <th style="width:5%">Гос.номер</th>
                 <th style="width:10%">Водитель</th>
-                <th style="width:8%">Статус</th>
-                <th style="width:10%"><i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
+                <th style="width:5%">Статус</th>
+                <th style="width:8%">
+                    <i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus(clrec)"></i>
+                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
+                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill(clrec.appointment)"></i>
+                    <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
 
             </tr>
             <tr ng-repeat="clrec in plctrl.data| orderBy: 'record.startDate' | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchAppointment">
+                <td><label class="custom-checkbox">
+                        <input type="checkbox" ng-model="clrec.checked" ng-change="plctrl.checkRecord(clrec)">
+                        <span class="checkmark"></span>
+                    </label>	
+                </td>
                 <td><span title="{{plctrl.convertSpec(clrec.claim.specialization)}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
                 <td>{{clrec.claim.vehicleType.typeName}}</td>
                 <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
@@ -48,10 +63,8 @@
                     <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
                     {{plctrl.showDriver(clrec.appointment)}}		  					
                 </td>
-                <td><i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus(clrec)"></i><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
+                <td><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
                 <td>
-                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
-                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill(clrec.appointment)"></i>
                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i> 
                 </td>
             </tr>

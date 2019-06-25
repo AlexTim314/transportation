@@ -63,6 +63,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.deps = [];
         self.driversInfo = [];
         self.tdInfo;
+        self.spec = null;
+        self.type = null;
 
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
@@ -179,7 +181,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             self.week = false;
             self.archive = false;
             self.changeDate();
-           // var datePlan = new Date(document.getElementById('date-plan').value);
+            // var datePlan = new Date(document.getElementById('date-plan').value);
             formOpen('cover-trsp1');
             formOpen('preloader');
             DispatcherService.fetchDatePlanRecords(self.date)
@@ -464,7 +466,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 document.getElementById('startTime').value = "00:00";
                                 document.getElementById('endTime').value = "00:00";
                                 self.startDate = new Date(today);
-                                 self.date = self.getFormatedDate(date, ".", false);
+                                self.date = self.getFormatedDate(date, ".", false);
                                 //   self.date = self.getFormatedDate(date, ".", false);
 
                                 date.setDate(date.getDate() + 1);
@@ -491,7 +493,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchTomorrowPlanRecords();
 //        self.fetchDriversInfo();
 //        self.fetchVehiclesInfo();
-        
+
 
         self.departFromObj = function (obj) {
             self.departments = obj.departments;
@@ -521,7 +523,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                     self.fetchMonthBeforePlanRecords();
                                     return;
                                 }
-                               // self.fetchDatePlanRecords();
+                                // self.fetchDatePlanRecords();
                             },
                             function (errResponse) {
                                 console.error('Error while updating Appointment.');
@@ -1165,7 +1167,41 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                     return 'спецтехника';
             }
         };
-        
+
+        self.checkAll = function (checked) {
+            //selecting unsassigned records only
+            if (self.spec !== null) { //selecting if have already selected record
+                if (self.type !== null) {
+                    for (var i = 0; i < self.data.length; i++) {
+                        if (self.spec === self.data[i].claim.specialization &&
+                                self.type === self.data[i].claim.vehicleType.typeName) {
+                            self.data[i].checked = checked;
+                        }
+                    }
+                } else {
+                    for (var i = 0; i < self.data.length; i++) {
+                        if (self.spec === self.data[i].claim.specialization) {
+                            self.data[i].checked = checked;
+                        }
+                    }
+                }
+            } else {
+                for (var i = 0; i < self.data.length; i++) {
+                    self.data[i].checked = checked;
+                }
+            }
+        };
+
+        self.checkRec = function (data) {
+            if (data.checked) {
+                self.spec = data.claim.specialization;
+                self.type = data.claim.vehicleType.typeName;
+            } else {
+                self.spec = null;
+                self.type = null;
+            }
+        };
+
 //        self.selectSmallIcon = function (spec) {
 //            var bus = 'fas fa-bus-alt';
 //            var car = 'fas fa-car';

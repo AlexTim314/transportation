@@ -657,23 +657,23 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             PlannerService.createAppointments(appoints)
                     .then(
                             function (d) {
-                                if (self.all) {
-                                    self.fetchAllPlanRecords();
-                                    self.fetchAllCompletePlanRecords();
+                                if (self.archive) {
+                                    self.fetchMonthBeforePlanRecords();
+                                   // self.fetchAllCompletePlanRecords();
                                     return;
                                 }
                                 if (self.week) {
                                     self.fetchWeekPlanRecords();
-                                    self.fetchWeekCompletePlanRecords();
+                                  //  self.fetchWeekCompletePlanRecords();
                                     return;
                                 }
                                 if (self.today) {
                                     self.fetchTomorrowPlanRecords();
-                                    self.fetchTomorrowCompletePlanRecords();
+                                   // self.fetchTomorrowCompletePlanRecords();
                                     return;
                                 }
                                 self.fetchDatePlanRecords();
-                                self.fetchDateCompletePlanRecords();
+                                //self.fetchDateCompletePlanRecords();
                             },
                             function (errResponse) {
                                 console.error('Error while creating Appointment.');
@@ -1408,6 +1408,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 }
             }
         };
+        self.checking = function (clrec) {
+            if (clrec.appointment.transportDep !== null) {
+                clrec.record.checked = false;
+            }
+        };
         self.getUniqueModels = function (arr) {
             var i = 0,
                     current,
@@ -1738,8 +1743,10 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     for (var j = 0; j < self.headers[i].composite.length; j++) {
                                         if (self.headers[i].composite[j].claim.id === clapp.claim.id) {
                                             var spec = self.headers[i].composite[j].claim.specialization;
+                                            var route = self.headers[i].composite[j].claim.route;
                                             self.headers[i].composite[j].claim = clapp.claim;
                                             self.headers[i].composite[j].claim.specialization = spec;
+                                            self.headers[i].composite[j].claim.route = route;
                                             self.compClRec.claim = self.headers[i].composite[j].claim;
                                         }
                                         if (self.headers[i].composite[j].appointment !== null && self.headers[i].composite[j].appointment !== undefined
