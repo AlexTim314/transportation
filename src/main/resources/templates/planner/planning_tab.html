@@ -63,7 +63,7 @@
                                 <th style="width:2.5% "> </th>
                                 <th style="width:2.5% "> </th>
                             </tr>
-                            <tr ng-repeat="clrec in header.composite| orderBy: 'record.startDate':true | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchClaim">
+                            <tr ng-repeat="clrec in header.composite| orderBy: '-record.startDate':true | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchClaim">
                                 <td>
                                     <label class="custom-checkbox">
                                         <input type="checkbox" ng-model="clrec.record.checked" ng-change="plctrl.checking(clrec)">

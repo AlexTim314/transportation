@@ -90,6 +90,8 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.clapp;
         var expInvCounter = 14;
         var invCounter = 0;
+        var loadCounter = 0;
+        var expLoadCounter = 5;
         // self.clrecs = [];
 
         self.getPermit = function () {
@@ -352,6 +354,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.bossesMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -367,6 +370,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.transportDepsMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -382,6 +386,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehiclesMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -397,6 +402,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.driversMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -412,6 +418,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehicleModelsMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -440,7 +447,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     k = k + self.otsInfos[i].otsInfo.drivercount;
                                 }
                                 self.allCountDrivers = k;
-
                                 self.checkingCounterForClose();
                             },
                             function (errResponse) {
@@ -612,6 +618,13 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                 self.openLoadingWindow();
             }
         };
+        self.checkingCounterForLoad = function () {
+            loadCounter++;
+            if (loadCounter === expLoadCounter) {
+                self.fetchTomorrowPlanRecords();
+                loadCounter = 0;
+            }
+        };
         self.openLoadingWindow();
         ////////////////////////////////
         self.getPermit();
@@ -627,7 +640,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchCarBosses();
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
-        self.fetchTomorrowPlanRecords();
+
         ////////////////////
 
 //        self.fetchTomorrowCompletePlanRecords();
@@ -659,17 +672,17 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             function (d) {
                                 if (self.archive) {
                                     self.fetchMonthBeforePlanRecords();
-                                   // self.fetchAllCompletePlanRecords();
+                                    // self.fetchAllCompletePlanRecords();
                                     return;
                                 }
                                 if (self.week) {
                                     self.fetchWeekPlanRecords();
-                                  //  self.fetchWeekCompletePlanRecords();
+                                    //  self.fetchWeekCompletePlanRecords();
                                     return;
                                 }
                                 if (self.today) {
                                     self.fetchTomorrowPlanRecords();
-                                   // self.fetchTomorrowCompletePlanRecords();
+                                    // self.fetchTomorrowCompletePlanRecords();
                                     return;
                                 }
                                 self.fetchDatePlanRecords();
@@ -1009,6 +1022,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         };
 
         self.updateTime = function () {
+            var sd = new Date(self.record.entranceDate);
+            var ed = new Date(self.record.endDate);
+            var entranceTime = new Date(self.record.entranceDate);
+            entranceTime.setUTCHours(entranceTime.getHours());
+            var startTime = new Date(self.record.startDate);
+            startTime.setUTCHours(startTime.getHours());
+            var endTime = new Date(self.record.endDate);
+            endTime.setUTCHours(endTime.getHours());
+
+            self.record.startDate = self.frmtDate(sd, startTime);
+            self.record.entranceDate = self.frmtDate(sd, entranceTime);
+            self.record.endDate = self.frmtDate(ed, endTime);
+
             PlannerService.updateTime(self.record)
                     .then(
                             function (d) {

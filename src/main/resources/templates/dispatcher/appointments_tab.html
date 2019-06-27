@@ -34,15 +34,15 @@
                 <th style="width:10%">Водитель</th>
                 <th style="width:5%">Статус</th>
                 <th style="width:8%">
-                    <i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus(clrec)"></i>
-                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint(clrec)"></i>
-                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill(clrec.appointment)"></i>
+                    <i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus()"></i>
+                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint()"></i>
+                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill()"></i>
                     <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
 
             </tr>
             <tr ng-repeat="clrec in plctrl.data| orderBy: 'record.startDate' | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchAppointment">
                 <td><label class="custom-checkbox">
-                        <input type="checkbox" ng-model="clrec.checked" ng-change="plctrl.checkRecord(clrec)">
+                        <input type="checkbox" ng-model="clrec.checked" ng-change="plctrl.checkRec(clrec)">
                         <span class="checkmark"></span>
                     </label>	
                 </td>

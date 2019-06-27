@@ -278,6 +278,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "appointment.id as appointmentid, "
             + "appointment.status as appstatus, "
             + "appointment.note as appnote, "
+            + "appointment.creation_date as appcrdate, "
+            + "appointment.creator_id as creatorid, "
             + "record.id as recordid, "
             + "claim.id as claimid "
             + "FROM public.claim \n"

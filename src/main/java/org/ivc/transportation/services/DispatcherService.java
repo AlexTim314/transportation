@@ -116,7 +116,6 @@ public class DispatcherService {
 //                    recordRepository.findRecordByAppointmentId(app.getId()), app);
 //        }).collect(Collectors.toList());
 //    }
-    
     public List<AppointmentClaim> getAppointmentsTimeFilter(Principal principal, LocalDateTime dateStart, LocalDateTime dateEnd) {
         if (findTransportDepByUser(principal) == null) {
             System.out.println("Внимание! У пользователя не указан транспортный отдел, необходимый методу DispatcherService.getAppointmentsTimeFilter(...).");
@@ -157,11 +156,13 @@ public class DispatcherService {
     }
 
     public List<Appointment> updateAppointments(Principal principal, List<Appointment> appointments) {
+        TransportDep trDep = getUser(principal).getTransportDep();
         List<Appointment> result = new ArrayList<>();
         appointments.forEach(appt -> {
             appt.setStatus(AppointmentStatus.READY);
             appt.setNote("Транспорт и водитель назначены");
             appt.setModificator(getUser(principal));
+            appt.setTransportDep(trDep);
             appt = appointmentRepository.save(appt);
             updateClaimActual(appt);
             result.add(appt);
@@ -356,12 +357,11 @@ public class DispatcherService {
     public List<tdDriverInfo> getTdDriverInfo(Principal principal) {
         return driverRepository.findTdDriverInfo(getUser(principal).getTransportDep().getId());
     }
-    
+
     public List<CompositeTDInfo> getTDInfo(Principal principal) {
         List<CompositeTDInfo> result = new ArrayList<>();
         transportDepRepository.findVehiclesInfo(findTransportDepByUser(principal).getId()).forEach(u -> result.add(new CompositeTDInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
-
 
 }

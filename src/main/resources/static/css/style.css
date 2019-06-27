@@ -1561,6 +1561,11 @@ input[type="search"]:hover{
     cursor: pointer;
     background: grey;
 }
+.table-plan th i:hover {
+    cursor: pointer;
+    color: var(--edit-btn-color1);
+    transition: color 0.3s linear;
+}
 .table-status  th{
     color:rgba(255,255,255,0.9);
     background: #484747;

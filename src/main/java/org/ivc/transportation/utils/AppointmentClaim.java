@@ -49,6 +49,10 @@ public interface AppointmentClaim {
     
     Long getAppointmentid();
     
+    LocalDateTime getAppcrdate();
+    
+    Long getCreatorid();
+        
     Long getRecordid();
     
     Long getClaimid();
