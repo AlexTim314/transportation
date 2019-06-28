@@ -71,6 +71,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.spec = null;
         self.type = null;
         self.tempData = [];
+        var loadCounter = 0;
+        var expLoadCounter = 4;
 
         self.selectIcon = function (spec) {
             var bus = 'fas fa-lg fa-bus-alt';
@@ -215,6 +217,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehicleModelsMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleModels');
@@ -229,6 +232,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.driversMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching Drivers');
@@ -266,6 +270,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehiclesMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                                 // self.filteringVehicles(self.clrec.appointment.vehicleModel);
                             },
                             function (errResponse) {
@@ -375,6 +380,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehicleTypesMap[d[i].id] = i;
                                 }
+                                self.checkingCounterForLoad();
                             },
                             function (errResponse) {
                                 console.error('Error while fetching VehicleTypes');
@@ -494,6 +500,13 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             formClose('cover-trsp1');
             formClose('preloader');
         }
+        self.checkingCounterForLoad = function () {
+            loadCounter++;
+            if (loadCounter === expLoadCounter) {
+                self.fetchTomorrowPlanRecords();
+                loadCounter = 0;
+            }
+        };
 //------------------------------------------------
         self.fetchAllVehicleModels();
         self.fetchDrivers();
@@ -504,7 +517,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.fetchRouteTasks();
         self.fetchDepartment();
         self.getDateFromServer();
-        self.fetchTomorrowPlanRecords();
 //------------------------------------------------
 
         self.departFromObj = function (obj) {
@@ -1136,11 +1148,15 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
         self.createDataComposite = function () {
             if (self.cmpsts.length > 0) {
                 self.data = [];
-                var driver = null;
-                var vehicle = null;
-                var vehicleType = null;
-                var vehicleModel = null;
+                var driver = {};
+                var vehicle = {};
+                var vehicleType = {};
+                var vehicleModel = {};
                 for (var i = 0; i < self.cmpsts.length; i++) {
+                    driver = null;
+                    vehicle = null;
+                    vehicleType = null;
+                    vehicleModel = null;
 
 //                    for (var j = 0; j < self.vehicleTypes.length; j++) {
 //                        if (self.cmpsts[i].vehicleTypeId === self.vehicleTypes[j].id) {
@@ -1171,19 +1187,19 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                         var arrId = self.driversMap[dr_id];
                         driver = self.drivers[arrId];
                     }
-                    
+
                     var vh_id = self.cmpsts[i].vehicleid;
                     if (vh_id !== null) {
                         var arrId = self.vehiclesMap[vh_id];
                         vehicle = self.vehicles[arrId];
                     }
-                    
+
                     var vt_id = self.cmpsts[i].vehicleTypeId;
                     if (vt_id !== null) {
                         var arrId = self.vehicleTypesMap[vt_id];
                         vehicleType = self.vehicleTypes[arrId];
                     }
-                    
+
                     var vm_id = self.cmpsts[i].vehicleModelId;
                     if (vm_id !== null) {
                         var arrId = self.vehicleModelsMap[vm_id];
@@ -1230,7 +1246,7 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             } else {
                 self.data = [];
             }
-            //console.log(self.data);
+        //    console.log(self.data);
         };
 
         self.convertSpec = function (spec) {

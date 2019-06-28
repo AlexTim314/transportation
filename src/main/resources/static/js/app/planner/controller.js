@@ -640,7 +640,6 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.fetchCarBosses();
         self.fetchOtsInfo();
         self.fetchOtsVehModels();
-
         ////////////////////
 
 //        self.fetchTomorrowCompletePlanRecords();
