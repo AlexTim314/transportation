@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -107,6 +110,12 @@ public class ClaimController {
     @DeleteMapping("/user/record_delete")
     public ResponseEntity<String> deleteRecord(@RequestBody List<Long> ids) {
         claimService.deleteRecord(ids.get(0), ids.get(1));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/upload")
+    public @ResponseBody ResponseEntity<?> upload(@RequestParam("files") MultipartFile[] uploadFiles) throws Exception {
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
