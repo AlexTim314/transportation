@@ -31,7 +31,7 @@ edit_open = function () {
     sec[0].style.display = "none";
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "none";
-    }
+}
 
 formRecord_close = function () {
     var str = document.getElementById("formRecord-id");
@@ -56,7 +56,9 @@ formOpen = function (name) {
 }
 formClose = function (name) {
     var str = document.getElementById(name);
-    str.style.display = "none";
+    if (str !== null) {
+        str.style.display = "none";
+    }
 }
 formEditOpen = function (name) {
     var str = document.getElementById(name);
@@ -85,7 +87,7 @@ templateEditOpen = function () {
     edit_open();
     var sec = document.getElementsByClassName('section-template');
     sec[1].style.display = "block";
-    }
+}
 open_tab1 = function (tabName, btnName, iEnd) {
     for (var i = 1; i <= iEnd; i++) {
         var str = document.getElementById("tab-list" + i);
@@ -290,15 +292,15 @@ window.addEventListener("DOMContentLoaded", function () {
             setCursorPosition(this.value.length, this);
     }
 
-    var input = document.querySelector("[type='tel']");
+    //var input = document.querySelector("[type='tel']");
     var surname = document.getElementsByClassName("letter-mask");
     var fuel = document.getElementsByClassName("fuel");
     var odom = document.getElementsByClassName("odometr");
     var engineHours = document.getElementsByClassName("engineHours");
 
-    input.addEventListener("input", mask, false);
-    input.addEventListener("focus", mask, false);
-    input.addEventListener("blur", mask, false);
+//    input.addEventListener("input", mask, false);
+//    input.addEventListener("focus", mask, false);
+//    input.addEventListener("blur", mask, false);
 
     for (var i = 0; i < surname.length; i++) {
         surname[i].addEventListener("input", russ, false);
@@ -359,38 +361,87 @@ fasttab = function () {
     }
 }
 
-getFileNameOfInput=function(id,idList){
-    var inp=document.getElementById(id).files;
-    var lbl=document.getElementById(id).previousElementSibling;
-    var list=document.getElementById(idList);
-    var str='';
-    if(inp.length==0){
-    lbl.querySelector('span:not(:first-child)').innerHTML=' Прикрепить файл';
-    lbl.querySelector('span:not(:first-child)').classList.remove('custom-filedownload-active');
-    list.innerHTML=str;
+getFileNameOfInput = function (id, idList) {
+    var inp = document.getElementById(id).files;
+    var lbl = document.getElementById(id).previousElementSibling;
+    var list = document.getElementById(idList);
+    var str = '';
+    if (inp.length == 0) {
+        lbl.querySelector('span:not(:first-child)').innerHTML = ' Прикрепить файл';
+        lbl.querySelector('span:not(:first-child)').classList.remove('custom-filedownload-active');
+        list.innerHTML = str;
+    } else {
+        for (var i = 0; i < inp.length; i++) {
+            str += inp[i].name + ' ';
+        }
+        list.innerHTML = str;
+        lbl.querySelector('span:not(:first-child)').innerHTML = 'Число файлов: ' + inp.length;
+        lbl.querySelector('span:not(:first-child)').classList.add('custom-filedownload-active');
     }
-    else{
-    for(var i=0;i<inp.length;i++){
-      str+=inp[i].name+' ';
-    }
-    list.innerHTML=str;
-    lbl.querySelector('span:not(:first-child)').innerHTML='Число файлов: '+inp.length;
-    lbl.querySelector('span:not(:first-child)').classList.add('custom-filedownload-active');
-  }  
 }
 
+var elem = document.getElementById('date-btn');
+var cal = document.getElementById('picker1');
+var dWidth = document.documentElement.clientWidth;
+elem.addEventListener('click', function (event) {
+    cal.style.top = elem.getBoundingClientRect().bottom + 5 + 'px';
+    cal.style.left = elem.getBoundingClientRect().left / dWidth * 100 + "%";
+    cal.style.display = "block";
+});
 
+var picker = $("#dtPicker");
+picker.datepicker({
+    onSelect: function onSelect(fd, date) {
+        if (date) {
+            picker.selectedDate = date;
+        }
+    }
+});
 
-//  var block= document.getElementById('bar-block1');
-//  var items= block.getElementsByClassName('info-bar-btn');
-//  var i;
-//    for (i = 0; i < items.length; i++){
-//    items[i].addEventListener("click", function() {
-//    this.classList.toggle('subActive');
-//  });
-//
-//}
+closePicker = function () {
+    cal.style.display = "none";
+}
 
+fastOpen = function () {
+    formOpen('cover-trsp1');
+    var elem = document.getElementById('fast-info1');
+    elem.style.visibility = 'visible';
+    elem.style.right = '0';
+}
+fastClose = function () {
+    formClose('cover-trsp1');
+    var elem = document.getElementById('fast-info1');
+    elem.style.visibility = 'collapse';
+    elem.style.right = '-35%';
+}
+ flexOpen=function(name){
+    var str = document.getElementById(name);
+    str.style.display = 'block';
+};
+ flexClose=function(name){
+    var str = document.getElementById(name);
+    str.style.display = 'none';
+};
 
-
-
+history_button=function(){
+  var elem=document.getElementsByClassName('waybill-work');
+  var hist=document.getElementsByClassName('waybill-history');
+  hist[0].classList.toggle("collapseRow");
+  var i;
+  for (i=0; i<elem.length;i++){
+    elem[i].classList.toggle("collapseRow");
+  }
+}
+toggle_tab=function(tabName,btnName,iEnd){
+   for (var i = 1; i<=iEnd; i++) {
+     var str = document.getElementById("waybill-tab"+i);
+     var str_btn=document.getElementById("waybill-btn"+i);
+     if (str_btn.classList.contains("waybill-active")){
+      str_btn.classList.remove("waybill-active");}
+      str.style.display="none";  
+    } 
+  var str = document.getElementById(tabName);
+  var str_btn=document.getElementById(btnName);
+  str.style.display="flex";
+  str_btn.classList.add("waybill-active");
+}

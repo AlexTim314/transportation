@@ -36,7 +36,7 @@ App.controller('DriversController', ['$scope', 'DriversService',
         };
 
         self.getDateFromServer = function () {
-            ClaimsService.fetchDateFromServer()
+            DriversService.fetchDateFromServer()
                     .then(
                             function (d) {
                                 self.today = d;
@@ -47,19 +47,19 @@ App.controller('DriversController', ['$scope', 'DriversService',
                     );
         };
 
-        self.setBirthday = function () {
-            var date = new Date(self.today);
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear() - 18;
-            if (month < 10)
-                month = "0" + month;
-            if (day < 10)
-                day = "0" + day;
-            var maxDay = year + "-" + month + "-" + day;
-            document.getElementById('birthday').value = maxDay;
-            document.getElementById('birthday').max = maxDay;
-        };
+//        self.setBirthday = function () {
+//            var date = new Date(self.today);
+//            var day = date.getDate();
+//            var month = date.getMonth() + 1;
+//            var year = date.getFullYear() - 18;
+//            if (month < 10)
+//                month = "0" + month;
+//            if (day < 10)
+//                day = "0" + day;
+//            var maxDay = year + "-" + month + "-" + day;
+//            document.getElementById('birthday').value = maxDay;
+//            document.getElementById('birthday').max = maxDay;
+//        };
 
         self.fetchTransportDep();
         self.fetchDrivers();
@@ -139,7 +139,7 @@ App.controller('DriversController', ['$scope', 'DriversService',
             self.driver = {id: null};
             formOpen('cover-trsp1');
             formOpen('formDriver');
-            self.setBirthday();
+           // self.setBirthday();
         };
 
         self.tryToUpdate = function (driver) {
@@ -147,8 +147,8 @@ App.controller('DriversController', ['$scope', 'DriversService',
             self.driver.firstname = driver.firstname;
             self.driver.name = driver.name;
             self.driver.surname = driver.surname;
-            self.driver.birthday = new Date(driver.birthday);
-            self.driver.address = driver.address;
+            self.driver.birthday = null;
+            self.driver.address = '';
             self.driver.phone = driver.phone;
             self.driver.driverLicense = driver.driverLicense;
             self.driver.driverClass = driver.driverClass;
@@ -170,8 +170,8 @@ App.controller('DriversController', ['$scope', 'DriversService',
             self.driver.firstname = driver.firstname;
             self.driver.name = driver.name;
             self.driver.surname = driver.surname;
-            self.driver.birthday = new Date(driver.birthday);
-            self.driver.address = driver.address;
+            self.driver.birthday = null;
+            self.driver.address = ''
             self.driver.phone = driver.phone;
             self.driver.driverLicense = driver.driverLicense;
             self.driver.driverClass = driver.driverClass;

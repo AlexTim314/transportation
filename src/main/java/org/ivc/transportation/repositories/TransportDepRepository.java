@@ -4,8 +4,10 @@ import java.util.List;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.utils.CompositeModelTransportDep;
 import org.ivc.transportation.utils.OtsInfo;
+import org.ivc.transportation.utils.VehiclesInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,6 +30,19 @@ public interface TransportDepRepository extends JpaRepository<TransportDep, Long
             + "transport_dep "
             + "group by transport_dep.id order by transport_dep.shortname", nativeQuery = true)
     public List<OtsInfo> findOtsInfo();
+    
+     @Query(value = "select "
+            + "transport_dep.id as id, "
+            + "(select count(vehicle.id) from vehicle, vehicle_model, vehicle_type where vehicle.transport_dep_id = transport_dep.id and vehicle.status = 0 and vehicle.model_id = vehicle_model.id and vehicle_model.vehicle_type_id = vehicle_type.id and vehicle_type.specialization = 0) as type1count, "
+            + "(select count(vehicle.id) from vehicle, vehicle_model, vehicle_type where vehicle.transport_dep_id = transport_dep.id and vehicle.status = 0 and vehicle.model_id = vehicle_model.id and vehicle_model.vehicle_type_id = vehicle_type.id and vehicle_type.specialization = 1) as type2count, "
+            + "(select count(vehicle.id) from vehicle, vehicle_model, vehicle_type where vehicle.transport_dep_id = transport_dep.id and vehicle.status = 0 and vehicle.model_id = vehicle_model.id and vehicle_model.vehicle_type_id = vehicle_type.id and vehicle_type.specialization = 2) as type3count, "
+            + "(select count(vehicle.id) from vehicle, vehicle_model, vehicle_type where vehicle.transport_dep_id = transport_dep.id and vehicle.status = 0 and vehicle.model_id = vehicle_model.id and vehicle_model.vehicle_type_id = vehicle_type.id and vehicle_type.specialization = 3) as type4count "
+            + "from "
+            + "vehicle, "
+            + "transport_dep "
+            + "where transport_dep.id = :transport_dep_id "
+            + "group by transport_dep.id order by transport_dep.shortname", nativeQuery = true)
+    public List<VehiclesInfo> findVehiclesInfo(@Param("transport_dep_id") Long transportDepId);
 
     @Query(value = "select vehicle_model.id as vehiclemodelid, "
             + "vehicle_model.model_name as modelname, "

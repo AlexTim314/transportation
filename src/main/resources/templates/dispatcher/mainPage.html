@@ -8,13 +8,20 @@
         <title>Диспетчерское обеспечение</title>
 
         <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/lib/datepicker.min.css">
         <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/jquery.min.js"></script>
+        <script src="js/lib/datepicker.min.js"></script>
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
 
         <script src="js/app/dispatcherPage/service.js"></script>
         <script src="js/app/dispatcherPage/controller.js"></script>
+
+        <script src="js/app/dispatcherSidebar/service.js"></script>
+        <script src="js/app/dispatcherSidebar/controller.js"></script>
 
         <script src="js/app/appointments/service.js"></script>
         <script src="js/app/appointments/controller.js"></script>
@@ -55,6 +62,7 @@
                 </div>
 
             </div>
+
 
 
             <!-- Login Form-->
@@ -135,7 +143,7 @@
                         <input hidden type="submit" value="Sign Out"/>
                     </form>
                 </div>
-                <div ng-controller="DispatcherController as plctrl">
+                <div ng-controller="DispatcherSidebarController as sctrl">
                     <th:block th:include="dispatcher/sidebar"></th:block>
                 </div>
 
@@ -147,11 +155,20 @@
                     <div class="clearfix" style="overflow-x:auto;">
                         <div ng-controller="DispatcherController as plctrl">
                             <!--Sidebar-->
+                            <div class="date-pick-box" id="picker1">		
+                                <input class="datepicker-here" id="dtPicker" data-inline="true" hidden>	
+                                <!--</div>-->
+                                <div class="custom-picker-container">
+                                    <span class="custom-picker" onclick="closePicker()">Отмена</span>
+                                    <span class="custom-picker"ng-click="plctrl.fetchDatePlanRecords()">Показать</span>
+                                </div>				
+                            </div>
                             <th:block th:include="dispatcher/appointment_form"></th:block>
                             <th:block th:include="dispatcher/appointment_status_form"></th:block> 
                             <th:block th:include="dispatcher/appointments_tab"></th:block> 
                             <th:block th:include="dispatcher/record_info"></th:block>
                             <th:block th:include="dispatcher/addingClaim"></th:block>
+
                         </div>
                         <div ng-controller="VehiclesController as ctrl">
                             <th:block th:include="dispatcher/save_vehicle_form"></th:block> 
@@ -161,7 +178,7 @@
                             <th:block th:include="dispatcher/vehicle_info"></th:block> 
                             <th:block th:include="dispatcher/vehicle_history"></th:block> 
                             <th:block th:include="dispatcher/refueling_form"></th:block> 
-
+                            <th:block th:include="dispatcher/waybill-sidebar"></th:block>
                             <th:block th:include="dispatcher/vehicles_tab"></th:block> 
                         </div>
                         <div ng-controller="DriversController as ctrl">

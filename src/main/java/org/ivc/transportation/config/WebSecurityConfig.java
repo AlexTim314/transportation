@@ -1,7 +1,6 @@
 package org.ivc.transportation.config;
 
 import javax.sql.DataSource;
-import org.ivc.transportation.controllers.CommonController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +20,10 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public static final String[] COMMON_PATHES = {"/transportDep", "/department",
+        "/departments", "/transportDeps", "/vehicleTypes", "/vehicleModels",
+        "/places", "/fuels", "/vehicleModelsByTransportDep", "getNow"};
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -56,12 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/supermanager/**").access("hasAnyRole('ROLE_SUPERMANAGER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/planner/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
-        
+
         http.authorizeRequests().antMatchers("/planner1/**").access("hasAnyRole('ROLE_PLANNER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/dispatcher/**").access("hasAnyRole('ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
-        http.authorizeRequests().antMatchers(CommonController.COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_SUPERMANAGER', 'ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers(COMMON_PATHES).access("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_SUPERMANAGER', 'ROLE_PLANNER', 'ROLE_DISPATCHER', 'ROLE_ADMIN')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/management/**", "/admin/**",

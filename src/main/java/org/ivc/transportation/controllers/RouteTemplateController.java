@@ -33,6 +33,11 @@ public class RouteTemplateController {
     public List<RouteTemplate> getDispatcherRouteTemplates(Principal principal) {
         return routeTemplateService.findRouteTemplates(principal);
     }
+    
+    @PostMapping("/planner/routeTemplates")
+    public List<RouteTemplate> getPlannerRouteTemplates(@RequestBody Long id) {
+        return routeTemplateService.findRouteTemplatesForPlanner(id);
+    }
 
     @PostMapping("/user/routeTemplate_create")
     public RouteTemplate createRouteTemplate(Principal principal, @RequestBody RouteTemplate routeTemplate) {

@@ -8,7 +8,12 @@
         <title>Сектор планирования КАТО</title>
 
         <link href="fontawesome/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/lib/datepicker.min.css">
+
         <link rel="stylesheet" href="css/style.css">
+
+        <script src="js/lib/jquery.min.js"></script>
+        <script src="js/lib/datepicker.min.js"></script>
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
@@ -23,6 +28,7 @@
     <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
         <div class="wrapper">
             <div class="cover-trsp" id="cover-trsp1"></div>
+            <div class="cover-trsp cover-trsp-global" id="cover-trsp2"></div>
             <div class="loading-content" id="preloader">
                 <div class="load-wrapp">
                     <div class="load-4">
@@ -44,8 +50,17 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div class="date-pick-box" id="picker1">		
+                <input class="datepicker-here" id="dtPicker" data-inline="true" hidden>	
+                <!--</div>-->
+                <div class="custom-picker-container">
+                    <span class="custom-picker" onclick="closePicker()">Отмена</span>
+                    <span class="custom-picker"ng-click="plctrl.fetchDatePlanRecords()">Показать</span>
+                </div>				
+            </div>
+
             <!--             <a href="#" onclick="history.back();" ng-show="plctrl.permit">Возврат на страницу приветствия</a>-->
             <!-- Login Form-->
 
@@ -84,7 +99,7 @@
                     <!--Navigation -->	
                     <nav class="nav-horizontal">
                         <div class="btn active" id="tab-btn1" onclick="open_tab1('tab-list1', 'tab-btn1', 2)">Обработка заявок</div>
-                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			
+                        <!--                        <div class="btn" id="tab-btn2" onclick="open_tab1('tab-list2', 'tab-btn2', 2)">Готовый План</div>			-->
                     </nav>
                     <div class="department-block">Отдел планирования</div>
                     <div class="sing-block">
@@ -120,7 +135,6 @@
 
     <th:block th:include="planner/save_claim_form"></th:block>
 
-    <th:block th:include="planner/new_route_tasks_form"></th:block>
 
     <th:block th:include="planner/route_tasks_form"></th:block>
 
@@ -128,9 +142,6 @@
 
     <th:block th:include="planner/status_info_form"></th:block> 
 
-    <th:block th:include="planner/car_bosses_tab"></th:block> 
-
-
-    <script type="text/javascript" src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

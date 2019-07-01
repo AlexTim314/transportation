@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import org.ivc.transportation.entities.Claim;
+import org.ivc.transportation.entities.Department;
 import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.services.ClaimService;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
@@ -47,6 +48,11 @@ public class ClaimController {
         return claimService.getUserName(principal);
     }
 
+    @GetMapping("/user/department")
+    public Department getDepartment(Principal principal) {
+        return claimService.getDepartment(principal);
+    }
+
     @GetMapping("/user/affirmedClaims/Tomorrow")
     public List<Claim> getAffirmedClaimsTomorrow(Principal principal) {
         LocalDateTime dStart = LocalDateTime.now();
@@ -79,14 +85,16 @@ public class ClaimController {
     @PostMapping("/user/claim_create")
     public Claim createClaim(Principal principal, @RequestBody Claim claim) {
         Claim newClaim = claimService.saveClaim(principal, claim);
-        messagingTemplate.convertAndSend("/topic/create_claim", newClaim);
+        Long depId = claimService.getDepartment(principal).getId();
+        messagingTemplate.convertAndSend("/topic/create_claim/" + depId, newClaim);
         return newClaim;
     }
 
     @PutMapping("/user/claim_update")
     public Claim updateClaim(Principal principal, @RequestBody Claim claim) {
         Claim updClaim = claimService.saveClaim(principal, claim);
-        messagingTemplate.convertAndSend("/topic/update_claim", updClaim);
+        Long depId = claimService.getDepartment(principal).getId();
+        messagingTemplate.convertAndSend("/topic/update_claim/" + depId, updClaim);
         return updClaim;
     }
 

@@ -1,13 +1,12 @@
 package org.ivc.transportation.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,30 +21,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"fuel", "vehicle", "refuelingStation"})
-@ToString(exclude = {"fuel", "vehicle", "refuelingStation"})
+@EqualsAndHashCode(exclude = {"place"})
+@ToString(exclude = {"place"})
 @Entity
-@Table(name = "refueling")
-public class Refueling implements Serializable {
+@Table(name = "refueling_station")
+public class RefuelingStation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "refueling_date", nullable = false)
-    private LocalDateTime refuelingDate;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "volume")
-    private double volume;
-
-    @ManyToOne
-    private Fuel fuel;
-
-    @ManyToOne
-    private Vehicle vehicle;
-
-    @ManyToOne
-    private RefuelingStation refuelingStation;
+    @OneToOne
+    private Place place;
 
 }
