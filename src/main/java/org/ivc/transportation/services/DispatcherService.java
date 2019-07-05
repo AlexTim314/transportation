@@ -25,12 +25,14 @@ import org.ivc.transportation.repositories.CarBossRepository;
 import org.ivc.transportation.repositories.ClaimRepository;
 import org.ivc.transportation.repositories.DriverRepository;
 import org.ivc.transportation.repositories.RecordRepository;
+import org.ivc.transportation.repositories.RouteTaskRepository;
 import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
 import org.ivc.transportation.utils.AddDispatcherClaim;
 import org.ivc.transportation.utils.AppointmentClaim;
+import org.ivc.transportation.utils.CompositeAppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
 import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.CompositeTDInfo;
@@ -83,6 +85,9 @@ public class DispatcherService {
 
     @Autowired
     private TransportDepRepository transportDepRepository;
+    
+    @Autowired
+    private RouteTaskRepository routeTaskRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -122,6 +127,12 @@ public class DispatcherService {
             return null;
         }
         return claimRepository.findAppointmentClaimsTimeFilter(getUser(principal).getTransportDep().getId(), dateStart, dateEnd);
+    }
+
+    public List<CompositeAppointmentClaim> getAppointmentsByVehicle(Long vehId, LocalDateTime dateStart, LocalDateTime dateEnd) {
+        List<CompositeAppointmentClaim> result = new ArrayList<>();        
+        claimRepository.findAppointmentClaimsByVehicle(vehId, dateStart, dateEnd).forEach(u -> result.add(new CompositeAppointmentClaim(u, routeTaskRepository.findRouteTasksForAppointment(u.getAppointmentid()))));
+        return result;
     }
 
     private TransportDep findTransportDepByUser(Principal principal) {

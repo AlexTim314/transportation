@@ -217,6 +217,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehicleModelsMap[d[i].id] = i;
                                 }
+                                DispatcherService.setCommonVehicleModels(self.vehicleModels);
+                                DispatcherService.setCommonVehicleModelsMap(self.vehicleModelsMap);
                                 self.checkingCounterForLoad();
                             },
                             function (errResponse) {
@@ -232,6 +234,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.driversMap[d[i].id] = i;
                                 }
+                                DispatcherService.setCommonDrivers(self.drivers);
+                                DispatcherService.setCommonDriversMap(self.driversMap);
                                 self.checkingCounterForLoad();
                             },
                             function (errResponse) {
@@ -380,6 +384,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehicleTypesMap[d[i].id] = i;
                                 }
+                                DispatcherService.setCommonVehicleTypes(self.vehicleTypes);
+                                DispatcherService.setCommonVehicleTypesMap(self.vehicleTypesMap);
                                 self.checkingCounterForLoad();
                             },
                             function (errResponse) {
@@ -1306,6 +1312,8 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
             var res = Array.from(uniq).map(e => JSON.parse(e));
             return res;
         };
+        
+        
 
 
 //        self.selectSmallIcon = function (spec) {

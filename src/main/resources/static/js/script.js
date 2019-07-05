@@ -432,6 +432,20 @@ history_button=function(){
     elem[i].classList.toggle("collapseRow");
   }
 }
+toggle_step=function(stepName,stepEnd){
+	var step=document.getElementsByClassName(stepName);
+	var steps;
+	 for (var i = 1; i<=stepEnd; i++) {
+	 	steps=document.getElementsByClassName('step'+i);
+	 	for(var k=0; k<steps.length; k++){
+	 		steps[k].style.display = 'none';
+	 	}
+	 }
+	 for (var z = 0; z<step.length; z++) { 
+    if (step[z].classList.contains("waybill-name")){step[z].style.display = 'flex';}
+    else{ step[z].style.display = 'block';}
+	 }
+}
 toggle_tab=function(tabName,btnName,iEnd){
    for (var i = 1; i<=iEnd; i++) {
      var str = document.getElementById("waybill-tab"+i);
@@ -445,3 +459,28 @@ toggle_tab=function(tabName,btnName,iEnd){
   str.style.display="flex";
   str_btn.classList.add("waybill-active");
 }
+
+//var tab = document.getElementById("fast-bar-block1");
+//var elements = tab.getElementsByClassName('fast-bar-btn');
+//var i;
+//
+//for (i = 0; i < elements.length; i++) {
+//  elements[i].addEventListener("click", function() {
+//  	// close_all("fast-bar-block1","fast-bar-btn","fast-bar-sub");
+//    var panel = this.nextElementSibling;
+//    var i_item=this.getElementsByTagName('i');
+//    if (i_item[0].classList.contains("fa-plus")){
+//      i_item[0].classList.remove("fa-plus");
+//      i_item[0].classList.add("fa-minus");
+//    }
+//    else{
+//      i_item[0].classList.remove("fa-minus");
+//      i_item[0].classList.add("fa-plus");
+//    }
+//    // if (panel.classList.contains("hiddenRow")){
+//       panel.classList.toggle("collapseRow");
+//      this.classList.toggle("fast-btn-active");   
+//      // } 
+//   
+//  });
+//}
