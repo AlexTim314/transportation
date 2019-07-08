@@ -1,11 +1,17 @@
 package org.ivc.transportation.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleInfo;
+import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.services.VehicleService;
+import org.ivc.transportation.utils.AppointmentClaim;
+import org.ivc.transportation.utils.CompositeAppointmentClaim;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +32,9 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private DispatcherService dispatcherService;
 
     @GetMapping("/dispatcher/vehicles")
     public List<Vehicle> getVehicles(Principal principal) {
@@ -61,6 +70,14 @@ public class VehicleController {
     public ResponseEntity<String> deleteVehicle(@RequestBody List<Long> ids) {
         vehicleService.deleteVehicles(ids);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/dispatcher/vehicle_appointments/{id}")
+    public List<CompositeAppointmentClaim> getAppointmentsByVehicle(@PathVariable("id") Long vehicleId) {
+        //LocalDateTime dStart = LocalDateTime.now();
+        LocalDateTime dStart = LocalDateTime.of(LocalDate.now().minusDays(30), LocalTime.of(00, 00));
+        LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
+        return dispatcherService.getAppointmentsByVehicle(vehicleId, dStart, dEnd);
     }
 
 }

@@ -1,5 +1,4 @@
 'use strict';
-
 App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $q, $document) {
 
         self.csrfHeaderName = $document[0].querySelector("meta[name='_csrf_header']").getAttribute('content');
@@ -7,7 +6,12 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
         self.headers = {};
         self.headers[self.csrfHeaderName] = self.csrf;
         self.headers["Content-Type"] = 'application/json';
-
+        var commonDrivers = [];
+        var commonVehicleModels = [];
+        var commonVehicleTypes = [];
+        var commonDriversMap = {};
+        var commonVehicleModelsMap = {};
+        var commonVehicleTypesMap = {};
         return {
 
             fetchMonthPlanRecords: function () {
@@ -22,7 +26,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchMonthBeforeRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/monthBefore')
                         .then(
@@ -35,7 +38,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchWeekPlanRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/Week')
                         .then(
@@ -48,7 +50,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchTomorrowPlanRecords: function () {
                 return $http.get('/transportation/dispatcher/appointments/Tomorrow')
                         .then(
@@ -61,13 +62,11 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchDatePlanRecords: function (date) {
                 return $http.get('/transportation/dispatcher/appointments/day?date=' + date)
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching Recs of date');
@@ -75,7 +74,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchAllVehicleModels: function () {
                 return $http.get('/transportation/dispatcher/vehicleModels')
                         .then(
@@ -88,7 +86,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchDrivers: function () {
                 return $http.get('/transportation/dispatcher/drivers')
                         .then(
@@ -101,14 +98,12 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchVacantDrivers: function (app) {
                 return $http.post('/transportation/dispatcher/vacantDrivers',
                         JSON.stringify(app), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vacant drivers');
@@ -116,7 +111,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchVehicles: function () {
                 return $http.get('/transportation/dispatcher/vehicles')
                         .then(
@@ -129,14 +123,12 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchVacantVehicles: function (app) {
                 return $http.post('/transportation/dispatcher/vacantVehicles',
                         JSON.stringify(app), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while fetching vacant Vehicle');
@@ -144,7 +136,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchVehicleTypes: function () {
                 return $http.get('/transportation/vehicleTypes')
                         .then(
@@ -181,7 +172,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchCarBosses: function () {
                 return $http.get('/transportation/dispatcher/carBosses')
                         .then(
@@ -206,7 +196,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchAllDeps: function () {
                 return $http.get('/transportation/departments')
                         .then(
@@ -219,7 +208,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchRouteTemplates: function () {
                 return $http.get('/transportation/dispatcher/routeTemplates')
                         .then(
@@ -232,7 +220,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             fetchDateFromServer: function () {
                 return $http.get('/transportation/getNow')
                         .then(
@@ -245,7 +232,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
 //            fetchDriversInfo: function () {
 //                return $http.get('/transportation/dispatcher/driverInfo')
 //                        .then(
@@ -299,7 +285,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             updateAppointments: function (appointments) {
                 return $http.put('/transportation/dispatcher/appointments_update',
                         JSON.stringify(appointments), {headers: self.headers})
@@ -313,7 +298,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             updateStatusAppointment: function (appointment) {
                 return $http.put('/transportation/dispatcher/appointment_update',
                         JSON.stringify(appointment), {headers: self.headers})
@@ -327,14 +311,12 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             createCarBoss: function (carBoss) {
                 return $http.post('/transportation/dispatcher/carBoss_create',
                         JSON.stringify(carBoss), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating carBoss');
@@ -342,7 +324,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             updateCarBoss: function (carBoss) {
                 return $http.put('/transportation/dispatcher/carBoss_update',
                         JSON.stringify(carBoss), {headers: self.headers})
@@ -356,7 +337,6 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-
             deleteCarBoss: function (carBoss) {
                 return $http({method: 'DELETE',
                     url: '/transportation/dispatcher/carBoss_delete',
@@ -372,21 +352,218 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                         }
                 );
             },
-
             createClaim: function (claim) {
                 return $http.post('/transportation/dispatcher/claim_create',
                         JSON.stringify(claim), {headers: self.headers})
                         .then(
                                 function (response) {
                                     return response.data;
-
                                 },
                                 function (errResponse) {
                                     console.error('Error while creating dispatcher claim');
                                     return $q.reject(errResponse);
                                 }
                         );
+            },
+//---------------------------------------vehicle service start--------------
+            fetchTransportDep: function () {
+                return $http.get('/transportation/transportDep')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching transportDep');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+//            fetchVehicleTypes: function () {
+//                return $http.get('/transportation/vehicleTypes')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching vehicleTypes');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+
+            fetchVehicleModels: function () {
+                return $http.get('/transportation/vehicleModels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicleModels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchFuels: function () {
+                return $http.get('/transportation/fuels')
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching fuels');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+//            fetchVehicles: function () {
+//                return $http.get('/transportation/dispatcher/vehicles')
+//                        .then(
+//                                function (response) {
+//                                    return response.data;
+//                                },
+//                                function (errResponse) {
+//                                    console.error('Error while fetching vehicles');
+//                                    return $q.reject(errResponse);
+//                                }
+//                        );
+//            },
+
+            fetchVehicleHistory: function (vehicle) {
+                return $http.get('/transportation/dispatcher/vehicle_history/' + vehicle.id)
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching vehicle history');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            fetchAppointmentsByVehicle: function (vehicle) {
+                return $http.get('/transportation/dispatcher/vehicle_appointments/' + vehicle.id)
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while fetching appointments by vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            createVehicle: function (vehicle) {
+                return $http.post('/transportation/dispatcher/vehicle_create',
+                        JSON.stringify(vehicle), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            createVehicleInfo: function (vehicleInfo) {
+                return $http.post('/transportation/dispatcher/vehicle_updateState',
+                        JSON.stringify(vehicleInfo), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            updateVehicle: function (vehicle) {
+                return $http.put('/transportation/dispatcher/vehicle_update',
+                        JSON.stringify(vehicle), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while updating vehicle');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            refulingVehicle: function (ref) {
+                return $http.post('/transportation/dispatcher/vehicle_refueling',
+                        JSON.stringify(ref), {headers: self.headers})
+                        .then(
+                                function (response) {
+                                    return response.data;
+                                },
+                                function (errResponse) {
+                                    console.error('Error while creating refueling');
+                                    return $q.reject(errResponse);
+                                }
+                        );
+            },
+            deleteVehicles: function (ids) {
+                return $http({method: 'DELETE',
+                    url: '/transportation/dispatcher/vehicles_delete',
+                    data: JSON.stringify(ids),
+                    headers: self.headers
+                }).then(
+                        function (response) {
+                            return response.data;
+                        },
+                        function (errResponse) {
+                            console.error('Error while deleting vehicle');
+                            return $q.reject(errResponse);
+                        }
+                );
+            },
+//----------------------------------vehicle service end----------------
+//---------------------------------common service start----------
+            setCommonDrivers: function (dr) {
+                commonDrivers = dr;
+            },
+            getCommonDrivers: function () {
+                return commonDrivers;
+            },
+
+            setCommonDriversMap: function (drMap) {
+                commonDriversMap = drMap;
+            },
+            getCommonDriversMap: function () {
+                return commonDriversMap;
+            },
+
+            setCommonVehicleModels: function (vm) {
+                commonVehicleModels = vm;
+            },
+            getCommonVehicleModels: function () {
+                return commonVehicleModels;
+            },
+
+            setCommonVehicleModelsMap: function (vmMap) {
+                commonVehicleModelsMap = vmMap;
+            },
+            getCommonVehicleModelsMap: function () {
+                return commonVehicleModelsMap;
+            },
+
+            setCommonVehicleTypes: function (vt) {
+                commonVehicleTypes = vt;
+            },
+            getCommonVehicleTypes: function () {
+                return commonVehicleTypes;
+            },
+
+            setCommonVehicleTypesMap: function (vtMap) {
+                commonVehicleTypesMap = vtMap;
+            },
+            getCommonVehicleTypesMap: function () {
+                return commonVehicleTypesMap;
             }
+
+//-----------------------------------common service end-----------------
 
         };
     }]);

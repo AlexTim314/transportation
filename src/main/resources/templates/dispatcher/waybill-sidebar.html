@@ -1,14 +1,14 @@
 <div class="fast-info" id="fast-info1">
     <section>
-        <span>X 355 XA</span>
+        <span>{{ctrl.vehWaybill.number}}</span>
         <div>
             <i class="fas fa-history" onclick="history_button()" title="История Путевых Листов"></i>
         </div> 	
-        <i class="fas fa-times" onclick="fastClose()"></i>				 	
+        <i class="fas fa-times"ng-click="ctrl.closeWaybillSidebar()"></i>				 	
     </section>
     <section>
-        <span>Микроавтобус</span>
-        <span>Iveco Daily</span>
+        <span>{{ctrl.vehWaybill.model.vehicleType.typeName}}</span>
+        <span>{{ctrl.vehWaybill.model.modelName}}</span>
     </section>
     <div class="btn-var waybill-work step1" onclick="toggle_step('step2', 3)">
         Открыть Путевой Лист
@@ -103,136 +103,59 @@
     </div>
     <ul class="fast-bar-block waybill-work step1 step2" id="fast-bar-block1">
         <li>Список назначений</li>
+
         <li class="fast-bar-item">						
-            <div class="fast-bar-btn">
-                <div>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" checked >
-                        <span class="checkmark"></span>
-                    </label>
-                    <span>Назначение 1</span>
-                </div>
-
-                <i class="fas fa-plus"></i>
-
-
-
-            </div>
-            <div class="fast-bar-sub ">
-
-            </div>						
-        </li>
-        <li class="fast-bar-item">						
-            <div class="fast-bar-btn">
+            <div class="fast-bar-btn" ng-click="ctrl.rowClick(clrecapp)" ng-repeat-start="clrecapp in ctrl.data">
                 <div>
                     <label class="custom-checkbox">
                         <input type="checkbox" checked>
                         <span class="checkmark"></span>
                     </label>
-                    <span>Назначение 2</span>
+                    <span>Назначение {{clrecapp.appointment.id}}</span>
                 </div>
-                <i class="fas fa-plus"></i>
+                <i class="{{(clrecapp.isVisible !== undefined && clrecapp.isVisible)?'fas fa-minus':'fas fa-plus'}}"></i>
 
             </div>
-            <div class="fast-bar-sub collapseRow">
+            <div class="fast-bar-sub" ng-show="clrecapp.isVisible !== undefined && clrecapp.isVisible" ng-repeat-end>
                 <table>
                     <tr>
                         <th>Место</th>
                         <th>Задание</th>
                     </tr>
-                    <tr>
-                        <td>Пл.10</td>
-                        <td>Перевозка пассажиров</td>
-                    </tr>
-                    <tr>
-                        <td>Пл.18</td>
-                        <td>Перевозка пассажиров</td>
+                    <tr ng-repeat="rtask in clrecapp.record.tasks| orderBy: 'orderNum'">
+                        <td>{{rtask.place.name}}</td>
+                        <td>{{rtask.workName}}</td>
                     </tr>
                 </table>
                 <article>
                     <div>
                         <span>Дата</span>
-                        <span>25.07.2019</span>
+                        <span>{{clrecapp.record.startDate| date:'dd.MM.yyyy'}}</span>
                     </div>
                     <div>
                         <span>Время</span>
-                        <span>08:00(08:10-16:10)</span>
+                        <span>{{clrecapp.record.startDate| date:'HH:mm'}} ({{clrecapp.record.entranceDate| date:'HH:mm'}}) - {{clrecapp.record.endDate| date:'HH:mm'}}</span>
                     </div>
                     <div>
                         <span>Водитель</span>
-                        <span>Серикбаев С.С.</span>
+                        <span>{{ctrl.showDriver(clrecapp.appointment)}}</span>
                     </div>
                     <div>
                         <span>Старший</span>
-                        <span>Иванов М.Ю.</span>
+                        <span>{{clrecapp.claim.carBoss.firstname}} {{clrecapp.claim.carBoss.name[0]}}.{{clrecapp.claim.carBoss.surname[0]}}.</span>
                     </div>
                     <div>
                         <span>Подразделение</span>
-                        <span>ЦИ-1</span>
+                        <span>{{clrecapp.claim.department}}</span>
                     </div>
                     <div>
                         <span>Статус</span>
-                        <span class="done-status">Готово</span>
+                        <span class="{{ctrl.statusClass(clrecapp.appointment)}}">{{ctrl.selectStatus(clrecapp.appointment.status)}}</span>
                     </div>
                 </article>			
 
             </div>						
-        </li>
-        <li class="fast-bar-item">						
-            <div class="fast-bar-btn">
-                <div>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" checked>
-                        <span class="checkmark"></span>
-                    </label>
-                    <span>Назначение 3</span>
-                </div>	
-                <i class="fas fa-plus"></i>	
-            </div>
-            <div class="fast-bar-sub collapseRow">
-                <table>
-                    <tr>
-                        <th>Место</th>
-                        <th>Задание</th>
-                    </tr>
-                    <tr>
-                        <td>Пл.10</td>
-                        <td>Перевозка пассажиров</td>
-                    </tr>
-                    <tr>
-                        <td>Пл.18</td>
-                        <td>Перевозка пассажиров</td>
-                    </tr>
-                </table>
-                <article>
-                    <div>
-                        <span>Дата</span>
-                        <span>25.07.2019</span>
-                    </div>
-                    <div>
-                        <span>Время</span>
-                        <span>08:00(08:10-16:10)</span>
-                    </div>
-                    <div>
-                        <span>Водитель</span>
-                        <span>Серикбаев С.С.</span>
-                    </div>
-                    <div>
-                        <span>Старший</span>
-                        <span>Иванов М.Ю.</span>
-                    </div>
-                    <div>
-                        <span>Подразделение</span>
-                        <span>ЦИ-1</span>
-                    </div>
-                    <div>
-                        <span>Статус</span>
-                        <span class="done-status">Готово</span>
-                    </div>
-                </article>			
-
-            </div>							
-        </li>				
+        </li>			
     </ul>
     <!-- <div class="arrow-container waybill-work step2" >
             <div class="arrow"></div>

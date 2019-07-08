@@ -2804,8 +2804,14 @@ span.psw {
 .btn-var:hover:after{
 	width: 100%;
 }
+
+/*------waybill start-----*/
+
 .fast-bar-block{
 	margin-top:20px;
+	margin-bottom: 20px;
+	max-height: 400px;
+	overflow-y: auto;
 }
 .fast-bar-block li:first-child{
 	color:#333 ;
@@ -2825,6 +2831,9 @@ span.psw {
 	padding:5px 0;
 	border-bottom:2px solid rgba(0,0,0,0.2);
 }
+.fast-bar-btn label{
+	margin-left:5px;
+}
 .fast-bar-btn span{
 	padding-left: 5px;
 }
@@ -2839,6 +2848,7 @@ span.psw {
 	background: grey;
 	color:#333;
 }
+
 .fast-bar-sub table{
 	width: 100%;
 	border-collapse: collapse;
@@ -2878,13 +2888,12 @@ span.psw {
 	text-transform: uppercase;
 }
 .waybill-name{
-	margin-top: 30px;
-	display: flex;
+	width: 100%;
 	font-size: 0.8em;
 	justify-content: space-between;
 	color: grey;
 }
-.waybill-name span{
+.waybill-name span{	
 	color:#333;
 	font-weight: bold;
 }
@@ -2903,7 +2912,6 @@ span.psw {
 	display: flex;
 	flex-direction: column;
 }
-
 .waybill-parametr div, .waybill-refueling div{
 	margin-top: 10px;
 	display: flex;
@@ -2953,14 +2961,16 @@ span.psw {
 	color:white;
 	text-transform: uppercase;
 }
+.waybill-refueling table td{
+	font-size: 0.6em;
+}
 .waybill-history p{
-	margin-top:20px;
 	font-weight: bold;
 	color:#5f5f5f;
 }
 .waybill-history div{
 	margin-top: 20px;
-	width: 70%;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	
@@ -2981,12 +2991,15 @@ span.psw {
 	font-size: 0.9em;
 }
 .waybill-refueling table th:first-child{
-	width: 40%;
+	width: 30%;
 }
 .waybill-refueling table th:nth-child(2){
 	width: 20%;
 }
 .waybill-refueling table th:nth-child(3){
+	width: 20%;
+}
+.waybill-refueling table th:nth-child(4){
 	width: 20%;
 }
 .waybill-refueling table th:last-child{
@@ -2998,6 +3011,9 @@ span.psw {
 	border-bottom:2px solid rgba(0, 162, 211,0.3);
 }
 .waybill-refueling table td:nth-child(3){
+	text-align: center;
+}
+.waybill-refueling table td:nth-child(4){
 	text-align: right;
 }
 .waybill-refueling select, .waybill-refueling [type="date"]{
@@ -3028,6 +3044,15 @@ span.psw {
 .confirm-tasks b{
 	font-size: 0.8em;
 	color:#333;
+}
+.step2{
+	display: none;
+}
+.step3{
+	display: none;
+}
+.step1{
+	display: block;
 }
 /*--------------waybill end--------*/
 
