@@ -116,7 +116,7 @@ public class SuperManagerService {
             Record record = recordRepository.findById(id).get();
             Appointment app = appointmentRepository.getLastByRecordId(id);
             if (app == null) {
-                app = appointmentRepository.save(new Appointment(LocalDateTime.now(), EntitiesUtils.AppointmentStatus.CANCELED_BY_SUPERMANAGER, SUPERMANAGER_CANCEL_STR, getUser(principal)));
+                app = appointmentRepository.save(new Appointment(LocalDateTime.now(), null, EntitiesUtils.AppointmentStatus.CANCELED_BY_SUPERMANAGER, SUPERMANAGER_CANCEL_STR, getUser(principal)));
                 appointmentInfoRepository.save(new AppointmentInfo(LocalDateTime.now(), app.getStatus(), app.getNote(), app, getUser(principal)));
                 record.getAppointments().add(app);
             } else {
@@ -129,7 +129,7 @@ public class SuperManagerService {
             recordRepository.save(record);
         });
     }
-    
+
     public Boolean getPermit(Principal principal) {
         AppUser user = getUser(principal);
         for (AppRole role : user.getRoles()) {
