@@ -30,7 +30,7 @@
                     </td>
                     <td >{{header.department.fullname}}
                         <span>
-                            <i title="Новые заявки" class="far fa-lg fa-envelope message-info"> {{header.composite.length}}</i>
+                            <i title="Новые заявки / Всего заявок" class="far fa-lg fa-envelope message-info">&nbsp;({{plctrl.newClaimCount(header)}})&nbsp;/&nbsp;{{header.composite.length}}</i>
                         </span>
                         <div class="record-status" style="width: 6%;">
                             <div title="Готово"><i class="fas fa-check"></i>{{plctrl.amountReady(header)}}</div>
@@ -101,7 +101,7 @@
                                 <td><i class="fas fa-times" title="Отменить" ng-click="plctrl.prepareToCancel(clrec.record)"></i></td> 
                                 <td class="td-relative"> 
                                     <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i>
-                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator.id !== null" title="Утвердил {{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
+                                    <i class="sign-icon fas fa-signature" ng-show="clrec.record.affirmator.id !== null && clrec.record.affirmator.id !== undefined" title="Утвердил {{plctrl.affirmatorToString(clrec.record.affirmator)}}"></i>
                                 </td>
                             </tr>
                         </table>

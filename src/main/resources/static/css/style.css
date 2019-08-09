@@ -2301,7 +2301,7 @@ td{
 .formTransport{
     display:none;
     position: absolute;
-    top:30%;
+    top:10%;
     left: 40%;
     width: 20%;
     min-width:287px;
@@ -2353,7 +2353,6 @@ td{
 
 .formTransport li{
     margin-top:15px;
-    margin-left:10%;
 }
 .formTransport li span{
     display: block;

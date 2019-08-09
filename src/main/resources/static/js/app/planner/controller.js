@@ -972,6 +972,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        
+        self.newClaimCount = function (header) {
+            var k = 0;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.id === null) {
+                        k = k + 1;
+                    }
+                }
+            }
+            return k;
+        };
+        
         self.amountReady = function (header) {
             var k = 0;
             if (header.composite !== undefined) {
