@@ -23,8 +23,8 @@
     </fieldset>
     <fieldset>
         <legend>Маршрут</legend>
-        <ul>
+        <div style="padding: 10px 20px;">   
             <span class="route-tag" ng-repeat="task in plctrl.compClRec.claim.routeTasks| orderBy: 'orderNum':true" title="{{task.workName}}">{{task.place.name}}</span>
-        </ul>
+        </div>
     </fieldset>
 </div>

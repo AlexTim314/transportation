@@ -256,6 +256,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 self.checkingCounterForClose();
+                                fixHeaderSelectedTable();
                                 closePicker();
                             },
                             function (errResponse) {
@@ -623,6 +624,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             if (loadCounter === expLoadCounter) {
                 self.fetchTomorrowPlanRecords();
                 loadCounter = 0;
+                
             }
         };
         self.openLoadingWindow();
@@ -702,6 +704,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.rowClick = function (dep) {
+            fixHeaderSelectedTable(self.headers.length);
             if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
                 self.showRecords([]);
@@ -1754,6 +1757,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             } else {
                 self.headers = [];
             }
+           
         };
         self.convertSpec = function (spec) {
             switch (spec) {

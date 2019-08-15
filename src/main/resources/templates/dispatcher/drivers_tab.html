@@ -5,30 +5,34 @@
         </div>
         <div class="height-wrapper">
 
-            <table class="table-transport">
-                <tr>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-<!--                    <th>Дата рождения</th>-->
-                    <th>Контактные телефоны</th>
-                    <th>Удостоверение</th>
-                    <th>Статус</th>
-                    <th><i title="Добавить водителя" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th> 			  					  	
-                </tr>
-                <tr ng-repeat="d in ctrl.drivers| filter: searchDriver | orderBy: 'firstname'">	
-                    <td>{{d.firstname}}</td>
-                    <td>{{d.name}}</td>
-                    <td>{{d.surname}}</td>
-<!--                    <td>{{d.birthday| date:'dd.MM.yyyy'}}</td>-->
-                    <td>{{d.phone}}</td>
-                    <td>{{d.driverLicense}}</td>
-                    <td><i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateStatus(d)"></i><span  class="status-info status-ready">{{d.status}}</span></td>			
-                    <td>
-                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(d)"></i>
-                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(d)"></i>	
-                    </td>
-                </tr>
+            <table class="table-transport" id="tbl-dr">
+                <thead>
+                    <tr>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <!--                    <th>Дата рождения</th>-->
+                        <th>Контактные телефоны</th>
+                        <th>Удостоверение</th>
+                        <th>Статус</th>
+                        <th><i title="Добавить водителя" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th> 			  					  	
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="d in ctrl.drivers| filter: searchDriver | orderBy: 'firstname'">	
+                        <td>{{d.firstname}}</td>
+                        <td>{{d.name}}</td>
+                        <td>{{d.surname}}</td>
+                        <!--                    <td>{{d.birthday| date:'dd.MM.yyyy'}}</td>-->
+                        <td>{{d.phone}}</td>
+                        <td>{{d.driverLicense}}</td>
+                        <td><i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateStatus(d)"></i><span  class="status-info status-ready">{{d.status}}</span></td>			
+                        <td>
+                            <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(d)"></i>
+                            <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(d)"></i>	
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>	
     </div>	
