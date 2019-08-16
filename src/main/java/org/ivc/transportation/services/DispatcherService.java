@@ -382,12 +382,17 @@ public class DispatcherService {
     
     public Waybill createWaybill(AddWaybill addWaybill) {
         Vehicle vehicle = vehicleRepository.findById(addWaybill.getVehicleId()).get();
-        Appointment appointment = appointmentRepository.findById(addWaybill.getAppointmentId()).get();
+        
+        List<Appointment> appointments = null;
+        for (int i = 0; i < addWaybill.getAppointmentIds().size(); i++) {
+            appointments.add(appointmentRepository.findById(addWaybill.getAppointmentIds().get(i)).get());
+        }
+        
         Waybill waybill = new Waybill(addWaybill.getOpenedDate(),
             addWaybill.getClosedDate(),
             addWaybill.getNumber(),
             vehicle,
-            appointment
+            appointments
         );
         return waybillRepository.save(waybill);
     }

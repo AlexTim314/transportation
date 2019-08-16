@@ -6,6 +6,7 @@
 package org.ivc.transportation.utils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -20,14 +21,14 @@ public class AddWaybill {
     private LocalDateTime closedDate;
     private String number;
     private Long vehicleId;
-    private Long appointmentId;
+    private List<Long> appointmentIds;
     
-    public AddWaybill(LocalDateTime OpenedDate, LocalDateTime ClosedDate, String Number, Long VehicleId, Long AppointmentId) {
+    public AddWaybill(LocalDateTime OpenedDate, LocalDateTime ClosedDate, String Number, Long VehicleId, List<Long> AppointmentIds) {
         this.openedDate = OpenedDate;
         this.closedDate = ClosedDate;
         this.number = Number;
         this.vehicleId = VehicleId;
-        this.appointmentId = AppointmentId;
+        this.appointmentIds = AppointmentIds;
     }
     
 }
