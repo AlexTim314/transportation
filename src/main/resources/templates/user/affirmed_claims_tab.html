@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| filter: searchAffirm">
+                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| orderBy: '-creationDate'| filter: searchAffirm">
                     <td ng-click="ctrl.rowClick(affirmedClaim)">
                         <i class="{{affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
 

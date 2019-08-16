@@ -25,7 +25,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="v in ctrl.vehicles| filter: vehicleSearch| orderBy:'status'">
+                <tr ng-repeat="v in ctrl.vehicles| filter: vehicleSearch| orderBy:'stat_id'">
                     <td>
                         <label class="custom-checkbox">
                             <input type="checkbox" ng-model="v.checked">

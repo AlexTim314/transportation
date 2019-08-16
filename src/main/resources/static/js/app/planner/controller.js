@@ -918,7 +918,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appt = {};
         self.checkRec = function (clrec) {
             self.appt = clrec.appointment;
+            formOpen('cover-trsp1');
             formOpen('appt-note');
+        };
+        self.closeStatusInfo = function(){
+            formClose('appt-note');
+            formClose('cover-trsp1');
         };
         self.apptStatus = function () {
             var status = self.appt.status;

@@ -88,6 +88,21 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                                 self.vehicles = d;
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehiclesMap[d[i].id] = i;
+                                    if (self.vehicles[i].status === 'исправно') {
+                                        self.vehicles[i].stat_id = 0;
+                                    }
+                                    if (self.vehicles[i].status === 'ремонт') {
+                                        self.vehicles[i].stat_id = 1;
+                                    }
+                                    if (self.vehicles[i].status === 'другое') {
+                                        self.vehicles[i].stat_id = 2;
+                                    }
+                                    if (self.vehicles[i].status === 'неработоспособно') {
+                                        self.vehicles[i].stat_id = 3;
+                                    }
+                                    if (self.vehicles[i].status === 'списано') {
+                                        self.vehicles[i].stat_id = 4;
+                                    }
                                 }
                             },
                             function (errResponse) {
