@@ -541,6 +541,20 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                     return canceledBySupermanager;
             }
         };
+        self.setStatusColor = function (stat) {
+            switch (stat) {
+                case 0:
+                    return 'status-ready';
+                case 1:
+                    return 'cancel-status';
+                case 2:
+                    return 'done-status';
+                case 3:
+                    return 'cancel-status';
+                case 4:
+                    return 'cancel-status';
+            }
+        };
 
     }]);
 

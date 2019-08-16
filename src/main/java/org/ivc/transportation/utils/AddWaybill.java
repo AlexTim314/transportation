@@ -24,7 +24,7 @@ public class AddWaybill {
     
     public AddWaybill(LocalDateTime OpenedDate, LocalDateTime ClosedDate, String Number, Long VehicleId, Long AppointmentId) {
         this.openedDate = OpenedDate;
-        this.closedDate = ClosedDate;
+        this.closedDate = null;
         this.number = Number;
         this.vehicleId = VehicleId;
         this.appointmentId = AppointmentId;

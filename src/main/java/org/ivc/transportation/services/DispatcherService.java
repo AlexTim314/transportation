@@ -87,10 +87,10 @@ public class DispatcherService {
 
     @Autowired
     private TransportDepRepository transportDepRepository;
-    
+
     @Autowired
     private RouteTaskRepository routeTaskRepository;
-    
+
     @Autowired
     private WaybillRepository waybillRepository;
 
@@ -135,7 +135,7 @@ public class DispatcherService {
     }
 
     public List<CompositeAppointmentClaim> getAppointmentsByVehicle(Long vehId, LocalDateTime dateStart, LocalDateTime dateEnd) {
-        List<CompositeAppointmentClaim> result = new ArrayList<>();        
+        List<CompositeAppointmentClaim> result = new ArrayList<>();
         claimRepository.findAppointmentClaimsByVehicle(vehId, dateStart, dateEnd).forEach(u -> result.add(new CompositeAppointmentClaim(u, routeTaskRepository.findRouteTasksForAppointment(u.getAppointmentid()))));
         return result;
     }
@@ -379,15 +379,16 @@ public class DispatcherService {
         transportDepRepository.findVehiclesInfo(findTransportDepByUser(principal).getId()).forEach(u -> result.add(new CompositeTDInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
-    
+
     public Waybill createWaybill(AddWaybill addWaybill) {
         Vehicle vehicle = vehicleRepository.findById(addWaybill.getVehicleId()).get();
+        long countWaybill = waybillRepository.count() + 1;
         Appointment appointment = appointmentRepository.findById(addWaybill.getAppointmentId()).get();
         Waybill waybill = new Waybill(addWaybill.getOpenedDate(),
-            addWaybill.getClosedDate(),
-            addWaybill.getNumber(),
-            vehicle,
-            appointment
+                addWaybill.getClosedDate(),
+                countWaybill + "/" + addWaybill.getNumber(),
+                vehicle,
+                appointment
         );
         return waybillRepository.save(waybill);
     }

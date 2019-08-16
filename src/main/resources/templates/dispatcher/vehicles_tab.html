@@ -37,7 +37,7 @@
                     <td>{{v.model.modelName}}</td>
                     <td>{{v.number}}</td>			
                     <td>
-                        <i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateVehicleStatus(v)"></i><span  class="status-info status-ready">{{v.status}}</span>
+                        <i title="Изменить Статус" class="fa fa-flag"  ng-click="ctrl.tryToUpdateVehicleStatus(v)"></i><span  class="{{ctrl.setStatusColor(v.stat_id)}}">{{v.status}}</span>
                     </td>
                     <td>
                         <i title="Путевые листы" class="fas fa-lg fa-clipboard-list" ng-click="ctrl.openWaybillSidebar(v)"></i>

@@ -1643,13 +1643,13 @@ td{
     width: 10%;
 }
 .table-transport tr th:nth-child(2){
-    width: 15%;
+    width: 10%;
 }
 .table-transport tr th:nth-child(3){
-    width: 15%;
+    width: 10%;
 }
 .table-transport tr th:nth-child(4){
-    width: 15%;
+    width: 25%;
 }
 .table-transport tr th:nth-child(5){
     width: 15%;
