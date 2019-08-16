@@ -68,6 +68,18 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+        
+//        self.newWaybill = function () {
+//            DispatcherService.newWaybill()
+//                    .then(
+//                            function (d) {
+//                                console.log(d);
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while creating waybill');
+//                            }
+//                    );
+//        };
 
         self.fetchFuels = function () {
             DispatcherService.fetchFuels()
@@ -307,6 +319,7 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
             self.vehicle = vehicle;
             formOpen('more-transport');
             formOpen('cover-trsp1');
+            //self.newWaybill();
         };
 
         self.closeInfoForm = function () {

@@ -82,12 +82,13 @@ public class VehicleController {
         return dispatcherService.getAppointmentsByVehicle(vehicleId, dStart, dEnd);
     }
 
-    @GetMapping("/dispatcher/waybill_create/{id_v}/{id_a}")
-    public Waybill newWaybill(@PathVariable("id_v") Long vehId, @PathVariable("id_a") Long appId) {
-        LocalDateTime openDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-        String number = LocalDate.now() + "";
-        AddWaybill waybill = new AddWaybill(openDate, null, number, vehId, appId);
-        return dispatcherService.createWaybill(waybill);
-    }
+//    @PostMapping("/dispatcher/waybill_create/{id_v}")
+//    public Waybill newWaybill(@PathVariable("id_v") Long vehId, @RequestBody List<Long> ids) {
+//        LocalDateTime openDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+//        String number = "/"+LocalDate.now();
+//        AddWaybill waybill = new AddWaybill(openDate, null, number, vehId, ids);
+//        System.out.println(waybill);
+//        return dispatcherService.createWaybill(waybill);
+//    }
 
 }
