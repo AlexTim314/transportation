@@ -37,7 +37,7 @@ public class Waybill implements Serializable {
     @Column(name = "opened_date", nullable = false)
     private LocalDateTime openedDate;
 
-    @Column(name = "closed_date", nullable = false)
+    @Column(name = "closed_date")
     private LocalDateTime closedDate;
 
     @Column(name = "number", nullable = false, unique = true, length = 16)

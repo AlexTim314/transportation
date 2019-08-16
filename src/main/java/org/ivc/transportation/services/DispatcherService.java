@@ -19,6 +19,7 @@ import org.ivc.transportation.entities.Record;
 import org.ivc.transportation.entities.TransportDep;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleModel;
+import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.repositories.AppointmentInfoRepository;
 import org.ivc.transportation.repositories.AppointmentRepository;
 import org.ivc.transportation.repositories.CarBossRepository;
@@ -30,7 +31,9 @@ import org.ivc.transportation.repositories.TransportDepRepository;
 import org.ivc.transportation.repositories.UserRepository;
 import org.ivc.transportation.repositories.VehicleModelRepository;
 import org.ivc.transportation.repositories.VehicleRepository;
+import org.ivc.transportation.repositories.WaybillRepository;
 import org.ivc.transportation.utils.AddDispatcherClaim;
+import org.ivc.transportation.utils.AddWaybill;
 import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeAppointmentClaim;
 import org.ivc.transportation.utils.CompositeClaimRecord;
@@ -38,7 +41,6 @@ import org.ivc.transportation.utils.CompositeRecordIdAppointment;
 import org.ivc.transportation.utils.CompositeTDInfo;
 import org.ivc.transportation.utils.EntitiesUtils.AppointmentStatus;
 import static org.ivc.transportation.utils.EntitiesUtils.DISPATCHER_CANCEL_STR;
-import org.ivc.transportation.utils.EntitiesUtils.VehicleStatus;
 import org.ivc.transportation.utils.VehicleForPlan;
 import org.ivc.transportation.utils.VehicleLastDep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +90,9 @@ public class DispatcherService {
     
     @Autowired
     private RouteTaskRepository routeTaskRepository;
+    
+    @Autowired
+    private WaybillRepository waybillRepository;
 
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
@@ -373,6 +378,18 @@ public class DispatcherService {
         List<CompositeTDInfo> result = new ArrayList<>();
         transportDepRepository.findVehiclesInfo(findTransportDepByUser(principal).getId()).forEach(u -> result.add(new CompositeTDInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
+    }
+    
+    public Waybill createWaybill(AddWaybill addWaybill) {
+        Vehicle vehicle = vehicleRepository.findById(addWaybill.getVehicleId()).get();
+        Appointment appointment = appointmentRepository.findById(addWaybill.getAppointmentId()).get();
+        Waybill waybill = new Waybill(addWaybill.getOpenedDate(),
+            addWaybill.getClosedDate(),
+            addWaybill.getNumber(),
+            vehicle,
+            appointment
+        );
+        return waybillRepository.save(waybill);
     }
 
 }
