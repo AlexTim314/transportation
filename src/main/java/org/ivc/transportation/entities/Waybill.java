@@ -2,12 +2,14 @@ package org.ivc.transportation.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
@@ -46,14 +48,14 @@ public class Waybill implements Serializable {
     @ManyToOne
     private Vehicle vehicle;
 
-    @OneToOne
-    private Appointment appointment;
+    @OneToMany
+    private List<Appointment> appointments;
 
-    public Waybill(LocalDateTime openedDate, LocalDateTime closedDate, String number, Vehicle vehicle, Appointment appointment) {
+    public Waybill(LocalDateTime openedDate, LocalDateTime closedDate, String number, Vehicle vehicle, List<Appointment> appointments) {
         this.closedDate = closedDate;
         this.openedDate = openedDate;
         this.number = number;
         this.vehicle = vehicle;
-        this.appointment = appointment;
+        this.appointments = appointments;
     }
 }
