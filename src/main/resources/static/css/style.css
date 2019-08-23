@@ -77,7 +77,7 @@ h3{
     background: -webkit-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
     background: -o-linear-gradient(bottom, var(--main-gradient-color1), var(--main-gradient-color2));
     background: linear-gradient(to top, var(--main-gradient-color1), var(--main-gradient-color2));
-    background: #463f42;
+
 }
 .sing-block{
     min-width: 200px;
