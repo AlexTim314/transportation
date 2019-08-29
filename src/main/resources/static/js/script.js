@@ -374,13 +374,55 @@ getFileNameOfInput = function (id, idList) {
         for (var i = 0; i < inp.length; i++) {
             str += inp[i].name + ' ';
         }
+        uploadMultipleFiles(inp);
         list.innerHTML = str;
         lbl.querySelector('span:not(:first-child)').innerHTML = 'Число файлов: ' + inp.length;
         lbl.querySelector('span:not(:first-child)').classList.add('custom-filedownload-active');
     }
+    
 }
 
-var elem = document.getElementById('date-btn');
+
+
+
+
+function uploadMultipleFiles(files) {
+    
+    //var multipleUploadForm = document.querySelector('#multipleUploadForm');
+var multipleFileUploadInput = document.querySelector('#load-file1');
+var multipleFileUploadError = document.querySelector('#multipleFileUploadError');
+var multipleFileUploadSuccess = document.querySelector('#multipleFileUploadSuccess');
+
+    var formData = new FormData();
+    for(var index = 0; index < files.length; index++) {
+        formData.append("files", files[index]);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/transportation/upload_multiple_files");
+
+    xhr.onload = function() {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+        if(xhr.status == 200) {
+            multipleFileUploadError.style.display = "none";
+            var content = "<p>All Files Uploaded Successfully</p>";
+            for(var i = 0; i < response.length; i++) {
+                content += "<p>DownloadUrl : <a href='" + response[i].fileDownloadUri + "' target='_blank'>" + response[i].fileDownloadUri + "</a></p>";
+            }
+            multipleFileUploadSuccess.innerHTML = content;
+            multipleFileUploadSuccess.style.display = "block";
+        } else {
+            multipleFileUploadSuccess.style.display = "none";
+            multipleFileUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+        }
+    }
+
+    xhr.send(formData);
+}
+
+
+/*var elem = document.getElementById('date-btn');
 var cal = document.getElementById('picker1');
 var dWidth = document.documentElement.clientWidth;
 elem.addEventListener('click', function (event) {
@@ -388,6 +430,7 @@ elem.addEventListener('click', function (event) {
     cal.style.left = elem.getBoundingClientRect().left / dWidth * 100 + "%";
     cal.style.display = "block";
 });
+
 
 var picker = $("#dtPicker");
 picker.datepicker({
@@ -397,7 +440,7 @@ picker.datepicker({
         }
     }
 });
-
+*/
 closePicker = function () {
     cal.style.display = "none";
 }

@@ -133,7 +133,11 @@
         </section>
         <div class="form-item block-route custom-filedownload">
             <label for="load-file1"  title="Прикрепите документы в формате(.pdf,.doc,.docx)"><span class="fa fa-paperclip"></span> <span> Прикрепить файл<span> </label>
-            <input type="file" id="load-file1" multiple  onchange="getFileNameOfInput('load-file1', 'load-list1')" style="display: none;"> 
+            <input type="file" id="load-file1" name="files" multiple  onchange="getFileNameOfInput('load-file1', 'load-list1')" style="display: none;"> 
+             <div class="upload-response">
+                        <div id="multipleFileUploadError"></div>
+                        <div id="multipleFileUploadSuccess"></div>
+            </div>
             <p id='load-list1'></p>  						
         </div>
 

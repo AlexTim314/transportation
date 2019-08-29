@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.validation.Schema;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.SpreadsheetVersion;
@@ -116,7 +115,7 @@ public class WaybillFileDownloadController {
       /*  public static final String XSD_FILE_NAME = "settings/schema.xsd";
     Schema schema = factory.newSchema(getClass().getClassLoader().getResource(XSD_FILE_NAME));*/
         String nameTail = white ? "White.xls" : ".xls";
-        excelFilePath = "/BOOT-INF/classes/waybilltemplates/" + excelFilePath + nameTail;
+        excelFilePath = "waybilltemplates/" + excelFilePath + nameTail;
 
         /*   На данный момент рассматривается возможность исключить сущность Waybill         
         Waybill waybill = appointment.getWaybill();

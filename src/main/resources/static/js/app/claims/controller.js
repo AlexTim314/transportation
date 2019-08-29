@@ -3,7 +3,7 @@
 App.controller('ClaimsController', ['$scope', 'ClaimsService',
     function ($scope, ClaimsService) {
         var self = this;
-        self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: []};
+        self.claim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], files: []};
         self.affirmedClaim = {id: null, templateName: null, specialization: null, carBoss: null, purpose: null, creationDate: null, affirmationDate: null, actual: true, vehicleType: null, records: [], routeTasks: [], affirmator: {id: null}};
         self.routeTemplate = {id: null, name: '', department: null, routeTasks: []};
         self.routeTask = {id: null, workName: '', orderNum: '', place: null, routeTemplate: null};
@@ -42,6 +42,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
         self.carBossName = null;
 
         var stompClient = null;
+        
 
         self.connect = function () {
             var socket = new SockJS('/transportation/ws');
@@ -352,7 +353,6 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
 //        };
 
         self.fetchDepartment();
-
         self.fetchNewClaims();
         self.fetchAffirmedClaimsTomorrow();
         self.fetchClaimTemplates();
@@ -872,7 +872,7 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
             }
             self.resetRTaskForm();
         };
-
+        
         self.submitClaim = function () {
             if (self.validateForm()) {
                 alert("Форма заполнена не полностью!");
@@ -912,6 +912,21 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 self.claim.records[i].entranceDate = self.frmtDate(sd, entranceTime);
                 self.claim.records[i].endDate = self.frmtDate(ed, endTime);
             }
+            //работа с файламиvar multipleUploadForm = document.querySelector('#multipleUploadForm');
+var multipleFileUploadInput = document.querySelector('#multipleFileUploadInput');
+var multipleFileUploadError = document.querySelector('#multipleFileUploadError');
+var multipleFileUploadSuccess = document.querySelector('#multipleFileUploadSuccess');
+
+            var files = multipleFileUploadInput.files;
+    if(files.length === 0) {
+        multipleFileUploadError.innerHTML = "Please select at least one file";
+        multipleFileUploadError.style.display = "block";
+    }
+    uploadMultipleFiles(files);
+    event.preventDefault();
+            
+            
+            
             if (self.claim.id === null) {
                 self.createClaim(self.claim);
             } else {

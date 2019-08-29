@@ -78,6 +78,12 @@ public class Claim implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "claim_id")
     private List<RouteTask> routeTasks;
+    
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "claim_id")
+    private List<DBFile> files;
+    
 
     public Claim(VehicleSpecialization specialization, CarBoss carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
         this.specialization = specialization;
@@ -107,6 +113,7 @@ public class Claim implements Serializable {
         this.purpose = claim.purpose;
         this.records = null;
         this.routeTasks = claim.routeTasks;
+        this.files = null;
         this.specialization = claim.specialization;
         this.templateName = claim.templateName;
         this.vehicleType = claim.vehicleType;
