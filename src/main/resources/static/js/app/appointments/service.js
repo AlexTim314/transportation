@@ -415,14 +415,18 @@ App.factory('DispatcherService', ['$http', '$q', '$document', function ($http, $
                                 }
                         );
             },
-//            fetchVehicles: function () {
-//                return $http.get('/transportation/dispatcher/vehicles')
+//            newWaybill: function () {
+//                var list = [];
+//                list.push(2130);
+//                list.push(2131);
+//                return $http.post('/transportation/dispatcher/waybill_create/'+20,
+//                        JSON.stringify(list), {headers: self.headers})
 //                        .then(
 //                                function (response) {
 //                                    return response.data;
 //                                },
 //                                function (errResponse) {
-//                                    console.error('Error while fetching vehicles');
+//                                    console.error('Error while creating waybill');
 //                                    return $q.reject(errResponse);
 //                                }
 //                        );

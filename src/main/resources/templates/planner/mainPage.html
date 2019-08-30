@@ -18,14 +18,14 @@
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
 
-        <script src="js/app/claimsPage/service.js"></script>
+        <script src="js/app/claimsPage/service.js" ></script>
         <script src="js/app/claimsPage/controller.js"></script>
 
         <script src="js/app/planner/service.js"></script>
         <script src="js/app/planner/controller.js"></script>
 
     </head>
-    <body ng-app="Transportation" ng-controller="PlannerController as plctrl" >
+    <body ng-app="Transportation" ng-controller="PlannerController as plctrl">
         <div class="wrapper">
             <div class="cover-trsp" id="cover-trsp1"></div>
             <div class="cover-trsp cover-trsp-global" id="cover-trsp2"></div>
@@ -143,5 +143,13 @@
     <th:block th:include="planner/status_info_form"></th:block> 
 
     <script src="js/script.js"></script>
+    <script type="text/javascript" src="js/tableHeadFixer.js" ></script>
+    <script>
+                                    fixHeaderSelectedTable = function (length) {
+                                        for (var i = 0; i < length; i++) {
+                                            $("#" + i).tableHeadFixer();
+                                        }
+                                    }
+    </script>
 </body>
 </html>

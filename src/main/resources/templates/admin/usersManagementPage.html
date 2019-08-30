@@ -10,6 +10,7 @@
         <link href="fontawesome/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="css/usersManagerStyle.css">
 
+        <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/angular.min.js" ></script>
         <script src="js/app/app.js"></script>
         <script src="js/app/usersManagement/service.js"></script>
@@ -107,32 +108,40 @@
     </div>
     <br/> 
     <section class="block-section2">
-        <table>
-            <tr>
-                <th>Имя пользователя</th>
-                <th>ФИО</th>
-                <th>Должность</th>
-                <th>Подразделение</th>
-                <th>Транспортный отдел</th>
-                <th>Подчинённые подразделения</th>
-                <th>Права доступа</th>
-                <th></th>
-            </tr>
+        <table id="tbl-um">
+            <thead>
+                <tr>
+                    <th>Имя пользователя</th>
+                    <th>ФИО</th>
+                    <th>Должность</th>
+                    <th>Подразделение</th>
+                    <th>Транспортный отдел</th>
+                    <th>Подчинённые подразделения</th>
+                    <th>Права доступа</th>
+                    <th></th>
+                </tr>
+            </thead>
             <!-- $scope.employees -->
-            <tr ng-repeat="user in ctrl.users| filter: search |orderBy: 'username'">
-                <td> {{user.username}}</td>
-                <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
-                <td> {{user.post}}</td>
-                <td> {{user.department.shortname}}</td>
-                <td> {{user.transportDep.shortname}}</td>
-                <td><span ng-repeat="d in user.departments" class="role-span">{{d.shortname}} </span></td>
-                <td><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
-                <td>
-                    <i class="fas  fa-lg fa-edit" ng-click="ctrl.editUser(user)"></i>
-                    <i class="fas  fa-lg fa-trash" ng-click="ctrl.deleteUser(user)"></i>
-                </td>
-            </tr>
+            <tbody>
+                <tr ng-repeat="user in ctrl.users| filter: search |orderBy: 'username'">
+                    <td> {{user.username}}</td>
+                    <td title="{{user.fullName}}">{{ctrl.shortFullName(user)}}</td>
+                    <td> {{user.post}}</td>
+                    <td> {{user.department.shortname}}</td>
+                    <td> {{user.transportDep.shortname}}</td>
+                    <td><span ng-repeat="d in user.departments" class="role-span">{{d.shortname}} </span></td>
+                    <td><span ng-repeat="role in user.roles" class="role-span">{{role.roleName}} </span></td>
+                    <td>
+                        <i class="fas  fa-lg fa-edit" ng-click="ctrl.editUser(user)"></i>
+                        <i class="fas  fa-lg fa-trash" ng-click="ctrl.deleteUser(user)"></i>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </section>
+    <script type="text/javascript" src="js/tableHeadFixer.js"></script>
+    <script>
+        $("#tbl-um").tableHeadFixer();
+    </script>
 </body>
 </html>

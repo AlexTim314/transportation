@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,6 +37,9 @@ public class Appointment implements Serializable {
 
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
+    
+    @Column(name = "actual_return_time")
+    private LocalDateTime actualReturnTime;
 
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;
@@ -63,9 +67,10 @@ public class Appointment implements Serializable {
     
     @ManyToOne
     private AppUser modificator;
-
-    public Appointment(LocalDateTime creationDate, AppointmentStatus status, String note, AppUser creator) {
+    
+    public Appointment(LocalDateTime creationDate, LocalDateTime actualReturnTime, AppointmentStatus status, String note, AppUser creator) {
         this.creationDate = creationDate;
+        this.actualReturnTime = actualReturnTime;
         this.status = status;
         this.note = note;
         this.creator = creator;

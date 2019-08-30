@@ -68,6 +68,18 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                             }
                     );
         };
+        
+//        self.newWaybill = function () {
+//            DispatcherService.newWaybill()
+//                    .then(
+//                            function (d) {
+//                                console.log(d);
+//                            },
+//                            function (errResponse) {
+//                                console.error('Error while creating waybill');
+//                            }
+//                    );
+//        };
 
         self.fetchFuels = function () {
             DispatcherService.fetchFuels()
@@ -88,6 +100,21 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                                 self.vehicles = d;
                                 for (var i = 0; i < d.length; i++) {
                                     self.vehiclesMap[d[i].id] = i;
+                                    if (self.vehicles[i].status === 'исправно') {
+                                        self.vehicles[i].stat_id = 0;
+                                    }
+                                    if (self.vehicles[i].status === 'ремонт') {
+                                        self.vehicles[i].stat_id = 1;
+                                    }
+                                    if (self.vehicles[i].status === 'другое') {
+                                        self.vehicles[i].stat_id = 2;
+                                    }
+                                    if (self.vehicles[i].status === 'неработоспособно') {
+                                        self.vehicles[i].stat_id = 3;
+                                    }
+                                    if (self.vehicles[i].status === 'списано') {
+                                        self.vehicles[i].stat_id = 4;
+                                    }
                                 }
                             },
                             function (errResponse) {
@@ -292,6 +319,7 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
             self.vehicle = vehicle;
             formOpen('more-transport');
             formOpen('cover-trsp1');
+            //self.newWaybill();
         };
 
         self.closeInfoForm = function () {
@@ -524,6 +552,20 @@ App.controller('VehiclesController', ['$scope', 'DispatcherService',
                     return canceledByDispatcher;
                 case '6':
                     return canceledBySupermanager;
+            }
+        };
+        self.setStatusColor = function (stat) {
+            switch (stat) {
+                case 0:
+                    return 'status-ready';
+                case 1:
+                    return 'cancel-status';
+                case 2:
+                    return 'done-status';
+                case 3:
+                    return 'cancel-status';
+                case 4:
+                    return 'cancel-status';
             }
         };
 

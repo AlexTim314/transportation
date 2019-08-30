@@ -4,70 +4,74 @@
     </div>
     <div class="height-wrapper"> 
         <table class="table-record" id="tbl3">
-            <tr>
-                <th></th>
-                <th>
-                    <label class="custom-checkbox">
-                        <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAllTemplates()">
-                        <span class="checkmark"></span>
-                    </label>
-                </th>
-                <th>Название шаблона</th>     
-                <th>Тип транспорта</th>
-                <th>Вид техники</th>
-                <th>Старший</th>
-                <th>Маршрут</th>
-                <th>
-                    <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" ng-click="ctrl.prepToAddTemplate()"></i>
-                    <i title="Удалить" class="fas fa-lg fa-trash-alt" ng-click="ctrl.prepToDeleteTemplate()"></i>                                        
-                </th>
-            </tr>
-            <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates |filter: searching">
-                <td ng-click="ctrl.rowClick(claim)">
-                    <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
-                </td>
-                <td ng-click="ctrl.rowClick(claim)">
-                    <label class="custom-checkbox">
-                        <input type="checkbox"  ng-model="claim.checked">
-                        <span class="checkmark"></span>
-                    </label>    
-                </td>
-                <td class="counter_record" ng-click="ctrl.rowClick(claim)">{{claim.templateName}} 
-                    <span title="Число записей">{{claim.records.length}}</span>
-                </td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
-                <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss.firstname}} {{claim.carBoss.name}} {{claim.carBoss.surname}}</td>
-                <td ng-click="ctrl.rowClick(claim)">
-                    <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
-                </td>
-                <td >
-                    <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
-                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoClick(claim)" ></i>  
-                </td>                               
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" ng-model="ctrl.all" ng-change="ctrl.checkAllTemplates()">
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th>Название шаблона</th>     
+                    <th>Тип транспорта</th>
+                    <th>Вид техники</th>
+                    <th>Старший</th>
+                    <th>Маршрут</th>
+                    <th>
+                        <i title="Добавить шаблон" class="fas fa-lg fa-plus-circle" ng-click="ctrl.prepToAddTemplate()"></i>
+                        <i title="Удалить" class="fas fa-lg fa-trash-alt" ng-click="ctrl.prepToDeleteTemplate()"></i>                                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="activeRow" ng-repeat-start="claim in ctrl.claimTemplates|filter: searching">
+                    <td ng-click="ctrl.rowClick(claim)">
+                        <i class="{{claim.isVisible !== undefined && claim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
+                    </td>
+                    <td ng-click="ctrl.rowClick(claim)">
+                        <label class="custom-checkbox">
+                            <input type="checkbox"  ng-model="claim.checked">
+                            <span class="checkmark"></span>
+                        </label>    
+                    </td>
+                    <td class="counter_record" ng-click="ctrl.rowClick(claim)">{{claim.templateName}} 
+                        <span title="Число записей">{{claim.records.length}}</span>
+                    </td>
+                    <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
+                    <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
+                    <td ng-click="ctrl.rowClick(claim)">{{claim.carBoss.firstname}} {{claim.carBoss.name}} {{claim.carBoss.surname}}</td>
+                    <td ng-click="ctrl.rowClick(claim)">
+                        <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
+                    </td>
+                    <td >
+                        <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoClick(claim)" ></i>  
+                    </td>                               
 
-            </tr>
-            <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
-                <td colspan="8">
+                </tr>
+                <tr class="hiddenRow" ng-show="claim.isVisible !== undefined && claim.isVisible" ng-repeat-end>
+                    <td colspan="8">
 
-                    <table class="table-claim">
-                        <tr>    
-                            <th style="width: 25%;">Дата выезда</th>
-                            <th style="width: 25%;">Время подачи</th>
-                            <th style="width: 25%;">Время выезда</th>
-                            <th style="width: 25%;">Время возвращения</th>
-                            <th></th>
-                        </tr>
-                        <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
-                            <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
-                            <td>{{record.entranceDate| date:'HH:mm'}}</td>
-                            <td>{{record.startDate| date:'HH:mm'}}</td>
-                            <td>{{record.endDate| date:'HH:mm'}}</td>
-                            <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td> 
-                        </tr>                                            
-                    </table>
-                </td>
-            </tr>
+                        <table class="table-claim" id="tbl-temp">
+                            <tr>    
+                                <th style="width: 25%;">Дата выезда</th>
+                                <th style="width: 25%;">Время подачи</th>
+                                <th style="width: 25%;">Время выезда</th>
+                                <th style="width: 25%;">Время возвращения</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
+                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
+                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
+                                <td>{{record.startDate| date:'HH:mm'}}</td>
+                                <td>{{record.endDate| date:'HH:mm'}}</td>
+                                <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td> 
+                            </tr>                                            
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

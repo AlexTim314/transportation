@@ -60,6 +60,16 @@ formClose = function (name) {
         str.style.display = "none";
     }
 }
+formOpenClose = function (name) {
+    var str = document.getElementById(name);
+    if (str !== null) {
+        if (str.style.display == "block") {
+            str.style.display = "none";
+        } else if (str.style.display == "" || str.style.display == "none") {
+            str.style.display = "block";
+        }
+    }
+}
 formEditOpen = function (name) {
     var str = document.getElementById(name);
     str.style.display = "block";
@@ -195,7 +205,6 @@ turn_tabs2 = function () {
     var str2 = document.getElementById("week2");
     var str3 = document.getElementById("week1");
     str2.classList.add('week-active');
-
     str3.classList.remove('week-active');
     str.style.display = "table";
     str1.style.display = "none";
@@ -292,12 +301,11 @@ window.addEventListener("DOMContentLoaded", function () {
             setCursorPosition(this.value.length, this);
     }
 
-    //var input = document.querySelector("[type='tel']");
+//var input = document.querySelector("[type='tel']");
     var surname = document.getElementsByClassName("letter-mask");
     var fuel = document.getElementsByClassName("fuel");
     var odom = document.getElementsByClassName("odometr");
     var engineHours = document.getElementsByClassName("engineHours");
-
 //    input.addEventListener("input", mask, false);
 //    input.addEventListener("focus", mask, false);
 //    input.addEventListener("blur", mask, false);
@@ -333,7 +341,6 @@ open_sidetab = function (tabName, btnName, iEnd) {
             str_btn.classList.remove("active");
         }
         str.style.display = "none";
-
     }
     var str = document.getElementById(tabName);
     var str_btn = document.getElementById(btnName);
@@ -357,7 +364,6 @@ fasttab = function () {
             }
 
         });
-
     }
 }
 
@@ -430,8 +436,6 @@ elem.addEventListener('click', function (event) {
     cal.style.left = elem.getBoundingClientRect().left / dWidth * 100 + "%";
     cal.style.display = "block";
 });
-
-
 var picker = $("#dtPicker");
 picker.datepicker({
     onSelect: function onSelect(fd, date) {
@@ -440,7 +444,6 @@ picker.datepicker({
         }
     }
 });
-*/
 closePicker = function () {
     cal.style.display = "none";
 }
@@ -457,50 +460,53 @@ fastClose = function () {
     elem.style.visibility = 'collapse';
     elem.style.right = '-35%';
 }
- flexOpen=function(name){
+flexOpen = function (name) {
     var str = document.getElementById(name);
     str.style.display = 'block';
 };
- flexClose=function(name){
+flexClose = function (name) {
     var str = document.getElementById(name);
     str.style.display = 'none';
 };
-
-history_button=function(){
-  var elem=document.getElementsByClassName('waybill-work');
-  var hist=document.getElementsByClassName('waybill-history');
-  hist[0].classList.toggle("collapseRow");
-  var i;
-  for (i=0; i<elem.length;i++){
-    elem[i].classList.toggle("collapseRow");
-  }
+history_button = function () {
+    var elem = document.getElementsByClassName('waybill-work');
+    var hist = document.getElementsByClassName('waybill-history');
+    hist[0].classList.toggle("collapseRow");
+    var i;
+    for (i = 0; i < elem.length; i++) {
+        elem[i].classList.toggle("collapseRow");
+    }
 }
-toggle_step=function(stepName,stepEnd){
-	var step=document.getElementsByClassName(stepName);
-	var steps;
-	 for (var i = 1; i<=stepEnd; i++) {
-	 	steps=document.getElementsByClassName('step'+i);
-	 	for(var k=0; k<steps.length; k++){
-	 		steps[k].style.display = 'none';
-	 	}
-	 }
-	 for (var z = 0; z<step.length; z++) { 
-    if (step[z].classList.contains("waybill-name")){step[z].style.display = 'flex';}
-    else{ step[z].style.display = 'block';}
-	 }
+toggle_step = function (stepName, stepEnd) {
+    var step = document.getElementsByClassName(stepName);
+    var steps;
+    for (var i = 1; i <= stepEnd; i++) {
+        steps = document.getElementsByClassName('step' + i);
+        for (var k = 0; k < steps.length; k++) {
+            steps[k].style.display = 'none';
+        }
+    }
+    for (var z = 0; z < step.length; z++) {
+        if (step[z].classList.contains("waybill-name")) {
+            step[z].style.display = 'flex';
+        } else {
+            step[z].style.display = 'block';
+        }
+    }
 }
-toggle_tab=function(tabName,btnName,iEnd){
-   for (var i = 1; i<=iEnd; i++) {
-     var str = document.getElementById("waybill-tab"+i);
-     var str_btn=document.getElementById("waybill-btn"+i);
-     if (str_btn.classList.contains("waybill-active")){
-      str_btn.classList.remove("waybill-active");}
-      str.style.display="none";  
-    } 
-  var str = document.getElementById(tabName);
-  var str_btn=document.getElementById(btnName);
-  str.style.display="flex";
-  str_btn.classList.add("waybill-active");
+toggle_tab = function (tabName, btnName, iEnd) {
+    for (var i = 1; i <= iEnd; i++) {
+        var str = document.getElementById("waybill-tab" + i);
+        var str_btn = document.getElementById("waybill-btn" + i);
+        if (str_btn.classList.contains("waybill-active")) {
+            str_btn.classList.remove("waybill-active");
+        }
+        str.style.display = "none";
+    }
+    var str = document.getElementById(tabName);
+    var str_btn = document.getElementById(btnName);
+    str.style.display = "flex";
+    str_btn.classList.add("waybill-active");
 }
 
 //var tab = document.getElementById("fast-bar-block1");

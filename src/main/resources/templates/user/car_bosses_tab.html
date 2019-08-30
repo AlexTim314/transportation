@@ -6,30 +6,28 @@
 
         <div class="height-wrapper">
 
-            <table class="table-transport">
-                <tr>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-<!--                    <th>Дата рождения</th>-->
-                    <th>Должность</th>
-<!--                    <th>Номер мобильного</th>
-                    <th>Адрес</th>-->
-                    <th> <i title="Добавить старшего" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th>                                   
-                </tr>
-                <tr ng-repeat="b in ctrl.carBosses| orderBy: 'fullname' |filter : search">    
-                    <td>{{b.firstname}}</td>
-                    <td>{{b.name}}</td>
-                    <td>{{b.surname}}</td>
-<!--                    <td>{{b.birthday| date:'dd.MM.yyyy'}}</td>-->
-                    <td>{{b.post}}</td>
-<!--                    <td>{{b.phone}}</td>
-                    <td>{{b.address}}</td>          -->
-                    <td>
-                        <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(b)"></i>
-                        <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(b)"></i>  
-                    </td>
-                </tr>
+            <table class="table-transport" id="tbl-cb">
+                <thead>
+                    <tr>
+                        <th style="width:23%">Фамилия</th>
+                        <th style="width:23%">Имя</th>
+                        <th style="width:23%">Отчество</th>
+                        <th style="width:23%">Должность</th>
+                        <th style="width:8%"> <i title="Добавить старшего" class="fas fa-lg fa-plus-circle" ng-click="ctrl.tryToCreate()"></i></th>                                   
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="b in ctrl.carBosses| orderBy: 'fullname' |filter : search">    
+                        <td>{{b.firstname}}</td>
+                        <td>{{b.name}}</td>
+                        <td>{{b.surname}}</td>
+                        <td>{{b.post}}</td>
+                        <td>
+                            <i class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdate(b)"></i>
+                            <i class="fas fa-lg fa-trash-alt" ng-click="ctrl.tryToDelete(b)"></i>  
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>  
 

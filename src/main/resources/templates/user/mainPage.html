@@ -12,6 +12,7 @@
 
         <script src="js/lib/sockjs-0.3.4.js"></script>
         <script src="js/lib/stomp.js"></script>
+        <script src="js/lib/jquery.min.js"></script>
 
         <script src="js/lib/angular.min.js"></script>
         <script src="js/app/app.js"></script>
@@ -117,7 +118,7 @@
                         <!-- служебные формы -->
                         <th:block th:include="user/save_claim_form"></th:block>
                         <th:block th:include="user/save_template_dialog"></th:block>
-                        
+
                         <th:block th:include="user/del_claim_confirm"></th:block> 
                         <th:block th:include="user/del_claim_template_confirm"></th:block> 
 
@@ -144,5 +145,13 @@
             </div>
         </div>
         <script type="text/javascript" src="js/script.js"></script>
+        <script type="text/javascript" src="js/tableHeadFixer.js"></script>
+        <script>
+                        $("#tbl2").tableHeadFixer();
+                        $("#tbl-cb").tableHeadFixer();
+                        $("#tbl-temp").tableHeadFixer();
+                        $("#tbl-nc").tableHeadFixer();
+                        $("#tbl-rt").tableHeadFixer();                        
+        </script>
     </body>
 </html>

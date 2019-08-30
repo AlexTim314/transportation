@@ -256,6 +256,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                 self.cmpsts = d;
                                 self.createHeaders();
                                 self.checkingCounterForClose();
+                                fixHeaderSelectedTable();
                                 closePicker();
                             },
                             function (errResponse) {
@@ -623,6 +624,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             if (loadCounter === expLoadCounter) {
                 self.fetchTomorrowPlanRecords();
                 loadCounter = 0;
+                
             }
         };
         self.openLoadingWindow();
@@ -702,6 +704,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     );
         };
         self.rowClick = function (dep) {
+            fixHeaderSelectedTable(self.headers.length);
             if (dep.isVisible) {
                 dep.isVisible = !dep.isVisible;
                 self.showRecords([]);
@@ -915,7 +918,12 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
         self.appt = {};
         self.checkRec = function (clrec) {
             self.appt = clrec.appointment;
+            formOpen('cover-trsp1');
             formOpen('appt-note');
+        };
+        self.closeStatusInfo = function(){
+            formClose('appt-note');
+            formClose('cover-trsp1');
         };
         self.apptStatus = function () {
             var status = self.appt.status;
@@ -972,6 +980,19 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             }
                     );
         };
+        
+        self.newClaimCount = function (header) {
+            var k = 0;
+            if (header.composite !== undefined) {
+                for (var j = 0; j < header.composite.length; j++) {
+                    if (header.composite[j].appointment.id === null) {
+                        k = k + 1;
+                    }
+                }
+            }
+            return k;
+        };
+        
         self.amountReady = function (header) {
             var k = 0;
             if (header.composite !== undefined) {
@@ -1741,6 +1762,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
             } else {
                 self.headers = [];
             }
+           
         };
         self.convertSpec = function (spec) {
             switch (spec) {

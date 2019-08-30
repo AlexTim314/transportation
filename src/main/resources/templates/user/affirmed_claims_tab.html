@@ -1,7 +1,7 @@
 <div class="tab-list2" id="tab-list2" xmlns:th="http://www.thymeleaf.org">
     <div style="overflow-x:auto;">
-        <div class="table-header clearfix">
-            <div class="fast-filter clearfix">                                    
+        <div class="table-header">
+            <div class="fast-filter">                                    
                 <span class="filter-elem {{ctrl.today?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsTomorrow()">Сегодня</span>
                 <span class="filter-elem {{ctrl.week?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaimsWeek()">За неделю</span>
                 <span class="filter-elem {{ctrl.allday?'active-color':''}}" ng-click="ctrl.fetchAffirmedClaims()">Все</span>
@@ -10,6 +10,7 @@
         </div>
         <div class="height-wrapper"> 
             <table class="table-record" id="tbl2">
+                <thead>
                 <tr>
                     <th></th>
                     <th>
@@ -22,8 +23,9 @@
                     <th> 			
                     </th>
                 </tr>
-
-                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| filter: searchAffirm">
+                </thead>
+                <tbody>
+                <tr class="activeRow" ng-repeat-start="affirmedClaim in ctrl.affirmedClaims| orderBy: '-creationDate'| filter: searchAffirm">
                     <td ng-click="ctrl.rowClick(affirmedClaim)">
                         <i class="{{affirmedClaim.isVisible !== undefined && affirmedClaim.isVisible?'fas  fa-2x fa-caret-down':'fas  fa-2x fa-caret-right'}}"></i>
 
@@ -89,7 +91,7 @@
                         </table>
                     </td>
                 </tr>
-
+                </tbody>
             </table>
 
             <div class="more-info" id="appt-note" style="width: 25%;">

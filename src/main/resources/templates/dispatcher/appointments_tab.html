@@ -15,59 +15,63 @@
         <input type="search" placeholder="Поиск" ng-model="searchAppointment">						  							  		
     </div>	
     <div class="height-wrapper">            
-        <table class=" table-plan table-claim" style="margin-left: 0;">
-            <tr>
-                <th style="width:5%">
-                    <label class="custom-checkbox">
-                        <input type="checkbox" ng-model="allChecked" checked="false" ng-change="plctrl.checkAll(allChecked)">
-                        <span class="checkmark"></span>
-                    </label>
-                </th>
-                <th style="width:5%">Тип транспорта</th>
-                <th style="width:7%">Вид техники</th>
-                <th style="width:5%">Дата выезда</th>
-                <th style="width:10%">Время подачи</th>
-                <th style="width:10%">Подразделение</th>
-                <th style="width:10%">Маршрут</th>
-                <th style="width:10%">Марка</th>
-                <th style="width:5%">Гос.номер</th>
-                <th style="width:10%">Водитель</th>
-                <th style="width:5%">Статус</th>
-                <th style="width:8%">
-                    <i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus()"></i>
-                    <i title="Назначить" class="fas fa-lg fa-code-branch" ng-click="plctrl.appoint()"></i>
-                    <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill()"></i>
-                    <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
+        <table class=" table-plan table-claim" style="margin-left: 0;" id="tbl-app">
+            <thead>
+                <tr>
+                    <th style="width:5%">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" ng-model="allChecked" checked="false" ng-change="plctrl.checkAll(allChecked)">
+                            <span class="checkmark"></span>
+                        </label>
+                    </th>
+                    <th style="width:5%">Тип транспорта</th>
+                    <th style="width:7%">Вид техники</th>
+                    <th style="width:5%">Дата выезда</th>
+                    <th style="width:10%">Время подачи</th>
+                    <th style="width:10%">Подразделение</th>
+                    <th style="width:10%">Маршрут</th>
+                    <th style="width:10%">Марка</th>
+                    <th style="width:5%">Гос.номер</th>
+                    <th style="width:10%">Водитель</th>
+                    <th style="width:5%">Статус</th>
+                    <th style="width:8%">
+                        <i title="Изменить Статус" class="fa fa-flag" ng-click="plctrl.prepareToChangeStatus()"></i>
+                        <i title="Назначить" class="fas fa-lg fa-clipboard-check" ng-click="plctrl.appoint()"></i>
+                        <i title="Печать Путевого Листа." class="fa fa-lg fa-print" ng-click="plctrl.downloadWaybill()"></i>
+                        <i class="fas fa-lg fa-plus-circle" title="Добавить заявку" ng-click="plctrl.openAddClaimForm()"></th>
 
-            </tr>
-            <tr ng-repeat="clrec in plctrl.data| orderBy: 'record.startDate' | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchAppointment">
-                <td><label class="custom-checkbox">
-                        <input type="checkbox" ng-model="clrec.checked" ng-change="plctrl.checkRec(clrec)">
-                        <span class="checkmark"></span>
-                    </label>	
-                </td>
-                <td><span title="{{plctrl.convertSpec(clrec.claim.specialization)}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
-                <td>{{clrec.claim.vehicleType.typeName}}</td>
-                <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
-                <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
-                <td>
-                    <!--<span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>-->
-                    <b>{{clrec.claim.department}}</b>
-                </td>
-                <td>
-                    {{clrec.record.tasks}}
-                </td>
-                <td>{{clrec.appointment.vehicleModel.modelName}}</td>
-                <td>{{clrec.appointment.vehicle.number}}</td>
-                <td class="td-relative">
-                    <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
-                    {{plctrl.showDriver(clrec.appointment)}}		  					
-                </td>
-                <td><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
-                <td>
-                    <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i> 
-                </td>
-            </tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="clrec in plctrl.data| orderBy: 'record.startDate' | limitTo: plctrl.numRecordsPerPage : plctrl.pager.startIndex | filter: searchAppointment">
+                    <td><label class="custom-checkbox">
+                            <input type="checkbox" ng-model="clrec.checked" ng-change="plctrl.checkRec(clrec)">
+                            <span class="checkmark"></span>
+                        </label>	
+                    </td>
+                    <td><span title="{{plctrl.convertSpec(clrec.claim.specialization)}}" class="{{plctrl.selectIcon(clrec.claim.specialization)}}"></span></td>
+                    <td>{{clrec.claim.vehicleType.typeName}}</td>
+                    <td>{{clrec.record.startDate| date:'dd.MM.yyyy'}}</td>
+                    <td>{{clrec.record.startDate| date:'HH:mm'}} ({{clrec.record.entranceDate| date:'HH:mm'}}) - {{clrec.record.endDate| date:'HH:mm'}}</td>
+                    <td>
+                        <!--<span class="route-tag" ng-repeat="task in clrec.claim.routeTasks| orderBy: 'orderNum'" title="{{task.workName}}">{{task.place.name}}</span>-->
+                        <b>{{clrec.claim.department}}</b>
+                    </td>
+                    <td>
+                        {{clrec.record.tasks}}
+                    </td>
+                    <td>{{clrec.appointment.vehicleModel.modelName}}</td>
+                    <td>{{clrec.appointment.vehicle.number}}</td>
+                    <td class="td-relative">
+                        <i class="fa fa-lg fa-mobile-alt" ng-show="plctrl.checkPhone(clrec.appointment)"> <span class="phone-info">{{clrec.appointment.driver.phone}}</span></i>
+                        {{plctrl.showDriver(clrec.appointment)}}		  					
+                    </td>
+                    <td><i class="{{plctrl.statusClass(clrec.appointment)}}" title="{{plctrl.selectStatus(clrec.appointment.status)}}"></i></td>		  				
+                    <td>
+                        <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="plctrl.moreInfoOpen(clrec)"></i> 
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>	
 

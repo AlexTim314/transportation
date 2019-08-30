@@ -8,8 +8,10 @@ import java.util.List;
 import org.ivc.transportation.entities.Refueling;
 import org.ivc.transportation.entities.Vehicle;
 import org.ivc.transportation.entities.VehicleInfo;
+import org.ivc.transportation.entities.Waybill;
 import org.ivc.transportation.services.DispatcherService;
 import org.ivc.transportation.services.VehicleService;
+import org.ivc.transportation.utils.AddWaybill;
 import org.ivc.transportation.utils.AppointmentClaim;
 import org.ivc.transportation.utils.CompositeAppointmentClaim;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +81,14 @@ public class VehicleController {
         LocalDateTime dEnd = LocalDateTime.of(LocalDate.now().plusDays(7), LocalTime.of(23, 59));
         return dispatcherService.getAppointmentsByVehicle(vehicleId, dStart, dEnd);
     }
+
+//    @PostMapping("/dispatcher/waybill_create/{id_v}")
+//    public Waybill newWaybill(@PathVariable("id_v") Long vehId, @RequestBody List<Long> ids) {
+//        LocalDateTime openDate = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+//        String number = "/"+LocalDate.now();
+//        AddWaybill waybill = new AddWaybill(openDate, null, number, vehId, ids);
+//        System.out.println(waybill);
+//        return dispatcherService.createWaybill(waybill);
+//    }
 
 }
