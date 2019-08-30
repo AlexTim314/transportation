@@ -1219,12 +1219,6 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             purpose: self.cmpsts[i].purpose,
                             department: self.cmpsts[i].depshortname,
                             vehicleType: vehicleType,
-                            carBoss: {
-                                firstname: self.cmpsts[i].carbossfirstname,
-                                name: self.cmpsts[i].carbossname,
-                                surname: self.cmpsts[i].carbosssurname,
-                                phone: self.cmpsts[i].carbossphone
-                            }
                         },
                         record: {
                             id: self.cmpsts[i].recordid,
@@ -1234,6 +1228,12 @@ App.controller('DispatcherController', ['$scope', 'DispatcherService',
                             affirmator: {
                                 id: null,
                                 fullName: null
+                            },
+                            carBoss: {
+                                firstname: self.cmpsts[i].carbossfirstname,
+                                name: self.cmpsts[i].carbossname,
+                                surname: self.cmpsts[i].carbosssurname,
+                                phone: self.cmpsts[i].carbossphone
                             },
                             tasks: self.cmpsts[i].route
                         },

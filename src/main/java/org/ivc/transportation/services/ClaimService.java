@@ -60,7 +60,7 @@ public class ClaimService {
         AppUser user = getUser(principal);
         return user.getRoles().stream().anyMatch((role) -> (role.getRoleName().equals("ROLE_ADMIN") || role.getRoleName().equals("ROLE_MANAGER")));
     }
-    
+
     public String getUserName(Principal principal) {
         final char dm = (char) 34;
         AppUser user = getUser(principal);
@@ -101,16 +101,16 @@ public class ClaimService {
     }
 
     public Claim saveClaim(Principal principal, Claim claim) {
-        if (claim.getCarBoss() != null && claim.getCarBoss().getId() == null) {
-            claim.getCarBoss().setDepartment(getDepartment(principal));
-            CarBoss boss = carBossRepository.save(claim.getCarBoss());
-            claim.setCarBoss(boss);
-        }
+//        if (claim.getCarBoss() != null && claim.getCarBoss().getId() == null) {
+//            claim.getCarBoss().setDepartment(getDepartment(principal));
+//            CarBoss boss = carBossRepository.save(claim.getCarBoss());
+//            claim.setCarBoss(boss);
+//        }
         if (claim.getId() == null) {
             claim.setCreationDate(LocalDateTime.now());
         } else {
+            claim.getRecords().forEach(record -> routeTaskRepository.deleteByRecordId(record.getId()));
             recordRepository.deleteByClaimId(claim.getId());
-            routeTaskRepository.deleteByClaimId(claim.getId());
         }
         claim.setCreator(getUser(principal));
         claim.setDepartment(getDepartment(principal));

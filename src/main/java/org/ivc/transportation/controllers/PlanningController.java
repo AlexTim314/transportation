@@ -183,8 +183,8 @@ public class PlanningController {
     }
 
     @PutMapping("/planner/route_update")
-    public Claim updateRoute(@RequestBody Claim claim) {
-        return planningService.updateRoute(claim);
+    public Record updateRoute(@RequestBody Record record) {
+        return planningService.updateRoute(record);
     }
 
     @PutMapping("/planner/time_update")

@@ -352,9 +352,9 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                     .then(
                             function (d) {
                                 self.carBosses = d;
-                                for (var i = 0; i < d.length; i++) {
-                                    self.bossesMap[d[i].id] = i;
-                                }
+//                                for (var i = 0; i < d.length; i++) {
+//                                    self.bossesMap[d[i].id] = i;
+//                                }
                                 self.checkingCounterForLoad();
                                 self.checkingCounterForClose();
                             },
@@ -1616,7 +1616,7 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                             var vehicleModel = null;
                             var driver = null;
                             var vehicle = null;
-                            var carBoss = null;
+                            //var carBoss = null;
                             var creator = {//not used
                                 id: null,
                                 fullName: null,
@@ -1648,11 +1648,11 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
 //                                }
 //                            }
 
-                            var boss_id = self.cmpsts[j].boss_id;
-                            if (boss_id !== null) {
-                                var arrId = self.bossesMap[boss_id];
-                                carBoss = self.carBosses[arrId];
-                            }
+//                            var boss_id = self.cmpsts[j].boss_id;
+//                            if (boss_id !== null) {
+//                                var arrId = self.bossesMap[boss_id];
+//                                carBoss = self.carBosses[arrId];
+//                            }
 
 //                            for (var l = 0; l < self.transportDeps.length; l++) {
 //                                if (self.cmpsts[j].ots_id === self.transportDeps[l].id) {
@@ -1724,24 +1724,32 @@ App.controller('PlannerController', ['$scope', 'PlannerService',
                                     specialization: self.cmpsts[j].specialization,
                                     purpose: self.cmpsts[j].purpose,
                                     route: self.cmpsts[j].route,
-                                    carBoss: carBoss,
+                                    
                                     vehicleType: {typeName: self.cmpsts[j].veh_type},
                                     affirmator: {
                                         id: null, //not used
                                         fullName: null
                                     },
-                                    routeTasks: []                      //not used
+                                    
                                 },
                                 record: {
                                     id: self.cmpsts[j].record_id,
                                     startDate: self.cmpsts[j].start_date,
                                     entranceDate: self.cmpsts[j].entrance_date,
                                     endDate: self.cmpsts[j].end_date,
+                                    carBoss: {
+                                        firstname: self.cpsts[j].carbossfirstname,
+                                        name: self.cpsts[j].carbossname,
+                                        surname: self.cpsts[j].carbosssurname,
+                                        post: self.cpsts[j].carbosspost,
+                                        phone: self.cpsts[j].carbossphone
+                                    },
                                     affirmator: {
                                         id: null, //not used
                                         fullName: self.cmpsts[j].affirmator
                                     },
-                                    tasks: self.cmpsts[j].route
+                                    tasks: self.cmpsts[j].route,
+                                    routeTasks: []                      //not used
                                 },
                                 appointment: {
                                     id: self.cmpsts[j].appointment_id,

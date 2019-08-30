@@ -233,7 +233,7 @@ public class WaybillFileDownloadController {
                                     break;
                                 case заказчик:
                                     c.setCellValue(claim.getDepartment().getShortname() + " "
-                                            + getCarBossNameWithInitials(claim.getCarBoss()));
+                                            + getNameWithInitials(record.getCarBossFirstname(),record.getCarBossName(),record.getCarBossSurname()));
                                     break;
                             }
                         } catch (NullPointerException ex) {

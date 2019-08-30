@@ -18,8 +18,6 @@
                     <th>Заявка</th>		
                     <th>Тип транспорта</th>
                     <th>Вид техники</th>
-                    <th>Старший</th>
-                    <th>Маршрут</th>
                     <th> 			
                     </th>
                 </tr>
@@ -38,10 +36,6 @@
                     </td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.specialization}}</td>
                     <td ng-click="ctrl.rowClick(affirmedClaim)">{{affirmedClaim.vehicleType.typeName}}</td>
-                    <td ng-click="ctrl.rowClick(affirmedClaim)">{{ctrl.carBossToString(affirmedClaim.carBoss)}}</td>
-                    <td ng-click="ctrl.rowClick(affirmedClaim)">
-                        <span ng-repeat="task in affirmedClaim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
-                    </td>
                     <td style="position: relative;">	  						
                         <i title="Подробнее" class="fas fa-lg fa-ellipsis-h" ng-click="ctrl.infoAffClick(affirmedClaim)"></i>
                         <!--                        <div class="record-status">
@@ -57,10 +51,10 @@
 
                         <table class="table-claim">
                             <tr>	
-                                <th style="width:10%">Дата выезда</th>
-                                <th style="width:10%">Время подачи</th>
-                                <th style="width:10%">Время выезда</th>
-                                <th style="width:15%">Время возвращения</th>
+                                <th style="width:7.5%;">Дата | Время(Отправ.)</th>
+                                <th style="width:7.5%;">Дата | Время(Возвращ.)</th>
+                                <th style="width:15%;">Старший</th>
+                                <th style="width:20%;">Маршрут</th>
                                 <th style="width:15%">Марка транспорта</th>
                                 <th style="width:15%">Номер транспорта</th>
                                 <th style="width:15%">Водитель</th>
@@ -68,10 +62,12 @@
                                 <th style="width:5%"></th>			  				
                             </tr>
                             <tr ng-repeat="record in affirmedClaim.records| orderBy: 'startDate'">
-                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
-                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
-                                <td>{{record.startDate| date:'HH:mm'}}</td>
+                                <td>{{record.startDate| date:'dd.MM.yyyy'}} {{record.entranceDate| date:'HH:mm'}}</td>
                                 <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
+                                <td>{{ctrl.fioToStringFull(record.carBossFirstname, record.carBossName, record.carBossSurname, record.carBossPost)}}</td>
+                                <td>
+                                    <span ng-repeat="task in record.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
+                                </td>
                                 <td>{{record.appointments[record.appointments.length - 1].vehicleModel.modelName}}</td>
                                 <td>{{record.appointments[record.appointments.length - 1].vehicle.number}}</td>
                                 <td class="td-relative">

@@ -87,7 +87,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.affirmation_date is not null and "
             + "vehicle_type.id = claim.vehicle_type_id and "
             + "record.claim_id = claim.id and "
-            + "route_task.claim_id = claim.id and "
+//            + "route_task.claim_id = claim.id and "
+            + "route_task.record_id = record.id and "
             + "place.id = route_task.place_id "
             + "group by departmentid, claimid, departmentfullname, recordid, appointmentid, appointmentstatus, vehicletypeid, vehicletypename "
             + "order by claim.department_id",
@@ -135,7 +136,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "vehicle_type.id = claim.vehicle_type_id and "
             + "record.claim_id = claim.id and "
             + "record.start_date between :date_start and :date_end and "
-            + "route_task.claim_id = claim.id and "
+//            + "route_task.claim_id = claim.id and "
+            + "route_task.record_id = record.id and "
             + "place.id = route_task.place_id "
             + "group by departmentid, claimid, departmentfullname, recordid, appointmentid, appointmentstatus, vehicletypeid, vehicletypename "
             + "order by claim.department_id",
@@ -156,25 +158,29 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.purpose as purpose, "
             + "appointment.driver_id as driverid, "
             + "department.shortname as depshortname, "
-            + "car_boss.firstname as carbossfirstname, "
-            + "car_boss.name as carbossname, "
-            + "car_boss.surname as carbosssurname, "
-            + "car_boss.phone as carbossphone, "
+            + "record.car_boss_firstname as carbossfirstname, "
+            + "record.car_boss_name as carbossname, "
+            + "record.car_boss_surname as carbosssurname, "
+            + "record.car_boss_contacts as carbossphone, "
+//            + "car_boss.firstname as carbossfirstname, "
+//            + "car_boss.name as carbossname, "
+//            + "car_boss.surname as carbosssurname, "
+//            + "car_boss.phone as carbossphone, "
             + "appointment.id as appointmentid, "
             + "appointment.status as appstatus, "
             + "appointment.note as appnote, "
             + "record.id as recordid, "
             + "claim.id as claimid "
             + "from "
-            + "record, appointment, vehicle, vehicle_model, vehicle_type, claim, route_task, place, department, car_boss "
+            + "record, appointment, vehicle, vehicle_model, vehicle_type, claim, route_task, place, department "
             + "where "
             + "appointment.transport_dep_id = :transportDepId and record.affirmation_date is not null and record.id = appointment.record_id and "
             + "vehicle.id = appointment.vehicle_id and vehicle_model.id = vehicle.model_id and vehicle_type.id = vehicle_model.vehicle_type_id and "
-            + "claim.id = record.claim_id and route_task.claim_id = claim.id and place.id = route_task.place_id and "
-            + "appointment.id = (select max(id) from appointment where record_id = record.id) and department.id = claim.department_id and car_boss.id = claim.car_boss_id "
+            + "claim.id = record.claim_id and route_task.record_id = record.id and place.id = route_task.place_id and "
+            + "appointment.id = (select max(id) from appointment where record_id = record.id) and department.id = claim.department_id "
             + "group by record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
             + "claim.purpose, appointment.driver_id, department.shortname, "
-            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note",
+            + "record.car_boss_firstname, record.car_boss_name, record.car_boss_surname, record.car_boss_contacts, appointment.id, record.id, claim.id, appointment.status, appointment.note",
             nativeQuery = true)
     List<AppointmentClaim> findAppointmentClaims(
             @Param("transportDepId") Long transportDepId
@@ -232,7 +238,12 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "record.start_date AS start_date, \n"
             + "record.entrance_date AS entrance_date, \n"
             + "record.end_date AS end_date, \n"
-            + "car_boss.id AS boss_id, \n"
+            + "record.car_boss_firstname AS carbossfirstname, \n"
+            + "record.car_boss_name AS carbossname, \n"
+            + "record.car_boss_surname AS carbosssurname, \n"
+            + "record.car_boss_contacts AS carbossphone, \n"
+            + "record.car_boss_post AS carbosspost, \n"
+          //  + "car_boss.id AS boss_id, \n"
             + "department.id AS dep_id, \n"
             + "appointment.id AS appointment_id, \n"
             + "appointment.note AS appointment_note, \n"
@@ -243,11 +254,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "appointment.status AS status\n"
             + "FROM public.claim \n"
             + "LEFT OUTER JOIN record ON record.claim_id = claim.id \n"
-            + "LEFT OUTER JOIN route_task ON route_task.claim_id = claim.id \n"
+            + "LEFT OUTER JOIN route_task ON route_task.record_id = record.id \n"
             + "LEFT JOIN vehicle_type ON claim.vehicle_type_id = vehicle_type.id \n"
             + "LEFT JOIN place ON route_task.place_id = place.id \n"
             + "LEFT JOIN app_user ON record.affirmator_id = app_user.id \n"
-            + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
+//            + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
             + "LEFT JOIN department ON claim.department_id = department.id \n"
             + "LEFT OUTER JOIN appointment ON appointment.record_id = record.id AND appointment.id = (SELECT max(id) from appointment WHERE record_id = record.id) \n"
             + "LEFT JOIN vehicle_model ON appointment.vehicle_model_id = vehicle_model.id \n"
@@ -255,7 +266,8 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "LEFT JOIN driver ON appointment.driver_id = driver.id \n"
             + "LEFT JOIN transport_dep ON appointment.transport_dep_id = transport_dep.id \n"
             + "WHERE start_date BETWEEN :date_start AND :date_end AND claim.actual IS TRUE AND claim.affirmator_id IS NOT NULL \n"
-            + "GROUP BY department.id, claim.id, record.id, vehicle_type.id, vehicle_model.id, car_boss.id, app_user.id, appointment.id, transport_dep.id, vehicle.id, driver.id \n", nativeQuery = true)
+            + "GROUP BY department.id, claim.id, record.id, vehicle_type.id, vehicle_model.id, record.car_boss_firstname, record.car_boss_name, record.car_boss_surname, "
+            + "record.car_boss_contacts, record.car_boss_post, app_user.id, appointment.id, transport_dep.id, vehicle.id, driver.id \n", nativeQuery = true)
     List<ClaimRecord> findClaimsByTimeFilter(
             @Param("date_start") LocalDateTime dateStart,
             @Param("date_end") LocalDateTime dateEnd);
@@ -271,10 +283,10 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.purpose as purpose, "
             + "appointment.driver_id as driverid, "
             + "department.shortname as depshortname, "
-            + "car_boss.firstname as carbossfirstname, "
-            + "car_boss.name as carbossname, "
-            + "car_boss.surname as carbosssurname, "
-            + "car_boss.phone as carbossphone, "
+            + "record.car_boss_firstname as carbossfirstname, "
+            + "record.car_boss_name as carbossname, "
+            + "record.car_boss_surname as carbosssurname, "
+            + "record.car_boss_contacts as carbossphone, "
             + "appointment.id as appointmentid, "
             + "appointment.status as appstatus, "
             + "appointment.note as appnote, "
@@ -284,11 +296,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.id as claimid "
             + "FROM public.claim \n"
             + "LEFT OUTER JOIN record ON record.claim_id = claim.id \n"
-            + "LEFT OUTER JOIN route_task ON route_task.claim_id = claim.id \n"
+            + "LEFT OUTER JOIN route_task ON route_task.record_id = record.id \n"
             + "LEFT JOIN vehicle_type ON claim.vehicle_type_id = vehicle_type.id \n"
             + "LEFT JOIN place ON route_task.place_id = place.id \n"
             + "LEFT JOIN app_user ON record.affirmator_id = app_user.id \n"
-            + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
+          //  + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
             + "LEFT JOIN department ON claim.department_id = department.id \n"
             + "LEFT OUTER JOIN appointment ON appointment.record_id = record.id AND appointment.id = (SELECT max(id) from appointment WHERE record_id = record.id) \n"
             + "LEFT JOIN vehicle_model ON appointment.vehicle_model_id = vehicle_model.id \n"
@@ -298,7 +310,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "WHERE transport_dep.id = :tr_dep_id AND start_date BETWEEN :date_start AND :date_end AND claim.actual IS TRUE AND claim.affirmator_id IS NOT NULL \n"
             + "GROUP BY record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
             + "claim.purpose, appointment.driver_id, department.shortname, "
-            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note", nativeQuery = true)
+            + "record.car_boss_firstname, record.car_boss_name, record.car_boss_surname, record.car_boss_contacts, appointment.id, record.id, claim.id, appointment.status, appointment.note", nativeQuery = true)
     List<AppointmentClaim> findAppointmentClaimsTimeFilter(
             @Param("tr_dep_id") Long trDepId,
             @Param("date_start") LocalDateTime dateStart,
@@ -316,10 +328,10 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.purpose as purpose, "
             + "appointment.driver_id as driverid, "
             + "department.shortname as depshortname, "
-            + "car_boss.firstname as carbossfirstname, "
-            + "car_boss.name as carbossname, "
-            + "car_boss.surname as carbosssurname, "
-            + "car_boss.phone as carbossphone, "
+            + "record.car_boss_firstname as carbossfirstname, "
+            + "record.car_boss_name as carbossname, "
+            + "record.car_boss_surname as carbosssurname, "
+            + "record.car_boss_contacts as carbossphone, "
             + "appointment.id as appointmentid, "
             + "appointment.status as appstatus, "
             + "appointment.note as appnote, "
@@ -329,11 +341,11 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "claim.id as claimid "
             + "FROM public.claim \n"
             + "LEFT OUTER JOIN record ON record.claim_id = claim.id \n"
-            + "LEFT OUTER JOIN route_task ON route_task.claim_id = claim.id \n"
+            + "LEFT OUTER JOIN route_task ON route_task.record_id = record.id \n"
             + "LEFT JOIN vehicle_type ON claim.vehicle_type_id = vehicle_type.id \n"
             + "LEFT JOIN place ON route_task.place_id = place.id \n"
             + "LEFT JOIN app_user ON record.affirmator_id = app_user.id \n"
-            + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
+          //  + "LEFT JOIN car_boss ON claim.car_boss_id = car_boss.id \n"
             + "LEFT JOIN department ON claim.department_id = department.id \n"
             + "LEFT OUTER JOIN appointment ON appointment.record_id = record.id AND appointment.id = (SELECT max(id) from appointment WHERE record_id = record.id) \n"
             + "LEFT JOIN vehicle_model ON appointment.vehicle_model_id = vehicle_model.id \n"
@@ -343,7 +355,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
             + "WHERE vehicle.id = :veh_id AND start_date BETWEEN :date_start AND :date_end AND claim.actual IS TRUE AND claim.affirmator_id IS NOT NULL \n"
             + "GROUP BY record.id, vehicle_type.id, vehicle_model.id, vehicle.id, "
             + "claim.purpose, appointment.driver_id, department.shortname, "
-            + "car_boss.firstname, car_boss.name, car_boss.surname, car_boss.phone, appointment.id, record.id, claim.id, appointment.status, appointment.note", nativeQuery = true)
+            + "record.car_boss_firstname, record.car_boss_name, record.car_boss_surname, record.car_boss_contacts, appointment.id, record.id, claim.id, appointment.status, appointment.note", nativeQuery = true)
     List<AppointmentClaim> findAppointmentClaimsByVehicle(
             @Param("veh_id") Long vehId,
             @Param("date_start") LocalDateTime dateStart,

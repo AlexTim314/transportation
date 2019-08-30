@@ -17,8 +17,8 @@
                     <th>Заявка</th>		
                     <th>Тип транспорта</th>
                     <th>Вид техники</th>
-                    <th>Старший</th>
-                    <th>Маршрут</th>
+
+
                     <th>
                         <i title="Добавить заявку" class="fas fa-lg fa-plus-circle" ng-click="ctrl.addNewClaim()"></i>
                         <i title="Добавить из шаблона" class="fas fa-lg fa-file-export" ng-click="ctrl.addClaimFromTemplate()"></i>
@@ -43,10 +43,8 @@
                     </td>
                     <td ng-click="ctrl.rowClick(claim)">{{claim.specialization}}</td>
                     <td ng-click="ctrl.rowClick(claim)">{{claim.vehicleType.typeName}}</td>
-                    <td ng-click="ctrl.rowClick(claim)">{{ctrl.carBossToString(claim.carBoss)}}</td>
-                    <td ng-click="ctrl.rowClick(claim)">
-                        <span ng-repeat="task in claim.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
-                    </td>
+
+
                     <td >
                         <i title="Изменить" class="fas fa-lg fa-edit" ng-click="ctrl.tryToUpdateClaim(claim)"></i>
                         <!--<i title="Сохранить" class="fas fa-lg fa-save"></i>-->
@@ -60,19 +58,19 @@
 
                         <table class="table-claim" id="tbl-nc">
                             <tr>	
-                                <th style="width:20%;">Дата выезда</th>
-                                <th style="width:20%;">Время подачи</th>
-                                <th style="width:20%;">Время выезда</th>
-                                <th style="width:20%;">Дата возвращения</th>
-                                <th style="width:20%;">Время возвращения</th>
+                                <th style="width:10%;">Дата | Время(Отправ.)</th>
+                                <th style="width:10%;">Дата | Время(Возвращ.)</th>
+                                <th style="width:30%;">Старший</th>
+                                <th style="width:30%;">Маршрут</th>
                                 <th style="width:20%;"></th>
                             </tr>
                             <tr ng-repeat="record in claim.records| orderBy: 'startDate'">
-                                <td>{{record.startDate| date:'dd.MM.yyyy'}}</td>
-                                <td>{{record.entranceDate| date:'HH:mm'}}</td>
-                                <td>{{record.startDate| date:'HH:mm'}}</td>
-                                <td>{{record.endDate| date:'dd.MM.yyyy'}}</td>
-                                <td>{{record.endDate| date:'HH:mm'}}</td>
+                                <td>{{record.startDate| date:'dd.MM.yyyy'}} {{record.entranceDate| date:'HH:mm'}}</td>
+                                <td>{{record.endDate| date:'dd.MM.yyyy'}} {{record.endDate| date:'HH:mm'}}</td>
+                                <td>{{ctrl.fioToStringFull(record.carBossFirstname, record.carBossName, record.carBossSurname, record.carBossPost)}}</td>
+                                <td>
+                                    <span ng-repeat="task in record.routeTasks| orderBy: 'orderNum'" class="route-tag td-relative" title="{{task.workName}}">{{task.place.name}}</span>			
+                                </td>
                                 <td><i class="fas  fa-lg fa-trash-alt claim-trash" title="Удалить" ng-click="ctrl.deleteRecord(claim, record)"></i></td>
                             </tr>                                            
                         </table>

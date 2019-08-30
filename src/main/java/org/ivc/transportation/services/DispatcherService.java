@@ -87,10 +87,10 @@ public class DispatcherService {
 
     @Autowired
     private TransportDepRepository transportDepRepository;
-    
+
     @Autowired
     private RouteTaskRepository routeTaskRepository;
-    
+
     @Autowired
     private WaybillRepository waybillRepository;
 
@@ -135,7 +135,7 @@ public class DispatcherService {
     }
 
     public List<CompositeAppointmentClaim> getAppointmentsByVehicle(Long vehId, LocalDateTime dateStart, LocalDateTime dateEnd) {
-        List<CompositeAppointmentClaim> result = new ArrayList<>();        
+        List<CompositeAppointmentClaim> result = new ArrayList<>();
         claimRepository.findAppointmentClaimsByVehicle(vehId, dateStart, dateEnd).forEach(u -> result.add(new CompositeAppointmentClaim(u, routeTaskRepository.findRouteTasksForAppointment(u.getAppointmentid()))));
         return result;
     }
@@ -336,6 +336,12 @@ public class DispatcherService {
             r.setStartDate(tclaim.getDates().get(i).getStartDate());
             r.setEndDate(tclaim.getDates().get(i).getEndDate());
             r.setAffirmationDate(LocalDateTime.now());
+            r.setCarBossName(carBossRepository.findById(tclaim.getCarBossId()).get().getName());
+            r.setCarBossFirstname(carBossRepository.findById(tclaim.getCarBossId()).get().getFirstname());
+            r.setCarBossSurname(carBossRepository.findById(tclaim.getCarBossId()).get().getSurname());
+            r.setCarBossPost(carBossRepository.findById(tclaim.getCarBossId()).get().getPost());
+            r.setCarBossContacts(carBossRepository.findById(tclaim.getCarBossId()).get().getPhone());
+            r.setRouteTasks(tclaim.getRouteTasks());
             Appointment app = new Appointment();
             app.setCreationDate(LocalDateTime.now());
             app.setCreator(disp);
@@ -354,13 +360,13 @@ public class DispatcherService {
         claim.setActual(true);
         claim.setAffirmationDate(LocalDateTime.now());
         claim.setAffirmator(disp);
-        claim.setCarBoss(carBossRepository.findById(tclaim.getCarBossId()).get());
+        //claim.setCarBoss(carBossRepository.findById(tclaim.getCarBossId()).get());
         claim.setCreationDate(LocalDateTime.now());
         claim.setCreator(disp);
         claim.setDepartment(disp.getDepartment());
         claim.setPurpose(tclaim.getPurpose());
         claim.setRecords(records);
-        claim.setRouteTasks(tclaim.getRouteTasks());
+        //claim.setRouteTasks(tclaim.getRouteTasks());
         claim.setSpecialization(v.getModel().getVehicleType().getSpecialization());
         claim.setVehicleType(v.getModel().getVehicleType());
         claimRepository.save(claim);
@@ -379,20 +385,20 @@ public class DispatcherService {
         transportDepRepository.findVehiclesInfo(findTransportDepByUser(principal).getId()).forEach(u -> result.add(new CompositeTDInfo(u, vehicleModelRepository.findVehicleModelInfos(u.getId()))));
         return result;
     }
-    
+
     public Waybill createWaybill(AddWaybill addWaybill) {
         Vehicle vehicle = vehicleRepository.findById(addWaybill.getVehicleId()).get();
-        
+
         List<Appointment> appointments = null;
         for (int i = 0; i < addWaybill.getAppointmentIds().size(); i++) {
             appointments.add(appointmentRepository.findById(addWaybill.getAppointmentIds().get(i)).get());
         }
-        
+
         Waybill waybill = new Waybill(addWaybill.getOpenedDate(),
-            addWaybill.getClosedDate(),
-            addWaybill.getNumber(),
-            vehicle,
-            appointments
+                addWaybill.getClosedDate(),
+                addWaybill.getNumber(),
+                vehicle,
+                appointments
         );
         return waybillRepository.save(waybill);
     }

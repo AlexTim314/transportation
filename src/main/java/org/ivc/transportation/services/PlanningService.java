@@ -211,13 +211,22 @@ public class PlanningService {
         return null;
     }
 
-    public Claim updateRoute(Claim claim) {
-        routeTaskRepository.deleteByClaimId(claim.getId());
-        Claim tempClaim = claimRepository.findById(claim.getId()).get();
-        List<RouteTask> tempRouteTasks = routeTaskRepository.saveAll(claim.getRouteTasks());
-        tempClaim.setRouteTasks(tempRouteTasks);
-        claimRepository.save(tempClaim);
-        return new Claim(tempClaim);
+//    public Claim updateRoute(Claim claim) {
+//        routeTaskRepository.deleteByClaimId(claim.getId());
+//        Claim tempClaim = claimRepository.findById(claim.getId()).get();
+//        List<RouteTask> tempRouteTasks = routeTaskRepository.saveAll(claim.getRouteTasks());
+//        tempClaim.setRouteTasks(tempRouteTasks);
+//        claimRepository.save(tempClaim);
+//        return new Claim(tempClaim);
+//    }
+    
+    public Record updateRoute(Record record) {
+        routeTaskRepository.deleteByRecordId(record.getId());
+        Record tempRec = recordRepository.findById(record.getId()).get();
+        List<RouteTask> tempRouteTasks = routeTaskRepository.saveAll(record.getRouteTasks());
+        tempRec.setRouteTasks(tempRouteTasks);
+        recordRepository.save(tempRec);
+        return new Record(tempRec);
     }
 
     public Record updateTime(Record record) {

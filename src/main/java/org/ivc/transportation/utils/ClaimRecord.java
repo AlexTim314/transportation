@@ -28,8 +28,16 @@ public interface ClaimRecord {
 
     LocalDateTime getEnd_date();
 
-    Long getBoss_id();
+    String getCarbossfirstname();
 
+    String getCarbossname();
+
+    String getCarbosssurname();
+
+    String getCarbossphone();
+
+    String getCarbosspost();
+    
     Long getDep_id();
 
     Long getAppointment_id();

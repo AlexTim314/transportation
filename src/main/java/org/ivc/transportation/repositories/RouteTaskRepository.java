@@ -15,9 +15,13 @@ import org.springframework.stereotype.Repository;
 @Repository("routeTaskRepository")
 public interface RouteTaskRepository extends JpaRepository<RouteTask, Long> {
 
+//    @Modifying
+//    @Query(value = "delete from route_task where claim_id = :claim_id", nativeQuery = true)
+//    void deleteByClaimId(@Param("claim_id") Long claimId);
+    
     @Modifying
-    @Query(value = "delete from route_task where claim_id = :claim_id", nativeQuery = true)
-    void deleteByClaimId(@Param("claim_id") Long claimId);
+    @Query(value = "delete from route_task where record_id = :record_id", nativeQuery = true)
+    void deleteByRecordId(@Param("record_id") Long recordId);
 
     @Modifying
     @Query(value = "delete from route_task where template_id = :template_id", nativeQuery = true)

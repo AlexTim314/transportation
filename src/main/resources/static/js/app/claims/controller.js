@@ -563,6 +563,22 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                     );
         };
 
+        self.fioToStringFull = function (firstname, name, surname, post) {
+            if (firstname === null && name === null && surname === null && post === null) {
+                return null;
+            }
+            var result = firstname + " " + name.charAt(0) + "." + (surname !== null && surname !== null ? surname.charAt(0) + "." : "") + " " + (post !== null ? post : "");
+            return result;
+        };
+
+        self.fioToString = function (firstname, name, surname) {
+            if (firstname === null && name === null && surname === null) {
+                return null;
+            }
+            var result = firstname + " " + name.charAt(0) + "." + (surname !== null && surname !== null ? surname.charAt(0) + "." : "");
+            return result;
+        };
+
         self.carBossToString = function (boss) {
             if (boss === null) {
                 return null;
@@ -899,9 +915,9 @@ App.controller('ClaimsController', ['$scope', 'ClaimsService',
                 //var sd = new Date(rec.startDate);
                 var sd = new Date(rec.entranceDate.getTime() - self.mTime);
                 var ed = new Date(rec.endDate.getTime());
-                
+
                 ed = rec.isOtherDay ? ed.setDate(sd.getDate() + 1) : ed.setDate(sd.getDate());
-                
+
                 var entranceTime = new Date(rec.entranceDate);
                 entranceTime.setUTCHours(entranceTime.getHours());
                 var startTime = new Date(rec.entranceDate.getTime() - self.mTime);

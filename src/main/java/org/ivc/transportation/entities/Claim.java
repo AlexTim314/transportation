@@ -27,8 +27,8 @@ import org.ivc.transportation.utils.EntitiesUtils.VehicleSpecialization;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
-@ToString(exclude = {"vehicleType", "carBoss", "creator", "affirmator", "records", "route"})
+@EqualsAndHashCode(exclude = {"vehicleType", "creator", "affirmator", "records"})
+@ToString(exclude = {"vehicleType", "creator", "affirmator", "records"})
 @Entity
 @Table(name = "claim")
 public class Claim implements Serializable {
@@ -62,9 +62,8 @@ public class Claim implements Serializable {
     @ManyToOne
     private VehicleType vehicleType;
 
-    @ManyToOne
-    private CarBoss carBoss;
-
+//    @ManyToOne
+//    private CarBoss carBoss;
     @ManyToOne
     private AppUser creator;
 
@@ -75,13 +74,12 @@ public class Claim implements Serializable {
     @JoinColumn(name = "claim_id")
     private List<Record> records;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "claim_id")
-    private List<RouteTask> routeTasks;
-
-    public Claim(VehicleSpecialization specialization, CarBoss carBoss, String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "claim_id")
+//    private List<RouteTask> routeTasks;
+    public Claim(VehicleSpecialization specialization,/* CarBoss carBoss,*/ String purpose, LocalDateTime creationDate, Department department, VehicleType vehicleType, AppUser creator) {
         this.specialization = specialization;
-        this.carBoss = carBoss;
+//        this.carBoss = carBoss;
         this.purpose = purpose;
         this.creationDate = creationDate;
         this.department = department;
@@ -94,10 +92,10 @@ public class Claim implements Serializable {
         this.actual = claim.actual;
         this.affirmationDate = claim.affirmationDate;
         this.affirmator = claim.affirmator;
-        this.carBoss = claim.carBoss;
-        if (this.carBoss != null) {
-            this.carBoss.setDepartment(null);
-        }
+//        this.carBoss = claim.carBoss;
+//        if (this.carBoss != null) {
+//            this.carBoss.setDepartment(null);
+//        }
         this.creationDate = claim.creationDate;
         this.creator = claim.creator;
         if (creator != null && creator.getDepartment() != null) {
@@ -106,7 +104,7 @@ public class Claim implements Serializable {
         this.department = null;
         this.purpose = claim.purpose;
         this.records = null;
-        this.routeTasks = claim.routeTasks;
+//        this.routeTasks = claim.routeTasks;
         this.specialization = claim.specialization;
         this.templateName = claim.templateName;
         this.vehicleType = claim.vehicleType;
