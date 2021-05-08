@@ -8,15 +8,12 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,8 +30,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"appointment", "taskList"})
+@EqualsAndHashCode(exclude = {"appointment", "taskList"})
 public class Waybill implements Serializable {
 
     @Id
@@ -87,12 +84,29 @@ public class Waybill implements Serializable {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private Appointment appointment;
-    
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
-    
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "waybill")
-    private Set<Fueling> fuelings;
+
+    public Waybill(String number, Float departureOdometer, Float returnOdometer, Date factDepartureTime,
+            Date factReturnTime, Float departureFuelRemnant, Float returnFuelRemnant, Date startLunch,
+            Date EndLunch, String mechConclusion, String medConclusion, String note, Appointment appointment,
+            TaskList taskList) {
+        this.number = number;
+        this.EndLunch = EndLunch;
+        this.appointment = appointment;
+        this.departureFuelRemnant = departureFuelRemnant;
+        this.departureOdometer = departureOdometer;
+        this.factDepartureTime = factDepartureTime;
+        this.mechConclusion = mechConclusion;
+        this.medConclusion = medConclusion;
+        this.note = note;
+        this.returnFuelRemnant = returnFuelRemnant;
+        this.returnOdometer = returnOdometer;
+        this.startLunch = startLunch;
+        this.taskList = taskList;
+
+    }
+
 }

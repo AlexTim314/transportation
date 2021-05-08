@@ -8,17 +8,13 @@ package org.ivc.transportation.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +29,9 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"transportDep"})
+@ToString(exclude = {"transportDep"})
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class Driver implements Serializable {
 
     @Id
@@ -71,8 +67,15 @@ public class Driver implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private TransportDep transportDep;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "driver")
-    private Set<Appointment> appointments;
+    public Driver(String firstname, String name, String surname, Date birthday, String addres, String phone, String vacant,TransportDep transportDep) {
+        this.firstname = firstname;
+        this.surname = surname;
+        this.birthday = birthday;
+        this.addres = addres;
+        this.phone = phone;
+        this.vacant = vacant;
+        this.name = name;
+        this.transportDep = transportDep;
+    }
 
 }

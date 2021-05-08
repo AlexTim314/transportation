@@ -33,27 +33,36 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class Work extends Task implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(nullable = false)
     private Date beginTime;
-    
+
     @NonNull
     private Date endTime;
-    
+
     @NonNull
     @Column(nullable = false)
     private Double beginOdometer;
-    
+
     @NonNull
     private Double endOdometer;
-    
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private Waypoint waypoint;
-    
+
+    public Work(Date beginTime, Date endTime, Double beginOdometer, Double endOdometer, Waypoint waypoint) {
+        this.beginTime = beginTime;
+        this.beginOdometer = beginOdometer;
+        this.endOdometer = endOdometer;
+        this.endTime = endTime;
+        this.waypoint = waypoint;
+
+    }
+
 }

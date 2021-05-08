@@ -5,17 +5,12 @@
  */
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,8 +42,10 @@ public class Trip extends Task implements Serializable {
     @Column(nullable = false)
     private Float loadDistance;
     
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "trip")
-    private Set<TimedWaypoint> timedWaypoints;
+    public Trip(Float emtyDistance,Float loadDistance){
+        this.emtyDistance=emtyDistance;
+        this.loadDistance=loadDistance;
+        
+    }
 
 }

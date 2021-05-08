@@ -1,16 +1,11 @@
 package org.ivc.transportation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +21,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
+@ToString
 public class Department implements Serializable {
 
     @Id
@@ -41,10 +36,9 @@ public class Department implements Serializable {
     @Column(length = 1024)
     private String addres;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "department")
-    private Set<Claim> claims;
-
-    
+    public Department(String name, String addres) {
+        this.name = name;
+        this.addres = addres;
+    }
 
 }

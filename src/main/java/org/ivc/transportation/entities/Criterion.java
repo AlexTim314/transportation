@@ -33,24 +33,24 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"criterionType"})
+@EqualsAndHashCode(exclude = {"criterionType"})
 public class Criterion implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(length = 1024)
     private String name;
-    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private CriterionType criterionType;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "criterion")
-    private Set<CriterionValue> criterionValues;
-
+    public Criterion(String name, CriterionType criterionType) {
+        this.name = name;
+        this.criterionType = criterionType;
+    }
 }

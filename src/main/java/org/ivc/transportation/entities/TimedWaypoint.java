@@ -7,7 +7,6 @@ package org.ivc.transportation.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,23 +30,30 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"trip", "waypoint"})
+@EqualsAndHashCode(exclude = {"trip", "waypoint"})
 public class TimedWaypoint implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @NonNull
     @Column(nullable = false)
     private Integer number;
-    
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     private Waypoint waypoint;
-    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Trip trip;
+
+    public TimedWaypoint(Integer number, Waypoint waypoint, Trip trip) {
+        this.number = number;
+        this.trip = trip;
+        this.waypoint = waypoint;
+
+    }
 }

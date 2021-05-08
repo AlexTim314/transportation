@@ -29,8 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
+@ToString(exclude = {"taskList"})
+@EqualsAndHashCode(exclude = {"taskList"})
 public class Task implements Serializable {
     
         @Id
@@ -48,4 +48,11 @@ public class Task implements Serializable {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private TaskList taskList;
+    
+    public Task(String status,String reason,TaskList taskList){
+        this.status=status;
+        this.reason=reason;
+        this.taskList=taskList;
+        
+    }
 }
